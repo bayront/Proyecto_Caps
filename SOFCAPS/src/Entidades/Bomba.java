@@ -1,6 +1,6 @@
 package Entidades;
 
-
+/*Entidad bomba*/
 import java.util.Date;
 
 public class Bomba 

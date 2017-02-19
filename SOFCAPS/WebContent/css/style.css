@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Roboto";
+    src: url("../fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+}
+
 body {
 	color: #525252;
 	background: #6AA6D6 url(../img/devoops_pattern_b10.png) 0 0 repeat;
@@ -23,7 +28,7 @@ h1, .h1, h2, .h2, h3, .h3 {
 
 #logo {
 	position: relative;
-	background: #525252 url(../img/devoops_pattern_b10.png) 0 0 repeat;
+	background: #4C9480 url(../img/devoops_pattern_b10.png) 0 0 repeat;
 }
 
 #logo a {
@@ -32,7 +37,8 @@ h1, .h1, h2, .h2, h3, .h3 {
 	display: block;
 	font-size: 20px;
 	line-height: 50px;
-	background: url(../img/logo.png) right 42px no-repeat;
+	background: url(../img/Gota.png) right 48px no-repeat;
+	background-size: 17% 80%;
 	-webkit-transition: 0.5s;
 	-moz-transition: 0.5s;
 	-o-transition: 0.5s;
@@ -40,7 +46,7 @@ h1, .h1, h2, .h2, h3, .h3 {
 }
 
 #logo a:hover {
-	background-position: right 25px;
+	background-position: right 6px;
 	text-decoration: none;
 }
 
@@ -80,7 +86,7 @@ a.show-sidebar:hover {
 	z-index: inherit;
 	padding-bottom: 3000px !important;
 	margin-bottom: -3000px !important;
-	background: #6AA6D6 url(../img/devoops_pattern_b10.png) 0 0 repeat;
+	background: #74c1ea url(../img/devoops_pattern_b10.png) 0 0 repeat;
 	-webkit-transition: 0.2s;
 	-moz-transition: 0.2s;
 	-o-transition: 0.2s;
@@ -205,7 +211,7 @@ a.show-sidebar:hover {
 #top-panel {
 	line-height: 50px;
 	height: 50px;
-	background: #ebebeb;
+	background: #d7f9ec;
 }
 
 #main {
@@ -221,8 +227,8 @@ a.show-sidebar:hover {
 
 #search>input {
 	width: 80%;
-	background: #dfdfdf;
-	border: 1px solid #C7C7C7;
+	background: #c1ded1;
+	border: 1px solid #c1ded1;
 	text-shadow: 0 1px 1px #EEE;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -714,8 +720,7 @@ ul.DTTT_dropdown.dropdown-menu>li:hover>a {
 #breadcrumb {
 	padding: 0;
 	line-height: 40px;
-	background: #525252;
-	background: #5a8db6 url(../img/devoops_pattern_b10.png) 0 0 repeat;
+	background: #2E7AAD url(../img/devoops_pattern_b10.png) 0 0 repeat;
 	margin-bottom: 20px;
 }
 
@@ -1652,10 +1657,10 @@ ul.DTTT_dropdown.dropdown-menu>li:hover>a {
 	color: #6AA6D6 !important;
 }
 
-.txt-success, .has-success .help-block, .has-success .control-label,
+.txt-success, .has-success .help-block,  .has-success .control-label,
 	.has-success .radio, .has-success .checkbox, .has-success .radio-inline,
 	.has-success .checkbox-inline {
-	color: #63CC9E !important;
+	color: #29a3b1 !important;
 }
 
 .txt-info {
@@ -1675,7 +1680,7 @@ ul.DTTT_dropdown.dropdown-menu>li:hover>a {
 }
 
 .has-success .form-control {
-	border-color: #63CC9E;
+	border-color: #29a3b1;
 }
 
 .has-warning .form-control {
@@ -1753,7 +1758,10 @@ ul.DTTT_dropdown.dropdown-menu>li:hover>a {
 }
 
 .form-horizontal .control-label {
-	padding-top: 4px;
+	padding-top: 2px;
+    font-family: "Roboto";
+    font-size: medium;
+
 }
 
 .input-group-addon {

@@ -33,7 +33,7 @@
         elementClass: 'bootstrap-validator-form',
 
         // Default invalid message
-        message: 'This value is not valid',
+        message: 'Este valor no es valido',
 
         // The submit buttons selector
         // These buttons will be disabled when the form input are invalid
@@ -147,7 +147,7 @@
         /**
          * Init field
          *
-         * @param {String} field The field name
+         * @param {String} Escribe el nombre
          */
         _initField: function(field) {
             if (this.options.fields[field] == null || this.options.fields[field].validators == null) {

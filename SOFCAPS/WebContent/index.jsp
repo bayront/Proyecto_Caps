@@ -1,20 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>DevOOPS</title>
 <meta name="description" content="description">
-<meta name="author" content="DevOOPS">
+<meta name="author" content="team_CAPS">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="plugins/bootstrap/bootstrap.css" rel="stylesheet">
 <link href="plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-<link
-	href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"
-	rel="stylesheet">
-<link href='http://fonts.googleapis.com/css?family=Righteous'
-	rel='stylesheet' type='text/css'>
+<link href="font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet">
 <link href="plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
 <link href="plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
 <link href="plugins/xcharts/xcharts.min.css" rel="stylesheet">
@@ -79,9 +75,7 @@
 								</a></li>
 								<li class="dropdown"><a href="#"
 									class="dropdown-toggle account" data-toggle="dropdown">
-										<div class="avatar">
-											<img src="img/avatar.jpg" class="img-rounded" alt="avatar" />
-										</div> <i class="fa fa-angle-down pull-right"></i>
+										<i class="fa fa-angle-down pull-right"></i>
 										<div class="user-mini pull-right">
 											<span class="welcome">Welcome,</span> <span>Jane
 												Devoops</span>
@@ -120,7 +114,7 @@
 		<div class="row">
 			<div id="sidebar-left" class="col-xs-2 col-sm-2">
 				<ul class="nav main-menu">
-					<li><a href="ajax/dashboard.html" class="active ajax-link">
+					<li><a href="ajax/dashboard.jsp" class="active ajax-link">
 							<i class="fa fa-dashboard"></i> <span class="hidden-xs">Inicio</span>
 					</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
@@ -213,6 +207,19 @@
 					<li><a class="ajax-link" href="ajax/calendar.html"> <i
 							class="fa fa-calendar"></i> <span class="hidden-xs">Calendar</span>
 					</a></li>
+					
+					
+					
+					<li class="dropdown"><a href="#" class="dropdown-toggle">
+							<i class="fa fa-th-list"></i> <span class="hidden-xs">Consumos</span>
+					</a>
+						<ul class="dropdown-menu">
+							<li><a class="ajax-link" href="ajax/crear_consumo.jsp">Crear consumo</a></li>
+							<li><a class="ajax-link" href="#">Ver consumo</a></li>
+						</ul></li>
+						
+						
+						
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i class="fa fa-picture-o"></i> <span class="hidden-xs">Multilevel
 								menu</span>

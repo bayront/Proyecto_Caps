@@ -19,6 +19,7 @@ public class Cliente
    private Date fechaCrea;
    private Date fechaMod;
    private Date fechaElim;
+   private Integer cliente_ID;
    private List<Contrato> contratos;
    
    public Cliente() 
@@ -102,6 +103,18 @@ public class Cliente
     }
     public void setFechaElim(Date fechaElim) {
         this.fechaElim = fechaElim;
-    } 
-   
+    }
+	public Integer getCliente_ID() {
+		return cliente_ID;
+	}
+	public void setCliente_ID(Integer cliente_ID) {
+		this.cliente_ID = cliente_ID;
+	}
+	public List<Contrato> getContratos() {
+		return contratos;
+	}
+	public void setContratos(List<Contrato> contratos) {
+		this.contratos = contratos;
+	} 
+  
 }

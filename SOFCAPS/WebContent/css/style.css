@@ -3,6 +3,35 @@
     src: url("../fonts/Roboto/Roboto-Regular.ttf") format("truetype");
 }
 
+.blue { 
+  font-size:1.1em; 
+  padding:10px 20px; 
+  display:inline-block; 
+  margin:5px; 
+  border-radius:3px; 
+  border:solid rgba(0,0,0,0.4); 
+  border-width:1px 1px 4px; 
+  box-shadow:0 6px 0 rgba(0,0,0,0.2), inset 0 0 3px rgba(255,255,255,0.35);     
+  cursor:pointer; 
+  user-select:none; 
+  transition:0.4s ease; 
+  background:hsl(176,59%,59%);
+  }
+.blue:hover { 
+  	transform: translateY(-3px);
+    box-shadow: 0 6px 0 rgba(0,0,0,0.1), inset 0 0 1px rgba(255,255,255,0.4);
+    border-bottom-width: 8px;
+    color: #24674b;
+    font-weight: 700; 
+  }
+.blue:CHECKED { 
+  transform:translateY(4px); 
+  box-shadow:0 2px 0 rgba(0,0,0,0.1), inset 0 0 5px rgba(255,255,255,0.4);     
+  border-bottom-width:2px; 
+  transition:0.1s ease; 
+  }
+  
+
 body {
 	color: #525252;
 	background: #6AA6D6 url(../img/devoops_pattern_b10.png) 0 0 repeat;
@@ -24,6 +53,9 @@ body {
 
 h1, .h1, h2, .h2, h3, .h3 {
 	margin: 0;
+}
+h1{
+	
 }
 
 #logo {

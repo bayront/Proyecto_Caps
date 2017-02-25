@@ -215,7 +215,7 @@
 					</a>
 						<ul class="dropdown-menu">
 							<li><a class="ajax-link" href="ajax/crear_consumo.jsp">Crear consumo</a></li>
-							<li><a class="ajax-link" href="#">Ver consumo</a></li>
+							<li><a class="ajax-link" href="ajax/ver-consumos.jsp">Ver consumo</a></li>
 						</ul></li>
 						
 						

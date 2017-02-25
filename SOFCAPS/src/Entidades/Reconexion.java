@@ -6,10 +6,11 @@ import java.util.Date;
 public class Reconexion 
 {
    private Date fecha_reconexion;
-   private Float monto;
    private Date f_cancel;
-   public Factura_Maestra factura_Maestra;
-   public Cliente cliente;
+   private Boolean cancelado;
+   private Integer reconexion_ID;
+   private Factura_Maestra factura_Maestra;
+   private Cliente cliente;
    private ReciboCaja reciboCaja;
    public Reconexion() 
    {
@@ -20,12 +21,6 @@ public class Reconexion
     }
     public void setFecha_reconexion(Date fecha_reconexion) {
         this.fecha_reconexion = fecha_reconexion;
-    }
-    public Float getMonto() {
-        return monto;
-    }
-    public void setMonto(Float monto) {
-        this.monto = monto;
     }
     public Date getF_cancel() {
         return f_cancel;
@@ -45,5 +40,23 @@ public class Reconexion
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-   
+	public Boolean getCancelado() {
+		return cancelado;
+	}
+	public void setCancelado(Boolean cancelado) {
+		this.cancelado = cancelado;
+	}
+	public Integer getReconexion_ID() {
+		return reconexion_ID;
+	}
+	public void setReconexion_ID(Integer reconexion_ID) {
+		this.reconexion_ID = reconexion_ID;
+	}
+	public ReciboCaja getReciboCaja() {
+		return reciboCaja;
+	}
+	public void setReciboCaja(ReciboCaja reciboCaja) {
+		this.reciboCaja = reciboCaja;
+	}
+    
 }

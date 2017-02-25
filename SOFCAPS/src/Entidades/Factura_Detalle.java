@@ -5,6 +5,7 @@ public class Factura_Detalle
 {
    private Float consumo;
    private Float monto;
+   private Integer factura_Detalle_ID;
    public Factura_Maestra factura_Maestra;
    public Tarifa tarifa;
 
@@ -35,6 +36,12 @@ public class Factura_Detalle
     }
     public void setTarifa(Tarifa tarifa) {
         this.tarifa = tarifa;
-    }  
+    }
+	public Integer getFactura_Detalle_ID() {
+		return factura_Detalle_ID;
+	}
+	public void setFactura_Detalle_ID(Integer factura_Detalle_ID) {
+		this.factura_Detalle_ID = factura_Detalle_ID;
+	}  
    
 }

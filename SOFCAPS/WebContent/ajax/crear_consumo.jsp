@@ -235,6 +235,11 @@
 								<span><i class="fa fa-clock-o"></i></span> Enviar
 							</button>
 						</div>
+						<div class="col-sm-2">
+							<button type="submit" class="blue">
+								<span><i class="fa fa-clock-o"></i></span> Enviar
+							</button>
+						</div>
 					</div>
 				</form>
 			</div>

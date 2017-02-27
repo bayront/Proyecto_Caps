@@ -17,11 +17,12 @@ public class ReciboCaja
    private Date fechaMod;
    private Date fechaElim;
    private Integer tipo;
-   public Categoria_Ing_Egreg categoria_Ing_Egreg;
-   public Contrato contrato;
-   public Cliente cliente;
-   public Factura_Maestra factura_Maestra;
-   public Reconexion reconexion;
+   private Integer recibo_Caja_ID;
+   private Categoria_Ing_Egreg categoria_Ing_Egreg;
+   private Contrato contrato;
+   private Cliente cliente;
+   private Factura_Maestra factura_Maestra;
+   private Reconexion reconexion;
 
    public ReciboCaja() 
    {
@@ -128,6 +129,12 @@ public class ReciboCaja
     }
     public void setReconexion(Reconexion reconexion) {
         this.reconexion = reconexion;
-    }  
+    }
+	public Integer getRecibo_Caja_ID() {
+		return recibo_Caja_ID;
+	}
+	public void setRecibo_Caja_ID(Integer recibo_Caja_ID) {
+		this.recibo_Caja_ID = recibo_Caja_ID;
+	}  
    
 }

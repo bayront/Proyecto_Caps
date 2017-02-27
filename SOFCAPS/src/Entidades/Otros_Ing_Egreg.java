@@ -8,7 +8,8 @@ public class Otros_Ing_Egreg
    private String descripcion;
    private Date fecha;
    private Float monto;
-   public Categoria_Ing_Egreg categoria_Ing_Egreg;
+   private Integer otros_Ing_Egreg_ID; 
+   private Categoria_Ing_Egreg categoria_Ing_Egreg;
 
    public Otros_Ing_Egreg() 
    {
@@ -37,6 +38,12 @@ public class Otros_Ing_Egreg
     }
     public void setCategoria_Ing_Egreg(Categoria_Ing_Egreg categoria_Ing_Egreg) {
         this.categoria_Ing_Egreg = categoria_Ing_Egreg;
-    } 
-   
+    }
+	public Integer getOtros_Ing_Egreg_ID() {
+		return otros_Ing_Egreg_ID;
+	}
+	public void setOtros_Ing_Egreg_ID(Integer otros_Ing_Egreg_ID) {
+		this.otros_Ing_Egreg_ID = otros_Ing_Egreg_ID;
+	} 
+ 
 }

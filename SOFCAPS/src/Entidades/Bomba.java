@@ -16,6 +16,7 @@ public class Bomba
    private Date fechaCrea;
    private Date fechaMod;
    private Date fechaElim;
+   private Integer bomba_ID;
    public Unidad_de_Medida unidad_de_Medida;
 
    public Bomba() 
@@ -93,6 +94,13 @@ public class Bomba
     }
     public void setUnidad_de_Medida(Unidad_de_Medida unidad_de_Medida) {
         this.unidad_de_Medida = unidad_de_Medida;
-    }  
+    }
+	public Integer getBomba_ID() {
+		return bomba_ID;
+	}
+	public void setBomba_ID(Integer bomba_ID) {
+		this.bomba_ID = bomba_ID;
+	}  
+    
    
 }

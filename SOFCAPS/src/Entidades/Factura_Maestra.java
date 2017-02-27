@@ -17,7 +17,7 @@ public class Factura_Maestra
    private Date fechaMod;
    private Date fechaElim;
    private Boolean anulado;
-   private Date fecha_vencimiento;
+   private Integer factura_Maestra_ID;
    private Categoria_Ing_Egreg categoria_Ing_Egreg;
    private Contrato contrato;
    private Cliente cliente;
@@ -95,12 +95,6 @@ public class Factura_Maestra
     public void setAnulado(Boolean anulado) {
         this.anulado = anulado;
     }
-    public Date getFecha_vencimiento() {
-        return fecha_vencimiento;
-    }
-    public void setFecha_vencimiento(Date fecha_vencimiento) {
-        this.fecha_vencimiento = fecha_vencimiento;
-    }
     public Categoria_Ing_Egreg getCategoria_Ing_Egreg() {
         return categoria_Ing_Egreg;
     }
@@ -124,6 +118,23 @@ public class Factura_Maestra
     }
     public void setConsumo(Consumo consumo) {
         this.consumo = consumo;
-    } 
-   
+    }
+	public Integer getFactura_Maestra_ID() {
+		return factura_Maestra_ID;
+	}
+	public void setFactura_Maestra_ID(Integer factura_Maestra_ID) {
+		this.factura_Maestra_ID = factura_Maestra_ID;
+	}
+	public List<ReciboCaja> getRecibosCaja() {
+		return recibosCaja;
+	}
+	public void setRecibosCaja(List<ReciboCaja> recibosCaja) {
+		this.recibosCaja = recibosCaja;
+	}
+	public List<Factura_Detalle> getFacturas_Detalle() {
+		return facturas_Detalle;
+	}
+	public void setFacturas_Detalle(List<Factura_Detalle> facturas_Detalle) {
+		this.facturas_Detalle = facturas_Detalle;
+	} 
 }

@@ -14,6 +14,7 @@ public class Usuario
    private Date fechaCrea;
    private Date fechaMod;
    private Date fechaElim;
+   private Integer usuario_ID;
    private List<Rol> roles;
 
    public Usuario() 
@@ -67,6 +68,17 @@ public class Usuario
     }
     public void setFechaElim(Date fechaElim) {
         this.fechaElim = fechaElim;
-    } 
-   
+    }
+	public Integer getUsuario_ID() {
+		return usuario_ID;
+	}
+	public void setUsuario_ID(Integer usuario_ID) {
+		this.usuario_ID = usuario_ID;
+	}
+	public List<Rol> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
+	} 
 }

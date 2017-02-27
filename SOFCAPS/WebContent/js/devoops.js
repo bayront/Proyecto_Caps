@@ -1,4 +1,5 @@
 //
+
 //    Main script of DevOOPS v1.0 Bootstrap Theme
 //
 "use strict";
@@ -29,7 +30,7 @@ function LoadCalendarScript(callback){
 	}
 }
 //
-// Dynamically load  OpenStreetMap Plugin
+// Dynamically load OpenStreetMap Plugin
 // homepage: http://openlayers.org
 //
 function LoadOpenLayersScript(callback){
@@ -43,8 +44,8 @@ function LoadOpenLayersScript(callback){
 	}
 }
 //
-//  Dynamically load  jQuery Timepicker plugin
-//  homepage: http://trentrichardson.com/examples/timepicker/
+// Dynamically load jQuery Timepicker plugin
+// homepage: http://trentrichardson.com/examples/timepicker/
 //
 function LoadTimePickerScript(callback){
 	if (!$.fn.timepicker){
@@ -57,8 +58,8 @@ function LoadTimePickerScript(callback){
 	}
 }
 //
-//  Dynamically load Bootstrap Validator Plugin
-//  homepage: https://github.com/nghuuphuoc/bootstrapvalidator
+// Dynamically load Bootstrap Validator Plugin
+// homepage: https://github.com/nghuuphuoc/bootstrapvalidator
 //
 function LoadBootstrapValidatorScript(callback){
 	if (!$.fn.bootstrapValidator){
@@ -71,8 +72,8 @@ function LoadBootstrapValidatorScript(callback){
 	}
 }
 //
-//  Dynamically load jQuery Select2 plugin
-//  homepage: https://github.com/ivaynberg/select2  v3.4.5  license - GPL2
+// Dynamically load jQuery Select2 plugin
+// homepage: https://github.com/ivaynberg/select2 v3.4.5 license - GPL2
 //
 function LoadSelect2Script(callback){
 	if (!$.fn.select2){
@@ -85,8 +86,8 @@ function LoadSelect2Script(callback){
 	}
 }
 //
-//  Dynamically load DataTables plugin
-//  homepage: http://datatables.net v1.9.4 license - GPL or BSD
+// Dynamically load DataTables plugin
+// homepage: http://datatables.net v1.9.4 license - GPL or BSD
 //
 function LoadDataTablesScripts(callback){
 	function LoadDatatables(){
@@ -97,7 +98,7 @@ function LoadDataTablesScripts(callback){
 				});
 			});
 		});
-	}
+}
 	if (!$.fn.dataTables){
 		LoadDatatables();
 	}
@@ -108,8 +109,8 @@ function LoadDataTablesScripts(callback){
 	}
 }
 //
-//  Dynamically load Widen FineUploader
-//  homepage: https://github.com/Widen/fine-uploader  v4.3.1 license - GPL3
+// Dynamically load Widen FineUploader
+// homepage: https://github.com/Widen/fine-uploader v4.3.1 license - GPL3
 //
 function LoadFineUploader(callback){
 	if (!$.fn.fineuploader){
@@ -122,9 +123,9 @@ function LoadFineUploader(callback){
 	}
 }
 //
-//  Dynamically load xCharts plugin
-//  homepage: http://tenxer.github.io/xcharts/ v0.3.0 license - MIT
-//  Required D3 plugin http://d3js.org/ v3.4.1 license - MIT
+// Dynamically load xCharts plugin
+// homepage: http://tenxer.github.io/xcharts/ v0.3.0 license - MIT
+// Required D3 plugin http://d3js.org/ v3.4.1 license - MIT
 //
 function LoadXChartScript(callback){
 	function LoadXChart(){
@@ -148,8 +149,8 @@ function LoadXChartScript(callback){
 	}
 }
 //
-//  Dynamically load Flot plugin
-//  homepage: http://www.flotcharts.org  v0.8.2 license- MIT
+// Dynamically load Flot plugin
+// homepage: http://www.flotcharts.org v0.8.2 license- MIT
 //
 function LoadFlotScripts(callback){
 	function LoadFlotScript(){
@@ -171,9 +172,9 @@ function LoadFlotScripts(callback){
 	}
 }
 //
-//  Dynamically load Morris Charts plugin
-//  homepage: http://www.oesmith.co.uk/morris.js/ v0.4.3 License - MIT
-//  require Raphael http://raphael.js
+// Dynamically load Morris Charts plugin
+// homepage: http://www.oesmith.co.uk/morris.js/ v0.4.3 License - MIT
+// require Raphael http://raphael.js
 //
 function LoadMorrisScripts(callback){
 	function LoadMorrisScript(){
@@ -194,8 +195,8 @@ function LoadMorrisScripts(callback){
 	}
 }
 //
-//  Dynamically load Fancybox 2 plugin
-//  homepage: http://fancyapps.com/fancybox/ v2.1.5 License - MIT
+// Dynamically load Fancybox 2 plugin
+// homepage: http://fancyapps.com/fancybox/ v2.1.5 License - MIT
 //
 function LoadFancyboxScript(callback){
 	if (!$.fn.fancybox){
@@ -208,8 +209,8 @@ function LoadFancyboxScript(callback){
 	}
 }
 //
-//  Dynamically load jQuery-Knob plugin
-//  homepage: http://anthonyterrien.com/knob/  v1.2.5 License- MIT or GPL
+// Dynamically load jQuery-Knob plugin
+// homepage: http://anthonyterrien.com/knob/ v1.2.5 License- MIT or GPL
 //
 function LoadKnobScripts(callback){
 	if(!$.fn.knob){
@@ -222,8 +223,8 @@ function LoadKnobScripts(callback){
 	}
 }
 //
-//  Dynamically load Sparkline plugin
-//  homepage: http://omnipotent.net/jquery.sparkline v2.1.2  License - BSD
+// Dynamically load Sparkline plugin
+// homepage: http://omnipotent.net/jquery.sparkline v2.1.2 License - BSD
 //
 function LoadSparkLineScript(callback){
 	if(!$.fn.sparkline){
@@ -239,28 +240,29 @@ function LoadSparkLineScript(callback){
 	Main scripts used by theme
 ---------------------------------------------*/
 //
-//  Function for load content from url and put in $('.ajax-content') block
+// Function for load content from url and put in $('.ajax-content') block
 //
 function LoadAjaxContent(url){
-	$('.preloader').show();
+	$('.preloader').show();//mostrar el gif proeloader y ocultar el contenido actual
 	$.ajax({
-		mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+		mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when
+												// run from local file
 		url: url,
 		type: 'GET',
-		success: function(data) {
-			$('#ajax-content').html(data);
-			$('.preloader').hide();
+		success: function(data) {//cuando sea exitoso la peticion ajax
+			$('#ajax-content').html(data);//cargar en el id el html
+			$('.preloader').hide();//oculta el preloader gif
 		},
-		error: function (jqXHR, textStatus, errorThrown) {
+		error: function (jqXHR, textStatus, errorThrown) {//si hay error
 			alert(errorThrown);
 		},
 		dataType: "html",
-		async: false
+		async: false//no asincrono
 	});
 }
 //
-//  Function maked all .box selector is draggable, to disable for concrete element add class .no-drop
-//
+//Funcion para hacer a todas la clases .box moviblesv(draggable),
+//para evitar qeu se mueva agregar calse .no-drop//
 function WinMove(){
 	$( "div.box").not('.no-drop')
 		.draggable({
@@ -310,8 +312,8 @@ jQuery.fn.swap = function(b){
 	return this;
 };
 //
-//  Screensaver function
-//  used on locked screen, and write content to element with id - canvas
+// Screensaver function
+// used on locked screen, and write content to element with id - canvas
 //
 function ScreenSaver(){
 	var canvas = document.getElementById("canvas");
@@ -357,7 +359,8 @@ function ScreenSaver(){
 			ctx.fillStyle = "white";
 			ctx.fillRect(p.location.x, p.location.y, p.radius, p.radius);
 			// Lets move the particles
-			// So we basically created a set of particles moving in random direction
+			// So we basically created a set of particles moving in random
+			// direction
 			// at the same speed
 			// Time to add ribbon effect
 			for(var n = 0; n < particles.length; n++){
@@ -374,7 +377,7 @@ function ScreenSaver(){
 					ctx.lineTo(p2.location.x, p2.location.y);
 					ctx.strokeStyle = p.rgba;
 					ctx.stroke();
-					//The ribbons appear now.
+					// The ribbons appear now.
 				}
 			}
 			// We are using simple vectors here
@@ -402,16 +405,16 @@ function drawGoogleChart(chart_data, chart_options, element, chart_type) {
 	chart.draw(data, chart_options);
 }
 //
-//  Function for Draw Knob Charts
+// Function for Draw Knob Charts
 //
 function DrawKnob(elem){
 	elem.knob({
 		change : function (value) {
-			//console.log("change : " + value);
+			// console.log("change : " + value);
 		},
 		release : function (value) {
-			//console.log(this.$.attr('value'));
-			console.log("release : " + value);
+			// console.log(this.$.attr('value'));
+			//console.log("release : " + value);
 		},
 		cancel : function () {
 			console.log("cancel : ", this);
@@ -499,7 +502,7 @@ function drawMap(lon, lat, elem, layers) {
 	map.addLayers(layers);
 	// WGS 1984 projection
 	var epsg4326 =  new OpenLayers.Projection("EPSG:4326");
-	//The map projection (Spherical Mercator)
+	// The map projection (Spherical Mercator)
 	var projectTo = map.getProjectionObject();
 	// Max zoom = 17
 	var zoom=10;
@@ -526,7 +529,7 @@ function drawMap(lon, lat, elem, layers) {
 	return map
 }
 //
-//  Function for create 2 dates in human-readable format (with leading zero)
+// Function for create 2 dates in human-readable format (with leading zero)
 //
 function PrettyDates(){
 	var currDate = new Date();
@@ -551,13 +554,13 @@ function PrettyDates(){
 	return [startdate, enddate];
 }
 //
-//  Function set min-height of window (required for this theme)
+// Function set min-height of window (required for this theme)
 //
 function SetMinBlockHeight(elem){
 	elem.css('min-height', window.innerHeight - 49)
 }
 //
-//  Helper for correct size of Messages page
+// Helper for correct size of Messages page
 //
 function MessagesMenuWidth(){
 	var W = window.innerWidth;
@@ -594,7 +597,7 @@ function TinyMCEStart(elem, mode){
 	tinymce.init({selector: elem,
 		theme: "modern",
 		plugins: plugins,
-		//content_css: "css/style.css",
+		// content_css: "css/style.css",
 		toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
 		style_formats: [
 			{title: 'Header 2', block: 'h2', classes: 'page-header'},
@@ -625,7 +628,7 @@ function SparkLineDrawBarGraph(elem, arr, color){
 	elem.sparkline(arr, { type: 'bar', barWidth: 7, highlightColor: '#000', barSpacing: 2, height: 40, stackedBarColor: stacked_color});
 }
 //
-//  Helper for open ModalBox with requested header, content and bottom
+// Helper for open ModalBox with requested header, content and bottom
 //
 //
 function OpenModalBox(header, inner, bottom){
@@ -637,7 +640,7 @@ function OpenModalBox(header, inner, bottom){
 	$('body').addClass("body-expanded");
 }
 //
-//  Close modalbox
+// Close modalbox
 //
 //
 function CloseModalBox(){
@@ -650,8 +653,8 @@ function CloseModalBox(){
 	});
 }
 //
-//  Beauty tables plugin (navigation in tables with inputs in cell)
-//  Created by DevOOPS.
+// Beauty tables plugin (navigation in tables with inputs in cell)
+// Created by DevOOPS.
 //
 (function( $ ){
 	$.fn.beautyTables = function() {
@@ -753,7 +756,7 @@ function CloseModalBox(){
 	};
 })( jQuery );
 //
-//  Function convert values of inputs in table to JSON data
+// Function convert values of inputs in table to JSON data
 //
 //
 function Table2Json(table) {
@@ -1100,7 +1103,7 @@ function MorrisChart5(){
 // One function for create all graphs on Google Chart page
 //
 function DrawAllCharts(){
-	//  Chart 1
+	// Chart 1
 	var chart1_data = [
 		['Smartphones', 'PC', 'Notebooks', 'Monitors','Routers', 'Switches' ],
 		['01.01.2014',  1234, 2342, 344, 232,131],
@@ -1121,7 +1124,7 @@ function DrawAllCharts(){
 	var chart1_element = 'google-chart-1';
 	var chart1_type = google.visualization.ColumnChart;
 	drawGoogleChart(chart1_data, chart1_options, chart1_element, chart1_type);
-	//  Chart 2
+	// Chart 2
 	var chart2_data = [
 		['Height', 'Width'],
 		['Samsung',  74.5],
@@ -1142,7 +1145,7 @@ function DrawAllCharts(){
 	var chart2_element = 'google-chart-2';
 	var chart2_type = google.visualization.PieChart;
 	drawGoogleChart(chart2_data, chart2_options, chart2_element, chart2_type);
-	//  Chart 3
+	// Chart 3
 	var chart3_data = [
 		['Age', 'Weight'],
 		[ 8, 12],
@@ -1162,7 +1165,7 @@ function DrawAllCharts(){
 	var chart3_element = 'google-chart-3';
 	var chart3_type = google.visualization.ScatterChart;
 	drawGoogleChart(chart3_data, chart3_options, chart3_element, chart3_type);
-	//  Chart 4
+	// Chart 4
 	var chart4_data = [
 		['ID', 'Life Expectancy', 'Fertility Rate', 'Region',     'Population'],
 		['CAN',    80.66,              1.67,      'North America',  33739900],
@@ -1186,7 +1189,7 @@ function DrawAllCharts(){
 	var chart4_element = 'google-chart-4';
 	var chart4_type = google.visualization.BubbleChart;
 	drawGoogleChart(chart4_data, chart4_options, chart4_element, chart4_type);
-	//  Chart 5
+	// Chart 5
 	var chart5_data = [
 		['Country', 'Popularity'],
 		['Germany', 200],
@@ -1203,7 +1206,7 @@ function DrawAllCharts(){
 	var chart5_element = 'google-chart-5';
 	var chart5_type = google.visualization.GeoChart;
 	drawGoogleChart(chart5_data, chart5_options, chart5_element, chart5_type);
-	//  Chart 6
+	// Chart 6
 	var chart6_data = [
 	['Year', 'Sales', 'Expenses'],
 		['2004',  1000,      400],
@@ -1221,7 +1224,7 @@ function DrawAllCharts(){
 	var chart6_element = 'google-chart-6';
 	var chart6_type = google.visualization.LineChart;
 	drawGoogleChart(chart6_data, chart6_options, chart6_element, chart6_type);
-	//  Chart 7
+	// Chart 7
 	var chart7_data = [
 	['Task', 'Hours per Day'],
 		['Work',     11],
@@ -1238,7 +1241,7 @@ function DrawAllCharts(){
 	var chart7_element = 'google-chart-7';
 	var chart7_type = google.visualization.PieChart;
 	drawGoogleChart(chart7_data, chart7_options, chart7_element, chart7_type);
-	//  Chart 8
+	// Chart 8
 	var chart8_data = [
 		['Generation', 'Descendants'],
 		[0, 1], [1, 33], [2, 269], [3, 2013]
@@ -1484,7 +1487,8 @@ function CoinDeskGraph(){
 			var new_date = new Date(newDate).getTime();
 			exchange_rate.push([new_date,val]);
 		});
-		// Create Flot plot (not need bind to resize, cause Flot use plugin 'resize')
+		// Create Flot plot (not need bind to resize, cause Flot use plugin
+		// 'resize')
 		DrawCoinDeskFlot();
 		// Set handler for resize and create Sparkline plot
 		var graphSparklineResize;
@@ -1581,10 +1585,7 @@ function TestTable2(){
 		"aaSorting": [[ 0, "asc" ]],
 		"sDom": "<'box-content'<'col-sm-6'f><'col-sm-6 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
 		"sPaginationType": "bootstrap",
-		"oLanguage": {
-			"sSearch": "",
-			"sLengthMenu": '_MENU_'
-		},
+		"oLanguage":idioma_esp,
 		bAutoWidth: false
 	});
 	var header_inputs = $("#datatable-2 thead input");
@@ -1609,17 +1610,65 @@ function TestTable2(){
 	});
 }
 //
+//Cambiar idioma a datatable
+//
+var idioma_esp = {
+	    "sProcessing":     "Procesando...",
+	    "sLengthMenu":     "Mostrar registros _MENU_",
+	    "sZeroRecords":    "No se encontraron resultados",
+	    "sEmptyTable":     "Ningún dato disponible en esta tabla",
+	    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+	    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+	    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+	    "sInfoPostFix":    "",
+	    "sSearch":         "Buscar:",
+	    "sUrl":            "",
+	    "sInfoThousands":  ",",
+	    "sLoadingRecords": "Cargando...",
+	    "oPaginate": {
+	        "sFirst":    "Primero",
+	        "sLast":     "Último",
+	        "sNext":     "Siguiente",
+	        "sPrevious": "Anterior"
+	    },
+	    "oAria": {
+	        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+	        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+	    }
+	}
+//
 // Function for table, located in element with id = datatable-3
 //
+//function otroBoton(){
+//	console.log("cargar datatables botones");
+//	$.getScript( "plugins/datatables/buttons/jquery.dataTables.js" )
+//	  .done(function( script, textStatus ) {
+//	    console.log( "botones 1: " + textStatus );
+//	    $.getScript('./plugins/datatables/buttons/dataTables.bootstrap.js', function() {
+//			console.log("ya botones 2");
+//			$.getScript('./plugins/datatables/buttons/dataTables.buttons.js', function(){
+//				$.getScript('./plugins/datatables/buttons/buttons.bootstrap.js', function(){
+//					console.log("final botones");
+//				});
+//			});
+//		});
+//	  })
+//	  .fail(function( jqxhr, settings, exception ) {
+//		  console.log("No se logro cargar el script: " +exception.toString());
+//	});
+//}
 function TestTable3(){
+	//"Bfrtip", T
+	console.log("cargando dataTable");
 	$('#datatable-3').dataTable( {
 		"aaSorting": [[ 0, "asc" ]],
-		"sDom": "T<'box-content'<'col-sm-6'f><'col-sm-6 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
+		"sDom": "T<'box-contents'<'col-sm-4'f><'col-sm-4'><'col-sm-4 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
 		"sPaginationType": "bootstrap",
-		"oLanguage": {
-			"sSearch": "",
-			"sLengthMenu": '_MENU_'
-		},
+		"oLanguage":idioma_esp,
+//		"oLanguage": {
+//			"sSearch": "",
+//			"sLengthMenu": '_MENU_'
+//		},
 		"oTableTools": {
 			"sSwfPath": "plugins/datatables/copy_csv_xls_pdf.swf",
 			"aButtons": [
@@ -1630,7 +1679,7 @@ function TestTable3(){
 					"sButtonText": 'Save <span class="caret" />',
 					"aButtons":    [ "csv", "xls", "pdf" ]
 				}
-			]
+]
 		}
 	});
 }
@@ -1808,7 +1857,9 @@ function FileUpload(){
 function LoadTestMap(){
 	$.getJSON("http://www.telize.com/geoip?callback=?",
 		function(json) {
-			var osmap = new OpenLayers.Layer.OSM("OpenStreetMap");//создание слоя карты
+			var osmap = new OpenLayers.Layer.OSM("OpenStreetMap");// создание
+																	// слоя
+																	// карты
 			var googlestreets = new OpenLayers.Layer.Google("Google Streets", {numZoomLevels: 22,visibility: false});
 			var googlesattelite = new OpenLayers.Layer.Google( "Google Sattelite", {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22});
 			var map1_layers = [googlestreets,osmap, googlesattelite];
@@ -1816,7 +1867,9 @@ function LoadTestMap(){
 			var map1 = drawMap(json.longitude, json.latitude, "map-1", map1_layers);
 			$("#map-1").resize(function(){ setTimeout(map1.updateSize(), 500); });
 			// Create map in element with ID - map-2
-			var osmap1 = new OpenLayers.Layer.OSM("OpenStreetMap");//создание слоя карты
+			var osmap1 = new OpenLayers.Layer.OSM("OpenStreetMap");// создание
+																	// слоя
+																	// карты
 			var map2_layers = [osmap1];
 			var map2 = drawMap(json.longitude, json.latitude, "map-2", map2_layers);
 			$("#map-2").resize(function(){ setTimeout(map2.updateSize(), 500); });
@@ -1837,7 +1890,9 @@ function LoadTestMap(){
 function FullScreenMap(){
 	$.getJSON("http://www.telize.com/geoip?callback=?",
 		function(json) {
-			var osmap = new OpenLayers.Layer.OSM("OpenStreetMap");//создание слоя карты
+			var osmap = new OpenLayers.Layer.OSM("OpenStreetMap");// создание
+																	// слоя
+																	// карты
 			var googlestreets = new OpenLayers.Layer.Google("Google Streets", {numZoomLevels: 22,visibility: false});
 			var googlesattelite = new OpenLayers.Layer.Google( "Google Sattelite", {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22});
 			var map1_layers = [googlestreets,osmap, googlesattelite];
@@ -1878,67 +1933,67 @@ function displayFlickrImages(data){
 //
 function DemoFormValidator(){
 	$('#defaultForm').bootstrapValidator({
-		message: 'This value is not valid',
+		message: 'Este valor no es valido',
 		fields: {
 			username: {
-				message: 'The username is not valid',
+				message: 'El nombre de usuario no es valido',
 				validators: {
 					notEmpty: {
-						message: 'The username is required and can\'t be empty'
+						message: 'El nombre de usuario es necesario y no puede estar vacio'
 					},
 					stringLength: {
 						min: 6,
 						max: 30,
-						message: 'The username must be more than 6 and less than 30 characters long'
+						message: 'El nombre de usuario debe ser mayor a 6 caracteres y menor a 30 caracteres'
 					},
 					regexp: {
 						regexp: /^[a-zA-Z0-9_\.]+$/,
-						message: 'The username can only consist of alphabetical, number, dot and underscore'
+						message: 'El nombre de usuario debe constar de letras o digitos,no de simbolos'
 					}
 				}
 			},
 			country: {
 				validators: {
 					notEmpty: {
-						message: 'The country is required and can\'t be empty'
+						message: 'El pais es necesario y no debe estar vacio'
 					}
 				}
 			},
 			acceptTerms: {
 				validators: {
 					notEmpty: {
-						message: 'You have to accept the terms and policies'
+						message: 'Tienes que aceptar los terminos y politicas'
 					}
 				}
 			},
 			email: {
 				validators: {
 					notEmpty: {
-						message: 'The email address is required and can\'t be empty'
+						message: 'La direccion de correo es requerida'
 					},
 					emailAddress: {
-						message: 'The input is not a valid email address'
+						message: 'No es una direccion de correo valida'
 					}
 				}
 			},
 			website: {
 				validators: {
 					uri: {
-						message: 'The input is not a valid URL'
+						message: 'No es una direccion URL valida'
 					}
 				}
 			},
 			phoneNumber: {
 				validators: {
 					digits: {
-						message: 'The value can contain only digits'
+						message: 'El valor solo puede contener digitos'
 					}
 				}
 			},
 			color: {
 				validators: {
 					hexColor: {
-						message: 'The input is not a valid hex color'
+						message: 'No es un color hexadecimal valido'
 					}
 				}
 			},
@@ -1952,37 +2007,60 @@ function DemoFormValidator(){
 			password: {
 				validators: {
 					notEmpty: {
-						message: 'The password is required and can\'t be empty'
+						message: 'La contraseña es un campo requerido y no debe estar vacio'
 					},
 					identical: {
 						field: 'confirmPassword',
-						message: 'The password and its confirm are not the same'
+						message: 'La contraseña confirmada no es la misma'
 					}
 				}
 			},
 			confirmPassword: {
 				validators: {
 					notEmpty: {
-						message: 'The confirm password is required and can\'t be empty'
+						message: 'La confirmacion de la contraseña es requerida y no debe estar vacia'
 					},
 					identical: {
 						field: 'password',
-						message: 'The password and its confirm are not the same'
+						message: 'La contraseña confirmada no es la misma'
 					}
 				}
 			},
 			ages: {
 				validators: {
+					greaterThan: {
+						value: 1,
+						inclusive: false,
+						message: 'La edad debe ser mayor o igual a 1 año'
+					},
 					lessThan: {
-						value: 100,
+						value:110,
 						inclusive: true,
-						message: 'The ages has to be less than 100'
+						message: 'La edad debe ser menor de 110 años'
+					}
+				}
+			},
+			lecture: {
+				validators: {
+					notEmpty: {
+						message: 'El campo es requerido y no debe estar vacio'
 					},
 					greaterThan: {
-						value: 10,
+						value: 0,
 						inclusive: false,
-						message: 'The ages has to be greater than or equals to 10'
+						message: 'El campo debe ser mayor que 0'
 					}
+				}
+			},
+			date_send:{
+				validators:{
+					notEmpty: {
+						message: 'La fecha es requerido y no debe estar vacio'
+					},
+					date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'El valor no es una fecha'
+                    }
 				}
 			}
 		}
@@ -2121,12 +2199,16 @@ function AllTimePickers(){
 // Example form validator function
 //
 function DrawCalendar(){
-	/* initialize the external events
-	-----------------------------------------------------------------*/
+	/*
+	 * initialize the external events
+	 * -----------------------------------------------------------------
+	 */
 	$('#external-events div.external-event').each(function() {
-		// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+		// create an Event Object
+		// (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
 		var eventObject = {
-			title: $.trim($(this).text()) // use the element's text as the event title
+			title: $.trim($(this).text()) // use the element's text as the
+											// event title
 		};
 		// store the Event Object in the DOM element so we can get to it later
 		$(this).data('eventObject', eventObject);
@@ -2134,11 +2216,13 @@ function DrawCalendar(){
 		$(this).draggable({
 			zIndex: 999,
 			revert: true,      // will cause the event to go back to its
-			revertDuration: 0  //  original position after the drag
+			revertDuration: 0  // original position after the drag
 		});
 	});
-	/* initialize the calendar
-	-----------------------------------------------------------------*/
+	/*
+	 * initialize the calendar
+	 * -----------------------------------------------------------------
+	 */
 	var calendar = $('#calendar').fullCalendar({
 		header: {
 			left: 'prev,next today',
@@ -2191,17 +2275,21 @@ function DrawCalendar(){
 			calendar.fullCalendar('unselect');
 		},
 		editable: true,
-		droppable: true, // this allows things to be dropped onto the calendar !!!
-		drop: function(date, allDay) { // this function is called when something is dropped
+		droppable: true, // this allows things to be dropped onto the
+							// calendar !!!
+		drop: function(date, allDay) { // this function is called when
+										// something is dropped
 			// retrieve the dropped element's stored Event Object
 			var originalEventObject = $(this).data('eventObject');
-			// we need to copy it, so that multiple events don't have a reference to the same object
+			// we need to copy it, so that multiple events don't have a
+			// reference to the same object
 			var copiedEventObject = $.extend({}, originalEventObject);
 			// assign it the date that was reported
 			copiedEventObject.start = date;
 			copiedEventObject.allDay = allDay;
 			// render the event on the calendar
-			// the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+			// the last `true` argument determines if the event "sticks"
+			// (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
 			$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
 			// is the "remove after drop" checkbox checked?
 			if ($('#drop-remove').is(':checked')) {
@@ -2268,7 +2356,8 @@ function DrawCalendar(){
 				title: event_name,
 				description: event_description
 			};
-			// store the Event Object in the DOM element so we can get to it later
+			// store the Event Object in the DOM element so we can get to it
+			// later
 			event_template.data('eventObject', eventObject);
 			event_template.draggable({
 				zIndex: 999,
@@ -2284,15 +2373,15 @@ function DrawCalendar(){
 function DrawFullCalendar(){
 	LoadCalendarScript(DrawCalendar);
 }
-//////////////////////////////////////////////////////
-//////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////
 //
-//      MAIN DOCUMENT READY SCRIPT OF DEVOOPS THEME
+// MAIN DOCUMENT READY SCRIPT OF DEVOOPS THEME
 //
-//      In this script main logic of theme
+// In this script main logic of theme
 //
-//////////////////////////////////////////////////////
-//////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////
 $(document).ready(function () {
 	$('.show-sidebar').on('click', function () {
 		$('div#main').toggleClass('sidebar-show');
@@ -2302,51 +2391,62 @@ $(document).ready(function () {
 	if (ajax_url.length < 1) {
 		ajax_url = 'ajax/dashboard.html';
 	}
-	LoadAjaxContent(ajax_url);
-	$('.main-menu').on('click', 'a', function (e) {
-		var parents = $(this).parents('li');
-		var li = $(this).closest('li.dropdown');
-		var another_items = $('.main-menu li').not(parents);
-		another_items.find('a').removeClass('active');
+	LoadAjaxContent(ajax_url);//hmtl pricnipal cargado
+	$('.main-menu').on('click', 'a', function (e) {//dar click en etiqueta a
+		var parents = $(this).parents('li');//guardar li
+		var li = $(this).closest('li.dropdown');//closest:obtener objeto antecesor al actual, en este caso sera etiqueta li
+		var another_items = $('.main-menu li').not(parents);//obtener los otros li menos el li padre de la etiqueta a seleccionada
+		another_items.find('a').removeClass('active');//quieta el active de cualquie otro seleccionada
 		another_items.find('a').removeClass('active-parent');
-		if ($(this).hasClass('dropdown-toggle') || $(this).closest('li').find('ul').length == 0) {
-			$(this).addClass('active-parent');
-			var current = $(this).next();
-			if (current.is(':visible')) {
-				li.find("ul.dropdown-menu").slideUp('fast');
-				li.find("ul.dropdown-menu a").removeClass('active')
+		if ($(this).hasClass('dropdown-toggle') || $(this).closest('li').find('ul').length == 0) {//si el elemento tiene la clase es el main del menu
+			$(this).addClass('active-parent');//añadir clase para que este activa
+			var current = $(this).next();//los siguiente menu o etiqueta a activas
+			if (current.is(':visible')) {//si el elemento señalado es visible o esta desplegado
+				li.find("ul.dropdown-menu").slideUp('fast');//oculta los submenus
+				li.find("ul.dropdown-menu a").removeClass('active')//quitar activo
 			}
 			else {
-				another_items.find("ul.dropdown-menu").slideUp('fast');
-				current.slideDown('fast');
+				another_items.find("ul.dropdown-menu").slideUp('fast');//cualquier otra etiqueta a activa
+				current.slideDown('fast');//ocultar
 			}
 		}
 		else {
-			if (li.find('a.dropdown-toggle').hasClass('active-parent')) {
-				var pre = $(this).closest('ul.dropdown-menu');
-				pre.find("li.dropdown").not($(this).closest('li')).find('ul.dropdown-menu').slideUp('fast');
+			if (li.find('a.dropdown-toggle').hasClass('active-parent')) {//si laetiqueta a esta co clases active-parent
+				var pre = $(this).closest('ul.dropdown-menu');//guardar el contenedor de la a que es submenu 
+				pre.find("li.dropdown").not($(this).closest('li')).find('ul.dropdown-menu').slideUp('fast');//ocultar submenu que no esten dentro del lo
 			}
 		}
-		if ($(this).hasClass('active') == false) {
-			$(this).parents("ul.dropdown-menu").find('a').removeClass('active');
-			$(this).addClass('active')
+		if ($(this).hasClass('active') == false) {//si etiqueta a no esta activa
+			$(this).parents("ul.dropdown-menu").find('a').removeClass('active');//remueve las otras activas
+			$(this).addClass('active')//la coloca como activa
 		}
-		if ($(this).hasClass('ajax-link')) {
-			e.preventDefault();
-			if ($(this).hasClass('add-full')) {
-				$('#content').addClass('full-content');
+		if ($(this).hasClass('ajax-link')) {//si la etiqueta a es submenu y tiene clase ajax-link
+			e.preventDefault();//evitar que siga la url de la etiqueta a
+			if ($(this).hasClass('add-full')) {//si la etiqueta a tiene esta clase
+				$('#content').addClass('full-content');//añadir clase full-content
 			}
 			else {
-				$('#content').removeClass('full-content');
+				$('#content').removeClass('full-content');//si no tiene la clase lo remueve
 			}
-			var url = $(this).attr('href');
-			window.location.hash = url;
-			LoadAjaxContent(url);
+			var url = $(this).attr('href');//guardar url seleccionada
+			window.location.hash = url;//ir al #hash seleccionado
+			LoadAjaxContent(url);//cargarlo
 		}
-		if ($(this).attr('href') == '#') {
-			e.preventDefault();
+		if ($(this).attr('href') == '#') {//si se vuelve a tocar la misma etiqueta a
+			e.preventDefault();//evitar cargar la url
 		}
 	});
+	function colapsar(element) {
+		var box = element.closest('div.box');
+		var button = element.find('i');
+		var content = box.find('div.box-content');
+		content.slideToggle('fast');
+		button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
+		setTimeout(function () {
+			box.resize();
+			box.find('[id^=map-]').resize();
+		}, 50);
+	}
 	var height = window.innerHeight - 49;
 	$('#main').css('min-height', height)
 		.on('click', '.expand-link', function (e) {
@@ -2371,15 +2471,7 @@ $(document).ready(function () {
 		})
 		.on('click', '.collapse-link', function (e) {
 			e.preventDefault();
-			var box = $(this).closest('div.box');
-			var button = $(this).find('i');
-			var content = box.find('div.box-content');
-			content.slideToggle('fast');
-			button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
-			setTimeout(function () {
-				box.resize();
-				box.find('[id^=map-]').resize();
-			}, 50);
+			colapsar($(this));
 		})
 		.on('click', '.close-link', function (e) {
 			e.preventDefault();

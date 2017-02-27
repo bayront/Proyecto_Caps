@@ -18,6 +18,7 @@ public class Contrato
    private Date fechaElim;
    private Integer cuotas;
    private Float montoContrato;
+   private Integer contrato_ID;
    private RegimenPropiedad regimenPropiedad;
    private Sector sector;
    private Categoria categoria;
@@ -118,6 +119,24 @@ public class Contrato
     }
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
-    }   
-   
+    }
+	public Integer getContrato_ID() {
+		return contrato_ID;
+	}
+	public void setContrato_ID(Integer contrato_ID) {
+		this.contrato_ID = contrato_ID;
+	}
+	public List<Factura_Maestra> getFacturas_Maestras() {
+		return facturas_Maestras;
+	}
+	public void setFacturas_Maestras(List<Factura_Maestra> facturas_Maestras) {
+		this.facturas_Maestras = facturas_Maestras;
+	}
+	public List<ReciboCaja> getRecibosCaja() {
+		return recibosCaja;
+	}
+	public void setRecibosCaja(List<ReciboCaja> recibosCaja) {
+		this.recibosCaja = recibosCaja;
+	}   
+    
 }

@@ -114,8 +114,14 @@
 		<div class="row">
 			<div id="sidebar-left" class="col-xs-2 col-sm-2">
 				<ul class="nav main-menu">
-					<li><a href="ajax/dashboard.jsp" class="active ajax-link">
+					<li><a href="#" class="active ajax-link">
 							<i class="fa fa-dashboard"></i> <span class="hidden-xs">Inicio</span>
+					</a></li>
+					<li><a href="ajax/Contrato.jsp" class="active ajax-link">
+							<i class="fa fa-dashboard"></i> <span class="hidden-xs">Registrar Contrato</span>
+					</a></li>
+					<li><a href="ajax/ReciboCaja.jsp" class="active ajax-link">
+							<i class="fa fa-dashboard"></i> <span class="hidden-xs">Registrar Recibo Caja</span>
 					</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i class="fa fa-bar-chart-o"></i> <span class="hidden-xs">Charts</span>

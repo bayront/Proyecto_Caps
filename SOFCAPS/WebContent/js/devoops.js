@@ -1,4 +1,5 @@
 //
+
 //    Main script of DevOOPS v1.0 Bootstrap Theme
 //
 "use strict";
@@ -97,7 +98,7 @@ function LoadDataTablesScripts(callback){
 				});
 			});
 		});
-	}
+}
 	if (!$.fn.dataTables){
 		LoadDatatables();
 	}
@@ -260,9 +261,8 @@ function LoadAjaxContent(url){
 	});
 }
 //
-// Function maked all .box selector is draggable, to disable for concrete
-// element add class .no-drop
-//
+//Funcion para hacer a todas la clases .box moviblesv(draggable),
+//para evitar qeu se mueva agregar calse .no-drop//
 function WinMove(){
 	$( "div.box").not('.no-drop')
 		.draggable({
@@ -414,7 +414,7 @@ function DrawKnob(elem){
 		},
 		release : function (value) {
 			// console.log(this.$.attr('value'));
-			console.log("release : " + value);
+			//console.log("release : " + value);
 		},
 		cancel : function () {
 			console.log("cancel : ", this);
@@ -1585,10 +1585,7 @@ function TestTable2(){
 		"aaSorting": [[ 0, "asc" ]],
 		"sDom": "<'box-content'<'col-sm-6'f><'col-sm-6 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
 		"sPaginationType": "bootstrap",
-		"oLanguage": {
-			"sSearch": "",
-			"sLengthMenu": '_MENU_'
-		},
+		"oLanguage":idioma_esp,
 		bAutoWidth: false
 	});
 	var header_inputs = $("#datatable-2 thead input");
@@ -1613,17 +1610,65 @@ function TestTable2(){
 	});
 }
 //
+//Cambiar idioma a datatable
+//
+var idioma_esp = {
+	    "sProcessing":     "Procesando...",
+	    "sLengthMenu":     "Mostrar registros _MENU_",
+	    "sZeroRecords":    "No se encontraron resultados",
+	    "sEmptyTable":     "Ningún dato disponible en esta tabla",
+	    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+	    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+	    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+	    "sInfoPostFix":    "",
+	    "sSearch":         "Buscar:",
+	    "sUrl":            "",
+	    "sInfoThousands":  ",",
+	    "sLoadingRecords": "Cargando...",
+	    "oPaginate": {
+	        "sFirst":    "Primero",
+	        "sLast":     "Último",
+	        "sNext":     "Siguiente",
+	        "sPrevious": "Anterior"
+	    },
+	    "oAria": {
+	        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+	        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+	    }
+	}
+//
 // Function for table, located in element with id = datatable-3
 //
+//function otroBoton(){
+//	console.log("cargar datatables botones");
+//	$.getScript( "plugins/datatables/buttons/jquery.dataTables.js" )
+//	  .done(function( script, textStatus ) {
+//	    console.log( "botones 1: " + textStatus );
+//	    $.getScript('./plugins/datatables/buttons/dataTables.bootstrap.js', function() {
+//			console.log("ya botones 2");
+//			$.getScript('./plugins/datatables/buttons/dataTables.buttons.js', function(){
+//				$.getScript('./plugins/datatables/buttons/buttons.bootstrap.js', function(){
+//					console.log("final botones");
+//				});
+//			});
+//		});
+//	  })
+//	  .fail(function( jqxhr, settings, exception ) {
+//		  console.log("No se logro cargar el script: " +exception.toString());
+//	});
+//}
 function TestTable3(){
+	//"Bfrtip", T
+	console.log("cargando dataTable");
 	$('#datatable-3').dataTable( {
 		"aaSorting": [[ 0, "asc" ]],
-		"sDom": "T<'box-content'<'col-sm-6'f><'col-sm-6 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
+		"sDom": "T<'box-contents'<'col-sm-4'f><'col-sm-4'><'col-sm-4 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
 		"sPaginationType": "bootstrap",
-		"oLanguage": {
-			"sSearch": "",
-			"sLengthMenu": '_MENU_'
-		},
+		"oLanguage":idioma_esp,
+//		"oLanguage": {
+//			"sSearch": "",
+//			"sLengthMenu": '_MENU_'
+//		},
 		"oTableTools": {
 			"sSwfPath": "plugins/datatables/copy_csv_xls_pdf.swf",
 			"aButtons": [
@@ -1634,7 +1679,7 @@ function TestTable3(){
 					"sButtonText": 'Save <span class="caret" />',
 					"aButtons":    [ "csv", "xls", "pdf" ]
 				}
-			]
+]
 		}
 	});
 }
@@ -1995,21 +2040,26 @@ function DemoFormValidator(){
 					}
 				}
 			},
-			cost: {
+			lecture: {
 				validators: {
 					notEmpty: {
 						message: 'El campo es requerido y no debe estar vacio'
 					},
 					greaterThan: {
-						value: 1,
+						value: 0,
 						inclusive: false,
-						message: 'El costo debe ser un numero positivo'
+						message: 'El campo debe ser mayor que 0'
+					}
+				}
+			},
+			date_send:{
+				validators:{
+					notEmpty: {
+						message: 'La fecha es requerido y no debe estar vacio'
 					},
-					numeric: {
-                        message: 'Este valor no es un numero',
-                        // The default separators
-                        thousandsSeparator: '',
-                        decimalSeparator: '.'
+					date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'El valor no es una fecha'
                     }
 				}
 			}
@@ -2386,6 +2436,17 @@ $(document).ready(function () {
 			e.preventDefault();//evitar cargar la url
 		}
 	});
+	function colapsar(element) {
+		var box = element.closest('div.box');
+		var button = element.find('i');
+		var content = box.find('div.box-content');
+		content.slideToggle('fast');
+		button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
+		setTimeout(function () {
+			box.resize();
+			box.find('[id^=map-]').resize();
+		}, 50);
+	}
 	var height = window.innerHeight - 49;
 	$('#main').css('min-height', height)
 		.on('click', '.expand-link', function (e) {
@@ -2410,15 +2471,7 @@ $(document).ready(function () {
 		})
 		.on('click', '.collapse-link', function (e) {
 			e.preventDefault();
-			var box = $(this).closest('div.box');
-			var button = $(this).find('i');
-			var content = box.find('div.box-content');
-			content.slideToggle('fast');
-			button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
-			setTimeout(function () {
-				box.resize();
-				box.find('[id^=map-]').resize();
-			}, 50);
+			colapsar($(this));
 		})
 		.on('click', '.close-link', function (e) {
 			e.preventDefault();

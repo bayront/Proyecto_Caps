@@ -47,7 +47,7 @@
 		<div class="container-fluid expanded-panel">
 			<div class="row">
 				<div id="logo" class="col-xs-12 col-sm-2">
-					<a href="index.html">CAPS Poneloya</a>
+					<a href="index.jsp">CAPS Poneloya</a>
 				</div>
 				<div id="top-panel" class="col-xs-12 col-sm-10">
 					<div class="row">

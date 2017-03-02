@@ -8,6 +8,7 @@ public class Consumo
    private Date fecha_fin;
    private Float consumoTotal;
    private Float lectura_Actual;
+   private Boolean actual;
    private Integer consumo_ID;
    private Cliente cliente;
    private Contrato contrato;
@@ -51,6 +52,12 @@ public class Consumo
 	}
 	public void setContrato(Contrato contrato) {
 		this.contrato = contrato;
+	}
+	public Boolean getActual() {
+		return actual;
+	}
+	public void setActual(Boolean actual) {
+		this.actual = actual;
 	}  
 	
 }

@@ -3,34 +3,34 @@
     src: url("../fonts/Roboto/Roboto-Regular.ttf") format("truetype");
 }
 
-.blue { 
-  font-size:1.1em; 
-  padding:10px 10px; 
-  display: block; 
-  margin:5px; 
-  border-radius:3px; 
-  border:solid rgba(0,0,0,0.4); 
-  border-width:1px 1px 4px; 
-  box-shadow:0 6px 0 rgba(0,0,0,0.2), inset 0 0 3px rgba(255,255,255,0.35);     
-  cursor:pointer; 
-  user-select:none; 
-  transition:0.4s ease; 
+.blue {
+  font-size:1.1em;
+  padding:10px 10px;
+  display: block;
+  margin:5px;
+  border-radius:3px;
+  border:solid rgba(0,0,0,0.4);
+  border-width:1px 1px 4px;
+  box-shadow:0 6px 0 rgba(0,0,0,0.2), inset 0 0 3px rgba(255,255,255,0.35);
+  cursor:pointer;
+  user-select:none;
+  transition:0.4s ease;
   background:hsl(176,59%,59%);
   }
-.blue:hover { 
+.blue:hover {
   	transform: translateY(-3px);
     box-shadow: 0 6px 0 rgba(0,0,0,0.1), inset 0 0 1px rgba(255,255,255,0.4);
     border-bottom-width: 8px;
     color: #24674b;
-    font-weight: 700; 
+    font-weight: 700;
   }
-.blue:checked { 
-  transform:translateY(4px); 
-  box-shadow:0 2px 0 rgba(0,0,0,0.1), inset 0 0 5px rgba(255,255,255,0.4);     
-  border-bottom-width:2px; 
-  transition:0.1s ease; 
+.blue:checked {
+  transform:translateY(4px);
+  box-shadow:0 2px 0 rgba(0,0,0,0.1), inset 0 0 5px rgba(255,255,255,0.4);
+  border-bottom-width:2px;
+  transition:0.1s ease;
   }
-  
+
 
 body {
 	color: #525252;
@@ -55,7 +55,7 @@ h1, .h1, h2, .h2, h3, .h3 {
 	margin: 0;
 }
 h1{
-	
+
 }
 
 #logo {
@@ -637,6 +637,7 @@ table.no-border-bottom tr:last-child td {
 	-webkit-box-sizing: content-box;
 	box-sizing: content-box;
 	-moz-box-sizing: content-box;
+	font-weight: 600;
 }
 
 .table-datatable label {
@@ -2745,8 +2746,17 @@ ul.DTTT_dropdown.dropdown-menu>li:hover>a {
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
-	width: 750px;
 	z-index: 6000;
+}
+@media (min-width: 992px){
+  #modalbox .devoops-modal{
+      margin-left: -400px;
+  }
+}
+@media (max-width: 768px){
+  #modalbox .devoops-modal{
+      margin-left: -150px;
+  }
 }
 
 #modalbox .devoops-modal-header {

@@ -2392,7 +2392,7 @@ input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="butto
 @font-face {
 	font-family: 'Glyphicons Halflings';
 	src: url('../fonts/glyphicons-halflings-regular.eot');
-	src: url('../fonts/glyphicons-halflings-regular.eot?#iefix')
+	src: url('../fonts/glyphicons-halflings-regular.eot?#iefix')	
 		format('embedded-opentype'),
 		url('../fonts/glyphicons-halflings-regular.woff') format('woff'),
 		url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'),
@@ -3368,6 +3368,7 @@ input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="butto
 	position: relative;
 	display: inline-block;
 	vertical-align: middle;
+	margin-top: 5px;
 }
 
 .btn-group>.btn, .btn-group-vertical>.btn {
@@ -3388,7 +3389,7 @@ input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="butto
 
 .btn-group .btn+.btn, .btn-group .btn+.btn-group, .btn-group .btn-group+.btn,
 	.btn-group .btn-group+.btn-group {
-	margin-left: -1px;
+	margin-left: 5px;
 }
 
 .btn-toolbar {
@@ -4504,7 +4505,7 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
 }
 
 .pagination {
-	display: inline-block;
+	display: inline-flex;
 	padding-left: 0;
 	margin: 20px 0;
 	border-radius: 4px;

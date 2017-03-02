@@ -41,7 +41,7 @@
 							<input type="text" class="form-control" placeholder="Apellido"
 								data-toggle="tooltip" data-placement="bottom"
 								title="Tooltip para apellido">
-						</div> 
+						</div>
 					</div>
 
 					<!-- PARA COLOR AZUL DEJAR CON DIV CON *.has-success*
@@ -50,7 +50,7 @@
 						<label class="col-sm-2 control-label">Empresa</label>
 						<div class="col-sm-4">
 
-							<!-- PARA INPUT COLOR AZUL DEJAR DIV CON CLASE *.has-success* 
+							<!-- PARA INPUT COLOR AZUL DEJAR DIV CON CLASE *.has-success*
 							DEJAR INPUT CON CLASE *.form-control*-->
 							<input type="text" class="form-control" placeholder="Empresa">
 						</div>
@@ -62,7 +62,7 @@
 						</div>
 					</div>
 
-					<!-- PARA COLOR AMARILLO DEJAR DIV CON CLASE *.has-warning* 
+					<!-- PARA COLOR AMARILLO DEJAR DIV CON CLASE *.has-warning*
 						DEJAR LABEL CON CLASE * .control-label*-->
 					<div class="form-group has-warning has-feedback">
 						<label class="col-sm-2 control-label">Residencia</label>
@@ -95,7 +95,7 @@
 						</div>
 					</div>
 					<div class="form-group has-error has-feedback">
-					<!-- PARA DEJAR LABEL CON COLOR ROJO ESCRIBIR CLASE EN DIV *.has-error* 
+					<!-- PARA DEJAR LABEL CON COLOR ROJO ESCRIBIR CLASE EN DIV *.has-error*
 						DEJAR LABEL CON CLASE *.control-label*-->
 						<label class="col-sm-2 control-label">Fecha Nacimiento</label>
 						<div class="col-sm-2">
@@ -112,7 +112,7 @@
 								placeholder="Hora"> <span
 								class="fa fa-clock-o txt-danger form-control-feedback"></span>
 						</div>
-						
+
 						<label class="col-sm-2 control-label">input Deshabilitado</label>
 						<div class="col-sm-2">
 						<!-- PARA DEJAR SIN USO A INPUT AGREGAR ATRIBUTO *disabled* -->
@@ -121,7 +121,7 @@
 								disabled>
 						</div>
 					</div>
-					
+
 					<div class="form-group">
 					<!-- FORMA PARA CREAR PERIODOS DE TIEMPO CON JQUERY UI -->
 						<label class="col-sm-4 control-label">Periodo de fechas</label>
@@ -134,27 +134,27 @@
 								placeholder="fecha de fin">
 						</div>
 					</div>
-					
+
 					<div class="form-group">
-					
+
 						<label class="col-sm-2 control-label">Grupo de inputs</label>
 						<div class="col-sm-2">
 						<!-- PARA DEJAR UN GRUPO DE INPUT, POR EJEMPLO AGREGAR UN ICONO DEJAR CLASE *.input-group* -->
 							<div class="input-group">
 								<span class="input-group-addon">
 								<i class="fa fa-github-square"></i>
-								</span> 
+								</span>
 								<input type="text" class="form-control" placeholder="GitHub">
 							</div>
 						</div>
-						
+
 						<div class="col-sm-2">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Group">
+								<input type="text" class="form-control" placeholder="Group" id="insert">
 								<span class="input-group-addon"><i class="fa fa-group"></i></span>
 							</div>
 						</div>
-						
+
 						<div class="col-sm-2">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-money"></i></span>
@@ -162,9 +162,9 @@
 								<span class="input-group-addon"><i class="fa fa-usd"></i></span>
 							</div>
 						</div>
-						
+
 					</div>
-					
+
 					<div class="form-group">
 					<!-- FORMA PARA CREAR UN SPINNER CON JQUERY UI -->
 						<label for="ui-spinner" class="col-sm-4 control-label">Numero</label>
@@ -173,7 +173,7 @@
 								placeholder="Spinner">
 						</div>
 					</div>
-					
+
 					<!-- Agregar espacio con clase *.clearfix* -->
 					<div class="clearfix"></div>
 
@@ -208,16 +208,16 @@
 							<input type="text" class="form-control" name="ages" />
 						</div>
 					</div>
-					
+
 					<div class="form-group">
 							<label class="col-sm-3 control-label">Costo</label>
 							<div class="col-sm-5">
 								<input type="text" class="form-control" name="cost"/>
 							</div>
 					</div>
-					
+
 					<div class="clearfix"></div>
-					
+
 					<div class="form-group">
 					<!-- Tipos de botones para enviar -->
 						<div class="col-sm-offset-2 col-sm-2">
@@ -267,7 +267,7 @@
 		LoadTimePickerScript(AllTimePickers);
 		// Create UI spinner
 		$("#ui-spinner").spinner();
-		
+
 		// Create Wysiwig editor for textare
 		TinyMCEStart('#wysiwig_simple', null);
 		TinyMCEStart('#wysiwig_full', 'extreme');
@@ -275,7 +275,13 @@
 		FormLayoutExampleInputLength($(".slider-style"));
 		// Initialize datepicker
 		$('#input_date').datepicker({
-			setDate : new Date()
+			setDate : new Date(),
+			dateFormat: 'dd/mm/yy',
+			changeMonth: true,
+      changeYear: true,
+			onSelect: function(dateText, inst) {
+				$("#insert").val(dateText);
+    	}
 		});
 		// Load Timepicker plugin
 		LoadTimePickerScript(DemoTimePicker);

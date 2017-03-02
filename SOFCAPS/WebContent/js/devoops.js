@@ -6,7 +6,7 @@
 /*-------------------------------------------
 	Dynamically load plugin scripts
 ---------------------------------------------*/
-//
+//TestTable3
 // Dynamically load Fullcalendar Plugin Script
 // homepage: http://arshaw.com/fullcalendar
 // require moment.js
@@ -89,16 +89,46 @@ function LoadSelect2Script(callback){
 // Dynamically load DataTables plugin
 // homepage: http://datatables.net v1.9.4 license - GPL or BSD
 //
-function LoadDataTablesScripts(callback){
+function LoadDataTablesScripts2(callback){
 	function LoadDatatables(){
+		$.getScript('plugins/datatables/nuevo/jquery.dataTables.js', function(){
+				$.getScript('plugins/datatables/nuevo/dataTables.tableTools.js', function(){
+					$.getScript('plugins/datatables/nuevo/dataTables.bootstrap.js', function() {
+						$.getScript('plugins/datatables/nuevo/dataTables.buttons.js', function() {
+							$.getScript('plugins/datatables/nuevo/buttons.bootstrap.js', function(){
+								$.getScript('plugins/datatables/nuevo/buttons.html5.min.js	',callback);
+							});
+						});
+					});
+				});
+		});
+}
+	if (!$.fn.dataTables){
+		LoadDatatables();
+	}
+	else {
+		if (callback && typeof(callback) === "function") {
+			callback();
+		}
+	}
+}
+function LoadDataTablesScripts(callback){
+	console.log("scripts");
+	function LoadDatatables(){
+		console.log("cargar script 1");
 		$.getScript('plugins/datatables/jquery.dataTables.js', function(){
 			$.getScript('plugins/datatables/ZeroClipboard.js', function(){
 				$.getScript('plugins/datatables/TableTools.js', function(){
-					$.getScript('plugins/datatables/dataTables.bootstrap.js', callback);
+					$.getScript('plugins/datatables/TableTools_orig.js', function() {
+						$.getScript('plugins/datatables/dataTables.bootstrap.js',function(){
+							console.log("cargado tabla1");
+							callback();
+						});
+					});
 				});
 			});
 		});
-}
+	}
 	if (!$.fn.dataTables){
 		LoadDatatables();
 	}
@@ -633,6 +663,9 @@ function SparkLineDrawBarGraph(elem, arr, color){
 //
 function OpenModalBox(header, inner, bottom){
 	var modalbox = $('#modalbox');
+	modalbox.find('.devoops-modal').addClass('col-xs-10');
+	modalbox.find('.devoops-modal').addClass('col-sm-9');
+	modalbox.find('.devoops-modal').addClass('col-md-9');
 	modalbox.find('.modal-header-name span').html(header);
 	modalbox.find('.devoops-modal-inner').html(inner);
 	modalbox.find('.devoops-modal-bottom').html(bottom);
@@ -1665,10 +1698,11 @@ function TestTable3(){
 		"sDom": "T<'box-contents'<'col-sm-4'f><'col-sm-4'><'col-sm-4 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
 		"sPaginationType": "bootstrap",
 		"oLanguage":idioma_esp,
-//		"oLanguage": {
-//			"sSearch": "",
-//			"sLengthMenu": '_MENU_'
-//		},
+//		"columnDefs": [ {
+//            "targets": 0,
+//            "data": null,
+//            "defaultContent": "<button>Click!</button>"
+//        } ],
 		"oTableTools": {
 			"sSwfPath": "plugins/datatables/copy_csv_xls_pdf.swf",
 			"aButtons": [
@@ -2373,6 +2407,39 @@ function DrawCalendar(){
 function DrawFullCalendar(){
 	LoadCalendarScript(DrawCalendar);
 }
+
+//colapsar y desplegar cajas / box
+function colapsar_desplegar(element) {
+	var box = element.closest('div.box');
+	var button = element.find('i');
+	var content = box.find('div.box-content');
+	content.slideToggle('fast');
+	button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
+	setTimeout(function () {
+		box.resize();
+		box.find('[id^=map-]').resize();
+	}, 50);
+}
+function expandir(element){
+	var body = $('body');
+	var box = element.closest('div.box');
+	var button = element.find('i');
+	button.toggleClass('fa-expand').toggleClass('fa-compress');
+	box.toggleClass('expanded');
+	body.toggleClass('body-expanded');
+	var timeout = 0;
+	if (body.hasClass('body-expanded')) {
+		timeout = 100;
+	}
+	setTimeout(function () {
+		box.toggleClass('expanded-padding');
+	}, timeout);
+	setTimeout(function () {
+		box.resize();
+		box.find('[id^=map-]').resize();
+	}, timeout + 50);
+}
+
 // ////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////
 //
@@ -2412,7 +2479,7 @@ $(document).ready(function () {
 		}
 		else {
 			if (li.find('a.dropdown-toggle').hasClass('active-parent')) {//si laetiqueta a esta co clases active-parent
-				var pre = $(this).closest('ul.dropdown-menu');//guardar el contenedor de la a que es submenu 
+				var pre = $(this).closest('ul.dropdown-menu');//guardar el contenedor de la a que es submenu
 				pre.find("li.dropdown").not($(this).closest('li')).find('ul.dropdown-menu').slideUp('fast');//ocultar submenu que no esten dentro del lo
 			}
 		}
@@ -2436,42 +2503,16 @@ $(document).ready(function () {
 			e.preventDefault();//evitar cargar la url
 		}
 	});
-	function colapsar(element) {
-		var box = element.closest('div.box');
-		var button = element.find('i');
-		var content = box.find('div.box-content');
-		content.slideToggle('fast');
-		button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
-		setTimeout(function () {
-			box.resize();
-			box.find('[id^=map-]').resize();
-		}, 50);
-	}
 	var height = window.innerHeight - 49;
 	$('#main').css('min-height', height)
 		.on('click', '.expand-link', function (e) {
 			var body = $('body');
 			e.preventDefault();
-			var box = $(this).closest('div.box');
-			var button = $(this).find('i');
-			button.toggleClass('fa-expand').toggleClass('fa-compress');
-			box.toggleClass('expanded');
-			body.toggleClass('body-expanded');
-			var timeout = 0;
-			if (body.hasClass('body-expanded')) {
-				timeout = 100;
-			}
-			setTimeout(function () {
-				box.toggleClass('expanded-padding');
-			}, timeout);
-			setTimeout(function () {
-				box.resize();
-				box.find('[id^=map-]').resize();
-			}, timeout + 50);
+			expandir($(this));
 		})
 		.on('click', '.collapse-link', function (e) {
 			e.preventDefault();
-			colapsar($(this));
+			colapsar_desplegar($(this));
 		})
 		.on('click', '.close-link', function (e) {
 			e.preventDefault();
@@ -2519,5 +2560,3 @@ $(document).ready(function () {
 		OpenModalBox(header, form, button);
 	});
 });
-
-

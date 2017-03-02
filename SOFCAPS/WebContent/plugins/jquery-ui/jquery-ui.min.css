@@ -284,7 +284,8 @@ input.ui-button::-moz-focus-inner, button.ui-button::-moz-focus-inner {
 
 .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year
 	{
-	width: 49%
+	width: 49%;
+	background-color: #049292;
 }
 
 .ui-datepicker table {
@@ -905,7 +906,6 @@ body .ui-tooltip {
 	border: 1px solid #d3d3d3;
 	background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50%
 		repeat-x;
-	font-weight: 400;
 	color: #555
 }
 

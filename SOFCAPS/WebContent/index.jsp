@@ -229,6 +229,18 @@
 						
 						
 						
+						<li class="dropdown"><a href="#" class="dropdown-toggle">
+							<i class="fa fa-th-list"></i> <span class="hidden-xs">Tarifa</span>
+					</a>
+						<ul class="dropdown-menu">
+							<li><a class="ajax-link" href="ajax/crear_tarifa.jsp">Crear tarifa</a></li>
+							<li><a class="ajax-link" href="ajax/ver_tarifa.jsp">Ver tarifa</a></li>
+						</ul></li>
+						
+						
+						
+						
+						
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i class="fa fa-picture-o"></i> <span class="hidden-xs">Multilevel
 								menu</span>

@@ -26,11 +26,16 @@ public class Contrato
    private List<ReciboCaja> recibosCaja;
    
 
-   public Contrato() 
-   {
-   }
+   	public Contrato() 
+   	{
+   	}
+   
+    public Contrato(Integer contrato_ID) {
+    	super();
+    	this.contrato_ID = contrato_ID;
+    }
 
-    public Boolean getEstado() {
+	public Boolean getEstado() {
         return estado;
     }
     public void setEstado(Boolean estado) {

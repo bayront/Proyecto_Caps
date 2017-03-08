@@ -8,7 +8,6 @@ public class Bomba
    private Float consumoActual;
    private Date fechaLecturaActual;
    private Float lecturaActual;
-   private Float lecturaAnterior;
    private String observaciones;
    private Integer usuCrea;
    private Integer usuMod;
@@ -16,6 +15,7 @@ public class Bomba
    private Date fechaCrea;
    private Date fechaMod;
    private Date fechaElim;
+   private Boolean estado;
    private Integer bomba_ID;
    public Unidad_de_Medida unidad_de_Medida;
 
@@ -40,12 +40,6 @@ public class Bomba
     }
     public void setLecturaActual(Float lecturaActual) {
         this.lecturaActual = lecturaActual;
-    }
-    public Float getLecturaAnterior() {
-        return lecturaAnterior;
-    }
-    public void setLecturaAnterior(Float lecturaAnterior) {
-        this.lecturaAnterior = lecturaAnterior;
     }
     public String getObservaciones() {
         return observaciones;
@@ -100,7 +94,11 @@ public class Bomba
 	}
 	public void setBomba_ID(Integer bomba_ID) {
 		this.bomba_ID = bomba_ID;
+	}
+	public Boolean getEstado() {
+		return estado;
+	}
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
 	}  
-    
-   
 }

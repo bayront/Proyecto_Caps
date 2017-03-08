@@ -105,13 +105,13 @@ public class PoolConexion
 	    	con = PoolConexion.getConnection();
 	    	if(con!=null)
 	    	{
-	    		JOptionPane.showMessageDialog(null, "Conectado a Sakila");
+	    		JOptionPane.showMessageDialog(null, "Conectado a SOFCAPS");
 	    		System.out.println("Conectado a Sakila!!!");
 	    	}
 	    	else
 	    	{
-	    		JOptionPane.showMessageDialog(null, "Error al Conectr a Sakila!!!");
-	    		System.out.println("Error al Conectr a Sakila!!!");
+	    		JOptionPane.showMessageDialog(null, "Error al Conectr a SOFCAPS!!!");
+	    		System.out.println("Error al Conectr a SOFCAPS!!!");
 	    	}
         }
         finally
@@ -119,7 +119,7 @@ public class PoolConexion
             try 
             {
                con.close();
-               System.out.println("Se desconectó de Sakila!!!");
+               System.out.println("Se desconectó de SOFCAPS!!!");
             } 
             catch (SQLException ex) 
             {

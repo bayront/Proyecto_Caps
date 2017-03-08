@@ -19,16 +19,15 @@
 				<div class="box-icons">
 					<a id="colapsar_desplegar1" class="collapse-link"> <i
 						class="fa fa-chevron-up"></i></a> <a id="expandir1"
-						class="expand-link"> <i class="fa fa-expand"></i></a>
+						class="expand-link"  onclick="validarExpand();"> <i class="fa fa-expand"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
 
 			<div class="box-content">
 				<form class="form-horizontal" role="form" id="defaultForm"
-					method="post" action="validators.html">
+					method="PUT" action="./SL_consumo">
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
-					<input type="hidden" id="actual" name="actual"> 
 					<input type="hidden" id="consumo_ID" name="consumo_ID"> 
 					<input type="hidden" id="cliente_ID" name="cliente_ID"> 
 					<input type="hidden" id="contrato_ID" name="contrato_ID">
@@ -36,7 +35,7 @@
 					<div class="form-group">
 						<label class="col-sm-4 control-label">Lectura Actual</label>
 						<div class="col-sm-5">
-							<input type="number" class="form-control" name="lecture"
+							<input type="number" class="form-control" name="lectura"
 								id="lectura_Actual" data-toggle="tooltip" data-placement="top"title="lectura de consumo">
 						</div>
 					</div>
@@ -47,7 +46,7 @@
 						<label class="col-sm-4 control-label">Fecha de corte</label>
 						<div class="col-sm-5">
 							<input type="text" id="fecha_fin" class="form-control"
-								name="date_send" placeholder="Fecha de corte"> <span
+								name="fecha" placeholder="Fecha de corte"> <span
 								class="fa fa-calendar txt-success form-control-feedback"></span>
 						</div>
 					</div>
@@ -83,10 +82,10 @@
 						</div>
 					</div>
 					<div class="form-group has-success">
-						<label for="ui-spinner" class="col-sm-4 control-label">N&uacutemero
+						<label for="numContrato" class="col-sm-4 control-label">N&uacutemero
 							del contrato</label>
 						<div class="col-sm-4">
-							<input type="text" id="ui-spinner" class="form-control"
+							<input type="text" id="numContrato" class="form-control"
 								placeholder="contrato" id="numContrato">
 						</div>
 					</div>
@@ -148,7 +147,7 @@
 							<th>Fecha_Corte</th>
 							<th>Lectura</th>
 							<th>Consumo</th>
-							<th>Nombre_Cliente</th>
+							<th>Nombres_Cliente</th>
 							<th>Num_Contrato</th>
 							<th>Num_medidor</th>
 							<th></th>
@@ -190,8 +189,8 @@
 <!-- 	</div> -->
 <!-- </div> -->
 <div>
-	<form id="frmEliminarUsuario" action="" method="POST">
-		<input type="hidden" id="usuario_id" name="idusuario" value="">
+	<form id="frmEliminarConsumo" action="" method="POST">
+		<input type="hidden" id="consumo_id" name="consumo_id" value="">
 		<input type="hidden" id="opcion" name="opcion" value="eliminar">
 
 <!-- 		Modal -->
@@ -215,6 +214,9 @@
 
 
 <script type="text/javascript">
+
+	//verificar menu expandido
+	var expand = false;
 	// Iniciar dataTables
 	function AllTables() {
 		//cargar PDF Y EXCEL
@@ -231,21 +233,47 @@
 	
 	function MakeSelect2() {
 		$('select').select2();
-		$('.dataTables_filter').each(
-				function() {
-					$(this).find('label input[type=text]').attr('placeholder',
-							'Buscar');
-				});
+// 		if($("#tabla_consumo_filter")){
+// 			console.log("existe filter");
+// 			$("#tabla_consumo_filter").css("background-color", "yellow");
+// 			if($("#tabla_consumo_filter").find('label').length){
+// 				console.log("existe label");
+// 			}else{
+// 				console.log("no existe label");
+// 			}
+// 		}
 	}
 	
-	function abrirDialogo() {
+	function abrirDialogo(callback) {
 		OpenModalBox(
 				"<div><h3>Borrar Consumo</h3></div>",
 				"<p Style='text-align: center;'>Esta seguro de borrar este consumo?</p>",
 				"<div Style='text-align: center; margin-bottom: -10px;'>"+
-				"<button type='button' id='eliminar_consumo' class='btn btn-primary' onclick='CloseModalBox()'>Borrar </button>"
+				"<button type='button' id='eliminar_consumo' class='btn btn-primary'>Borrar </button>"
 				+ "<button type='button' class='btn btn-secondary' Style='margin-left: 10px;' onclick='CloseModalBox()'> Cancelar</button>"
 				+ "</div>");
+		callback();
+	}
+	
+	var guardarConsumo = function() {
+		$("form#defaultForm").on("submit", function(e) {
+			e.preventDefault();//detiene el evento
+			var frm = $(this).serialize();//parsea los datos del formulario
+			console.log(frm);
+// 			$.ajax({//enviar datos por ajax
+// 			method:"PUT",
+// 			url:"./SL_consumo",
+// 			data: frm//datos a enviar
+// 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
+// 			console.log(info);
+// 			//var json_info = JSON.parse(info);
+// 			//console.log(json_info);
+// // 			mostrar_mensaje(info);se envia a verificar que mensaje respondioel servlet
+// // 			limpiar_texto();
+// // 			listar();volver a listar datos
+			
+// 			});
+		});
 	}
 
 	$(document).ready(function() {
@@ -254,7 +282,7 @@
 		LoadDataTablesScripts2(AllTables);
 		
 		// Crear UI spinner
-		$("#ui-spinner").spinner();
+		$("#numContrato").spinner();
 
 		// Inicializar DatePicker
 		$('#fecha_fin').datepicker({
@@ -276,20 +304,15 @@
 			"id='datatable-filter'>"
 			+ "<thead>"
 			+ "<tr>"
-			+ "<th><label><input type='text' name='Nombre'/></label></th>"
-			+ "<th><label><input type='text' name='Apellido'/></label></th>"
+			+ "<th><label><input type='text' name='Nombres'/></label></th>"
+			+ "<th><label><input type='text' name='Num_Contrato'/></label></th>"
 			+ "<th><label><input type='text' name='Medidor'/></label></th>"
 			+ "<th></th>"
 			+ "</tr>"														
 			+ "</thead>"														
-			+ "<tbody>"														
-			+ "<tr><td>1</td><td>Ubuntu</td><td>16%</td><td></td></tr>"														
-			+ "<tr><td>2</td><td>Debian</td><td>14.1%</td><td></td></tr>"														
-			+ "<tr><td>3</td><td>Arch Linux</td><td>10.8%</td><td></td></tr>"														
-			+ "</tbody>"														
 			+ "<tfoot>"														
-			+ "<tr><th Style='color: #5d96c3;'>Primer Nombre</th>"+
-			"<th Style='color: #5d96c3;'>Primer Apellido</th>"+
+			+ "<tr><th Style='color: #5d96c3;'>Nombre Completo</th>"+
+			"<th Style='color: #5d96c3;'>Numero Contrato</th>"+
 			"<th Style='color: #5d96c3;'>Medidor</th><th></th></tr>"														
 			+ "</tfoot>"														
 			+ "</table>"														
@@ -297,7 +320,9 @@
 			"<div Style='text-align: center; margin-bottom: -10px;'><button type='button' class='btn btn-secondary' onclick='CloseModalBox()'>Cancelar</button></div>");
 			filtrarTabla();		
 		});
-	
+		
+		guardarConsumo();
+		
 		// Add Drag-n-Drop feature				
 		WinMove();	
 		
@@ -311,20 +336,30 @@
 		        var title = $(this).attr("name");
 		        $(this).attr("placeholder", "Buscar por " + title);
 		    } );
-		 
+// 		    for(var i in data.artists.items) {
+// 		        console.log(data.artists.items[i].href);  // (o el campo que necesites)
+// 		    }
 		    // DataTable
 		    var table = $('#datatable-filter').DataTable({
 		    	"destroy": true,
 		    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
 		    	"bJQueryUI": true,
 				"language":idioma_esp,
+				ajax: {
+					"method":"GET",
+					"url":"./SL_consumo",
+					"data": {
+				        "carga": 2//para decirle al servlet que cargue solo clinte + consumos
+				    },
+					"dataSrc":"aaData"
+				},
 				"columns": [
-		            { "data": "nombre" },
-		            { "data": "apellido" },
-		            { "data": "num_Medidor" },
-		            {"defaultContent":"<button type='button' class='seleccionar btn btn-primary'>"+
-						"Seleccionar</button>"}
-		            ],
+		            { "data": "nombreCompleto"},
+		            { "data": "contratos[0].numContrato" },
+		            { "data": "contratos[0].numMedidor" },
+		            {"defaultContent":"<button type='button' class='btn btn-primary'"+
+		            	" id='seleccionarCl'>Seleccionar</button>"}
+		            ]
 		    });
 		 
 		    // Apply the search
@@ -336,35 +371,72 @@
 		            }
 		        } );
 		    } );
+		    cambiarCliente('#datatable-filter tbody', table);
+	}
+	
+	function cambiarCliente(tbody, table) {
+		$(tbody).on("click","button#seleccionarCl",function(){
+			console.log("cambiar cliente");
+			var datos = table.row($(this).parents("tr")).data();
+			console.log(datos);
+			$("#nombreClienteCompleto").val(datos.nombreCompleto);
+			$("#numContrato").val(datos.contratos[0].numContrato);
+			$("#numMedidor").val(datos.contratos[0].numMedidor);
+			$("#cliente_ID").val(datos.cliente_ID);
+			$("#contrato_ID").val(datos.contratos[0].contrato_ID);
+			
+			CloseModalBox();
+		});
+	}
+	
+	var seleccionarEditarConsumo = function(tbody, table) {
+		$(tbody).on("click", "button.editarConsumo", function() {
+			var datos = table.row($(this).parents("tr")).data();
+			$("#lectura_Actual").val(datos.lectura_Actual);
+			$("#fecha_fin").val(datos.fecha_fin);
+			$("#consumoTotal").val(datos.consumoTotal);
+			$("#nombreClienteCompleto").val(datos.cliente.nombreCompleto);
+			$("#numContrato").val(datos.contrato.numContrato);
+			$("#numMedidor").val(datos.contrato.numMedidor);
+			$("#opcion").val("actualizar");
+			$("#consumo_ID").val(datos.consumo_ID);
+			$("#cliente_ID").val(datos.cliente.cliente_ID);
+			$("#contrato_ID").val(datos.contrato.contrato_ID);
+			
+			colapsar_desplegar($("#colapsar_desplegar2"));
+			if(expand == false){
+				expandir($("#expandir1"));
+				expand = true;
+			}
+			colapsar_desplegar($("#colapsar_desplegar1"));
+		});
 	}
 	
 	function iniciarTabla(){
 		colapsar_desplegar($("#colapsar_desplegar1"));
 		console.log("cargando dataTable");
-		var tablaConsumo = $('#tabla_consumo').dataTable( {
+		var tablaConsumo = $('#tabla_consumo').DataTable( {
 			"destroy": true,
 			'bProcessing': false,
 			'bServerSide': false,
-// 			"aaSorting": [[ 0, "asc" ]],
- 	//		"sDom": "T<'box-contents'<'col-sm-4'f><'col-sm-4'B><'col-sm-4 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
 			ajax: {
 				"method":"GET",
 				"url":"./SL_consumo",
-// 				"dataSrc":"aaData"
+				"data": {
+			        "carga": 1//para decirle al servlet que cargue consumos + cliente + contrato
+			    },
+				"dataSrc":"aaData"
 			},
 			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
-// 			"sAjaxSource": "./SL_consumo",
         	"bJQueryUI": true,
-//         	pagingType: 'full_numbers',	
 			"language":idioma_esp,
-// 			"oLanguage":idioma_esp,
 			"columns": [
 	            { "data": "fecha_fin" },
 	            { "data": "lectura_Actual" },
 	            { "data": "consumoTotal" },
-	            { "data": "nombre_cliente" },
-	            { "data": "num_Contrato" },
-	            { "data": "num_medidor" },
+	            { "data": "cliente.nombreCompleto" },
+	            { "data": "contrato.numContrato" },
+	            { "data": "contrato.numMedidor" },
 	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' data-toggle='tooltip' "+
 					"data-placement='bottom' title='Editar'>"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
@@ -376,8 +448,7 @@
 					 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
 					 +"<rt>"
 					 +"<'row'<'form-inline'"
-					 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",//'Bfrtip',
-// 				"dom": 'Bfrtip',
+					 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
 	            "buttons":[{
 					"text": "<i class='fa fa-user-plus'></i>",
 					"titleAttr": "Agregar usuario",
@@ -402,25 +473,27 @@
 	                titleAttr: 'pdf'
 	            }]
 		});
-//
-// 		seleccionarEditarConsumo('#tabla_consumo tbody', tablaConsumo);
-// 		seleccionarEliminarConsumo('#tabla_consumo tbody', tablaConsumo);
-//--------------------QUEDE AQUI-------------------------------
-//
-//
-//
+		seleccionarEditarConsumo('#tabla_consumo tbody', tablaConsumo);
+		seleccionarEliminarConsumo('#tabla_consumo tbody', tablaConsumo);
+
 	}
 	
 	var agregar_nuevo_consumo = function() {
 		limpiar_texto();
 		colapsar_desplegar($("#colapsar_desplegar2"));
 		colapsar_desplegar($("#colapsar_desplegar1"));
-		expandir($("#expandir1"));
+		if(expand == false){
+			expandir($("#expandir1"));
+			expand = true;
+		}
 	}
 	
 	var cancelar = function() {
 		limpiar_texto();
-		expandir($("#expandir1"));
+		if(expand == true){
+			expandir($("#expandir1"));
+			expand = false;
+		}
 		colapsar_desplegar($("#colapsar_desplegar1"));
 		colapsar_desplegar($("#colapsar_desplegar2"));
 	}
@@ -438,20 +511,35 @@
 		$("#numMedidor").val("");
 	}
 	
-	var seleccionarEditarConsumo = function(tbody, table) {
-		console.log("seleccinar editar consumo");
-		
-		table.rows().every(function(index	) {
-			console.log(table.row(index).data());
+	var seleccionarEliminarConsumo = function(tbody, table) {
+		$(tbody).on("click", "button.eliminarConsumo", function() {
+			var datos = table.row($(this).parents("tr")).data();
+			$("form#frmEliminarConsumo #consumo_id").val(datos.consumo_ID);
+			abrirDialogo(eliminarConsumo);
 		});
 	}
-	var seleccionarEliminarConsumo = function(tbody, table) {
-		console.log("seleccionar eliminar consumo");
-		
-		table.rows().every(function(index	) {
-			console.log(table.row(index).data());
+	var eliminarConsumo = function() {
+		$("#eliminar_consumo").on("click", function() {
+			var consumo_id= $("#frmEliminarConsumo #consumo_id").val();//se obtiene el id del usuario que esta oculto
+			var opcion = $("#frmEliminarConsumo #opcion").val();//se obtiene la opcion que esta oculta
+			console.log("consumo_ID: " + consumo_id + ", opcion: " + opcion + " eliminar");
+// 			$.ajax({
+// 				method:"POST",
+// 				url:"./SL_consumo",
+// 				data: {"consumo_ID":usuario_id, "opcion": opcion}//se envian los datos al servlet
+// 			}).done(function(info) {
+// // 				mostrar_mensaje(info);
+// // 				listar();
+// 				console.log("eliminado");
+// 			});
 		});
 	}
 	
+	function validarExpand() {
+		if(expand == true)
+			expand = false;
+		else
+			expand = true;
+	}
 	
 </script>

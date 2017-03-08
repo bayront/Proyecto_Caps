@@ -14,6 +14,7 @@ public class Usuario
    private Date fechaCrea;
    private Date fechaMod;
    private Date fechaElim;
+   private Boolean eliminado;
    private Integer usuario_ID;
    private List<Rol> roles;
 
@@ -80,5 +81,11 @@ public class Usuario
 	}
 	public void setRoles(List<Rol> roles) {
 		this.roles = roles;
+	}
+	public Boolean getEliminado() {
+		return eliminado;
+	}
+	public void setEliminado(Boolean eliminado) {
+		this.eliminado = eliminado;
 	} 
 }

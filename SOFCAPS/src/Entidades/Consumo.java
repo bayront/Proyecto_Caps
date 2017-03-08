@@ -9,6 +9,7 @@ public class Consumo
    private Float consumoTotal;
    private Float lectura_Actual;
    private Boolean actual;
+   private Boolean eliminado; 
    private Integer consumo_ID;
    private Cliente cliente;
    private Contrato contrato;
@@ -17,7 +18,18 @@ public class Consumo
    {    
    }
 
-    public Date getFecha_fin() {
+    public Consumo(Date fecha_fin, Float consumoTotal, Float lectura_Actual,
+		Integer consumo_ID, Cliente cliente, Contrato contrato) {
+    	super();
+    	this.fecha_fin = fecha_fin;
+    	this.consumoTotal = consumoTotal;
+    	this.lectura_Actual = lectura_Actual;
+    	this.consumo_ID = consumo_ID;
+    	this.cliente = cliente;
+    	this.contrato = contrato;
+    }
+    
+	public Date getFecha_fin() {
         return fecha_fin;
     }
     public void setFecha_fin(Date fecha_fin) {
@@ -58,6 +70,11 @@ public class Consumo
 	}
 	public void setActual(Boolean actual) {
 		this.actual = actual;
-	}  
-	
+	}
+	public Boolean getEliminado() {
+		return eliminado;
+	}
+	public void setEliminado(Boolean eliminado) {
+		this.eliminado = eliminado;
+	} 
 }

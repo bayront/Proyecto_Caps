@@ -77,7 +77,7 @@ function LoadBootstrapValidatorScript(callback){
 //
 function LoadSelect2Script(callback){
 	if (!$.fn.select2){
-		$.getScript('plugins/select2/select2.min.js', callback);
+		$.getScript('plugins/select2/select2.min.js',callback);
 	}
 	else {
 		if (callback && typeof(callback) === "function") {
@@ -2074,7 +2074,7 @@ function DemoFormValidator(){
 					}
 				}
 			},
-			lecture: {
+			lectura: {
 				validators: {
 					notEmpty: {
 						message: 'El campo es requerido y no debe estar vacio'
@@ -2086,7 +2086,7 @@ function DemoFormValidator(){
 					}
 				}
 			},
-			date_send:{
+			fecha:{
 				validators:{
 					notEmpty: {
 						message: 'La fecha es requerido y no debe estar vacio'

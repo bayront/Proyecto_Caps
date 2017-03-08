@@ -7,6 +7,7 @@ import java.util.List;
 public class Rol 
 {
    private String nomRol;
+   private Boolean eliminado;
    private Integer rol_ID;
    private List<Opcion> opciones;
    private List<Usuario> usuarios;
@@ -38,6 +39,11 @@ public class Rol
 	}
 	public void setUsuarios(List<Usuario> usuarios) {
 		this.usuarios = usuarios;
+	}
+	public Boolean getEliminado() {
+		return eliminado;
+	}
+	public void setEliminado(Boolean eliminado) {
+		this.eliminado = eliminado;
 	}  
-    
 }

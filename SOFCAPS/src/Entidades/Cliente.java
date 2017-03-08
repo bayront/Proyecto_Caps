@@ -21,12 +21,18 @@ public class Cliente
    private Date fechaElim;
    private Integer cliente_ID;
    private List<Contrato> contratos;
+   private String nombreCompleto;
    
-   public Cliente() 
-   {
-   }
+   	public Cliente() 
+   	{
+   	}
 
-    public String getApellido1() {
+    public Cliente(Integer cliente_ID) {
+    	super();
+    	this.cliente_ID = cliente_ID;
+    }
+
+	public String getApellido1() {
         return apellido1;
     }
     public void setApellido1(String apellido1) {
@@ -115,6 +121,11 @@ public class Cliente
 	}
 	public void setContratos(List<Contrato> contratos) {
 		this.contratos = contratos;
-	} 
-  
+	}
+	public String getNombreCompleto() {
+		return nombreCompleto;
+	}
+	public void setNombreCompleto(String nombreCompleto) {
+		this.nombreCompleto = nombreCompleto;
+	}
 }

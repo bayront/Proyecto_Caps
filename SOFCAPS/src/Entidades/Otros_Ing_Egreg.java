@@ -8,6 +8,7 @@ public class Otros_Ing_Egreg
    private String descripcion;
    private Date fecha;
    private Float monto;
+   private Boolean eliminado;
    private Integer otros_Ing_Egreg_ID; 
    private Categoria_Ing_Egreg categoria_Ing_Egreg;
 
@@ -44,6 +45,11 @@ public class Otros_Ing_Egreg
 	}
 	public void setOtros_Ing_Egreg_ID(Integer otros_Ing_Egreg_ID) {
 		this.otros_Ing_Egreg_ID = otros_Ing_Egreg_ID;
+	}
+	public Boolean getEliminado() {
+		return eliminado;
+	}
+	public void setEliminado(Boolean eliminado) {
+		this.eliminado = eliminado;
 	} 
- 
 }

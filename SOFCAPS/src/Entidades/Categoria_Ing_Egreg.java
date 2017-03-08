@@ -4,6 +4,7 @@ package Entidades;
 public class Categoria_Ing_Egreg 
 {
    private String nombreCategoria;
+   private Boolean eliminado;
    private Integer categoria_Ing_Egreg_ID;
    private TipoCategoria tipoCategoria;
 
@@ -28,6 +29,11 @@ public class Categoria_Ing_Egreg
 	}
 	public void setCategoria_Ing_Egreg_ID(Integer categoria_Ing_Egreg_ID) {
 		this.categoria_Ing_Egreg_ID = categoria_Ing_Egreg_ID;
-	} 
-   
+	}
+	public Boolean getEliminado() {
+		return eliminado;
+	}
+	public void setEliminado(Boolean eliminado) {
+		this.eliminado = eliminado;
+	} 	
 }

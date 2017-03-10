@@ -120,10 +120,10 @@
 					<li><a href="#" class="active ajax-link">
 							<i class="fa fa-dashboard"></i> <span class="hidden-xs">Inicio</span>
 					</a></li>
-					<li><a href="ajax/Contrato.jsp" class="active ajax-link">
+					<li><a href="ajax/Contrato.jsp" class="ajax-link">
 							<i class="fa fa-dashboard"></i> <span class="hidden-xs">Registrar Contrato</span>
 					</a></li>
-					<li><a href="ajax/ReciboCaja.jsp" class="active ajax-link">
+					<li><a href="ajax/ReciboCaja.jsp" class="ajax-link">
 							<i class="fa fa-dashboard"></i> <span class="hidden-xs">Registrar Recibo Caja</span>
 					</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
@@ -216,31 +216,33 @@
 					<li><a class="ajax-link" href="ajax/calendar.html"> <i
 							class="fa fa-calendar"></i> <span class="hidden-xs">Calendar</span>
 					</a></li>
-					
-					
-					
+
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i class="fa fa-th-list"></i> <span class="hidden-xs">Consumos</span>
 					</a>
 						<ul class="dropdown-menu">
-							<li><a class="ajax-link" href="ajax/crear_consumo.jsp">Crear consumo</a></li>
-							<li><a class="ajax-link" href="ajax/ver-consumos.jsp">Ver consumo</a></li>
-						</ul></li>
-						
-						
-						
-						<li class="dropdown"><a href="#" class="dropdown-toggle">
+							<li><a class="ajax-link" href="ajax/crear_consumo.jsp">Crear
+									consumo</a></li>
+							<li><a class="ajax-link" href="ajax/ver-consumos.jsp">Ver
+									consumo</a></li>
+						</ul>
+					</li>
+
+					<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i class="fa fa-th-list"></i> <span class="hidden-xs">Tarifa</span>
 					</a>
 						<ul class="dropdown-menu">
-							<li><a class="ajax-link" href="ajax/crear_tarifa.jsp">Crear tarifa</a></li>
-							<li><a class="ajax-link" href="ajax/ver_tarifa.jsp">Ver tarifa</a></li>
-						</ul></li>
-						
-						
-						
-						
-						
+							<li><a class="ajax-link" href="ajax/crear_tarifa.jsp">Crear
+									tarifa</a></li>
+							<li><a class="ajax-link" href="ajax/ver_tarifa.jsp">Ver
+									tarifa</a></li>
+						</ul>
+					</li>
+
+					<li class="dropdown"><a href="ajax/Roles_Opciones.jsp" class="ajax-link">
+							<i class="fa fa-unlock-alt"></i> <span class="hidden-xs">Roles y Opciones</span>
+					</a></li>
+
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i class="fa fa-picture-o"></i> <span class="hidden-xs">Multilevel
 								menu</span>

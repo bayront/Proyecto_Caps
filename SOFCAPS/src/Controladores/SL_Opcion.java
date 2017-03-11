@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import Datos.DT_Opcion;
 import Datos.DataTableObject;
 import Entidades.Opcion;
+import Entidades.Rol;
 
 /**
  * Servlet implementation class SL_Opcion
@@ -56,9 +57,90 @@ public class SL_Opcion extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		guardar(request, response);
+		System.out.println("hola POST opcion");
+		String opcion, descripcion;
+		int opcion_ID;
+		String metodo = request.getParameter("metodo").trim();
+		System.out.println("metodo a realizar: " + metodo);
+		switch (metodo) {
+		case "actualizar":
+			opcion_ID = Integer.parseInt(request.getParameter("opcion_ID").trim());
+			opcion = request.getParameter("opcion").trim();
+			descripcion = request.getParameter("descripcion").trim();
+			actualizar(opcion_ID, opcion, descripcion, response);
+			break;
+		case "eliminar":
+			opcion_ID= Integer.parseInt(request.getParameter("opcion_ID"));
+			eliminar(opcion_ID, response);
+			break;
+		case "guardar":
+			opcion = request.getParameter("opcion").trim();
+			descripcion = request.getParameter("descripcion").trim();
+			guardar(opcion, descripcion, response);
+			break;
+		default:
+			response.setContentType("text/plain");
+			out = response.getWriter();
+			out.print("VACIO");
+			break;
+		}
 	}
 	
+	private void guardar(String opcion, String descripcion, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		try{
+			Opcion o = new Opcion();
+			DT_Opcion dta = new DT_Opcion();
+			o.setDescripcion(descripcion);
+			o.setOpcion(opcion);
+			verificarResultado(datosOpcion.guardarOpcion(o), response);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			System.out.println("ERROR EN EL SERVLET: "+e.getMessage());
+		}
+	}
+
+	private void eliminar(int opcion_ID, HttpServletResponse response) {
+		try {
+			Opcion o = new Opcion();
+			o.setOpcion_ID(opcion_ID);
+			verificarResultado(datosOpcion.eliminarOpcion(o), response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void actualizar(int opcion_ID, String opcion, String descripcion, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		try {
+			Opcion o =  new Opcion();
+			o.setOpcion(opcion);
+			o.setOpcion_ID(opcion_ID);
+			o.setDescripcion(descripcion);
+			verificarResultado(datosOpcion.actualizarOpcion(o), response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void verificarResultado(boolean r, HttpServletResponse response) {
+		try {
+			if(r) {
+				response.setContentType("text/plain");
+				out = response.getWriter();
+				out.print("BIEN");
+			}else {
+				response.setContentType("text/plain");
+				out = response.getWriter();
+				out.print("ERROR");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	protected void traerOpciones(HttpServletResponse response) throws SQLException {
 		List<Opcion> opciones = new ArrayList<>();
 		ResultSet rs = datosOpcion.cargarDatos();
@@ -77,30 +159,6 @@ public class SL_Opcion extends HttpServlet {
 		String json = gson.toJson(dataTableObject);
 		System.out.println(json.toString());
 		out.print(json);
-	}
-	
-	protected void guardar(HttpServletRequest request, HttpServletResponse response) {
-		try
-		{
-			Opcion a = new Opcion();
-			DT_Opcion dta = new DT_Opcion();
-			a.setDescripcion(request.getParameter("descripcion"));
-			a.setOpcion(request.getParameter("opcion"));
-			
-			if(dta.guardarOpcion(a))
-			{
-				response.sendRedirect("Roles_Opciones.jsp?msj=1");
-			}
-			else
-			{
-				response.sendRedirect("Roles_Opciones.jsp?msj=2");
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			System.out.println("ERROR EN EL SERVLET: "+e.getMessage());
-		}
 	}
 }
 

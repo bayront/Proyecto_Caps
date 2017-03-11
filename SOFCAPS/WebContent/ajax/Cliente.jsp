@@ -1,4 +1,7 @@
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<%@page language="java"%>
+<%@page contentType="text/html"%> 
+<%@page pageEncoding="UTF-8"%> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<div class="row fondo">
 		<div class="col-sm-12 col-md-12 col-lg-12">
 			<h1 class="text-center text-uppercase">Clientes</h1>
@@ -32,7 +35,7 @@
 					<div class="col-sm-8"><input id="apellido2" name="apellido2" type="text" class="form-control" ></div>
 				</div>
 				<div class="form-group">
-					<label for="cedula" class="col-sm-2 control-label">Cédula</label>
+					<label for="cedula" class="col-sm-2 control-label">CÃ©dula</label>
 					<div class="col-sm-8"><input id="cedula" name="cedula" type="text" class="form-control" ></div>
 				</div>
 				<div class="form-group">
@@ -65,7 +68,7 @@
 							<th>Nombre2</th>
 							<th>Apellido1</th>
 							<th>Apellido2</th>
-							<th>Cédula</th>
+							<th>CÃ©dula</th>
 							<th>Celular</th>
 							<th></th>											
 						</tr>
@@ -221,7 +224,7 @@
 						"<i class='fa fa-trash-o'></i>"+
 						"</button>"}
 				],
-				"language":idioma_esp,//cambiar el lenguaje a español
+				"language":idioma_esp,//cambiar el lenguaje a espaÃ±ol
 				"dom": "Bfrtip",//boton para agregar
 				"buttons":[{
 					"text": "<i class='fa fa-user-plus'></i>",
@@ -292,7 +295,7 @@
 			    "sProcessing":     "Procesando...",
 			    "sLengthMenu":     "Mostrar _MENU_ registros",
 			    "sZeroRecords":    "No se encontraron resultados",
-			    "sEmptyTable":     "Ningún dato disponible en esta tabla",
+			    "sEmptyTable":     "NingÃºn dato disponible en esta tabla",
 			    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
 			    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
 			    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
@@ -303,7 +306,7 @@
 			    "sLoadingRecords": "Cargando...",
 			    "oPaginate": {
 			        "sFirst":    "Primero",
-			        "sLast":     "Último",
+			        "sLast":     "Ãšltimo",
 			        "sNext":     "Siguiente",
 			        "sPrevious": "Anterior"
 			    },

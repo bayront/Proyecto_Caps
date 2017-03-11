@@ -291,7 +291,7 @@
 	
 	var agregar_nuevo_tarifa = function() {
 		limpiar_texto();
-		colapsar_desplegar($("#colapsar_desplegar2"));
+		//colapsar_desplegar($("#colapsar_desplegar2"));
 		colapsar_desplegar($("#colapsar_desplegar1"));
 	}
 	

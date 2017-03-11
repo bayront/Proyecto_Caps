@@ -112,10 +112,15 @@ public class SL_Rol extends HttpServlet {
 		
 	}
 	private void actualizar(int rol_ID, String nomRol, HttpServletResponse response) {
-		Rol r = new Rol();
-		r.setRol_ID(rol_ID);
-		r.setNomRol(nomRol);
-		verificarResultado(datosRol.actualizarRol(r), response);
+		try {
+			Rol r = new Rol();
+			r.setRol_ID(rol_ID);
+			r.setNomRol(nomRol);
+			verificarResultado(datosRol.actualizarRol(r), response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	private void verificarResultado(boolean r, HttpServletResponse response) {
 		try {

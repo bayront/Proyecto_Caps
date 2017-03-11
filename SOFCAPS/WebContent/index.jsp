@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>DevOOPS</title>
@@ -255,7 +255,7 @@
 					</li>
 
 					<li class="dropdown"><a href="ajax/Roles_Opciones.jsp" class="ajax-link">
-							<i class="fa fa-unlock-alt"></i> <span class="hidden-xs">Roles y Opciones</span>
+							<i class="fa fa-unlock-alt"></i> <span class="hidden-xs">Roles y Opción</span>
 					</a></li>
 
 					<li class="dropdown"><a href="#" class="dropdown-toggle">

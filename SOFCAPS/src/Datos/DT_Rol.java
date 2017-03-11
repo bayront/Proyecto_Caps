@@ -4,12 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import Entidades.Cliente;
-import Entidades.Opcion;
 import Entidades.Rol;
 
 
@@ -79,8 +74,9 @@ public class DT_Rol {
 					if(rs.getInt("Rol_ID") ==r.getRol_ID()){
 						System.out.println(r.getNomRol());
 						
+						rs.updateInt("Rol_ID", r.getRol_ID());
+						rs.updateBoolean("eliminado", false);
 						rs.updateString("nomRol", r.getNomRol());
-						
 						rs.updateRow();
 					}
 			

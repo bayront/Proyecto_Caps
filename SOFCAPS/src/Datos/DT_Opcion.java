@@ -57,6 +57,7 @@ public class DT_Opcion {
 			rs.moveToInsertRow();
 			rs.updateString("descripcion", o.getDescripcion());
 			rs.updateString("opcion", o.getOpcion());
+			rs.updateBoolean("eliminado", false);
 			
 			rs.insertRow();
 			rs.moveToCurrentRow();
@@ -80,6 +81,8 @@ public class DT_Opcion {
 				if(rs.getInt("Opcion_ID") ==o.getOpcion_ID()){
 					rs.updateString("descripcion", o.getDescripcion());
 					rs.updateString("opcion", o.getOpcion());
+					rs.updateInt("Opcion_ID", o.getOpcion_ID());
+					rs.updateBoolean("eliminado", false);
 					rs.updateRow();
 				}
 		

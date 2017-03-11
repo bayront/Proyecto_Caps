@@ -1,5 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@page language="java"%>
+<%@page contentType="text/html"%> 
+<%@page pageEncoding="UTF-8"%> 
+<!-- contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8" -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -127,7 +130,7 @@
 							<i class="fa fa-dashboard"></i> <span class="hidden-xs">Registrar Recibo Caja</span>
 					</a></li>
 					<li><a href="ajax/Cliente.jsp" class="ajax-link">
-							<i class="fa fa-dashboard"></i> <span class="hidden-xs">Clientes</span>
+							<i class="fa fa-group"></i> <span class="hidden-xs">Clientes</span>
 					</a></li>
 					<li><a href="ajax/crear-categoria.jsp" class="ajax-link">
 							<i class="fa fa-archive"></i> <span class="hidden-xs">Categorias</span>

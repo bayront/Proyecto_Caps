@@ -2,82 +2,122 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<div class="row fondo">
-		<div class="col-sm-12 col-md-12 col-lg-12">
-			<h1 class="text-center text-uppercase">Clientes</h1>
-		</div>
+
+<div class="row">
+	<div id="breadcrumb" class="col-md-12">
+		<ol class="breadcrumb">
+			<li><a href="#">Inicio</a></li>
+			<li><a href="#">Clientes</a></li>
+			<li><a href="#">Todos los clientes</a></li>
+		</ol>
 	</div>
-	
-	<div class="row">
-		<div id="cuadro2" class="col-sm-12 col-md-12 col-lg-12">
-			<form class="form-horizontal" action="" method="POST">
-				<div class="form-group">
-					<h3 class="col-sm-offset-2 col-sm-8 text-center">					
-					Formulario de Registro de Clientes</h3>
+</div>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12">
+		<div class="box" style="top: 0px; left: 0px; opacity: 1;">
+
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa  fa-user"></i> <span>Registrar Nuevo Cliente</span>
 				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar1" class="collapse-link"> <i
+						class="fa fa-chevron-up"></i></a> <a id="expandir1"
+						class="expand-link"  onclick="validarExpand();"> <i class="fa fa-expand"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+
+			<div class="box-content">
+			
+				<form class="form-horizontal" action="" method="POST">
 				<input type="hidden" id="opcion" name="opcion" value="guardar">
 				<input type="hidden" id="estado" name="estado">
 				<input type="hidden" id="cliente_id" name="cliente_id">
+		
 				<div class="form-group">
-					<label for="nombre1" class="col-sm-2 control-label">Primer Nombre</label>
-					<div class="col-sm-8"><input id="nombre1" name="nombre1" type="text" class="form-control"  autofocus></div>				
+					<label id="lnombre" for="nombre1" class="col-sm-4 control-label">Primer Nombre</label>
+					<div class="col-sm-5"><input  id="nombre1" name="nombre1" type="text" class="form-control" title="Requerido" required/></div>				
 				</div>
 				<div class="form-group">
-					<label for="nombre2" class="col-sm-2 control-label">Segundo Nombre</label>
-					<div class="col-sm-8"><input id="nombre2" name="nombre2" type="text" class="form-control" ></div>
+					<label for="nombre2" class="col-sm-4 control-label">Segundo Nombre</label>
+					<div class="col-sm-5"><input id="nombre2" name="nombre2" type="text" class="form-control" title="Requerido" required/></div>
 				</div>
 				<div class="form-group">
-					<label for="apellido1" class="col-sm-2 control-label">Primer Apellido</label>
-					<div class="col-sm-8"><input id="apellido1" name="apellido1" type="text" class="form-control" ></div>
+					<label for="apellido1" class="col-sm-4 control-label">Primer Apellido</label>
+					<div class="col-sm-5"><input id="apellido1" name="apellido1" type="text" class="form-control" title="Requerido" required/></div>
 				</div>
 				<div class="form-group">
-					<label for="apellido2" class="col-sm-2 control-label">Segundo Apellido</label>
-					<div class="col-sm-8"><input id="apellido2" name="apellido2" type="text" class="form-control" ></div>
+					<label for="apellido2" class="col-sm-4 control-label">Segundo Apellido</label>
+					<div class="col-sm-5"><input id="apellido2" name="apellido2" type="text" class="form-control" /></div>
 				</div>
 				<div class="form-group">
-					<label for="cedula" class="col-sm-2 control-label">Cédula</label>
-					<div class="col-sm-8"><input id="cedula" name="cedula" type="text" class="form-control" ></div>
+					<label for="cedula" class="col-sm-4 control-label">Cédula</label>
+					<div class="col-sm-5"><input id="cedula" name="cedula" type="text" class="form-control" title="Requerido" required/></div>
 				</div>
 				<div class="form-group">
-					<label for="celular" class="col-sm-2 control-label">Celular</label>
-					<div class="col-sm-8"><input id="celular" name="celular" type="text" class="form-control" ></div>
+					<label for="celular" class="col-sm-4 control-label">Celular</label>
+					<div class="col-sm-5"><input id="celular" name="celular" type="text" class="form-control" onkeypress="return valida(event)"/></div>
 				</div>
+				
 				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-8">
-						<input id="" type="submit" class="btn btn-primary" value="Guardar">
-						<input id="btn_listar" type="button" class="btn btn-primary" value="Listar">
+						<div class="col-sm-offset-4 col-sm-3">
+							<button type="button"
+								class="btn btn-default btn-label-left btn-lg"
+								onclick="cancelar()">
+								<span><i class="fa fa-reply txt-danger"></i></span> Cancelar
+							</button>
+						</div>
+						<div class="col-sm-4">
+							<button type="submit" 
+								class="btn btn-primary btn-label-left btn-lg" id="guardar">
+								<span><i class="fa fa-save"></i></span> Guardar
+							</button>
+						</div>
 					</div>
-				</div>
-			</form>
-			<div class="col-sm-offset-2 col-sm-8">
-				<p class="mensaje"></p>
+				
+			    </form>
+	          </div>
 			</div>
-			
 		</div>
 	</div>
-	<div class="row">
-		<div id="cuadro1" class="col-sm-12 col-md-12 col-lg-12">
-			<div class="col-sm-offset-2 col-sm-8">
-				<h3 class="text-center"> <small class="mensaje"></small></h3>
+
+	
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box" id="cuadro1">
+			<div class="box-header">
+				<div class="box-name text-center">
+					<i class="fa fa-th"></i> <span>Lista de Clientes</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" class="collapse-link"> <i class="fa fa-chevron-up"></i>
+					</a> <a id="expandir2" class="expand-link"> <i class="fa fa-expand"></i>
+					</a>
+				</div>
+				<div class="no-move"></div>
 			</div>
-			<div class="table-responsive col-sm-12">		
-				<table id="dt_cliente" class="table table-bordered table-hover table-striped table-heading table-datatable" cellspacing="0" width="100%">
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="dt_cliente">
 					<thead>
-						<tr>								
+						<tr>
 							<th>Nombre1</th>
 							<th>Nombre2</th>
 							<th>Apellido1</th>
 							<th>Apellido2</th>
 							<th>Cédula</th>
 							<th>Celular</th>
-							<th></th>											
+							<th></th>	
 						</tr>
-					</thead>					
+					</thead>
 				</table>
-			</div>			
-		</div>		
+			</div>
+		</div>
 	</div>
-	<div>
+</div>
+	
 	<form id="frmEliminarCliente" action="" method="POST">
 		<input type="hidden" id="cliente_id" name="cliente_id" value="">
 		<input type="hidden" id="opcion" name="opcion" value="eliminar">
@@ -98,14 +138,33 @@
 			</div>
 		</div>
 	</form>
-</div>
+
 	
 	<script type="text/javascript">	
 	
 	//al hacer click al boton listar volver a llenar los datos en el dataTable
-		$("#btn_listar").on("click", function() {
-			listar();//listar al presionar boton del formulario de registro
-		});
+		//$("#btn_listar").on("click", function() {
+	//		listar();//listar al presionar boton del formulario de registro
+	//	});
+	
+	//verificar menu expandido
+	//var expand = false;
+	// Iniciar dataTables
+	
+	//funcion que permite solo numeros
+	function valida(e){
+    tecla = (document.all) ? e.keyCode : e.which;
+
+    //Tecla de retroceso para borrar, siempre la permite
+    if (tecla==8){
+        return true;
+    }    
+    // Patron de entrada, en este caso solo acepta numeros
+    patron =/[0-9]/;
+    tecla_final = String.fromCharCode(tecla);
+    return patron.test(tecla_final);
+	}
+	
 	
 		function abrirDialogo() {
 			OpenModalBox(
@@ -117,6 +176,7 @@
 					+ "</div>");
 			eliminar();//activar evento de eliminar
 		}
+		
 	
 	//metodo guardar donde activa el evento submit del formulario de registro
 	var guardar = function() {
@@ -171,6 +231,22 @@
 	
 	var agregar_nuevo_usuario = function() {
 		limpiar_texto();
+// 		colapsar_desplegar($("#colapsar_desplegar2"));
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		if(expand == false){
+// 			expandir($("#expandir1"));
+// 			expand = true;
+// 		}
+	}
+	
+	var cancelar = function() {
+		limpiar_texto();
+// 		if(expand == true){
+// 			expandir($("#expandir1"));
+// 			expand = false;
+// 		}
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		colapsar_desplegar($("#colapsar_desplegar2"));
 	}
 	
 	//revise los mensaje que envian el guardar y eliminar (metodos)
@@ -201,14 +277,21 @@
 
 	//ejecutar el metodo DataTable para llenar el dataTable
 		var listar = function() {
+			console.log("cargando dataTable");
 			var table = $("#dt_cliente").DataTable({
 				"destroy":true,//para que se puede destruir los datos y recargarlos
 				'bProcessing': false,
 				'bServerSide': false,
 				ajax: {
 					"method":"GET",
-					"url":"./SL_Cliente"
+					"url":"./SL_Cliente",
+					"data": {
+				        "carga": 1//para decirle al servlet que cargue consumos + cliente + contrato
+				    },
+				    "dataSrc":"aaData"
 				},
+				"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+				"language":idioma_esp,
 				'bJQueryUI': true,
 				'aoColumns': [
 				    { 'mData': 'nombre1' },
@@ -224,15 +307,35 @@
 						"<i class='fa fa-trash-o'></i>"+
 						"</button>"}
 				],
-				"language":idioma_esp,//cambiar el lenguaje a español
-				"dom": "Bfrtip",//boton para agregar
-				"buttons":[{
+				"dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
+					 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
+					 +"<rt>"
+					 +"<'row'<'form-inline'"
+					 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
+	            "buttons":[{
 					"text": "<i class='fa fa-user-plus'></i>",
-					"titleAttr": "Agregar cliente",
+					"titleAttr": "Agregar usuario",
+					"className": "btn btn-success",
 					"action": function() {
-						agregar_nuevo_usuario();//llamar el metodo agregar que muestra el formulario
+						agregar_nuevo_usuario();
 					}
-				}]
+				},
+				{
+	                extend:    'excelHtml5',
+	                text:      '<i class="fa fa-file-excel-o"></i>',
+	                titleAttr: 'excel'
+	            },
+	            {
+	                extend:    'csvHtml5',
+	                text:      '<i class="fa fa-file-text-o"></i>',
+	                titleAttr: 'csv'
+	            },
+	            {
+	                extend:    'pdfHtml5',
+	                text:      '<i class="fa fa-file-pdf-o"></i>',
+	                titleAttr: 'pdf'
+	            }]
+				
 			});
 			obtener_datos_editar("#dt_cliente tbody", table);//despues de llenar se manda a activar el evento clickde obtener
 			obtener_id_eliminar("#dt_cliente tbody", table)//igual para el boton eliminar
@@ -289,6 +392,13 @@
 			LoadDataTablesScripts2(AllTables);
 			guardar();//activar evento de guardar
 		});
+		
+		function validarExpand() {
+			if(expand == true)
+				expand = false;
+			else
+				expand = true;
+		}
 		
 	//cambiar idioma al dataTable
 		var idioma_esp = {

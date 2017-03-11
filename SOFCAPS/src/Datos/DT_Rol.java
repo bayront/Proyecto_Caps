@@ -31,7 +31,7 @@ public class DT_Rol {
 	 public ResultSet cargarRol()
 		{
 			Statement s;
-			String sql = ("SELECT * FROM rol where eliminado = 0;");
+			String sql = ("SELECT * FROM rol where eliminado=0;");
 			try 
 			{
 				s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -79,7 +79,7 @@ public class DT_Rol {
 					if(rs.getInt("Rol_ID") ==r.getRol_ID()){
 						System.out.println(r.getNomRol());
 						
-						rs.updateString("nomRol", r.getNomRol().toString());
+						rs.updateString("nomRol", r.getNomRol());
 						
 						rs.updateRow();
 					}

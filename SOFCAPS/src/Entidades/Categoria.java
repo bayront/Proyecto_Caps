@@ -6,6 +6,7 @@ import java.util.List;
 public class Categoria 
 {
    private String nomCategoria;
+   private Boolean eliminado;
    private Integer categoria_ID;
    private List<Tarifa> tarifas;
    
@@ -31,6 +32,14 @@ public class Categoria
 	}
 	public void setTarifas(List<Tarifa> tarifas) {
 		this.tarifas = tarifas;
+	}
+
+	public Boolean getEliminado() {
+		return eliminado;
+	}
+
+	public void setEliminado(Boolean eliminado) {
+		this.eliminado = eliminado;
 	}  
-   
+	
 }

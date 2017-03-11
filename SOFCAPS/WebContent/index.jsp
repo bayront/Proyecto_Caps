@@ -129,6 +129,9 @@
 					<li><a href="ajax/Cliente.jsp" class="ajax-link">
 							<i class="fa fa-dashboard"></i> <span class="hidden-xs">Clientes</span>
 					</a></li>
+					<li><a href="ajax/crear-categoria.jsp" class="ajax-link">
+							<i class="fa fa-archive"></i> <span class="hidden-xs">Categorias</span>
+					</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i class="fa fa-bar-chart-o"></i> <span class="hidden-xs">Charts</span>
 					</a>
@@ -239,6 +242,15 @@
 									tarifa</a></li>
 							<li><a class="ajax-link" href="ajax/ver_tarifa.jsp">Ver
 									tarifa</a></li>
+						</ul>
+					</li>
+					
+					<li class="dropdown"><a href="#" class="dropdown-toggle">
+							<i class="fa fa-users"></i> <span class="hidden-xs">Usuario</span>
+					</a>
+						<ul class="dropdown-menu">
+							<li><a class="ajax-link" href="ajax/Crear_Usuario.jsp">Crear Usuario</a></li>
+							<li><a class="ajax-link" href="ajax/ver_usuario.jsp">Ver Usuarios</a></li>
 						</ul>
 					</li>
 

@@ -80,7 +80,7 @@ public class SL_Cliente extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("hola post , este es el id : " + request.getParameter("cliente_id") + " del cliente");
+//		System.out.println("hola post , este es el id : " + request.getParameter("cliente_id") + " del cliente");
 		String nombre1, nombre2, apellido1, apellido2, cedula, opcion;
 		int celular, cliente_id;
 		Boolean estado;

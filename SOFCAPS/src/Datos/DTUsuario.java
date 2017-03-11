@@ -1,13 +1,11 @@
 package Datos;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import Entidades.Usuario;
 
 public class DTUsuario {
@@ -19,7 +17,7 @@ public class DTUsuario {
 	public ArrayList<Usuario> usuarios()
 	{
 		ArrayList<Usuario> listaCategoria = new ArrayList<Usuario>();
-		String sql = ("SELECT * from usuario");
+		String sql = ("SELECT * from usuario where eliminado = 0");
 		try 
 		{
 			cn = Conexion.getConnection();
@@ -31,7 +29,8 @@ public class DTUsuario {
 				Usuario u = new Usuario();
 				u.setLogin(rs.getString("login"));
 				u.setPass(rs.getString("pass"));
-				u.setUsuario_ID(rs.getInt("Usuario_id"));
+				//u.setEliminado(rs.getBoolean("eliminado"));
+				u.setUsuario_ID(rs.getInt("Usuario_ID"));
 				listaCategoria.add(u);
 				
 			}
@@ -57,6 +56,8 @@ public class DTUsuario {
 			//DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			//Date date = new Date();
 			rs.moveToInsertRow();
+			//rs.updateInt("Usuario_ID", u.getUsuario_ID());
+			rs.updateBoolean("eliminado", false);
 			rs.updateString("login", u.getLogin());
 			rs.updateString("pass", u.getPass());
 			//rs.updateString("last_update", fecha.format(date));
@@ -75,6 +76,33 @@ public class DTUsuario {
 		}
 	}
 	
+	public boolean eliminarUsuario(Usuario u){
+		try {
+			Connection cn = Conexion.getConnection();
+			Statement s = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery("SELECT * from usuario;");
+			rs.beforeFirst();
+			rs.beforeFirst();
+			while (rs.next()){
+				System.out.println("fila "+rs.getInt("usuario_id"));
+				if(rs.getInt("usuario_id") ==u.getUsuario_ID()){
+					rs.updateBoolean("eliminado",true);
+					rs.updateRow();
+				}
+			}
+			s.close();
+			cn.close();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	
+	
+	/**
 	public boolean actualizarUsuario(Usuario u){
 		try {
 			Connection cn = Conexion.getConnection();
@@ -99,6 +127,8 @@ public class DTUsuario {
 			return false;
 		}
 	}
+	
+	
 	public boolean eliminarUsuario(Usuario u){
 		try {
 			Connection cn = Conexion.getConnection();
@@ -121,5 +151,7 @@ public class DTUsuario {
 			return false;
 		}
 	}
+	
+	**/
 	
 }

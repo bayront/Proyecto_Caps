@@ -80,39 +80,39 @@ public class SL_Usuario extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("hola post , este es el id : " + request.getParameter("usuario_id") + " del usuario");
+		System.out.println("hola post , este es el id : " + request.getParameter("usuario_ID") + " del usuario");
 		String login, pass, opcion;
 		int usuario_id;
 		opcion = request.getParameter("opcion").trim();
 		System.out.println("opcion a realizar: " + opcion);
 	
 		switch (opcion) {
-		case "actualizar":
-			login = request.getParameter("login").trim();
-			pass = request.getParameter("pass").trim();
-			usuario_id= Integer.parseInt(request.getParameter("usuario_id"));
-			actualizar(usuario_id, login, pass, response);
-			break;
-		case "eliminar":
-			usuario_id= Integer.parseInt(request.getParameter("usuario_id"));
-			eliminar(usuario_id, response);
-			break;
-		case "guardar":
-			login = request.getParameter("login").trim();
-			pass = request.getParameter("pass").trim();
-			guardar(login, pass, response);
-			break;
-		default:
-			final JSONObject json = new JSONObject();
-			response.setContentType("application/json");
-			out = response.getWriter();
-			json.put("respuesta", "OPCION_VACIA");
-			System.out.println(json.toJSONString());
-			out.print(json.toJSONString());
-			break;
+		/*	case "actualizar":
+				login = request.getParameter("login").trim();
+				pass = request.getParameter("pass").trim();
+				usuario_id= Integer.parseInt(request.getParameter("usuario_id"));
+				actualizar(usuario_id, login, pass, response);
+				break;*/
+			case "eliminar":
+				usuario_id= Integer.parseInt(request.getParameter("usuario_id"));
+				eliminar(usuario_id, response);
+				break;					
+			case "guardar":
+				login = request.getParameter("login").trim();
+				pass = request.getParameter("pass").trim();
+				guardar(login, pass, response);
+				break;
+			default:
+				final JSONObject json = new JSONObject();
+				response.setContentType("application/json");
+				out = response.getWriter();
+				json.put("respuesta", "OPCION_VACIA");
+				System.out.println(json.toJSONString());
+				out.print(json.toJSONString());
+				break;
 		}
 		
-		//doGet(request, response);
+		
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class SL_Usuario extends HttpServlet {
 		// TODO Auto-generated method stub
 	}
 	
-	protected void guardar(String login, String pass, HttpServletResponse response) {
+	protected void guardar(String login, String pass,  HttpServletResponse response) {
 		Usuario u = new Usuario();
 		boolean resultado = false;
 		try 
@@ -131,13 +131,15 @@ public class SL_Usuario extends HttpServlet {
 			u.setPass(pass);
 			 resultado = datosUsuario.guardarUsuario(u);
 			 verificar_resultado(resultado, response);
-			//response.sendRedirect("index.jsp?guardado");
+			
 		} 
 		catch (Exception e) 
 		{
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
+	
+	/*
 	protected void actualizar(int usuario_id, String login, String pass, HttpServletResponse response) {
 		Usuario u = new Usuario();
 		boolean resultado = false;
@@ -155,7 +157,8 @@ public class SL_Usuario extends HttpServlet {
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
-	protected void eliminar(int usuario_id, HttpServletResponse response) {
+	*/
+      protected void eliminar(int usuario_id,  HttpServletResponse response) {
 		Usuario u = new Usuario();
 		boolean resultado = false;
 		try 
@@ -170,6 +173,8 @@ public class SL_Usuario extends HttpServlet {
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
+	
+	
 	protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {
 		final JSONObject json = new JSONObject();
 		if(r) {
@@ -186,5 +191,5 @@ public class SL_Usuario extends HttpServlet {
 			out.print(json.toJSONString());
 		}
 	}
-
+	
 }

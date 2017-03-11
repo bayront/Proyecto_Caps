@@ -167,70 +167,25 @@
 							'Buscar');
 				});
 	}
-	
-// 	function abrirDialogo() {
-// 		OpenModalBox(
-// 				"<div><h3>Borrar Tarifa</h3></div>",
-// 				"<p Style='text-align: center;'>Esta seguro de borrar esta tarifa?</p>",
-// 				"<div Style='text-align: center; margin-bottom: -10px;'>"+
-// 				"<button type='button' id='eliminar_tarifa' class='btn btn-primary' onclick='CloseModalBox()'>Borrar </button>"
-// 				+ "<button type='button' class='btn btn-secondary' Style='margin-left: 10px;' onclick='CloseModalBox()'> Cancelar</button>"
-// 				+ "</div>");
-// 	}
 
+	var limpiar_texto = function() {//limpiar texto del formulario
+		$("#opcion").val("guardar");
+		$("#lim_Inf").val("");
+		$("#lim_Sup").val("");
+		$("#monto").val("");
+		//$("#Tarifa_ID").val("");
+	}
 	$(document).ready(function() {
 
 		//cargar scripts dataTables
 		LoadDataTablesScripts2(AllTables);
-		
-		// Crear UI spinner
-		$("#ui-spinner").spinner();
-
-		// Inicializar DatePicker
-		$('#fecha_fin').datepicker({
-		setDate : new Date()
-		});
 	
 		// Añadir Tooltip para formularios
 		$('.form-control').tooltip();
 
 		//Cargar ejemplo para validaciones
-		LoadBootstrapValidatorScript(DemoFormValidator);
-
-		//MODALS
-		$('#abrir_modal').on('click',function(e) {
-			OpenModalBox(
-			"<div><h3>Buscar Tarifa</h3></div>",
-			"<div class='table-responsive'>"
-			+ "<table class='table table-bordered table-striped table-hover table-heading table-datatable'"+
-			"id='datatable-filter'>"
-			+ "<thead>"
-			+ "<tr>"
-			+ "<th><label><input type='text' name='lim_Inf'/></label></th>"
-			+ "<th><label><input type='text' name='lim_Sup'/></label></th>"
-			+ "<th><label><input type='text' name='monto'/></label></th>"
-			+ "<th></th>"
-			+ "</tr>"														
-			+ "</thead>"														
-			+ "<tbody>"														
-			+ "<tr><td>1</td><td>Ubuntu</td><td>16%</td><td></td></tr>"														
-			+ "<tr><td>2</td><td>Debian</td><td>14.1%</td><td></td></tr>"														
-			+ "<tr><td>3</td><td>Arch Linux</td><td>10.8%</td><td></td></tr>"														
-			+ "</tbody>"														
-			+ "<tfoot>"														
-			+ "<tr><th Style='color: #5d96c3;'>Limite Inferior</th>"+
-			"<th Style='color: #5d96c3;'>Limite Superior</th>"+
-			"<th Style='color: #5d96c3;'>Monto</th><th></th></tr>"														
-			+ "</tfoot>"														
-			+ "</table>"														
-			+ "</div>",
-			"<div Style='text-align: center; margin-bottom: -10px;'><button type='button' class='btn btn-secondary' onclick='CloseModalBox()'>Cancelar</button></div>");
-			filtrarTabla();		
-		});
-	
-		// Add Drag-n-Drop feature				
-		WinMove();	
-		
+		LoadBootstrapValidatorScript(DemoFormValidator);	
+		WinMove();
 		//add tooltip
 		$('[data-toggle="tooltip"]').tooltip();
 	});
@@ -283,11 +238,9 @@
  				"dataSrc":"aaData"
 			},
 			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
-// 			"sAjaxSource": "./SL_consumo",
         	"bJQueryUI": true,
 //         	pagingType: 'full_numbers',	
 			"language":idioma_esp,
-// 			"oLanguage":idioma_esp,
 			"columns": [
 	            { "data": "lim_Inf" },
 	            { "data": "lim_Sup" },
@@ -305,8 +258,7 @@
 					 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
 					 +"<rt>"
 					 +"<'row'<'form-inline'"
-					 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",//'Bfrtip',
-// 				"dom": 'Bfrtip',
+					 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
 	            "buttons":[{
 					"text": "<i class='fa fa-user-plus'></i>",
 					"titleAttr": "Agregar tarifa",
@@ -377,7 +329,6 @@
 		// Add drag-n-drop feature to boxes
 		WinMove();
 		guardar();//activar evento de guardar
-		limpiar_texto();
 		
 	});
 	
@@ -436,32 +387,8 @@
 	}
 	
 </script>
+
 <script type="text/javascript">
-	
-// 	var guardar = function() {
-// 	$("#defaultForm").on("submit", function(e) { //recordar numeral
-// 		e.preventDefault();//detiene el evento
-// 		var frm = $(this).serialize();//parsea los datos del formulario
-// 		$.ajax({//enviar datos por ajax
-// 			method:"post",
-// 			url:"./SL_tarifa",
-// 			data: frm//datos a enviar
-// 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
-// 			console.log(info);
-// //				mostrar_mensaje(info);//se envia a verificar que mensaje respondioel servlet
-// //				limpiar_texto();
-// 			//listar();//volver a listar datos
-		
-// 			});
-// 		});
-// 	}
-	var limpiar_texto = function() {//limpiar texto del formulario
-		$("#opcion").val("guardar");
-		$("#lim_Inf").val("");
-		$("#lim_Sup").val("");
-		$("#monto").val("");
-		//$("#Tarifa_ID").val("");
-	}
 	
 	$(document).ready(function() {
 		// Create UI spinner
@@ -477,13 +404,6 @@
 		limpiar_texto();
 		
 	});
-	
-//al hacer click al boton listar volver a llenar los datos en el dataTable
-// 	$("#btn_listar").on("click", function() {
-// 		$("#cuadro2").slideUp("slow");
-// 		$("#cuadro1").slideDown("slow");
-// 		listar();//listar al presionar boton del formulario de registro
-// 	});
 	
 	
 	//metodo guardar donde activa el evento submit del formulario de registro

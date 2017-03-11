@@ -1,3 +1,4 @@
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<div class="row fondo">
 		<div class="col-sm-12 col-md-12 col-lg-12">
 			<h1 class="text-center text-uppercase">Clientes</h1>
@@ -97,18 +98,7 @@
 </div>
 	
 	<script type="text/javascript">	
-	function MakeSelect2() {
-		$('select').select2();
-	}
-	function AllTables() {
-		listar();
-		LoadSelect2Script(MakeSelect2);
-	}
-	//llamar a la funcio listar para que llene el dataTable
-		$(document).on("ready", function(window, document, JSON){
-			LoadDataTablesScripts2(AllTables);
-			guardar();//activar evento de guardar
-		});
+	
 	//al hacer click al boton listar volver a llenar los datos en el dataTable
 		$("#btn_listar").on("click", function() {
 			listar();//listar al presionar boton del formulario de registro
@@ -212,7 +202,10 @@
 				"destroy":true,//para que se puede destruir los datos y recargarlos
 				'bProcessing': false,
 				'bServerSide': false,
-				'sAjaxSource': './SL_Cliente',
+				ajax: {
+					"method":"GET",
+					"url":"./SL_Cliente"
+				},
 				'bJQueryUI': true,
 				'aoColumns': [
 				    { 'mData': 'nombre1' },
@@ -273,6 +266,26 @@
 				abrirDialogo();
 			});
 		}
+	
+		function MakeSelect2() {
+			$('select').select2();
+		}
+		function AllTables() {
+			$.getScript('plugins/datatables/nuevo/jszip.min.js', function(){
+				$.getScript('plugins/datatables/nuevo/pdfmake.min.js',function(){
+					$.getScript('plugins/datatables/nuevo/vfs_fonts.js',function(){
+						console.log("PDF Y EXCEL cargado");
+						listar();
+					});
+				});
+			});
+			LoadSelect2Script(MakeSelect2);
+		}
+		//llamar a la funcio listar para que llene el dataTable
+		$(document).ready(function(){
+			LoadDataTablesScripts2(AllTables);
+			guardar();//activar evento de guardar
+		});
 		
 	//cambiar idioma al dataTable
 		var idioma_esp = {

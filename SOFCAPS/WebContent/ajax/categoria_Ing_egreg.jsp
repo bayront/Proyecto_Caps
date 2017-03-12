@@ -180,9 +180,9 @@ var verResultado = function(r) {
 	function abrirDialogo() {
 		OpenModalBox(
 				"<div><h3>Borrar Categoría de ingresos y egresos</h3></div>",
-				"<p Style='text-align: center;'>¿Esta seguro que desea borrar este registro?</p>",
+				"<p Style='text-align: center;'>¿Esta seguro que desea eliminar este registro?</p>",
 				"<div Style='text-align: center; margin-bottom: -10px;'>"+
-				"<button type='button' id='eliminar_categoria' class='btn btn-primary'>Borrar </button>"
+				"<button type='button' id='eliminar_categoria' class='btn btn-primary'>Eliminar </button>"
 				+ "<button type='button' class='btn btn-secondary' Style='margin-left: 10px;' onclick='CloseModalBox()'> Cancelar</button>"
 				+ "</div>");
 		eliminar();

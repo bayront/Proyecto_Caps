@@ -334,14 +334,23 @@
 	
 	var obtener_datos_editar = function(tbody, table) {
 		$(tbody).on("click", "button.editarTarifa", function() {//activar evento click en boton actualizar que esta en el dataTable
-			var datos = table.row($(this).parents("tr")).data();//obtener la fila tr que es padre del boton que se toco y oobtener datos
-			console.log(datos);
-			var lim_Inf = $("#lim_Inf").val(datos.lim_Inf);
-			var lim_Sup = $("#lim_Sup").val(datos.lim_Sup);
-			var monto =	$("#monto").val(datos.monto);
-			var Tarifa_ID = $("#Tarifa_ID").val(datos.tarifa_ID);
-			var opcion = $("#opcion").val("actualizar");//settear datos en el formulario de edicion
-			console.log($("#opcion").val());
+			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+			var tarifa_ID, lim_Inf, lim_Sup, monto;
+			table.rows().every(function(index, loop, rowloop) {
+				console.log("indices: "+ index +" : "+datos);
+				if(index == datos){
+					tarifa_ID = table.row(index).data().tarifa_ID;
+					lim_Inf = table.row(index).data().lim_Inf;
+					lim_Sup = table.row(index).data().lim_Sup;
+					monto = table.row(index).data().monto;
+					console.log("tarifa_ID: " + tarifa_ID);
+					$("#lim_Inf").val(lim_Inf);
+					$("#lim_Sup").val(lim_Sup);
+					$("#monto").val(monto);
+					$("#Tarifa_ID").val(tarifa_ID);
+					$("#opcion").val("actualizar");
+				}
+			});
 			colapsar_desplegar($("#colapsar_desplegar1"));
 			colapsar_desplegar($("#colapsar_desplegar2"));
 		});
@@ -360,9 +369,17 @@
 	
 	var obtener_id_eliminar = function(tbody, table) {
 		$(tbody).on("click", "button.eliminar", function() {
-			var datos = table.row($(this).parents("tr")).data();//mismo evento para el boton eliminar
-			console.log(datos);	
-			var tarifa_ID = $("#frmEliminarTarifa #tarifa_ID").val(datos.tarifa_ID);//solo se obtiene el id que es oculto
+			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+			var tarifa_ID;
+			table.rows().every(function(index, loop, rowloop) {
+				console.log("indices: "+ index +" : "+datos);
+				if(index == datos){
+					tarifa_ID = table.row(index).data().tarifa_ID;
+					console.log("tarifa_ID: " + tarifa_ID );
+					$("#frmEliminarTarifa #tarifa_ID").val(tarifa_ID);
+				}
+			});
+			//solo se obtiene el id que es oculto
 			abrirDialogo();
 		});
 	}

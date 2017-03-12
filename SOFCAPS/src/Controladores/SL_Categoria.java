@@ -69,6 +69,7 @@ public class SL_Categoria extends HttpServlet {
 			Categoria ta = new Categoria();
 			categoria_ID = Integer.parseInt(request.getParameter("categoria_ID"));
 			nomCategoria = request.getParameter("nomCategoria");
+			System.out.println("actualizar : "+ categoria_ID+", "+nomCategoria);
 			try {
 				ta.setCategoria_ID(categoria_ID);
 				ta.setNomCategoria(nomCategoria);
@@ -155,13 +156,12 @@ public class SL_Categoria extends HttpServlet {
 			while (rs.next()) {
 
 				out += "<tr>";
+				out += "<td class='categoria_ID_td'>" + rs.getInt("categoria_ID") + "</td>";
+				out += "<td class='nomCategoria_td'>" + rs.getString("nomCategoria") + "</td>";
 				out += "<td>";
 				out += "<button class='btn btn-danger ajax-link action btnID'>Eliminar</button>";
 				out += "<button class='btn btn-info ajax-link action btnEdit editadarAbrir'>Editar</button>";
 				out += "</td>";
-				out += "<td class='categoria_ID_td'>" + rs.getInt("categoria_ID") + "</td>";
-				out += "<td class='nomCategoria_td'>" + rs.getString("nomCategoria") + "</td>";
-
 				out += "</tr>";
 			}
 			out += "</tbody>";

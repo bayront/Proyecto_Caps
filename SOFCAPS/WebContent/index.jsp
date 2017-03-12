@@ -247,6 +247,13 @@
 									tarifa</a></li>
 						</ul>
 					</li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle">
+							<i class="fa fa-th-list"></i> <span class="hidden-xs">Finanzas</span>
+					</a>
+						<ul class="dropdown-menu">
+							<li><a class="ajax-link" href="ajax/categoria_Ing_egreg.jsp">Cat_Ing_Egreg</a></li>
+						</ul>
+					</li>
 					
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i class="fa fa-users"></i> <span class="hidden-xs">Usuario</span>
@@ -254,6 +261,7 @@
 						<ul class="dropdown-menu">
 							<li><a class="ajax-link" href="ajax/Crear_Usuario.jsp">Crear Usuario</a></li>
 							<li><a class="ajax-link" href="ajax/ver_usuario.jsp">Ver Usuarios</a></li>
+							<li><a class="ajax-link" href="ajax/crearUsuario.jsp">Usuarios</a></li>
 						</ul>
 					</li>
 

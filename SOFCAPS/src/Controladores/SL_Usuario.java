@@ -87,12 +87,12 @@ public class SL_Usuario extends HttpServlet {
 		System.out.println("opcion a realizar: " + opcion);
 	
 		switch (opcion) {
-		/*	case "actualizar":
+			case "actualizar":
 				login = request.getParameter("login").trim();
 				pass = request.getParameter("pass").trim();
 				usuario_id= Integer.parseInt(request.getParameter("usuario_id"));
 				actualizar(usuario_id, login, pass, response);
-				break;*/
+				break;
 			case "eliminar":
 				usuario_id= Integer.parseInt(request.getParameter("usuario_id"));
 				eliminar(usuario_id, response);
@@ -139,7 +139,7 @@ public class SL_Usuario extends HttpServlet {
 		}
 	}
 	
-	/*
+	
 	protected void actualizar(int usuario_id, String login, String pass, HttpServletResponse response) {
 		Usuario u = new Usuario();
 		boolean resultado = false;
@@ -157,7 +157,10 @@ public class SL_Usuario extends HttpServlet {
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
-	*/
+	
+	
+	
+	
       protected void eliminar(int usuario_id,  HttpServletResponse response) {
 		Usuario u = new Usuario();
 		boolean resultado = false;

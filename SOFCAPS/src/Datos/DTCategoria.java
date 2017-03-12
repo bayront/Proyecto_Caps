@@ -101,7 +101,9 @@ public class DTCategoria {
 			while (rs.next()){
 				if(rs.getInt("categoria_ID") ==u.getCategoria_ID()){
 					System.out.println("actualizar: " + u.getNomCategoria());
+					rs.updateInt("categoria_ID", u.getCategoria_ID());
 					rs.updateString("nomCategoria",u.getNomCategoria());
+					rs.updateBoolean("eliminado", false);
 
 					rs.updateRow();
 				}

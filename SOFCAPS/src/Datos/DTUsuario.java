@@ -99,10 +99,7 @@ public class DTUsuario {
 			return false;
 		}
 	}
-	
-	
-	
-	/**
+
 	public boolean actualizarUsuario(Usuario u){
 		try {
 			Connection cn = Conexion.getConnection();
@@ -128,6 +125,8 @@ public class DTUsuario {
 		}
 	}
 	
+	
+	/*
 	
 	public boolean eliminarUsuario(Usuario u){
 		try {

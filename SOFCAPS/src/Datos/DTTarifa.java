@@ -115,6 +115,8 @@ public class DTTarifa {
 						rs.updateInt("lim_Sup", t.getLim_Sup());
 						rs.updateInt("lim_Inf", t.getLim_Inf());
 						rs.updateFloat("monto", t.getMonto());
+						rs.updateInt("Tarifa_ID", t.getTarifa_ID());
+						rs.updateBoolean("estado", false);
 						rs.updateRow();
 						System.out.println("tarifa actulizada");
 						guardado  = true;

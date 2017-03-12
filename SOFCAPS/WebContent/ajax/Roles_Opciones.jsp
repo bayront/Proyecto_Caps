@@ -43,7 +43,7 @@
 		style="background: #4C9480 url(./img/devoops_pattern_b10.png) 0 0 repeat;">
 			<li class="active"><a href="#" class="tab-link" id="Rol">Roles</a></li>
 			<li><a href="#" class="tab-link" id="Opcion">Opciones</a></li>
-<!-- 			<li><a href="#" class="tab-link" id="Rol_Opcion">Asignar Permisos</a></li> -->
+			<li><a href="#" class="tab-link" id="Rol_Opcion">Asignar Permisos</a></li>
 		</ul>
 	</div>
 	<div id="dashboard_tabs" class="col-xs-12 col-sm-10">

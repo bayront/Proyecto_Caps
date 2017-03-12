@@ -71,7 +71,8 @@
 						</div>
 						<div class="box-content">
 							<div class="table-responsive">
-								<table class="table table-bordered table-striped table-hover table-heading table-datatable" id="tabla_rol">
+								<table class="table table-bordered table-striped table-hover table-heading table-datatable" 
+								id="tabla_rol" style="width:100%;">
 									<thead>
 										<tr>
 											<th>Rol</th>
@@ -111,7 +112,8 @@
 						</div>
 						<div class="box-content">
 							<div class="table-responsive">
-								<table class="table table-bordered table-striped table-hover table-heading table-datatable" id="tabla_opcion">
+								<table class="table table-bordered table-striped table-hover table-heading table-datatable" 
+								id="tabla_opcion" style="width:100%;">
 									<thead>
 										<tr>
 											<th>Opción</th>

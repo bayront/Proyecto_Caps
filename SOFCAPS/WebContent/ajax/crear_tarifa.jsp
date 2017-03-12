@@ -100,13 +100,8 @@
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content no-padding table-responsive">
-<!-- 				<div style="display: block; text-align: center;"> -->
-<!-- 					<button type="button" class="btn btn-default btn-app-sm btn-circle" id="center_button"> -->
-<!-- 						<i class=" fa fa-plus"></i> -->
-<!-- 					</button> -->
-<!-- 				</div> -->
 				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="tabla_tarifa">
+					id="tabla_tarifa" style="width:100%;">
 					<thead>
 						<tr>
 							<th>Limite Inferior</th>
@@ -228,6 +223,7 @@
 		console.log("cargando dataTable");
 		var tablaTarifa = $('#tabla_tarifa').DataTable( {
 			"destroy": true,
+			responsive: true,
 			'bProcessing': false,
 			'bServerSide': false,
 // 			"aaSorting": [[ 0, "asc" ]],

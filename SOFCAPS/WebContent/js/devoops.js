@@ -96,7 +96,9 @@ function LoadDataTablesScripts2(callback){
 					$.getScript('plugins/datatables/nuevo/dataTables.bootstrap.js', function() {
 						$.getScript('plugins/datatables/nuevo/dataTables.buttons.js', function() {
 							$.getScript('plugins/datatables/nuevo/buttons.bootstrap.js', function(){
-								$.getScript('plugins/datatables/nuevo/buttons.html5.min.js	',callback);
+								$.getScript('plugins/datatables/nuevo/dataTables.responsive.min.js',function(){
+									$.getScript('plugins/datatables/nuevo/buttons.html5.min.js	',callback);
+								});
 							});
 						});
 					});

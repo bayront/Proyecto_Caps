@@ -15,6 +15,7 @@
 <link href="plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
 <link href="font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet">
 <link href="plugins/datatables/nuevo/dataTables.bootstrap.css" rel="stylesheet">
+<link href="plugins/datatables/nuevo/responsive.dataTables.min.css" rel="stylesheet">
 <link href="plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
 <link href="plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
 <link href="plugins/xcharts/xcharts.min.css" rel="stylesheet">
@@ -242,8 +243,6 @@
 					</a>
 						<ul class="dropdown-menu">
 							<li><a class="ajax-link" href="ajax/crear_tarifa.jsp">Crear
-									tarifa</a></li>
-							<li><a class="ajax-link" href="ajax/ver_tarifa.jsp">Ver
 									tarifa</a></li>
 						</ul>
 					</li>

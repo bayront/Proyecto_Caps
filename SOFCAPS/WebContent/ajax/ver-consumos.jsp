@@ -141,7 +141,7 @@
 <!-- 					</button> -->
 <!-- 				</div> -->
 				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="tabla_consumo">
+					id="tabla_consumo" style="width:100%;">
 					<thead>
 						<tr>
 							<th>Fecha_Corte</th>
@@ -416,6 +416,7 @@
 		colapsar_desplegar($("#colapsar_desplegar1"));
 		console.log("cargando dataTable");
 		var tablaConsumo = $('#tabla_consumo').DataTable( {
+			responsive: true,
 			"destroy": true,
 			'bProcessing': false,
 			'bServerSide': false,

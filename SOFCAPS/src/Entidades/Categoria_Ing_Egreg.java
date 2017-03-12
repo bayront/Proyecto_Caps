@@ -6,7 +6,7 @@ public class Categoria_Ing_Egreg
    private String nombreCategoria;
    private Boolean eliminado;
    private Integer categoria_Ing_Egreg_ID;
-   private int tipoCategoria;
+   private TipoCategoria tipoCategoria;
 
    public Categoria_Ing_Egreg() 
    {
@@ -18,12 +18,12 @@ public class Categoria_Ing_Egreg
     public void setNombreCategoria(String nombreCategoria) {
         this.nombreCategoria = nombreCategoria;
     }
-//    public TipoCategoria getTipoCategoria() {
-//        return tipoCategoria;
-//    }
-//    public void setTipoCategoria(TipoCategoria tipoCategoria) {
-//        this.tipoCategoria = tipoCategoria;
-//    }
+    public TipoCategoria getTipoCategoria() {
+        return tipoCategoria;
+    }
+    public void setTipoCategoria(TipoCategoria tipoCategoria) {
+        this.tipoCategoria = tipoCategoria;
+    }
 	public Integer getCategoria_Ing_Egreg_ID() {
 		return categoria_Ing_Egreg_ID;
 	}
@@ -37,12 +37,6 @@ public class Categoria_Ing_Egreg
 		this.eliminado = eliminado;
 	}
 
-	public int getTipoCategoria() {
-		return tipoCategoria;
-	}
-
-	public void setTipoCategoria(int tipoCategoria) {
-		this.tipoCategoria = tipoCategoria;
-	} 	
+	
 	
 }

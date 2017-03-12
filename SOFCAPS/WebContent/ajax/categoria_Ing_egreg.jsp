@@ -1,4 +1,8 @@
-	<%@page import="Datos.DT_categoria_Ing_Engre, java.util.*, Entidades.TipoCategoria, java.sql.ResultSet ;"%>
+<%@page import="Datos.DT_categoria_Ing_Engre, java.util.*, Entidades.TipoCategoria, java.sql.ResultSet ;"%>
+<%@page language="java"%>
+<%@page contentType="text/html"%> 
+<%@page pageEncoding="UTF-8"%> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -16,26 +20,22 @@
 					<i class="fa fa-search"></i> <span>Registros de consumos</span>
 				</div>
 				<div class="box-icons">
-					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+					<a class="collapse-link" id="colapsar_desplegar1"> <i class="fa fa-chevron-up"></i>
 					</a> <a class="expand-link"> <i class="fa fa-expand"></i>
 					</a>
 				</div>
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content">
-				<form class="form-horizontal" role="form" id="defaultForm" method="post" action="">
-
+				<form class="form-horizontal formCatIE" role="form" id="defaultForm" method="post" action="">
+					<input type = "hidden" id="catIE_ID" name ="catIE_ID" >
+					<input type = "hidden" id="opcion" name ="opcion" value ="guardar">
 					<div class="form-group">
-
-						<!-- PARA COLOR NEGRO DEJAR CON CLASE *control-label* -->
-						<label class="col-sm-4 control-label">Nombre de la categoria:</label>
+						<label class="col-sm-4 control-label">Nombre de la categoría:</label>
 						<div class="col-sm-4">
-							<!-- PARA COLOR NEGRO DEJAR CON CLASE *form-control* -->
 							<input  id= "nombreCategoria" name="nombreCategoria" type="text" class="form-control"
-								placeholder="" data-toggle="tooltip"
-								data-placement="bottom" title="Tooltip para nombre">
+								placeholder="" data-toggle="tooltip" data-placement="bottom" title="Tooltip para nombre">
 						</div>
- 
 					</div>
 					
 					<%
@@ -46,7 +46,6 @@
 						ResultSet rs = dt.cargarDatosTabla();
 						
 					%>
-
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Tipo de categoria:</label>
 						<div class="col-sm-5">
@@ -67,18 +66,13 @@
 					<div class="clearfix"></div>
 					
 					<div class="form-group">
-					<!-- Tipos de botones para enviar -->
-					
-					
 						<div class="col-sm-offset-2 col-sm-2">
-							<button type="submit" onclick="guardar();" class="btn btn-primary btn-label-left">
+							<button type="submit" class="btn btn-primary btn-label-left">
 								<span><i class="fa fa-download"></i></span> Guardar
 							</button>
 						</div>
-						
-						
 						<div class="col-sm-offset-2 col-sm-2">
-							<button type="cancel" class="btn btn-default btn-label-left">
+							<button type="button" class="btn btn-default btn-label-left" onclick= "cancelar();">
 								<span><i class="fa fa-clock-o txt-danger"></i></span> Cancelar
 							</button>
 						</div>
@@ -94,7 +88,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name text-center">
-					<i class="fa fa-th"></i> <span>Lista caregorias de ingreso y egreso</span>
+					<i class="fa fa-th"></i> <span>Lista de Categorías de ingresos y egresos</span>
 				</div>
 				<div class="box-icons">
 					<a id="colapsar_desplegar2" class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -104,40 +98,15 @@
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content no-padding table-responsive">
-<!-- 				<div style="display: block; text-align: center;"> -->
-<!-- 					<button type="button" class="btn btn-default btn-app-sm btn-circle" id="center_button"> -->
-<!-- 						<i class=" fa fa-plus"></i> -->
-<!-- 					</button> -->
-<!-- 				</div> -->
-				<table class="table table-bordered table-striped table-hover table-heading table-datatable"
-					id="tbl_CategoriaIE">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="tbl_CategoriaIE" style="width:100%;">
 					<thead>
 						<tr>
-							<th>Id</th>
-							<th>Nombre de la categoria</th>
-							<th>Tipo de la categoria</th>
-							<th>Acciones</th>
+							<th>Nombre de la Categoría</th>
+							<th>Tipo de categoría</th>
+							<th></th>
 						</tr>
 					</thead>
-					<tbody>
-						<%
-							rs.beforeFirst();
-					    	while(rs.next())
-					    	{
-					    %>
-					        <tr>
-					            <td><%=rs.getInt(1)%></td>
-					            <td><%=rs.getString(2)%></td>
-					            <td><%=rs.getString(3)%></td>
-					            <td>
-					            	<button type="button" class="editarConsumo btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="fa fa-pencil-square-o"></i> </button>
-									<button type="button" class="eliminarConsumo btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Eliminar"><i class="fa fa-trash-o"></i> </button>
-								</td>					            
-					        </tr>
-					      <%
-					      	} 
-					      %>
-					</tbody>
 				</table>
 			</div>
 		</div>
@@ -146,7 +115,7 @@
 
 <div>
 	<form id="frmEliminarCategoria" action="" method="POST">
-		<input type="hidden" id="tarifa_ID" name="tarifa_ID" value="">
+		<input type="hidden" id="catIE_ID" name="catIE_ID" value="">
 		<input type="hidden" id="opcion" name="opcion" value="eliminar">
 
 		<div id="modalbox">
@@ -168,156 +137,215 @@
 </div>
 
 <script type="text/javascript">
+
+// Run Select2 plugin on elements
+function DemoSelect2() {
 	
-	// Run Select2 plugin on elements
-	function DemoSelect2() {
-		
-		$('#tipoCategoria').select2();
+	$('#tipoCategoria').select2();
+}
+
+var verResultado = function(r) {
+	if(r == "BIEN"){
+		listarT();
+		alert("Se realizo la operación correctamente");
 	}
-	
-	
-	function cargarValoresDataTable(id, nombre, descripcion)
-	{
-		
+	if(r == "Error"){
+		alert("ERROR: No se pudo realizar la operación");
 	}
-	
+	if(r =="VACIO"){
+		alert("VACIO: No se realizo ninguna operación");
+	}
+}
 
 	function guardar()
 	{
-		var nombreCategoria ="";
-		var tipoCategoria = "";
-		
-		nombreCategoria = $("#nombreCategoria").val();
-		tipoCategoria = $("#tipoCategoria").val();
-		
-		$.ajax
-		({
-			url: "SL_ajax_table_categoriaIE",
-			type: "post",
-			datatype: 'html',
-			data: {'nombreCategoria' :nombreCategoria, 'tipoCategoria':tipoCategoria},
-			success: function(data)
-			{
-				$('#tbl_CategoriaIE').html(data);
-				$('#tbl_CategoriaIE').dataTable().fnDestroy();
-				$('#tbl_CategoriaIE').dataTable();
- 				LoadDataTablesScripts(AllTables);
- 				$('#tbl_CategoriaIE').dataTable({ 
- 					"aaData": orgContent,
- 		            "bLengthChange": true //used to hide the property  
-					
- 				});
-			}
-			
-		});
-		
+		$(".formCatIE").on("submit", function(e) { 
+			e.preventDefault();
+			var frm = $(this).serialize();
+			console.log(frm);
+			$.ajax({//enviar datos por ajax
+				method:"post",
+				url:"./SL_ajax_table_categoriaIE",
+				data: frm//datos a enviar
+				}).done(function(info) {
+				console.log(info);
+					limpiar_texto();
+					verResultado(info);
+					colapsar_desplegar($("#colapsar_desplegar2"));
+					colapsar_desplegar($("#colapsar_desplegar1"));
+				});
+			});
+	}
+
+	function abrirDialogo() {
+		OpenModalBox(
+				"<div><h3>Borrar Categoría de ingresos y egresos</h3></div>",
+				"<p Style='text-align: center;'>¿Esta seguro que desea borrar este registro?</p>",
+				"<div Style='text-align: center; margin-bottom: -10px;'>"+
+				"<button type='button' id='eliminar_categoria' class='btn btn-primary'>Borrar </button>"
+				+ "<button type='button' class='btn btn-secondary' Style='margin-left: 10px;' onclick='CloseModalBox()'> Cancelar</button>"
+				+ "</div>");
+		eliminar();
 	}
 	
-</script>
-	<script type="text/javascript">
-	var listarT = function() {
-		$('#tbl_CategoriaIE').dataTable({
-			"destroy": true,
-			'bProcessing': false,
-			'bServerSide': false,
-			//ajax: {
-			//	"method":"GET",
-			//	"url":"./SL_consumo",
-			//	"data": {
-			 //       "carga": 1//para decirle al servlet que cargue consumos + cliente + contrato
-			  //  },
-			//	"dataSrc":"aaData"
-			//},
-			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
-        	"bJQueryUI": true,
-			"language":idioma_esp,
-// 			"columns": [
-// 	            { "data": "fecha_fin" },
-// 	            { "data": "lectura_Actual" },
-// 	            { "data": "consumoTotal" },
-// 	            { "data": "cliente.nombreCompleto" },
-// 	            { "data": "contrato.numContrato" },
-// 	            { "data": "contrato.numMedidor" },
-// 	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' data-toggle='tooltip' "+
-// 					"data-placement='bottom' title='Editar'>"+
-// 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
-// 					"<button type='button' class='eliminarConsumo btn btn-danger' data-toggle='tooltip' "+
-// 					"data-placement='bottom' title='Eliminar'>"+
-// 					"<i class='fa fa-trash-o'></i> </button>"}
-// 	            ],
-				"sDom":"Bfrtip",
-// 	            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
-// 					 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
-// 					 +"<rt>"
-// 					 +"<'row'<'form-inline'"
-// 					 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
-	            "buttons":[{
-					"text": "<i class='fa fa-user-plus'></i>",
-					"titleAttr": "Agregar usuario",
-					"className": "btn btn-success",
-					"action": function() {
-						agregar_nuevo_consumo();
-					}
-				},
-				{
-	                extend:    'excelHtml5',
-	                text:      '<i class="fa fa-file-excel-o"></i>',
-	                titleAttr: 'excel'
-	            },
-	            {
-	                extend:    'csvHtml5',
-	                text:      '<i class="fa fa-file-text-o"></i>',
-	                titleAttr: 'csv'
-	            },
-	            {
-	                extend:    'pdfHtml5',
-	                text:      '<i class="fa fa-file-pdf-o"></i>',
-	                titleAttr: 'pdf'
-	            }]
+	var eliminar = function() {
+		$("#eliminar_categoria").on("click", function() {
+			frmElim = $("#frmEliminarCategoria").serialize();
+			console.log("datos a eliminar: " + frmElim);
+			$.ajax({
+				method:"POST",
+				url:"SL_ajax_table_categoriaIE",
+				data: frmElim
+			}).done(function(info) {
+				 	limpiar_texto();
+				 	verResultado(info);
+			});
+			CloseModalBox();
 		});
 	}
 
-	function AllTables() {
-		//cargar PDF Y EXCEL
-		$.getScript('plugins/jquery/jquery-2.1.0.min.js', function(){
-			$.getScript('plugins/datatables/nuevo/jquery.dataTables.js', function(){
-				$.getScript('plugins/datatables/nuevo/jszip.min.js', function(){
-					$.getScript('plugins/datatables/nuevo/pdfmake.min.js',function(){
-						$.getScript('plugins/datatables/nuevo/vfs_fonts.js',function(){
-							console.log("PDF Y EXCEL cargado");
-							listarT();
-						});
-					});
-				});
+	var agregar_nuevo_categoria = function() {
+		limpiar_texto();
+		colapsar_desplegar($("#colapsar_desplegar2"));
+		colapsar_desplegar($("#colapsar_desplegar1"));
+	}
+	
+	
+	var limpiar_texto = function() {//limpiar texto del formulario
+		$("#opcion").val("guardar");
+		$("#catIE_ID").val("");
+		$("#nombreCategoria").val("");
+	}
+	
+	var cancelar = function() {
+		limpiar_texto();
+		colapsar_desplegar($("#colapsar_desplegar1"));
+		colapsar_desplegar($("#colapsar_desplegar2"));
+	}
+
+function listarT() {
+
+	var tablaCatIE = $('#tbl_CategoriaIE').DataTable( {
+		responsive: true,
+		"destroy": true,
+		'bProcessing': false,
+		'bServerSide': false,
+		ajax: {
+			"method":"GET",
+			"url":"./SL_ajax_table_categoriaIE",
+			"dataSrc":"aaData"
+		},
+		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+    	"bJQueryUI": true,
+		"language":idioma_esp,
+		"columns": [
+            { "data": "nombreCategoria" },
+            { "data": "tipoCategoria.descripcion" },
+            {"defaultContent":"<button type='button' class='editarCategoria btn btn-primary' data-toggle='tooltip' "+
+				"data-placement='bottom' title='Editar'>"+
+				"<i class='fa fa-pencil-square-o'></i> </button>  "+
+				"<button type='button' class='eliminarCategoria btn btn-danger' data-toggle='tooltip' "+
+				"data-placement='bottom' title='Eliminar'>"+
+				"<i class='fa fa-trash-o'></i> </button>"}
+            ],
+            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
+				 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
+				 +"<rt>"
+				 +"<'row'<'form-inline'"
+				 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
+            "buttons":[{
+				"text": "<i class='fa fa-user-plus'></i>",
+				"titleAttr": "Agregar usuario",
+				"className": "btn btn-success",
+				"action": function() {
+					agregar_nuevo_categoria();
+					console.log("boton nuevo");
+				}
+			},
+			{
+                extend:    'excelHtml5',
+                text:      '<i class="fa fa-file-excel-o"></i>',
+                titleAttr: 'excel'
+            },
+            {
+                extend:    'csvHtml5',
+                text:      '<i class="fa fa-file-text-o"></i>',
+                titleAttr: 'csv'
+            },
+            {
+                extend:    'pdfHtml5',
+                text:      '<i class="fa fa-file-pdf-o"></i>',
+                titleAttr: 'pdf'
+            }]
+	});
+	obtener_datos_editar("#tbl_CategoriaIE tbody",tablaCatIE);
+	obtener_id_eliminar('#tbl_CategoriaIE tbody',tablaCatIE);
+}
+var obtener_id_eliminar = function(tbody, table) {
+	$(tbody).on("click", "button.eliminarCategoria", function() {
+		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+		var cat_ID;
+		table.rows().every(function(index, loop, rowloop) {
+			console.log("indices: "+ index +" : "+datos);
+			if(index == datos){
+				cat_ID = table.row(index).data().categoria_Ing_Egreg_ID;
+				$("#frmEliminarCategoria #catIE_ID").val(cat_ID);
+			}
+		});
+		//solo se obtiene el id que es oculto
+		abrirDialogo();
+	});
+}
+
+var obtener_datos_editar = function(tbody, table) {
+	$(tbody).on("click", "button.editarCategoria", function() {
+		var datos = table.row($(this).parents("tr")).index();
+		var catID, tipoCat_ID, nombreCat;
+		table.rows().every(function(index, loop, rowloop) {
+			console.log("indices: "+ index +" : "+datos);
+			if(index == datos){
+				catID = table.row(index).data().categoria_Ing_Egreg_ID;
+				tipoCat_ID = table.row(index).data().tipoCategoria.tipoCategoria_ID;
+				nombreCat = table.row(index).data().nombreCategoria;
+				$("#nombreCategoria").val(nombreCat);
+				$("#catIE_ID").val(catID);
+				$("#tipoCategoria").val(tipoCat_ID);
+				$("#opcion").val("actualizar");
+			}
+		});
+		colapsar_desplegar($("#colapsar_desplegar1"));
+		colapsar_desplegar($("#colapsar_desplegar2"));
+	});
+}
+
+function AllTables() {
+	//cargar PDF Y EXCEL
+	$.getScript('plugins/datatables/nuevo/jszip.min.js', function(){
+		$.getScript('plugins/datatables/nuevo/pdfmake.min.js',function(){
+			$.getScript('plugins/datatables/nuevo/vfs_fonts.js',function(){
+				console.log("PDF Y EXCEL cargado");
+				listarT();
 			});
 		});
-		//LoadSelect2Script(MakeSelect2);
-	}
+	});
+	//LoadSelect2Script(MakeSelect2);
+}
+	
 	
 	$(document).ready(function() {
 		
-		LoadDataTablesScripts(AllTables);
-		//crear los datepickers
-		LoadTimePickerScript(AllTimePickers);
-		// Create UI spinner
-		$("#ui-spinner").spinner();
+		LoadDataTablesScripts2(AllTables);
 		
-		// Create Wysiwig editor for textare
-		TinyMCEStart('#wysiwig_simple', null);
-		TinyMCEStart('#wysiwig_full', 'extreme');
-		// Add slider for change test input length
-		FormLayoutExampleInputLength($(".slider-style"));
-		// Initialize datepicker
-		$('#input_date').datepicker({
-			setDate : new Date()
-		});
-		// Add tooltip to form-controls
 		$('.form-control').tooltip();
 		LoadSelect2Script(DemoSelect2);
 		// Load example of form validation
 		LoadBootstrapValidatorScript(DemoFormValidator);
+		
 		// Add drag-n-drop feature to boxes
 		WinMove();
-		
+		guardar();
+		colapsar_desplegar($("#colapsar_desplegar1"));
 	});
+	
+
 </script>

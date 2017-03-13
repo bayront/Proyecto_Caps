@@ -25,8 +25,6 @@ public class DTCategoria {
 		{
 			s = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
-			
-			
 		} 
 		catch (Exception e) 
 		{
@@ -35,8 +33,6 @@ public class DTCategoria {
 		}
 		return rs;
 	}
-	
-	
 	
 	public boolean guardarCategoria(Categoria a)
 	{

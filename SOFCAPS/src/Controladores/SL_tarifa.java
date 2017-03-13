@@ -1,7 +1,12 @@
 package Controladores;
+import Datos.DTCategoria;
 import Datos.DTTarifa;
+import Datos.DT_UnidadMedida;
 import Datos.DataTableObject;
+import Entidades.Categoria;
 import Entidades.Tarifa;
+import Entidades.Unidad_de_Medida;
+
 import java.sql.SQLException;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -10,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONObject;
 import java.sql.ResultSet;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -26,8 +30,9 @@ import com.google.gson.GsonBuilder;
 public class SL_tarifa extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DTTarifa datosTarifa = DTTarifa.getInstance();
+	private DT_UnidadMedida dtUM = DT_UnidadMedida.getInstance();
+	private DTCategoria dtCat = DTCategoria.getInstance();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	PrintWriter out;
 	
 	//PrinterWriter out;
 	//PrinterWriter out;
@@ -45,9 +50,14 @@ public class SL_tarifa extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("application/json");
-		out = response.getWriter();
 		try {
-			traertarifas(response);
+			if(Integer.parseInt(request.getParameter("carga")) == 1) {
+				traertarifas(response);
+			}else if(Integer.parseInt(request.getParameter("carga")) == 2) {
+				traerCategorias(response);
+			}else if(Integer.parseInt(request.getParameter("carga")) == 3) {
+				traerUnidadMedida(response);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,62 +65,81 @@ public class SL_tarifa extends HttpServlet {
 	}
 
 	/**
+	 * @throws IOException 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		System.out.println("hola post");
-		int lim_Inf, lim_Sup;
+		int lim_Inf, lim_Sup, categoria_ID, unidadMedida_ID;
 		String opcion;
 		float monto;
 		int Tarifa_ID;
 		opcion = request.getParameter("opcion").trim();
 		System.out.println("opcion a realizar: " + opcion);
 		
-		switch (opcion) {
-		case "actualizar":
-			lim_Inf = Integer.parseInt(request.getParameter("lim_Inf").trim());
-			lim_Sup = Integer.parseInt(request.getParameter("lim_Sup").trim());
-			monto= Float.parseFloat(request.getParameter("monto").trim());
-			Tarifa_ID = Integer.parseInt(request.getParameter("Tarifa_ID").trim());
-			actualizar(Tarifa_ID,lim_Inf,lim_Sup,monto,response);
-			break;
-		
-		case "eliminar":
-			Tarifa_ID= Integer.parseInt(request.getParameter("tarifa_ID"));
-			eliminar(Tarifa_ID, response);
-			break;
-		
-		case "guardar":
-			lim_Inf = Integer.parseInt(request.getParameter("lim_Inf")); 
-			lim_Sup = Integer.parseInt(request.getParameter("lim_Sup"));
-			monto = Float.parseFloat(request.getParameter("monto").trim());
-			//Tarifa_ID= Integer.parseInt(request.getParameter("Tarifa_ID").trim());
-			guardar(lim_Inf, lim_Sup,monto, response);
-			break;
-		default:
-			final JSONObject json = new JSONObject();
-			response.setContentType("application/json");
-			out = response.getWriter();
-			json.put("respuesta", "OPCION_VACIA");
-			System.out.println(json.toJSONString());
-			out.print(json.toJSONString());
-			break;
+		try {
+			switch (opcion) {
+			case "actualizar":
+				lim_Inf = Integer.parseInt(request.getParameter("lim_Inf").trim());
+				if(request.getParameter("lim_Sup").equals("") || request.getParameter("lim_Sup").isEmpty() || request.getParameter("lim_Sup").equals("0")) {
+					lim_Sup = 0;
+				}else {
+					lim_Sup = Integer.parseInt(request.getParameter("lim_Sup"));
+				}
+				monto= Float.parseFloat(request.getParameter("monto").trim());
+				Tarifa_ID = Integer.parseInt(request.getParameter("Tarifa_ID").trim());
+				categoria_ID = Integer.parseInt(request.getParameter("categoria_ID").trim());
+				unidadMedida_ID = Integer.parseInt(request.getParameter("unidadMedida_ID").trim());
+				actualizar(Tarifa_ID,lim_Inf,lim_Sup,monto, categoria_ID, unidadMedida_ID, response);
+				break;
+			
+			case "eliminar":
+				Tarifa_ID= Integer.parseInt(request.getParameter("tarifa_ID"));
+				eliminar(Tarifa_ID, response);
+				break;
+			
+			case "guardar":
+				lim_Inf = Integer.parseInt(request.getParameter("lim_Inf")); 
+				if(request.getParameter("lim_Sup").equals("") || request.getParameter("lim_Sup").isEmpty()) {
+					lim_Sup = 0;
+				}else {
+					lim_Sup = Integer.parseInt(request.getParameter("lim_Sup"));
+				}
+				monto = Float.parseFloat(request.getParameter("monto").trim());
+				categoria_ID = Integer.parseInt(request.getParameter("categoria_ID").trim());
+				unidadMedida_ID = Integer.parseInt(request.getParameter("unidadMedida_ID").trim());
+				guardar(lim_Inf, lim_Sup,monto, categoria_ID, unidadMedida_ID, response);
+				break;
+			default:
+				response.setContentType("text/plain");
+				PrintWriter out;
+				out = response.getWriter();
+				out.print("VACIO");
+				break;
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			verificar_resultado(false, response);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
-	private void actualizar(int tarifa_ID, int lim_Inf, int lim_Sup, float monto, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		Tarifa t = new Tarifa();
-		boolean resultado = false;
+	private void actualizar(int tarifa_ID, int lim_Inf, int lim_Sup, float monto,
+			int categoria_ID, int unidadMedida_ID, HttpServletResponse response) {
 		try 
 		{
-			//u.setLogin(login);
+			Tarifa t = new Tarifa();
+			Categoria cat =  new Categoria();
+			cat.setCategoria_ID(categoria_ID);
+			Unidad_de_Medida um = new Unidad_de_Medida();
+			um.setUnidad_de_Medida_ID(unidadMedida_ID);
 			t.setLim_Inf(lim_Inf);
 			t.setLim_Sup(lim_Sup);
 			t.setMonto(monto);
 			t.setTarifa_ID(tarifa_ID);
-			 resultado = datosTarifa.actualizarTarifa(t);
-			 verificar_resultado(resultado, response);
-			//response.sendRedirect("index.jsp?guardado");
+			t.setCategoria(cat);
+			t.setUnidad_de_Medida(um);
+			verificar_resultado(datosTarifa.actualizarTarifa(t), response);
 		} 
 		catch (Exception e) 
 		{
@@ -119,17 +148,21 @@ public class SL_tarifa extends HttpServlet {
 		
 	}
 
-	protected void guardar(int lim_Inf, int lim_Sup, float monto,HttpServletResponse response) {
+	protected void guardar(int lim_Inf, int lim_Sup, float monto, int categoria_ID,
+			int unidadMedida_ID, HttpServletResponse response) {
 		try 
 		{
 			Tarifa t = new Tarifa();
-			boolean resultado = false;
+			Categoria cat =  new Categoria();
+			cat.setCategoria_ID(categoria_ID);
+			Unidad_de_Medida um = new Unidad_de_Medida();
+			um.setUnidad_de_Medida_ID(unidadMedida_ID);
 			t.setLim_Inf(lim_Inf);
 			t.setLim_Sup(lim_Sup);
 			t.setMonto(monto);
-			 resultado = datosTarifa.guardarTarifa(t);
-			 verificar_resultado(resultado, response);
-			//response.sendRedirect("index.jsp?guardado");
+			t.setCategoria(cat);
+			t.setUnidad_de_Medida(um);
+			verificar_resultado(datosTarifa.guardarTarifa(t), response);
 		} 
 		catch (Exception e) 
 		{
@@ -138,47 +171,52 @@ public class SL_tarifa extends HttpServlet {
 	}
 	
 	protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {
-		final JSONObject json = new JSONObject();
+		response.setContentType("text/plain");
+		PrintWriter out;
 		if(r) {
-			response.setContentType("application/json");
 			out = response.getWriter();
-			json.put("respuesta", "BIEN");
-			System.out.println(json.toJSONString());
-			out.print(json.toJSONString());
+			out.print("BIEN");
 		}else {
-			response.setContentType("application/json");
 			out = response.getWriter();
-			json.put("respuesta", "ERROR");
-			System.out.println(json.toJSONString());
-			out.print(json.toJSONString());
+			out.print("ERROR");
 		}
 	}
 
 	protected void eliminar(int Tarifa_ID, HttpServletResponse response) {
-			Tarifa t = new Tarifa();
-		boolean resultado = false;
 		try 
 		{
-			
+			Tarifa t = new Tarifa();
 			t.setTarifa_ID(Tarifa_ID);
-			resultado = datosTarifa.eliminarTarifa(t);
-			verificar_resultado(resultado, response);
+			verificar_resultado(datosTarifa.eliminarTarifa(t), response);
 		} 
 		catch (Exception e) 
 		{
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
-	protected void traertarifas (HttpServletResponse response)throws SQLException {
-		
+	protected void traertarifas (HttpServletResponse response)throws SQLException, IOException {
+		PrintWriter out;
+		out = response.getWriter();
 		List<Tarifa>tarifas = new ArrayList<>();
-		ResultSet rs = datosTarifa.cargartarifa();
+		ResultSet rs = datosTarifa.cargarTarifaCategoria();
 		while(rs.next()){
 			Tarifa t = new Tarifa();
+			Categoria cat = new Categoria();
+			Unidad_de_Medida um = new Unidad_de_Medida();
+			um.setUnidad_de_Medida_ID(rs.getInt("Unidad_de_Medida_ID"));
+			cat.setCategoria_ID(rs.getInt("Categoria_ID"));
+			cat.setNomCategoria(rs.getString("nomCategoria"));
 			t.setTarifa_ID(rs.getInt("Tarifa_ID"));
 			t.setLim_Inf(rs.getInt("lim_Inf"));
-			t.setLim_Sup(rs.getInt("lim_Sup"));
+			int lim_Sup = rs.getInt("lim_Sup");
+			if(lim_Sup == 0) {
+				System.out.println("no hay lim_Sup: " + lim_Sup);
+			}else {
+				t.setLim_Sup(rs.getInt("lim_Sup"));
+			}
 			t.setMonto(rs.getFloat("monto"));
+			t.setCategoria(cat);
+			t.setUnidad_de_Medida(um);
 			tarifas.add(t);
 			
 		}
@@ -191,7 +229,50 @@ public class SL_tarifa extends HttpServlet {
 		System.out.println(json.toString());
 		out.print(json);
 	}
-	
+	private void traerUnidadMedida(HttpServletResponse response) throws SQLException, IOException {
+		Gson gson2 = new GsonBuilder().setPrettyPrinting().create();
+		PrintWriter out2;
+		out2 = response.getWriter();
+		List<Unidad_de_Medida> unidades = new ArrayList<>();
+		ResultSet rs = dtUM.cargarUnidad_Medida();
+		while(rs.next()){
+			Unidad_de_Medida um = new Unidad_de_Medida();
+			um.setTipoMedida(rs.getString("tipoMedida"));
+			um.setUnidad_de_Medida_ID(rs.getInt("Unidad_de_Medida_ID"));
+			unidades.add(um);
+		}
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.aaData = new ArrayList<>();
+		for (Unidad_de_Medida unidad_de_Medida : unidades) {
+			dataTableObject.aaData.add(unidad_de_Medida);
+		}
+		String json = gson2.toJson(dataTableObject);
+		System.out.println(json.toString());
+		out2.print(json);
+	}
+
+	private void traerCategorias(HttpServletResponse response) throws SQLException, IOException {
+		Gson gson2 = new GsonBuilder().setPrettyPrinting().create();
+		PrintWriter out2;
+		response.setContentType("application/json");
+		out2 = response.getWriter();
+		List<Categoria> categorias = new ArrayList<>();
+		ResultSet rs = dtCat.Categorias();
+		while(rs.next()){
+			Categoria cat = new Categoria();
+			cat.setNomCategoria(rs.getString("nomCategoria"));
+			cat.setCategoria_ID(rs.getInt("categoria_ID"));
+			categorias.add(cat);
+		}
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.aaData = new ArrayList<>();
+		for (Categoria categoria : categorias) {
+			dataTableObject.aaData.add(categoria);
+		}
+		String json = gson2.toJson(dataTableObject);
+		System.out.println("DATOS: " + json.toString());
+		out2.print(json);
+	}
 	
 	
 

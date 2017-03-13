@@ -1,3 +1,7 @@
+<%@page language="java"%>
+<%@page contentType="text/html"%> 
+<%@page pageEncoding="UTF-8"%> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -9,82 +13,76 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
-		
-		
-	<!-- AQUI INICIA EL DIV PARA EL TITULO-->
 			<div class="box-header">
 				<div class="box-name">
 					<i class="fa fa-search"></i> <span>Crear Tarifa</span>
 				</div>
 				<div class="box-icons">
-					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
-					</a> <a class="expand-link"> <i class="fa fa-expand"></i>
-					</a>
+					<a id="colapsar_desplegar1" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir1" class="expand-link"> <i class="fa fa-expand"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
-			
-			<div class="box-icons">
-					<a id="colapsar_desplegar1" class="collapse-link"> <i
-						class="fa fa-chevron-up"></i></a> <a id="expandir1"
-						class="expand-link"> <i class="fa fa-expand"></i></a>
-				</div>
-			
-
 			<div class="box-content">
-				 
-					
 				<form class="form-horizontal" role="form" id="formTarifa" method="post" action="validators.html">
-				
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
 					<input type="hidden" id="actual" name="actual"> 
 					<input type="hidden" id="Tarifa_ID" name="Tarifa_ID">
 					<div class="form-group">
-						<label class="col-sm-2 control-label text-info">limite Inferior</label>
-						<div class="col-sm-5"><input id="lim_Inf" name="lim_Inf" type="text" class="form-control"  autofocus></div>
-					</div> 
-					<div class="form-group">
-						<label class="col-sm-2 control-label text-info">Limite Superior</label>
-							<div class="col-sm-5"><input id="lim_Sup" name="lim_Sup" type="text" class="form-control" ></div>
+						<label class="col-sm-4 control-label text-info">limite
+							Inferior</label>
+						<div class="col-sm-4">
+							<input id="lim_Inf" name="lim_Inf" type="text" class="form-control" autofocus>
+						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label text-info">monto</label>
-							<div class="col-sm-5"><input id="monto" name="monto" type="text" class="form-control" ></div>
+						<label class="col-sm-4 control-label text-info">Limite
+							Superior</label>
+						<div class="col-sm-4">
+							<input id="lim_Sup" name="lim_Sup" type="text" class="form-control">
+						</div>
 					</div>
-					
-<!-- 					<div class="form-group"> -->
-<!-- 						<label for="Tarifa_ID" class="col-sm-2 control-label text-info">Tarifa ID</label> -->
-<!-- 						<div class="col-sm-5"><input id="Tarifa_ID" name="Tarifa_ID" type="text" class="form-control" maxlength="8" ></div> -->
-<!-- 					</div> -->
-						
-						
 					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-3">
-							<button  id="btnEnviar" type="submit" class="btn btn-info btn-label-left">
-								<span><i class="glyphicon glyphicon-save text-info"></i></span><font color="black">Guardar</font>
+						<label class="col-sm-4 control-label text-info">monto</label>
+						<div class="col-sm-4">
+							<input id="monto" name="monto" type="text" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 text-right control-label">Categoria</label>
+						<div class="col-sm-4">
+							<select class="populate placeholder" name="categoria_ID" id="categoria_ID">
+								<option value="">Categoria</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 text-right control-label">Unidad de medida</label>
+						<div class="col-sm-4">
+							<select class="populate placeholder" name="unidadMedida_ID" id="unidadMedida_ID">
+								<option value="">Unidad de medida</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-3 col-sm-3">
+							<button id="btnEnviar" type="submit" class="btn btn-info btn-label-left">
+								<span><i class="glyphicon glyphicon-save text-info"></i></span>
+								<font color="black">Guardar</font>
 							</button>
 						</div>
-					<div class="col-sm-3">
+						<div class="col-sm-3">
 							<button type="button" class="btn btn-info btn-label-left" onclick="cancelar();">
-								<span><i class="fa fa-clock-o txt-info"></i></span><font color="black"> Cancelar</font>
+								<span><i class="fa fa-clock-o txt-info"></i></span>
+								<font color="black"> Cancelar</font>
 							</button>
 						</div>
 					</div>
-						
-						
-					<div class="col-sm-offset-2 col-sm-8">
-							<p class="mensaje"></p>
-					</div>
-					
 				</form>
-			</div> 
-			
-			
+			</div>
 		</div>
 	</div>
 </div>
-
-
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
@@ -93,9 +91,8 @@
 					<i class="fa fa-th"></i> <span>Lista de Tarifas</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar2" class="collapse-link"> <i class="fa fa-chevron-up"></i>
-					</a> <a id="expandir2" class="expand-link"> <i class="fa fa-expand"></i>
-					</a>
+					<a id="colapsar_desplegar2" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir2" class="expand-link"> <i class="fa fa-expand"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -107,7 +104,8 @@
 							<th>Limite Inferior</th>
 							<th>Limite Superior</th>
 							<th>Monto</th>
-							<th></th>
+							<th>Categoría</th>
+							<th>Acción</th>
 						</tr>
 					</thead>
 				</table>
@@ -138,9 +136,9 @@
 		</div>
 	</form>
 </div>
-
-	<script type="text/javascript">
-	// Iniciar dataTables
+<script type="text/javascript">
+// 	var eliminar_Editar_Activo = false;
+// 	var tablaTarifa;
 	function AllTables() {
 		//cargar PDF Y EXCEL
 		$.getScript('plugins/datatables/nuevo/jszip.min.js', function(){
@@ -157,98 +155,69 @@
 	function MakeSelect2() {
 		$('select').select2();
 		$('.dataTables_filter').each(
-				function() {
-					$(this).find('label input[type=text]').attr('placeholder',
-							'Buscar');
-				});
+			function() {
+				$(this).find('label input[type=text]').attr('placeholder','Buscar');
+			});
 	}
-
+	
 	var limpiar_texto = function() {//limpiar texto del formulario
 		$("#opcion").val("guardar");
 		$("#lim_Inf").val("");
 		$("#lim_Sup").val("");
 		$("#monto").val("");
-		//$("#Tarifa_ID").val("");
 	}
-	$(document).ready(function() {
-
-		//cargar scripts dataTables
-		LoadDataTablesScripts2(AllTables);
 	
-		// A�adir Tooltip para formularios
-		$('.form-control').tooltip();
-
-		//Cargar ejemplo para validaciones
-		LoadBootstrapValidatorScript(DemoFormValidator);	
-		WinMove();
-		//add tooltip
-		$('[data-toggle="tooltip"]').tooltip();
-	});
-	
-	function filtrarTabla(){
-		    // Setup - add a text input to each footer cell
-		    $('#datatable-filter thead th label input').each( function () {
-		        var title = $(this).attr("name");
-		        $(this).attr("placeholder", "Buscar por " + title);
-		    } );
-		 
-		    // DataTable
-		    var table = $('#datatable-filter').DataTable({
-		    	"destroy": true,
-		    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
-		    	"bJQueryUI": true,
-				"language":idioma_esp,
-				"columns": [
-		            { "data": "lim_Inf" },
-		            { "data": "lim_Sup" },
-		            { "data": "monto" },
-		            {"defaultContent":"<button type='button' class='seleccionar btn btn-primary'>"+
-						"Seleccionar</button>"}
-		            ],
-		    });
-		 
-		    // Apply the search
-		    table.columns().every( function () {
-		        var that = this;
-		        $( 'input', this.header() ).on( 'keyup change', function () {
-		            if ( that.search() !== this.value ) {
-		                that.search( this.value) .draw();
-		            }
-		        } );
-		    } );
+	var verResultado = function(r) {
+		if(r == "BIEN"){
+// 			tablaTarifa.destroy();
+			iniciarTabla();
+			limpiar_texto();
+			alert("Se guardaron los datos carrectamente");
+		}
+		if(r == "ERROR"){
+			alert("ERROR: No se pudo realizar la operación");
+		}
+		if(r =="VACIO"){
+			alert("VACIO: No se realizo ninguna operación");
+		}
 	}
 	
 	function iniciarTabla(){
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		console.log("cargando dataTable");
+		console.log("cargar DataTable");
 		var tablaTarifa = $('#tabla_tarifa').DataTable( {
 			"destroy": true,
 			responsive: true,
 			'bProcessing': false,
 			'bServerSide': false,
-// 			"aaSorting": [[ 0, "asc" ]],
- 	//		"sDom": "T<'box-contents'<'col-sm-4'f><'col-sm-4'B><'col-sm-4 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
 			"ajax": {
 				"method":"GET",
 				"url":"./SL_tarifa",
+				"data": {
+			        "carga": 1//para decirle al servlet que cargue datos
+			    },
  				"dataSrc":"aaData"
 			},
 			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
-        	"bJQueryUI": true,
-//         	pagingType: 'full_numbers',	
+        	"bJQueryUI": true,	
 			"language":idioma_esp,
 			"columns": [
 	            { "data": "lim_Inf" },
-	            { "data": "lim_Sup" },
+	            { "data": null,
+	                render: function ( data, type, row ) {
+	                	if(data.lim_Sup == null){
+	                		return "";
+	                	}else{
+	                		return data.lim_Sup;
+	                	}
+	                }},
 	            { "data": "monto" },
+	            { "data": "categoria.nomCategoria" },
 	            {"defaultContent":"<button type='button' class='editarTarifa btn btn-primary' data-toggle='tooltip' "+
 					"data-placement='bottom' title='Editar Tarifas'>"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
-					
 					"<button type='button' class='eliminar btn btn-danger'>"+
 					"<i class='fa fa-trash-o'></i>"+
 					"</button>"}
-					
 	            ],
 	            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 					 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
@@ -279,16 +248,14 @@
 	                titleAttr: 'pdf'
 	            }]
 		});
-//
 		obtener_datos_editar('#tabla_tarifa tbody', tablaTarifa);
 		obtener_id_eliminar('#tabla_tarifa tbody', tablaTarifa);
-
 	}
 	
 	var agregar_nuevo_tarifa = function() {
 		limpiar_texto();
-		//colapsar_desplegar($("#colapsar_desplegar2"));
 		colapsar_desplegar($("#colapsar_desplegar1"));
+		colapsar_desplegar($("#colapsar_desplegar2"));
 	}
 	
 	var cancelar = function() {
@@ -308,59 +275,59 @@
 			data: frm//datos a enviar
 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
 			console.log(info);
-//				mostrar_mensaje(info);//se envia a verificar que mensaje respondioel servlet
-				limpiar_texto();
-				iniciarTabla();//volver a listar datos
+				colapsar_desplegar($("#colapsar_desplegar1"));
+				colapsar_desplegar($("#colapsar_desplegar2"));
+				verResultado(info);
 			});
 		});
 	}
-	$(document).ready(function() {
-		// Create UI spinner
-		$("#ui-spinner").spinner();
-		
-		// Add tooltip to form-controls
-		$('body').tooltip();
-		// Load example of form validation
-		LoadBootstrapValidatorScript(DemoFormValidator);
-		// Add drag-n-drop feature to boxes
-		WinMove();
-		guardar();//activar evento de guardar
-		
-	});
 	
 	var obtener_datos_editar = function(tbody, table) {
+// 		if(eliminar_Editar_Activo == true){
+			
+// 		}else{
+			
+// 		}
 		$(tbody).on("click", "button.editarTarifa", function() {//activar evento click en boton actualizar que esta en el dataTable
-			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
-			var tarifa_ID, lim_Inf, lim_Sup, monto;
-			table.rows().every(function(index, loop, rowloop) {
-				console.log("indices: "+ index +" : "+datos);
-				if(index == datos){
-					tarifa_ID = table.row(index).data().tarifa_ID;
-					lim_Inf = table.row(index).data().lim_Inf;
-					lim_Sup = table.row(index).data().lim_Sup;
-					monto = table.row(index).data().monto;
-					console.log("tarifa_ID: " + tarifa_ID);
-					$("#lim_Inf").val(lim_Inf);
-					$("#lim_Sup").val(lim_Sup);
-					$("#monto").val(monto);
-					$("#Tarifa_ID").val(tarifa_ID);
-					$("#opcion").val("actualizar");
-				}
-			});
+// 			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+// 			var tarifa_ID, lim_Inf, lim_Sup, monto, catID, unidadID;
+// 			table.rows().every(function(index, loop, rowloop) {
+// 				console.log("indices: "+ index +" : "+datos);
+// 				if(index == datos){
+// 					tarifa_ID = table.row(index).data().tarifa_ID;
+// 					lim_Inf = table.row(index).data().lim_Inf;
+// 					lim_Sup = table.row(index).data().lim_Sup;
+// 					monto = table.row(index).data().monto;
+// 					catID = table.row(index).data().categoria.categoria_ID;
+// 					unidadID = table.row(index).data().unidad_de_Medida.unidad_de_Medida_ID;
+// 					console.log("unidad: "+unidadID+", cat: "+catID);
+// 					console.log("tarifa_ID: " + tarifa_ID);
+// 					$("#lim_Inf").val(lim_Inf);
+// 					$("#lim_Sup").val(lim_Sup);
+// 					$("#monto").val(monto);
+// 					$("#Tarifa_ID").val(tarifa_ID);
+// 					$("#opcion").val("actualizar");
+// 					$("#categoria_ID").val(catID);
+// 					$("#categoria_ID").change();
+// 					$("#unidadMedida_ID").val(unidadID);
+// 					$("#unidadMedida_ID").change();
+// 				}
+// 			});
+			var datos = table.row($(this).parents("tr")).data();
+				$("#lim_Inf").val(datos.lim_Inf);
+				$("#lim_Sup").val(datos.lim_Sup);
+				$("#monto").val(datos.monto);
+				$("#Tarifa_ID").val(datos.tarifa_ID);
+				$("#opcion").val("actualizar");
+				$("#categoria_ID").val(datos.categoria.categoria_ID);
+				$("#categoria_ID").change();
+				$("#unidadMedida_ID").val(datos.unidad_de_Medida.unidad_de_Medida_ID);
+				$("#unidadMedida_ID").change();
+				console.log("categoria: "+datos.categoria.categoria_ID+", monto: "+datos.monto);
+// 			$(tbody).off("click", "button.editarTarifa");
 			colapsar_desplegar($("#colapsar_desplegar1"));
 			colapsar_desplegar($("#colapsar_desplegar2"));
 		});
-	}
-	
-	function abrirDialogo() {
-		OpenModalBox(
-				"<div><h3>Borrar Tarifa</h3></div>",
-				"<p Style='text-align: center;'>Esta seguro de borrar esta tarifa?</p>",
-				"<div Style='text-align: center; margin-bottom: -10px;'>"+
-				"<button type='button' id='eliminar_tarifa' class='btn btn-primary'>Borrar </button>"
-				+ "<button type='button' class='btn btn-secondary' Style='margin-left: 10px;' onclick='CloseModalBox()'> Cancelar</button>"
-				+ "</div>");
-		eliminar();
 	}
 	
 	var obtener_id_eliminar = function(tbody, table) {
@@ -375,15 +342,24 @@
 					$("#frmEliminarTarifa #tarifa_ID").val(tarifa_ID);
 				}
 			});
-			//solo se obtiene el id que es oculto
 			abrirDialogo();
+// 			$(tbody).off("click", "button.eliminar");
 		});
+	}
+	
+	function abrirDialogo() {
+		OpenModalBox(
+				"<div><h3>Borrar Tarifa</h3></div>",
+				"<p Style='text-align: center;'>Esta seguro de borrar esta tarifa?</p>",
+				"<div Style='text-align: center; margin-bottom: -10px;'>"+
+				"<button type='button' id='eliminar_tarifa' class='btn btn-primary'>Borrar </button>"
+				+ "<button type='button' class='btn btn-secondary' Style='margin-left: 10px;' onclick='CloseModalBox()'> Cancelar</button>"
+				+ "</div>");
+		eliminar();
 	}
 	
 	var eliminar = function() {
 		$("#eliminar_tarifa").on("click", function() {
-// 			var usuario_id= $("#frmEliminarTarifa #tarifa_ID").val();//se obtiene el id del usuario que esta oculto
-// 			var opcion = $("#frmEliminarTarifa #opcion").val();//se obtiene la opcion que esta oculta
 			frmElim = $("#frmEliminarTarifa").serialize();
 			console.log("datos a eliminar: " + frmElim);
 			$.ajax({
@@ -391,66 +367,60 @@
 				url:"SL_tarifa",
 				data: frmElim
 			}).done(function(info) {
-// 			mostrar_mensaje(info);
-				iniciarTabla();
+				verResultado(info);
 				console.log(info);
 			});
 			CloseModalBox();
 		});
 	}
 	
-</script>
-
-<script type="text/javascript">
-	
 	$(document).ready(function() {
-		// Create UI spinner
-		$("#ui-spinner").spinner();
+
+		//cargar scripts dataTables
+		LoadDataTablesScripts2(AllTables);
+	
+		// Añadir Tooltip para formularios
+		$('.form-control').tooltip();
+		//add tooltip
+		$('[data-toggle="tooltip"]').tooltip();
+
+		//Cargar ejemplo para validaciones
+		LoadBootstrapValidatorScript(DemoFormValidator);	
 		
-		// Add tooltip to form-controls
-		$('body').tooltip();
-		// Load example of form validation
-		LoadBootstrapValidatorScript(DemoFormValidator);
-		// Add drag-n-drop feature to boxes
 		WinMove();
-//  		guardar();//activar evento de guardar
-		limpiar_texto();
 		
+		//Activar evento para guardar
+		guardar();
+		
+		colapsar_desplegar($("#colapsar_desplegar1"));
+		
+		//cargar selects
+		cargarSelect("#unidadMedida_ID", 3);//traer categorias
+		cargarSelect("#categoria_ID", 2)//traer unidadMedidas
 	});
 	
-	
-	//metodo guardar donde activa el evento submit del formulario de registro
-	
-	//revise los mensaje que envian el guardar y eliminar (metodos)
-	var mostrar_mensaje = function(info) {
-		var text ="", color="";
-		console.log("info: " + info.respuesta);
-		if (info.respuesta =="BIEN"){//si la respuesta fue BIEN pasa el if y luego
-			texto="<strong>Bien!</strong>, se guardaron los cambios";
-			color = "#379911";
-			$("#formTarifa");
-// 			$("#cuadro1").slideDown("slow");
-			websocket.send("ACTUALIZADO");//se envia un mensaje al serverendpoint para que avise actualizar a las otras sesiones
-			limpiar_texto();
-		}
-		else if(info.respuesta =="ERROR"){
-			texto="<strong>ERROR</strong>, no se ejecuto la consulta correctamente";
-			color = "#C9302C";
-		}else if(info.respuesta =="ACTUALIZADO"){//aqui se resive la respuesta del serverendpoint y todos las sesiones se actualizan
-			texto="<strong>DATO ACTUALIZADOS</strong>, otro usuario ha actualizado la base de datos";
-			color = "#ea8f1a";
-			listar();//actulizar datos del datatable
-		}else{
-			texto="<strong>Opcion vacia!</strong>, opcion no solicitada";
-			color = "#ddblld";
-		}
-		$(".mensaje").html(texto).css({"color":color});
-		$(".mensaje").fadeOut(7000, function() {//se muestra el mensaje por un tiempo y luego se oculta
-			$(this).fadeIn(5000);
-			$(this).html("");
+	function cargarSelect(select, carga) {//parametro id select
+		var datos;
+		$.ajax({
+	        type: "GET",
+	        url: "./SL_tarifa",
+	        dataType: "json",
+	        data: {
+		        "carga": carga//para decirle al servlet que cargue datos
+		    },
+	        success: function(response)
+	        {
+	        	datos = response.aaData;
+	        	$(select).empty();
+	        	$(response.aaData).each(function(i, v) {
+	        		if(v.tipoMedida){
+	        			$(select).append('<option value="' + v.unidad_de_Medida_ID + '">' +
+	        					v.tipoMedida + '</option>');
+	        		}else if(v.nomCategoria){
+	        			$(select).append('<option value="' + v.categoria_ID + '">' + v.nomCategoria + '</option>');
+	        		}
+				});
+	        }
 		});
 	}
-	
-	
-	
 </script>

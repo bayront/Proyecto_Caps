@@ -207,7 +207,7 @@ function cargarSelectRol(selectRol) {//parametro id select
 	});
 }
 //metodo para activar click en los tag y cargar los roles
-var activarDatosTag = function(tag, rol) {//recibe el tag para click y el select-rol
+var activarDatosSelect = function(tag, rol) {//recibe el tag para click y el select-rol
 	tag.on("click", function() {
 		cargarSelectRol(rol);
 		console.log("cargar roles");
@@ -220,7 +220,7 @@ var verResultado = function(r) {
 		listarOpcion();
 		alert("Se guardaron los datos carrectamente");
 	}
-	if(r == "Error"){
+	if(r == "ERROR"){
 		alert("ERROR: No se pudo realizar la accion");
 	}
 	if(r =="VACIO"){
@@ -457,7 +457,7 @@ $(document).ready(function() {
 	 LoadDataTablesScripts2(AllTables);
 	 activarDatosTag($("li a#Rol"),listarRol);
 	 activarDatosTag($("li a#Opcion"),listarOpcion);
-	 activarDatosTag($("li a#Rol_Opcion"), "#rol1");
+	 activarDatosSelect($("li a#Rol_Opcion"), "#rol1");
 	
 });
 

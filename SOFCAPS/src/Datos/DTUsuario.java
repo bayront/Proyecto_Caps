@@ -6,117 +6,103 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import Entidades.Rol;
 import Entidades.Usuario;
 
 public class DTUsuario {
 
-	Connection cn = null;
-	PreparedStatement ps =null;
-	ResultSet rs =null;
+	private static DTUsuario dtUsu = new DTUsuario();//instancia de la clase
+	PoolConexion pc = PoolConexion.getInstance(); //
+	Connection con = PoolConexion.getConnection();
+	private static ResultSet rs;//RESULTSET estatico
 	
-	public ArrayList<Usuario> usuarios()
-	{
-		ArrayList<Usuario> listaCategoria = new ArrayList<Usuario>();
-		String sql = ("SELECT * from usuario where eliminado = 0");
-		try 
-		{
-			cn = Conexion.getConnection();
-			ps = cn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			rs = ps.executeQuery();
-			
-			while (rs.next()) 
-			{
-				Usuario u = new Usuario();
-				u.setLogin(rs.getString("login"));
-				u.setPass(rs.getString("pass"));
-				//u.setEliminado(rs.getBoolean("eliminado"));
-				u.setUsuario_ID(rs.getInt("Usuario_ID"));
-				listaCategoria.add(u);
-				
-			}
-			ps.close();
-			cn.close();
-			System.out.println("datos cargados de usuarios");
-		} 
-		catch (Exception e) 
-		{
-			System.err.println("METODO CARGAR: "+e.getMessage());
-		}
-		
-		return listaCategoria;
+	private DTUsuario() {
+	}
+	 
+	public static DTUsuario getInstance() {
+		return dtUsu;
 	}
 	
-	public boolean guardarUsuario(Usuario u)
+	public ResultSet cargarUsuarios()
 	{
+		Statement s;
+		String sql = ("SELECT * FROM usuario where eliminado=0;");
+		try {
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("datos de usuarios cargados");
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error en DTUsuario, metodo cargarUsuarios: "+e.getMessage());
+		}
+		if(rs == null)
+			System.out.println("Resultset de Usuario vacio");
+		
+		return rs;
+	}
+	
+	public boolean guardarUsuario(Usuario u){
+		boolean guardado = false;
 		try 
 		{
-			Connection cn = Conexion.getConnection();
-			Statement s = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			rs = s.executeQuery("SELECT * from usuario;");
-			//DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			//Date date = new Date();
+			dtUsu.cargarUsuarios();
 			rs.moveToInsertRow();
-			//rs.updateInt("Usuario_ID", u.getUsuario_ID());
-			rs.updateBoolean("eliminado", false);
 			rs.updateString("login", u.getLogin());
 			rs.updateString("pass", u.getPass());
-			//rs.updateString("last_update", fecha.format(date));
+			rs.updateBoolean("eliminado", false);
 			rs.insertRow();
 			rs.moveToCurrentRow();
-			
-			s.close();
-			cn.close();
-			return true;
+			guardado = true;
 		}
 		catch (Exception e) 
 		{
-			System.err.println("ERROR AL GUARDAR: " + e.getMessage());
+			System.err.println("ERROR GUARDAR " + e.getMessage());
 			e.printStackTrace();
-			return false;
 		}
+		return guardado;
 	}
 	
 	public boolean eliminarUsuario(Usuario u){
-		try {
-			Connection cn = Conexion.getConnection();
-			Statement s = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			rs = s.executeQuery("SELECT * from usuario;");
-			rs.beforeFirst();
+		boolean guardado = false;
+		try 
+		{
+			dtUsu.cargarUsuarios();
 			rs.beforeFirst();
 			while (rs.next()){
-				System.out.println("fila "+rs.getInt("usuario_id"));
-				if(rs.getInt("usuario_id") ==u.getUsuario_ID()){
-					rs.updateBoolean("eliminado",true);
+				System.out.println("fila "+rs.getInt("Usuario_ID"));
+				if(rs.getInt("Usuario_ID") == u.getUsuario_ID()){
+					rs.updateBoolean("eliminado", true);
 					rs.updateRow();
+					guardado  = true;
 				}
 			}
-			s.close();
-			cn.close();
-			return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
 		}
+		catch (Exception e) 
+		{
+			System.err.println("ERROR ELIMINAR en Usuario: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return guardado;
 	}
 
 	public boolean actualizarUsuario(Usuario u){
 		try {
-			Connection cn = Conexion.getConnection();
-			Statement s = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			rs = s.executeQuery("SELECT * from usuario;");
+			dtUsu.cargarUsuarios();
 			rs.beforeFirst();
 			while (rs.next()){
-				System.out.println("fila "+rs.getInt("usuario_id"));
-				if(rs.getInt("usuario_id") ==u.getUsuario_ID()){
-					rs.updateString("login",u.getLogin());
+				System.out.println("fila "+rs.getInt("Usuario_ID"));
+				if(rs.getInt("Usuario_ID") ==u.getUsuario_ID()){
+					System.out.println(u.getLogin());
+					
+					rs.updateInt("Usuario_ID", u.getUsuario_ID());
+					rs.updateBoolean("eliminado", false);
+					rs.updateString("login", u.getLogin());
 					rs.updateString("pass", u.getPass());
 					rs.updateRow();
 				}
-		
 			}
-			s.close();
-			cn.close();
 			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -124,33 +110,4 @@ public class DTUsuario {
 			return false;
 		}
 	}
-	
-	
-	/*
-	
-	public boolean eliminarUsuario(Usuario u){
-		try {
-			Connection cn = Conexion.getConnection();
-			Statement s = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			rs = s.executeQuery("SELECT * from usuario;");
-			rs.beforeFirst();
-			rs.beforeFirst();
-			while (rs.next()){
-				System.out.println("fila "+rs.getInt("usuario_id"));
-				if(rs.getInt("usuario_id") ==u.getUsuario_ID()){
-					rs.deleteRow();
-				}
-			}
-			s.close();
-			cn.close();
-			return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	**/
-	
 }

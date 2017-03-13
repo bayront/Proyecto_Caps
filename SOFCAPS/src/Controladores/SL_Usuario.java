@@ -3,6 +3,8 @@ package Controladores;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +14,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.simple.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,8 +28,9 @@ import Entidades.Usuario;
 @WebServlet("/SL_Usuario")
 public class SL_Usuario extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DTUsuario datosUsuario = new DTUsuario();
-	PrintWriter out;
+	private DTUsuario datosUsuario = DTUsuario.getInstance();
+	private PrintWriter out;
+	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,59 +39,55 @@ public class SL_Usuario extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see Servlet#getServletConfig()
-	 */
 	public ServletConfig getServletConfig() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	/**
-	 * @see Servlet#getServletInfo()
-	 */
 	public String getServletInfo() {
 		// TODO Auto-generated method stub
 		return null; 
 	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		response.setContentType("application/json");
-		PrintWriter out = response.getWriter();
-		List<Usuario> usuarios = datosUsuario.usuarios();
+		out = response.getWriter();
+		try {
+			traerUsuarios(response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void traerUsuarios(HttpServletResponse response) throws SQLException {
+		List<Usuario> usuarios = new ArrayList<>();
+		ResultSet rs = datosUsuario.cargarUsuarios();
+		while (rs.next()) {
+			Usuario u = new Usuario();
+			u.setUsuario_ID(rs.getInt("Usuario_ID"));
+			u.setLogin(rs.getString("login"));
+			u.setPass(rs.getString("pass"));
+			usuarios.add(u);
+		}
 		DataTableObject dataTableObject = new DataTableObject();
 		dataTableObject.aaData = new ArrayList<>();
-		for (Usuario u : usuarios) {
-			dataTableObject.aaData.add(u);
+		for (Usuario usuario : usuarios) {
+			dataTableObject.aaData.add(usuario);
 		}
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		String json = gson.toJson(dataTableObject);
 		System.out.println(json.toString());
 		out.print(json);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		System.out.println("hola post , este es el id : " + request.getParameter("usuario_ID") + " del usuario");
 		String login, pass, opcion;
 		int usuario_id;
 		opcion = request.getParameter("opcion").trim();
 		System.out.println("opcion a realizar: " + opcion);
-	
 		switch (opcion) {
 			case "actualizar":
 				login = request.getParameter("login").trim();
 				pass = request.getParameter("pass").trim();
-				usuario_id= Integer.parseInt(request.getParameter("usuario_id"));
+				usuario_id= Integer.parseInt(request.getParameter("Usuario_ID"));
+				System.out.println("actualizar SL_Usuario");
 				actualizar(usuario_id, login, pass, response);
 				break;
 			case "eliminar":
@@ -103,16 +100,11 @@ public class SL_Usuario extends HttpServlet {
 				guardar(login, pass, response);
 				break;
 			default:
-				final JSONObject json = new JSONObject();
-				response.setContentType("application/json");
+				response.setContentType("text/plain");
 				out = response.getWriter();
-				json.put("respuesta", "OPCION_VACIA");
-				System.out.println(json.toJSONString());
-				out.print(json.toJSONString());
+				out.print("VACIO");
 				break;
 		}
-		
-		
 	}
 
 	/**
@@ -123,76 +115,53 @@ public class SL_Usuario extends HttpServlet {
 	}
 	
 	protected void guardar(String login, String pass,  HttpServletResponse response) {
-		Usuario u = new Usuario();
-		boolean resultado = false;
-		try 
-		{
+		try {
+			Usuario u = new Usuario();
 			u.setLogin(login);
 			u.setPass(pass);
-			 resultado = datosUsuario.guardarUsuario(u);
-			 verificar_resultado(resultado, response);
-			
-		} 
-		catch (Exception e) 
-		{
-			System.err.println("SL ERROR: "+e.getMessage());
+			 verificar_resultado(datosUsuario.guardarUsuario(u), response);	
+		} catch (Exception e) {
+			System.err.println("SL_Usuario ERROR: "+e.getMessage());
 		}
 	}
 	
 	
 	protected void actualizar(int usuario_id, String login, String pass, HttpServletResponse response) {
-		Usuario u = new Usuario();
-		boolean resultado = false;
-		try 
-		{
+		try {
+			Usuario u = new Usuario();
 			u.setUsuario_ID(usuario_id);
 			u.setLogin(login);
 			u.setPass(pass);
-			resultado = datosUsuario.actualizarUsuario(u);
-			verificar_resultado(resultado, response);
-			//response.sendRedirect("index.jsp?guardado");
-		} 
-		catch (Exception e) 
-		{
+			verificar_resultado(datosUsuario.actualizarUsuario(u), response);
+		} catch (Exception e) {
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
 	
-	
-	
-	
       protected void eliminar(int usuario_id,  HttpServletResponse response) {
-		Usuario u = new Usuario();
-		boolean resultado = false;
-		try 
-		{
+		try {
+			Usuario u = new Usuario();
 			u.setUsuario_ID(usuario_id);
-			resultado = datosUsuario.eliminarUsuario(u);
-			verificar_resultado(resultado, response);
-			//response.sendRedirect("index.jsp?guardado");
-		} 
-		catch (Exception e) 
-		{
+			verificar_resultado(datosUsuario.eliminarUsuario(u), response);
+		} catch (Exception e) {
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
 	
 	
 	protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {
-		final JSONObject json = new JSONObject();
-		if(r) {
-			response.setContentType("application/json");
-			out = response.getWriter();
-			json.put("respuesta", "BIEN");
-			System.out.println(json.toJSONString());
-			out.print(json.toJSONString());
-		}else {
-			response.setContentType("application/json");
-			out = response.getWriter();
-			json.put("respuesta", "ERROR");
-			System.out.println(json.toJSONString());
-			out.print(json.toJSONString());
+		try {
+			if(r) {
+				response.setContentType("text/plain");
+				out = response.getWriter();
+				out.print("BIEN");
+			}else {
+				response.setContentType("text/plain");
+				out = response.getWriter();
+				out.print("ERROR");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
-	
 }

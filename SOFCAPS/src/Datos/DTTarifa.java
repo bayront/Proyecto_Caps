@@ -18,20 +18,16 @@ public class DTTarifa {
 	private static ResultSet rs;//RESULTSET estatico
 	
 	private DTTarifa(){
-		 
-		
-	 }
+	}
 	
-	 public static DTTarifa getInstance() {
+	public static DTTarifa getInstance() {
 			return dttari;
-		}
+	}
 	
-	
-	
-	 public ResultSet cargartarifa()
+	 public ResultSet cargarTarifa()
 		{
 			Statement s;
-			String sql = ("SELECT * FROM sofcaps.tarifa where estado = 0;");
+			String sql = ("SELECT * FROM tarifa where estado = 0;");
 			try 
 			{
 				s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -48,21 +44,42 @@ public class DTTarifa {
 			
 			return rs;
 		}
+	 
+	 public ResultSet cargarTarifaCategoria(){
+			Statement s;
+			String sql = ("select t.Tarifa_ID, t.lim_Inf, t.lim_Sup, t.monto, t.Unidad_de_Medida_ID, t.categoria_ID, c.nomCategoria from tarifa t, categoria c where c.categoria_ID = t.categoria_ID and t.estado = 0;");
+			try 
+			{
+				s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+				rs = s.executeQuery(sql);
+				System.out.println("datos de tarifasCategorias cargados");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+				System.out.println("Error en DTTarifa, metodo cargarTarifasCategorias: "+e.getMessage());
+			}
+			if(rs == null)
+				System.out.println("Resultset de tarifaCategoria vacio");
+			
+			return rs;
+		}
 	
 	 public boolean guardarTarifa(Tarifa t)
 		{
 			boolean guardado = false;
 			try 
 			{
-//				Date date = new Date();
-//				DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-				dttari.cargartarifa();
+				dttari.cargarTarifa();
 				rs.moveToInsertRow();
 				rs.updateInt("lim_Inf", t.getLim_Inf());
-				rs.updateInt("lim_Sup", t.getLim_Sup());
+				if(t.getLim_Sup() != 0) {
+					rs.updateInt("lim_Sup", t.getLim_Sup());
+				}
 				rs.updateFloat("monto", t.getMonto());
 				rs.updateBoolean("estado", false);
-				//rs.updateOpcion("opciones", r.getOpciones());
+				rs.updateInt("Unidad_de_Medida_ID", t.getUnidad_de_Medida().getUnidad_de_Medida_ID());
+				rs.updateInt("Categoria_ID", t.getCategoria().getCategoria_ID());
 				rs.insertRow();
 				rs.moveToCurrentRow();
 				guardado = true;
@@ -82,7 +99,7 @@ public class DTTarifa {
 			boolean guardado = false;
 			try 
 			{
-				dttari.cargartarifa();
+				dttari.cargarTarifa();
 				rs.beforeFirst();
 				rs.beforeFirst();
 				while (rs.next()){
@@ -107,7 +124,7 @@ public class DTTarifa {
 			boolean guardado = false;
 			try 
 			{
-				dttari.cargartarifa();
+				dttari.cargarTarifa();
 				rs.beforeFirst();
 				while (rs.next()){
 					System.out.println("fila "+rs.getInt("Tarifa_ID"));
@@ -117,6 +134,8 @@ public class DTTarifa {
 						rs.updateFloat("monto", t.getMonto());
 						rs.updateInt("Tarifa_ID", t.getTarifa_ID());
 						rs.updateBoolean("estado", false);
+						rs.updateInt("Categoria_ID", t.getCategoria().getCategoria_ID());
+						rs.updateInt("Unidad_de_Medida_ID", t.getUnidad_de_Medida().getUnidad_de_Medida_ID());
 						rs.updateRow();
 						System.out.println("tarifa actulizada");
 						guardado  = true;

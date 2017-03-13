@@ -87,10 +87,13 @@ public class SL_Usuario extends HttpServlet {
 				login = request.getParameter("login").trim();
 				pass = request.getParameter("pass").trim();
 				usuario_id= Integer.parseInt(request.getParameter("Usuario_ID"));
+				
 				System.out.println("actualizar SL_Usuario");
+				
 				actualizar(usuario_id, login, pass, response);
 				break;
 			case "eliminar":
+				System.out.println("eliminar SL_Usuario");
 				usuario_id= Integer.parseInt(request.getParameter("usuario_id"));
 				eliminar(usuario_id, response);
 				break;					

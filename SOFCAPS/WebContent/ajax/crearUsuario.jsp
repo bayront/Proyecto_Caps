@@ -206,8 +206,8 @@
 		if(r == "BIEN"){
 			console.log("cambiar esto en verResultado");
 			alert("Se realizo la operación correctamente");
-			location.reload();
-			console.log("cambiar esto ahi mismo");
+// 			location.reload();
+// 			console.log("cambiar esto ahi mismo");
 			
 			limpiar_texto();
 			iniciarTabla();
@@ -270,24 +270,24 @@
 					$("#opcion").val("actualizar");
 				}
 			});
-			colapsar_desplegar($("#colapsar_desplegar1"));
-			expandir($("#expandir1"));
-			colapsar_desplegar($("#colapsar_desplegar2"));
+// 			colapsar_desplegar($("#colapsar_desplegar1"));
+// 			expandir($("#expandir1"));
+// 			colapsar_desplegar($("#colapsar_desplegar2"));
 		});
 	}
 	
 	var agregar_nuevo_usuario = function() {
 		limpiar_texto();
-		colapsar_desplegar($("#colapsar_desplegar2"));
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		expandir($("#expandir1"));
+// 		colapsar_desplegar($("#colapsar_desplegar2"));
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		expandir($("#expandir1"));
 	}
 	
 	var cancelar = function() {
 		limpiar_texto();
-		expandir($("#expandir1"));
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		colapsar_desplegar($("#colapsar_desplegar2"));
+// 		expandir($("#expandir1"));
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		colapsar_desplegar($("#colapsar_desplegar2"));
 	}
 	
 	//metodo guardar donde activa el evento submit del formulario de registro
@@ -303,17 +303,17 @@
 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
 				verResultado(info);
 			});
-			colapsar_desplegar($("#colapsar_desplegar1"));
-			expandir($("#expandir1"));
-			colapsar_desplegar($("#colapsar_desplegar2"));
+// 			colapsar_desplegar($("#colapsar_desplegar1"));
+// 			expandir($("#expandir1"));
+// 			colapsar_desplegar($("#colapsar_desplegar2"));
 		});
 	}
 	
 	var agregar_nuevo_usuario = function() {
 		limpiar_texto();
-		expandir($("#expandir1"));
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		colapsar_desplegar($("#colapsar_desplegar2"));
+// 		expandir($("#expandir1"));
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		colapsar_desplegar($("#colapsar_desplegar2"));
 	}
 	
 	$(document).ready(function() {
@@ -332,7 +332,7 @@
 		
 		guardar();//activar evento de guardar
 		
-		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
 	});
 	
 </script>

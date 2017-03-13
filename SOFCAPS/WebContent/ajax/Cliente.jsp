@@ -42,7 +42,7 @@
 				</div>
 				<div class="form-group">
 					<label for="nombre2" class="col-sm-4 control-label">Segundo Nombre</label>
-					<div class="col-sm-5"><input id="nombre2" name="nombre2" type="text" class="form-control" title="Requerido" required/></div>
+					<div class="col-sm-5"><input id="nombre2" name="nombre2" type="text" class="form-control"/></div>
 				</div>
 				<div class="form-group">
 					<label for="apellido1" class="col-sm-4 control-label">Primer Apellido</label>
@@ -256,6 +256,12 @@
 		if (info.respuesta =="BIEN"){//si la respuesta fue BIEN pasa el if y luego
 			texto="<strong>Bien!</strong>, se guardaron los cambios correctamente";
 			color = "#379911";
+// 			console.log("cambiar esto en verResultado");
+			alert("Se realizo la operación correctamente");
+// 			location.reload();
+// 			console.log("cambiar esto ahi mismo");
+			
+			limpiar_texto();
 		}
 		else if(info.respuesta =="ERROR"){
 			texto="<strong>ERROR</strong>, no se ejecuto la consulta correctamente";

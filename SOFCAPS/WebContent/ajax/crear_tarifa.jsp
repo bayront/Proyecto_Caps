@@ -170,9 +170,12 @@
 	var verResultado = function(r) {
 		if(r == "BIEN"){
 // 			tablaTarifa.destroy();
-			iniciarTabla();
+			alert("Se realizo la operación correctamente");
+// 			location.reload();
+// 			console.log("cambiar esto ahi mismo");
+			
 			limpiar_texto();
-			alert("Se guardaron los datos carrectamente");
+			iniciarTabla();
 		}
 		if(r == "ERROR"){
 			alert("ERROR: No se pudo realizar la operación");
@@ -254,14 +257,14 @@
 	
 	var agregar_nuevo_tarifa = function() {
 		limpiar_texto();
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		colapsar_desplegar($("#colapsar_desplegar2"));
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		colapsar_desplegar($("#colapsar_desplegar2"));
 	}
 	
 	var cancelar = function() {
 		limpiar_texto();
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		colapsar_desplegar($("#colapsar_desplegar2"));
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		colapsar_desplegar($("#colapsar_desplegar2"));
 	}
 	
 	var guardar = function() {
@@ -275,8 +278,8 @@
 			data: frm//datos a enviar
 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
 			console.log(info);
-				colapsar_desplegar($("#colapsar_desplegar1"));
-				colapsar_desplegar($("#colapsar_desplegar2"));
+// 				colapsar_desplegar($("#colapsar_desplegar1"));
+// 				colapsar_desplegar($("#colapsar_desplegar2"));
 				verResultado(info);
 			});
 		});
@@ -288,7 +291,7 @@
 // 		}else{
 			
 // 		}
-		$(tbody).on("click", "button.editarTarifa", function() {//activar evento click en boton actualizar que esta en el dataTable
+		$(tbody).on("click", "button.editarTarifa", function() {
 // 			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
 // 			var tarifa_ID, lim_Inf, lim_Sup, monto, catID, unidadID;
 // 			table.rows().every(function(index, loop, rowloop) {
@@ -325,8 +328,8 @@
 				$("#unidadMedida_ID").change();
 				console.log("categoria: "+datos.categoria.categoria_ID+", monto: "+datos.monto);
 // 			$(tbody).off("click", "button.editarTarifa");
-			colapsar_desplegar($("#colapsar_desplegar1"));
-			colapsar_desplegar($("#colapsar_desplegar2"));
+// 			colapsar_desplegar($("#colapsar_desplegar1"));
+// 			colapsar_desplegar($("#colapsar_desplegar2"));
 		});
 	}
 	
@@ -392,7 +395,7 @@
 		//Activar evento para guardar
 		guardar();
 		
-		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
 		
 		//cargar selects
 		cargarSelect("#unidadMedida_ID", 3);//traer categorias

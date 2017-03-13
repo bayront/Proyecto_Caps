@@ -146,6 +146,12 @@ function DemoSelect2() {
 
 var verResultado = function(r) {
 	if(r == "BIEN"){
+// 		console.log("cambiar esto en verResultado");
+// 		alert("Se realizo la operación correctamente");
+// 		location.reload();
+// 		console.log("cambiar esto ahi mismo");
+		
+// 		limpiar_texto();
 		listarT();
 		alert("Se realizo la operación correctamente");
 	}
@@ -171,8 +177,8 @@ var verResultado = function(r) {
 				console.log(info);
 					limpiar_texto();
 					verResultado(info);
-					colapsar_desplegar($("#colapsar_desplegar2"));
-					colapsar_desplegar($("#colapsar_desplegar1"));
+// 					colapsar_desplegar($("#colapsar_desplegar2"));
+// 					colapsar_desplegar($("#colapsar_desplegar1"));
 				});
 			});
 	}
@@ -206,8 +212,8 @@ var verResultado = function(r) {
 
 	var agregar_nuevo_categoria = function() {
 		limpiar_texto();
-		colapsar_desplegar($("#colapsar_desplegar2"));
-		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		colapsar_desplegar($("#colapsar_desplegar2"));
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
 	}
 	
 	
@@ -219,8 +225,8 @@ var verResultado = function(r) {
 	
 	var cancelar = function() {
 		limpiar_texto();
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		colapsar_desplegar($("#colapsar_desplegar2"));
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		colapsar_desplegar($("#colapsar_desplegar2"));
 	}
 
 function listarT() {
@@ -310,11 +316,12 @@ var obtener_datos_editar = function(tbody, table) {
 				$("#nombreCategoria").val(nombreCat);
 				$("#catIE_ID").val(catID);
 				$("#tipoCategoria").val(tipoCat_ID);
+				$("#tipoCategoria").change();
 				$("#opcion").val("actualizar");
 			}
 		});
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		colapsar_desplegar($("#colapsar_desplegar2"));
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		colapsar_desplegar($("#colapsar_desplegar2"));
 	});
 }
 
@@ -344,7 +351,7 @@ function AllTables() {
 		// Add drag-n-drop feature to boxes
 		WinMove();
 		guardar();
-		colapsar_desplegar($("#colapsar_desplegar1"));
+// 		colapsar_desplegar($("#colapsar_desplegar1"));
 	});
 	
 

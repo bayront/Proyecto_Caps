@@ -159,8 +159,8 @@ public class SL_Categoria extends HttpServlet {
 				out += "<td class='categoria_ID_td'>" + rs.getInt("categoria_ID") + "</td>";
 				out += "<td class='nomCategoria_td'>" + rs.getString("nomCategoria") + "</td>";
 				out += "<td>";
-				out += "<button class='btn btn-danger ajax-link action btnID'>Eliminar</button>";
-				out += "<button class='btn btn-info ajax-link action btnEdit editadarAbrir'>Editar</button>";
+				out += "<button style='position:left' type='button' class='btn btn-primary action btnEdit editadarAbrir' data-toggle='modal' data-target='#modalEliminar' ><i class='fa fa-pencil-square-o'></i></button>";
+				out += "<button style='position:left' type='button' class='btn btn-danger action btnID'><i class='fa fa-trash-o'></i></button> ";
 				out += "</td>";
 				out += "</tr>";
 			}

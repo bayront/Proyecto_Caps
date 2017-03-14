@@ -65,16 +65,14 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<div class="col-sm-offset-3 col-sm-3">
-							<button id="btnEnviar" type="submit" class="btn btn-info btn-label-left">
-								<span><i class="glyphicon glyphicon-save text-info"></i></span>
-								<font color="black">Guardar</font>
+						<div class="col-sm-offset-4 col-sm-3">
+							<button id="btnEnviar" type="submit" class="btn btn-primary btn-label-left btn-lg">
+								<span><i class="fa fa-save"></i></span>Guardar
 							</button>
 						</div>
-						<div class="col-sm-3">
-							<button type="button" class="btn btn-info btn-label-left" onclick="cancelar();">
-								<span><i class="fa fa-clock-o txt-info"></i></span>
-								<font color="black"> Cancelar</font>
+						<div class="col-sm-4">
+							<button type="button" class="btn btn-default btn-label-left btn-lg" onclick="cancelar();">
+								<span><i class="fa fa-reply txt-danger"></i></span>Cancelar
 							</button>
 						</div>
 					</div>
@@ -353,11 +351,15 @@
 	function abrirDialogo() {
 		OpenModalBox(
 				"<div><h3>Borrar Tarifa</h3></div>",
-				"<p Style='text-align: center;'>Esta seguro de borrar esta tarifa?</p>",
-				"<div Style='text-align: center; margin-bottom: -10px;'>"+
-				"<button type='button' id='eliminar_tarifa' class='btn btn-primary'>Borrar </button>"
-				+ "<button type='button' class='btn btn-secondary' Style='margin-left: 10px;' onclick='CloseModalBox()'> Cancelar</button>"
-				+ "</div>");
+				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar esta tarifa?</p>",
+				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
+				"<button type='button' id='eliminar_tarifa' class='btn btn-danger btn-label-left'"+
+				" style=' color: #ece1e1;' >"+
+				"<span><i class='fa fa-trash-o'></i></span> Borrar tarifa</button>"+
+				"<div style='margin-top: 5px;'></div> </div>"+
+				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
+				"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
+				"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 		eliminar();
 	}
 	

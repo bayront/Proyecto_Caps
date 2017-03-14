@@ -383,8 +383,8 @@ var listarRol = function() {
 					var head = "<div><h3>Formulario de Roles</h3></div>";
 					var body = frmRolAg;//frmRol esta abajo
 					var foot = "<div Style='text-align: center; margin-bottom: -10px;'>"+
-						"<button type='button' class='btn btn-secondary' Style='margin-left: 10px;'"+
-						"onclick='CloseModalBox()'> Cancelar</button> </div>";
+						"<button type='button' class='btn btn-default btn-label-left btn-lg' Style='margin-left: 10px;'"+
+						"onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>";
 					abrirDialogo(head, body, foot, activarForm, "SL_Rol");
 				}
 			}]
@@ -403,13 +403,16 @@ var seleccionarEliminarRol = function(tbody, table) {
 				console.log("rol_ID: " + rol_ID);
 			}
 		});
-		var head = "<div><h3>Borrar Consumo</h3></div>";
-		var body = "<p Style='text-align: center;'>¿Esta seguro de borrar este consumo?</p>";
+		var head = "<div><h3>Borrar Rol</h3></div>";
+		var body = "<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar este rol?</p>";
 		var foot = frmRolElim +
 		"<input type='hidden' id='rol_ID' type='text' class='form-control' name='rol_ID' value="+rol_ID+" />"+
-		"<div class='col-sm-12 col-md-offset-4 col-md-3'>"+
-		"<button type='button' class='btn btn-default btn-label-left guardarForm' style='margin-left:65px;'>"+
-		"<span><i class='fa fa-clock-o'></i></span> Eliminar Rol </button>"+
+		"<div class='col-sm-12 col-md-offset-3 col-md-3'>"+
+		"<button type='button' class='btn btn-danger btn-label-left guardarForm' style='margin-left:5px;color:#ece1e1;'>"+
+		"<span><i class='fa fa-trash-o'></i></span> Eliminar Rol </button> </div>"+
+		"<div class='col-sm-12 col-md-3 text-center'>"+
+		"<button type='button' class='btn btn-default btn-label-left btn-lg' onclick='CloseModalBox();' >"+
+		"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button>"+
 		"</div> </form>";
 		abrirDialogo(head, body, foot, activarForm, "SL_Rol");
 	});
@@ -432,8 +435,8 @@ var seleccionarEditarRol = function(tbody, table) {
 		"<div class='form-group'> <label class='col-sm-3 col-md-offset-1 control-label'>Nombre del Rol</label>"+
 		"<div class='col-sm-5'> <input id='nomRol' type='text' class='form-control' name='nomRol' value='"+nomRol+"' /> </div>"+frmRolAct2;
 		var foot = "<div Style='text-align: center; margin-bottom: -10px;'>"+
-		"<button type='button' class='btn btn-secondary' Style='margin-left: 10px;'"+
-		"onclick='CloseModalBox()'> Cancelar</button> </div>";
+		"<button type='button' class='btn btn-default btn-label-left btn-lg' Style='margin-left: 10px;'"+
+		"onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>";
 		abrirDialogo(head, body, foot, activarForm, "SL_Rol");
 	});
 }
@@ -468,8 +471,8 @@ var frmRolAg = "<form class='form-horizontal formulario' role='form' id='default
 		"<div class='col-sm-5'> <input id='nomRol' type='text' class='form-control' name='nomRol' /> </div>"+
 	"</div> <div class='clearfix'></div>"+
 	"<div class='form-group'> <div class='col-sm-12 col-md-offset-4 col-md-3'>"+
-			"<button type='button' class='btn btn-primary btn-label-left guardarForm' style='margin-left:90px;'>"+
-				"<span><i class='fa fa-clock-o'></i></span> Guardar </button>"+
+			"<button type='button' class='btn btn-primary btn-label-left guardarForm' style='margin-left:70px;'>"+
+				"<span><i class='fa fa-save'></i></span> Guardar Rol</button>"+
 		"</div> </div> </form>";
 var frmRolElim = "<form class='form-horizontal formulario' role='form' id='defaultForm'"+
 	" method='post' action='./SL_Rol'>"+
@@ -478,8 +481,8 @@ var frmRolAct = "<form class='form-horizontal formulario' role='form' id='defaul
 	"<input type='hidden' id='metodo' type='text' class='form-control' name='metodo' value='actualizar'/>";
 var frmRolAct2 = "</div> <div class='clearfix'></div>"+
 "<div class='col-sm-12 col-md-offset-4 col-md-3'>"+
-"<button type='button' class='btn btn-warning btn-label-left guardarForm' style='margin-left:65px;'>"+
-"<span><i class='fa fa-clock-o'></i></span> Actualizar Rol </button>"+
+"<button type='button' class='btn btn-success btn-label-left guardarForm' style='margin-left:55px;'>"+
+"<span><i class='fa fa-repeat'></i></span> Actualizar Rol </button>"+
 "</div> </form>";
 
 var frmOpcionAg = "<form class='form-horizontal formulario' role='form' id='defaultForm' method='post' action='./SL_Opcion'>"+
@@ -503,8 +506,8 @@ var frmOpcionAct = "<form class='form-horizontal formulario' role='form' id='def
 "<input type='hidden' id='metodo' name='metodo' class='form-control' value='actualizar' />";;
 var frmOpcionAct2 = "</div> <div class='clearfix'></div> <div class='form-group'> "+
 "<div class='col-sm-12 col-md-offset-4 col-md-3'> "+
-"<button type='button' class='btn btn-primary btn-label-left guardarForm' style='margin-left:60px;'>"+
-"<span><i class='fa fa-clock-o'></i></span> Actualizar Opción"+
+"<button type='button' class='btn btn-success btn-label-left guardarForm' style='margin-left:55px;'>"+
+"<span><i class='fa fa-repeat'></i></span> Actualizar Opción"+
 "</button> </div> </div> <div class='clearfix'></div> </form>";
 
 ///////////////////////////Metodo para cambiar valor de un elemnto cuando cambie el select/////////////////////////

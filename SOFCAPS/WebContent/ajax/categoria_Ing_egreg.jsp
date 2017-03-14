@@ -66,12 +66,12 @@
 					<div class="clearfix"></div>
 					
 					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-2">
+						<div class="col-sm-offset-4 col-sm-3">
 							<button type="submit" class="btn btn-primary btn-label-left">
 								<span><i class="fa fa-download"></i></span> Guardar
 							</button>
 						</div>
-						<div class="col-sm-offset-2 col-sm-2">
+						<div class="col-sm-4">
 							<button type="button" class="btn btn-default btn-label-left" onclick= "cancelar();">
 								<span><i class="fa fa-clock-o txt-danger"></i></span> Cancelar
 							</button>
@@ -186,11 +186,15 @@ var verResultado = function(r) {
 	function abrirDialogo() {
 		OpenModalBox(
 				"<div><h3>Borrar Categoría de ingresos y egresos</h3></div>",
-				"<p Style='text-align: center;'>¿Esta seguro que desea eliminar este registro?</p>",
-				"<div Style='text-align: center; margin-bottom: -10px;'>"+
-				"<button type='button' id='eliminar_categoria' class='btn btn-primary'>Eliminar </button>"
-				+ "<button type='button' class='btn btn-secondary' Style='margin-left: 10px;' onclick='CloseModalBox()'> Cancelar</button>"
-				+ "</div>");
+				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro que desea eliminar este registro?</p>",
+				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-2 col-md-3'>"+
+				"<button style='margin-left:-10px; color:#ece1e1;' type='button' id='eliminar_categoria' "+
+				"class='btn btn-danger btn-label-left'>"+
+				"<span style='margin-right:-6px;'><i class='fa fa-trash-o'></i></span>Eliminar catIngEg</button>"+
+				"<div style='margin-top: 5px;'></div> </div>"+
+				"<div class='col-sm-12 col-md-offset-1 col-md-4 text-center' Style='margin-bottom: -10px;'>"+
+				"<button type='button' class='btn btn-default btn-label-left' Style='margin-left:10px;' onclick='CloseModalBox()'>"+
+				"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 		eliminar();
 	}
 	

@@ -100,16 +100,16 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-4 col-sm-3">
-							<button type="button"
-								class="btn btn-default btn-label-left btn-lg"
-								onclick="cancelar()">
-								<span><i class="fa fa-clock-o txt-danger"></i></span> Cancelar
+							<button type="submit"
+								class="btn btn-primary btn-label-left btn-lg">
+								<span><i class="fa fa-save"></i></span> Guardar
 							</button>
 						</div>
 						<div class="col-sm-4">
-							<button type="submit"
-								class="btn btn-primary btn-label-left btn-lg">
-								<span><i class="fa fa-clock-o"></i></span> Enviar
+							<button type="button"
+								class="btn btn-default btn-label-left btn-lg"
+								onclick="cancelar();">
+								<span><i class="fa fa-reply txt-danger"></i></span> Cancelar
 							</button>
 						</div>
 					</div>
@@ -247,11 +247,15 @@
 	function abrirDialogo(callback) {
 		OpenModalBox(
 				"<div><h3>Borrar Consumo</h3></div>",
-				"<p Style='text-align: center;'>Esta seguro de borrar este consumo?</p>",
-				"<div Style='text-align: center; margin-bottom: -10px;'>"+
-				"<button type='button' id='eliminar_consumo' class='btn btn-primary'>Borrar </button>"
-				+ "<button type='button' class='btn btn-secondary' Style='margin-left: 10px;' onclick='CloseModalBox()'> Cancelar</button>"
-				+ "</div>");
+				"<p Style='text-align:center; color:salmon; font-size:x-large;'>Esta seguro de borrar este consumo?</p>",
+				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-2 col-md-3'>"+
+				"<button style='margin-left:-10px; color:#ece1e1;' type='button' id='eliminar_consumo' "+
+				"class='btn btn-danger btn-label-left'>"+
+				"<span style='margin-right:-6px;'><i class='fa fa-trash-o'></i></span>Borrar consumo</button>"+
+				"<div style='margin-top: 5px;'></div> </div>"+
+				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-1 col-md-4 text-center'>"+
+				"<button type='button' class='btn btn-default btn-label-left' Style='margin-left:10px;' onclick='CloseModalBox()'>"+
+				"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 		callback();
 	}
 	

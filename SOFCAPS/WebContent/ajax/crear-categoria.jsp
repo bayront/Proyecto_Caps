@@ -29,18 +29,18 @@
 					<i class="fa fa-search"></i> <span>Crear Categoría</span>
 				</div>
 				<div class="box-icons">
-					<a class="collapse-link colapsar1"> <i class="fa fa-chevron-up"></i>
+					<a id="colapsar_desplegar1" class="collapse-link colapsar1"> <i class="fa fa-chevron-up"></i>
 					</a> <a class="expand-link"> <i class="fa fa-expand"></i>
 					</a>
 				</div>
 				<div class="no-move"></div>
 			</div>
 			
-			<div class="box-icons">
-					<a id="colapsar_desplegar1" class="collapse-link"> <i
-						class="fa fa-chevron-up"></i></a> <a id="expandir1"
-						class="expand-link"> <i class="fa fa-expand"></i></a>
-				</div>
+<!-- 			<div class="box-icons"> -->
+<!-- 					<a id="colapsar_desplegar1" class="collapse-link"> <i -->
+<!-- 						class="fa fa-chevron-up"></i></a> <a id="expandir1" -->
+<!-- 						class="expand-link"> <i class="fa fa-expand"></i></a> -->
+<!-- 				</div> -->
 			
 
 			<div class="box-content">
@@ -62,15 +62,15 @@
 					
 						
 					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-3">
-							<button  id="opcion"  class="btn btn-info btn-label-left"  class="ajax-link action guardado"  value="guardar" onClick="enviarMensaje();"" >
-								<span><i class="glyphicon glyphicon-save text-info"></i></span><font color="black">Guardar</font>
+						<div class="col-sm-offset-4 col-sm-3">
+							<button  id="opcion"  class="btn btn-primary btn-label-left btn-lg"  class="ajax-link action guardado"  value="guardar" onClick="enviarMensaje();"" >
+								<span><i class="fa fa-save"></i></span>Guardar
 							</button>
 						</div>
-					<div class="col-sm-3">
-							<button id="cancelar_nuevo" type="reset" class="btn btn-info btn-label-left" onclick="cancelar();">
-								<span><i class="fa fa-clock-o txt-danger"></i></span><font color="black"> Cancelar</font>
-							</button>
+					<div class="col-sm-4">
+							<button id="cancelar_nuevo" type="reset" class="btn btn-default btn-label-left btn-lg" onclick="cancelar();">
+								<span><i class="fa fa-reply txt-danger"></i></span>Cancelar
+								</button>
 						</div>
 					</div>
 						
@@ -139,12 +139,12 @@
 								<td class="categoria_ID_td"><%=rs.getInt("categoria_ID")%></td>
 								<td class="nomCategoria_td"><%=rs.getString("nomCategoria")%></td>
 								<td>
-							<button style="position:left" type='button' class='btn btn-danger ajax-link action btnID'>
-								<i class='fa fa-trash-o'></i>
-							</button> 
-							<button style="position:left" type='button' class='btn btn-info ajax-link action btnEdit editadarAbrir' data-toggle='modal' data-target='#modalEliminar' >
-								<i class='fa fa-pencil-square-o'></i>
-							</button>
+								<button style="position:left" type='button' class='btn btn-primary action btnEdit editadarAbrir' data-toggle='modal' data-target='#modalEliminar' >
+									<i class='fa fa-pencil-square-o'></i>
+								</button>
+								<button style="position:left" type='button' class='btn btn-danger action btnID'>
+									<i class='fa fa-trash-o'></i>
+								</button> 
 								</td>
 								
 

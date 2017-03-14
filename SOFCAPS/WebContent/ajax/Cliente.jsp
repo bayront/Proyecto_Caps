@@ -63,16 +63,16 @@
 				
 				<div class="form-group">
 						<div class="col-sm-offset-4 col-sm-3">
+							<button type="submit" 
+								class="btn btn-primary btn-label-left btn-lg" id="guardar">
+								<span><i class="fa fa-save"></i></span> Guardar
+							</button>
+						</div>
+						<div class="col-sm-4">
 							<button type="button"
 								class="btn btn-default btn-label-left btn-lg"
 								onclick="cancelar()">
 								<span><i class="fa fa-reply txt-danger"></i></span> Cancelar
-							</button>
-						</div>
-						<div class="col-sm-4">
-							<button type="submit" 
-								class="btn btn-primary btn-label-left btn-lg" id="guardar">
-								<span><i class="fa fa-save"></i></span> Guardar
 							</button>
 						</div>
 					</div>
@@ -169,11 +169,15 @@
 		function abrirDialogo() {
 			OpenModalBox(
 					"<div><h3>Borrar Cliente</h3></div>",
-					"<p Style='text-align: center;'>Esta seguro de borrar este cliente?</p>",
-					"<div Style='text-align: center; margin-bottom: -10px;'>"+
-					"<button type='button' id='eliminar_cliente' class='btn btn-primary'>Borrar </button>"
-					+ "<button type='button' class='btn btn-secondary' Style='margin-left: 10px;' onclick='CloseModalBox()'> Cancelar</button>"
-					+ "</div>");
+					"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar este cliente?</p>",
+					"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-2 col-md-3'> "+
+					"<button type='button' id='eliminar_cliente' class='btn btn-danger btn-label-left'"+
+					" style='color:#ece1e1;' >"+
+					"<span><i class='fa fa-trash-o'></i></span>Eliminar cliente </button>"+
+					"<div style='margin-top: 5px;'></div>"+
+					"</div> <div class='col-sm-12 col-md-offset-1 col-md-3 text-center' Style='margin-bottom: -10px;'>"+
+					"<button type='button' class='btn btn-default btn-label-left' Style='margin-left: 10px;' onclick='CloseModalBox()'>"+
+					"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 			eliminar();//activar evento de eliminar
 		}
 		
@@ -372,9 +376,14 @@
 	//activar evento del boton eliminar que esta en la fila seleccionada del dataTable
 		var obtener_id_eliminar = function(tbody, table) {
 			$(tbody).on("click", "button.eliminar", function() {
-				var datos = table.row($(this).parents("tr")).data();//mismo evento para el boton eliminar
-				console.log(datos);
-				var cliente_id = $("#frmEliminarCliente #cliente_id").val(datos.cliente_ID);//solo se obtiene el id que es oculto
+				
+				var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+				table.rows().every(function(index, loop, rowloop) {
+					if(index == datos){
+						console.log(table.row(index).data().cliente_id);
+						var cliente_id = $("#frmEliminarCliente #cliente_id").val(table.row(index).data().cliente_ID);
+					}
+				});
 				abrirDialogo();
 			});
 		}

@@ -30,7 +30,7 @@
 				</div>
 				<div class="box-icons">
 					<a id="colapsar_desplegar1" class="collapse-link colapsar1"> <i class="fa fa-chevron-up"></i>
-					</a> <a class="expand-link"> <i class="fa fa-expand"></i>
+					</a>  <a class="expand-link"> <i id="expandir1" class="fa fa-expand"></i>
 					</a>
 				</div>
 				<div class="no-move"></div>
@@ -403,7 +403,7 @@
 		//LoadSelect2Script(MakeSelect2);
 	}
 	var cargar = function() {
-		$('#datatable-1').DataTable();
+		$('#datatable-1').DataTable({"language":idioma_esp});
 	}
 
 	/////////////////////////////CONTROLAR LA BUSQUEDA EN LA TABLA CARGADA/////////////////////////////
@@ -436,7 +436,7 @@
 		//$('#frm-agrega').hide();
 		$('#frm-edita').hide();
 		/////////////////////////////LLAMAR A LA FUNCION QUE CARGA LOS REGISTROS DE LA TABLA/////////////////////////////
-		LoadDataTablesScripts(AllTables);
+		LoadDataTablesScripts2(AllTables);
 
 		colapsar_desplegar($(".colapsar1"));
 		/////////////////////////////ESTILO PARA LOS TOOLTIP/////////////////////////////
@@ -453,9 +453,10 @@
 			//$('#frm-agrega').fadeOut();
 		});
 		$('#cancelar_nuevo').click(function() {
-			var body = $('body');
-			body.toggleClass('body-expanded');
-			//$('#frm-agrega').fadeOut();
+			colapsar_desplegar($("#colapsar_desplegar1"));
+// 			var body = $('body');
+// 			body.toggleClass('body-expanded');
+// 			$('#frm-agrega').fadeOut();
 		});
 		/////////////////////////////CONTROLAR EL FORMULARIO AGREGAR Y CERRAR FORMULARIO EDITAR/////////////////////////////
 

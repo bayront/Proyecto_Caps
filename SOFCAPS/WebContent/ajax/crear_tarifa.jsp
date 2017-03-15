@@ -2,6 +2,9 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<div id="dialog" class="col-xm-offset-1 col-xm-10">
+	<div class="contenido" style="margin-left: 20px;"></div>
+</div>
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -167,19 +170,22 @@
 	
 	var verResultado = function(r) {
 		if(r == "BIEN"){
-// 			tablaTarifa.destroy();
-			alert("Se realizo la operación correctamente");
+			mostrarMensaje("#dialog", "CORRECTO", 
+					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
 // 			location.reload();
 // 			console.log("cambiar esto ahi mismo");
-			
-			limpiar_texto();
-			iniciarTabla();
+// 			limpiar_texto();
+			$('#tabla_tarifa').DataTable().ajax.reload();
+// 			$('#tabla_tarifa').DataTable().state.clear();
+// 			iniciarTabla();
 		}
 		if(r == "ERROR"){
-			alert("ERROR: No se pudo realizar la operación");
+			mostrarMensaje("#dialog", "ERROR", 
+					"¡Ha ocurrido un error, no se pudó realizar la acción!", "#E97D7D", "btn-danger");
 		}
 		if(r =="VACIO"){
-			alert("VACIO: No se realizo ninguna operación");
+			mostrarMensaje("#dialog", "VACIO", 
+					"¡No se especificó la acción a realizar!", "#FFF8A7", "btn-warning");
 		}
 	}
 	
@@ -255,14 +261,14 @@
 	
 	var agregar_nuevo_tarifa = function() {
 		limpiar_texto();
-// 		colapsar_desplegar($("#colapsar_desplegar1"));
-// 		colapsar_desplegar($("#colapsar_desplegar2"));
+		colapsar_desplegar($("#colapsar_desplegar1"));
+		colapsar_desplegar($("#colapsar_desplegar2"));
 	}
 	
 	var cancelar = function() {
 		limpiar_texto();
-// 		colapsar_desplegar($("#colapsar_desplegar1"));
-// 		colapsar_desplegar($("#colapsar_desplegar2"));
+		colapsar_desplegar($("#colapsar_desplegar1"));
+		colapsar_desplegar($("#colapsar_desplegar2"));
 	}
 	
 	var guardar = function() {
@@ -276,8 +282,8 @@
 			data: frm//datos a enviar
 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
 			console.log(info);
-// 				colapsar_desplegar($("#colapsar_desplegar1"));
-// 				colapsar_desplegar($("#colapsar_desplegar2"));
+				colapsar_desplegar($("#colapsar_desplegar1"));
+				colapsar_desplegar($("#colapsar_desplegar2"));
 				verResultado(info);
 			});
 		});
@@ -326,8 +332,8 @@
 				$("#unidadMedida_ID").change();
 				console.log("categoria: "+datos.categoria.categoria_ID+", monto: "+datos.monto);
 // 			$(tbody).off("click", "button.editarTarifa");
-// 			colapsar_desplegar($("#colapsar_desplegar1"));
-// 			colapsar_desplegar($("#colapsar_desplegar2"));
+			colapsar_desplegar($("#colapsar_desplegar1"));
+			colapsar_desplegar($("#colapsar_desplegar2"));
 		});
 	}
 	
@@ -397,13 +403,12 @@
 		//Activar evento para guardar
 		guardar();
 		
-// 		colapsar_desplegar($("#colapsar_desplegar1"));
+		colapsar_desplegar($("#colapsar_desplegar1"));
 		
 		//cargar selects
 		cargarSelect("#unidadMedida_ID", 3);//traer categorias
 		cargarSelect("#categoria_ID", 2)//traer unidadMedidas
 	});
-	
 	function cargarSelect(select, carga) {//parametro id select
 		var datos;
 		$.ajax({

@@ -50,6 +50,7 @@ public class SL_tarifa extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("application/json");
+		System.out.println("cargar: " + request.getParameter("carga"));
 		try {
 			if(Integer.parseInt(request.getParameter("carga")) == 1) {
 				traertarifas(response);
@@ -81,7 +82,7 @@ public class SL_tarifa extends HttpServlet {
 			switch (opcion) {
 			case "actualizar":
 				lim_Inf = Integer.parseInt(request.getParameter("lim_Inf").trim());
-				if(request.getParameter("lim_Sup").equals("") || request.getParameter("lim_Sup").isEmpty() || request.getParameter("lim_Sup").equals("0")) {
+				if(request.getParameter("lim_Sup").equals("") || request.getParameter("lim_Sup").isEmpty()) {
 					lim_Sup = 0;
 				}else {
 					lim_Sup = Integer.parseInt(request.getParameter("lim_Sup"));

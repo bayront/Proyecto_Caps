@@ -63,9 +63,9 @@ public class SeverEndPointDemo {
 		for (Session session : conexiones) {
 			if(session == s) {
 			}else {
-				final JSONObject json = new JSONObject();
-				json.put("respuesta", message);
-				session.getBasicRemote().sendText(json.toJSONString());
+//				final JSONObject json = new JSONObject();
+//				json.put("respuesta", message);
+				session.getBasicRemote().sendText(message);
 			}
 		}
 	}

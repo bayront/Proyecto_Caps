@@ -2442,6 +2442,29 @@ function expandir(element){
 	}, timeout + 50);
 }
 
+function mostrarMensaje(dialogo, titulo, mensaje, colorHead, tipoBoton) {
+	$(dialogo).dialog({
+		title: titulo,
+		modal: true,
+		draggable: false,
+		resizable: false,
+		show: { effect: "bounce", duration: 1000 },
+		hide: { effect: "bounce", duration: 800 },
+		open: function( event, ui ) {
+				$(".contenido").html("<h4>"+mensaje+"</h4>");
+				$("button[class=ui-dialog-titlebar-close]").addClass("btn");
+				$("button.ui-dialog-titlebar-close").html("<i class='fa fa-times'></i>");
+				$(".ui-dialog-buttonset").css("float","inherit");
+				$(".ui-dialog-buttonset").find("button").addClass("btn "+tipoBoton);
+				$(".ui-widget-header").css("background",colorHead);
+		},
+		closeOnEscape: true,
+		buttons: [{
+		      text: "Cerrar",
+		      click: function() { $( this ).dialog( "close" ); }
+		    }]
+	});
+}
 // ////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////
 //

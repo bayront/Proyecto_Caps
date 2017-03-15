@@ -18,7 +18,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i> <span>Crear Tarifa</span>
+					<i class="fa fa-search"></i> <span>Crear Tarifas</span>
 				</div>
 				<div class="box-icons">
 					<a id="colapsar_desplegar1" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 

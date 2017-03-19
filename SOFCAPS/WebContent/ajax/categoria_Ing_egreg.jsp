@@ -3,6 +3,10 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<div id="dialogCat" class= "col-xm-offset-1 col-xm-10">
+	<div class="contenido" style="margin-left: 20px;"></div>
+</div>  
+
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -20,9 +24,10 @@
 					<i class="fa fa-search"></i> <span>Registros de consumos</span>
 				</div>
 				<div class="box-icons">
-					<a class="collapse-link" id="colapsar_desplegar1"> <i class="fa fa-chevron-up"></i>
-					</a> <a class="expand-link"> <i class="fa fa-expand"></i>
-					</a>
+					<a class="collapse-link"  id="colapsar_desplegar1" onclick="validar(colap1);"> 
+						<i class="fa fa-chevron-up"></i> </a> 
+					<a class="expand-link" id="expandir1" onclick="validar(expand1);"> 
+						<i class="fa fa-expand"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -34,23 +39,20 @@
 						<label class="col-sm-4 control-label">Nombre de la categoría:</label>
 						<div class="col-sm-4">
 							<input  id= "nombreCategoria" name="nombreCategoria" type="text" class="form-control"
-								placeholder="" data-toggle="tooltip" data-placement="bottom" title="Tooltip para nombre">
+								placeholder="" data-toggle="tooltip" data-placement="bottom" title="digite la categoría de ingreso o egreso">
 						</div>
 					</div>
-					
 					<%
 						DT_categoria_Ing_Engre dt = DT_categoria_Ing_Engre.getInstance();
 						ArrayList<TipoCategoria> lista = new ArrayList<TipoCategoria>();
 						lista = dt.listaCategoriaIE();
-						
-						ResultSet rs = dt.cargarDatosTabla();
-						
+					
+						ResultSet rs = dt.cargarDatosTabla();	
 					%>
 					<div class="form-group">
-						<label class="col-sm-3 control-label">Tipo de categoria:</label>
-						<div class="col-sm-5">
-							<select class="populate placeholder" name="tipoCategoria"
-								id="tipoCategoria">
+						<label class="col-sm-4 control-label">Tipo de categoria:</label>
+						<div class="col-sm-4">
+							<select class="populate placeholder" name="tipoCategoria" id="tipoCategoria">
 								<option value="">-- Seleccione --</option>
 								<%
 									for(int i = 0; i < lista.size(); i++){
@@ -91,9 +93,10 @@
 					<i class="fa fa-th"></i> <span>Lista de Categorías de ingresos y egresos</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar2" class="collapse-link"> <i class="fa fa-chevron-up"></i>
-					</a> <a id="expandir2" class="expand-link"> <i class="fa fa-expand"></i>
-					</a>
+					<a id="colapsar_desplegar2" class="collapse-link" onclick="validar(colap2);"> 
+						<i class="fa fa-chevron-up"></i>
+					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> 
+						<i class="fa fa-expand"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -137,52 +140,60 @@
 </div>
 
 <script type="text/javascript">
-
-// Run Select2 plugin on elements
+var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
+var colap1 =  new Colap1();
+var expand2 = new Expand2();
+var colap2 =  new Colap2();
+//////////////////// correr Select2 plugin en los elementos select////////////////////////////////////
 function DemoSelect2() {
-	
 	$('#tipoCategoria').select2();
 }
-
+////////////////////////////////////////funsión que muestra en patalla el mensaje de la opreación///////////////////
 var verResultado = function(r) {
 	if(r == "BIEN"){
-// 		console.log("cambiar esto en verResultado");
-// 		alert("Se realizo la operación correctamente");
-// 		location.reload();
-// 		console.log("cambiar esto ahi mismo");
-		
-// 		limpiar_texto();
-		listarT();
-		alert("Se realizo la operación correctamente");
+		mostrarMensaje("#dialogCat", "CORRECTO", 
+				"¡Se realizó la operación correctamente, todo bien!", "#d7f9ec", "btn-info");
+ 		limpiar_texto();
+		$('#tbl_CategoriaIE').DataTable().ajax.reload();
 	}
-	if(r == "Error"){
-		alert("ERROR: No se pudo realizar la operación");
+	if(r == "ERROR"){
+		mostrarMensaje("#dialogCat", "ERROR", 
+				"¡Ha ocurrido un error, no se pudo realizar la operación!", "#E97D7D", "btn-danger");
 	}
 	if(r =="VACIO"){
-		alert("VACIO: No se realizo ninguna operación");
+		mostrarMensaje("#dialogCat", "VACIO", 
+				"¡No se especificó la opreración a realizar!", "#FFF8A7", "btn-warning");
 	}
 }
-
-	function guardar()
-	{
+//////////////////////////funsión que activa el boton submti del formulario de cat_ing_egreg/////////////////////////
+	function guardar(){
 		$(".formCatIE").on("submit", function(e) { 
 			e.preventDefault();
 			var frm = $(this).serialize();
 			console.log(frm);
-			$.ajax({//enviar datos por ajax
-				method:"post",
-				url:"./SL_ajax_table_categoriaIE",
-				data: frm//datos a enviar
-				}).done(function(info) {
-				console.log(info);
-					limpiar_texto();
-					verResultado(info);
-// 					colapsar_desplegar($("#colapsar_desplegar2"));
-// 					colapsar_desplegar($("#colapsar_desplegar1"));
-				});
+			if($("#nombreCategoria").val() !="" && $("#tipoCategoria").val() != ""){
+				$.ajax({//enviar datos por ajax
+					method:"post",
+					url:"./SL_ajax_table_categoriaIE",
+					data: frm//datos a enviar
+					}).done(function(info) {
+					console.log(info);
+						if(expand1.valor == true)
+	  						validarExpand(expand1, "#expandir1");
+	  				
+	  					if(expand2.valor == true)
+	  						validarExpand(expand2, "#expandir2");
+	  				
+	  					validarColap(colap1, "#colapsar_desplegar1");
+	  					if (colap2.valor ==true){}else{
+	  						validarColap(colap2, "#colapsar_desplegar2");
+	  					}
+						verResultado(info);
+					});
+			}
 			});
 	}
-
+////////////////////////////funsión que abre el dialogo para eliminar un registro///////////////////////////////
 	function abrirDialogo() {
 		OpenModalBox(
 				"<div><h3>Borrar Categoría de ingresos y egresos</h3></div>",
@@ -197,7 +208,7 @@ var verResultado = function(r) {
 				"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 		eliminar();
 	}
-	
+///////////////////////////////////////funsión que activa el evento click del boton eliminar////////////////////////
 	var eliminar = function() {
 		$("#eliminar_categoria").on("click", function() {
 			frmElim = $("#frmEliminarCategoria").serialize();
@@ -207,7 +218,6 @@ var verResultado = function(r) {
 				url:"SL_ajax_table_categoriaIE",
 				data: frmElim
 			}).done(function(info) {
-				 	limpiar_texto();
 				 	verResultado(info);
 			});
 			CloseModalBox();
@@ -216,8 +226,12 @@ var verResultado = function(r) {
 
 	var agregar_nuevo_categoria = function() {
 		limpiar_texto();
-// 		colapsar_desplegar($("#colapsar_desplegar2"));
-// 		colapsar_desplegar($("#colapsar_desplegar1"));
+		validarExpand(expand1, "#expandir1");
+		if(colap1.valor==false)
+			validarColap(colap1, "#colapsar_desplegar1");
+		validarColap(colap2, "#colapsar_desplegar2");
+		if(expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
 	}
 	
 	
@@ -229,10 +243,18 @@ var verResultado = function(r) {
 	
 	var cancelar = function() {
 		limpiar_texto();
-// 		colapsar_desplegar($("#colapsar_desplegar1"));
-// 		colapsar_desplegar($("#colapsar_desplegar2"));
+		if(expand1.valor == true)
+			validarExpand(expand1, "#expandir1");
+		
+		if(expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
+		
+		validarColap(colap1, "#colapsar_desplegar1");
+		if (colap2.valor ==true){}else{
+			validarColap(colap2, "#colapsar_desplegar2");
+		}
 	}
-
+//////////////////////////////funsión que lista el dataTaable con los registros de la base de datos con ajax/////////////////
 function listarT() {
 
 	var tablaCatIE = $('#tbl_CategoriaIE').DataTable( {
@@ -248,14 +270,19 @@ function listarT() {
 		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
     	"bJQueryUI": true,
 		"language":idioma_esp,
+		drawCallback: function(settings){
+            var api = this.api();
+            $('td', api.table().container()).find("button").tooltip({container : 'body'});
+            $("a.btn").tooltip({container: 'body'});
+        },
 		"columns": [
             { "data": "nombreCategoria" },
             { "data": "tipoCategoria.descripcion" },
             {"defaultContent":"<button type='button' class='editarCategoria btn btn-primary' data-toggle='tooltip' "+
-				"data-placement='bottom' title='Editar'>"+
+				"data-placement='bottom' title='Editar categoria de ingreso o egreso'>"+
 				"<i class='fa fa-pencil-square-o'></i> </button>  "+
 				"<button type='button' class='eliminarCategoria btn btn-danger' data-toggle='tooltip' "+
-				"data-placement='bottom' title='Eliminar'>"+
+				"data-placement='bottom' title='Eliminar categoria de ingreso o egreso'>"+
 				"<i class='fa fa-trash-o'></i> </button>"}
             ],
             "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
@@ -264,12 +291,11 @@ function listarT() {
 				 +"<'row'<'form-inline'"
 				 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
             "buttons":[{
-				"text": "<i class='fa fa-user-plus'></i>",
-				"titleAttr": "Agregar usuario",
+				"text": "<i class='fa fa-plus-square'></i>",
+				"titleAttr": "Agregar categoria de ingreso o egreso",
 				"className": "btn btn-success",
 				"action": function() {
 					agregar_nuevo_categoria();
-					console.log("boton nuevo");
 				}
 			},
 			{
@@ -291,12 +317,12 @@ function listarT() {
 	obtener_datos_editar("#tbl_CategoriaIE tbody",tablaCatIE);
 	obtener_id_eliminar('#tbl_CategoriaIE tbody',tablaCatIE);
 }
+///////////////////////////funsión que activa el evento click del boton de eliminar de cada boton del dataTable/////////////////////
 var obtener_id_eliminar = function(tbody, table) {
 	$(tbody).on("click", "button.eliminarCategoria", function() {
 		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
 		var cat_ID;
 		table.rows().every(function(index, loop, rowloop) {
-			console.log("indices: "+ index +" : "+datos);
 			if(index == datos){
 				cat_ID = table.row(index).data().categoria_Ing_Egreg_ID;
 				$("#frmEliminarCategoria #catIE_ID").val(cat_ID);
@@ -306,13 +332,12 @@ var obtener_id_eliminar = function(tbody, table) {
 		abrirDialogo();
 	});
 }
-
+////////////////////////función que activa el evento sobre el boton editar del dataTable/////////////////////////////
 var obtener_datos_editar = function(tbody, table) {
 	$(tbody).on("click", "button.editarCategoria", function() {
 		var datos = table.row($(this).parents("tr")).index();
 		var catID, tipoCat_ID, nombreCat;
 		table.rows().every(function(index, loop, rowloop) {
-			console.log("indices: "+ index +" : "+datos);
 			if(index == datos){
 				catID = table.row(index).data().categoria_Ing_Egreg_ID;
 				tipoCat_ID = table.row(index).data().tipoCategoria.tipoCategoria_ID;
@@ -324,8 +349,12 @@ var obtener_datos_editar = function(tbody, table) {
 				$("#opcion").val("actualizar");
 			}
 		});
-// 		colapsar_desplegar($("#colapsar_desplegar1"));
-// 		colapsar_desplegar($("#colapsar_desplegar2"));
+		validarExpand(expand1, "#expandir1");
+		if(colap1.valor==false)
+			validarColap(colap1, "#colapsar_desplegar1");
+		validarColap(colap2, "#colapsar_desplegar2");
+		if(expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
 	});
 }
 
@@ -339,10 +368,9 @@ function AllTables() {
 			});
 		});
 	});
-	//LoadSelect2Script(MakeSelect2);
 }
 	
-	
+////////////////////////////////////////////MÉTODO PRINCIPAL///////////////////////////////////////////////////////////
 	$(document).ready(function() {
 		
 		LoadDataTablesScripts2(AllTables);
@@ -350,13 +378,61 @@ function AllTables() {
 		$('.form-control').tooltip();
 		LoadSelect2Script(DemoSelect2);
 		// Load example of form validation
-		LoadBootstrapValidatorScript(DemoFormValidator);
+		LoadBootstrapValidatorScript(formValidCat_Ing_Egreg);
+		
+		validarColap(colap1, "#colapsar_desplegar1");
 		
 		// Add drag-n-drop feature to boxes
 		WinMove();
 		guardar();
 // 		colapsar_desplegar($("#colapsar_desplegar1"));
 	});
-	
+//////////////////////////funsión que activa las validaciones del formulario de cat_ing_egreg/////////////////////////////
+	function formValidCat_Ing_Egreg() {
+		$('#defaultForm').bootstrapValidator({
+			message: 'Este valor no es valido',
+			fields: {
+				tipoCategoria:{
+					validators: {
+						callback: {
+           					message: 'Seleccione una opción',
+            				callback: function (value, validator, $field) {
+            					if($('#defaultForm #tipoCategoria').val()==""){
+            						return false;
+            					}else{
+									return true;
+								}
+            				}
+        				}
+			        }
+				},
+				nombreCategoria:{
+					validators: {
+						notEmpty:{
+			                message: "Este campo es requerido y no debe estar vacio"
+			            },
+						callback: {
+           					message: 'Este campo no debe ser igual a los otros registros',
+            				callback: function (value, validator, $field) {
+            					if($('#defaultForm #opcion').val()!="actualizar"){
+            						var tabla = $('#tbl_CategoriaIE').DataTable();
+                					var filas = tabla.rows();
+                					var noigual = true;
+                    				filas.every(function(index, loop, rowloop) {
+            							if(value == tabla.row(index).data().nombreCategoria){
+            								noigual = false;
+            							}
+                    				});
+                    				return noigual;
+            					}else{
+									return true;
+								}
+            				}
+        				}
+			        }
+				}
+			}
+		});
+	}
 
 </script>

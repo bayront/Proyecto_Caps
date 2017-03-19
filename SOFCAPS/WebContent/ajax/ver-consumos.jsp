@@ -17,9 +17,10 @@
 						Consumos</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar1" class="collapse-link"> <i
-						class="fa fa-chevron-up"></i></a> <a id="expandir1"
-						class="expand-link"  onclick="validarExpand();"> <i class="fa fa-expand"></i></a>
+					<a id="colapsar_desplegar1" class="collapse-link" onclick="validar(colap1);"> <i
+						class="fa fa-chevron-up"></i></a> 
+						<a id="expandir1" class="expand-link"  onclick="validar(expand1);"> 
+						<i class="fa fa-expand"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -100,8 +101,8 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-4 col-sm-3">
-							<button type="submit"
-								class="btn btn-primary btn-label-left btn-lg">
+							<button type="submit" class="btn btn-primary btn-label-left btn-lg"
+							data-toggle='tooltip' "data-placement='bottom' title='guardar consumo' >
 								<span><i class="fa fa-save"></i></span> Guardar
 							</button>
 						</div>
@@ -128,9 +129,10 @@
 					<i class="fa fa-th"></i> <span>Lista de consumos</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar2" class="collapse-link"> <i class="fa fa-chevron-up"></i>
-					</a> <a id="expandir2" class="expand-link"> <i class="fa fa-expand"></i>
-					</a>
+					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i> </a> 
+					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> 
+						<i class="fa fa-expand"></i> </a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -215,8 +217,11 @@
 
 <script type="text/javascript">
 
-	//verificar menu expandido
-	var expand = false;
+	var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
+	var colap1 =  new Colap1();
+	var expand2 = new Expand2();
+	var colap2 =  new Colap2();
+	
 	// Iniciar dataTables
 	function AllTables() {
 		//cargar PDF Y EXCEL
@@ -407,18 +412,17 @@
 			$("#cliente_ID").val(datos.cliente.cliente_ID);
 			$("#contrato_ID").val(datos.contrato.contrato_ID);
 			
-			colapsar_desplegar($("#colapsar_desplegar2"));
-			if(expand == false){
-				expandir($("#expandir1"));
-				expand = true;
-			}
-			colapsar_desplegar($("#colapsar_desplegar1"));
+			validarExpand(expand1, "#expandir1");
+			if(colap1.valor==false)
+				validarColap(colap1, "#colapsar_desplegar1");
+			validarColap(colap2, "#colapsar_desplegar2");
+			if(expand2.valor == true)
+				validarExpand(expand2, "#expandir2");
 		});
 	}
 	
 	function iniciarTabla(){
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		console.log("cargando dataTable");
+		validarColap(colap1, "#colapsar_desplegar1");
 		var tablaConsumo = $('#tabla_consumo').DataTable( {
 			responsive: true,
 			"destroy": true,
@@ -435,6 +439,15 @@
 			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
         	"bJQueryUI": true,
 			"language":idioma_esp,
+			drawCallback: function(settings){
+	            var api = this.api();
+	            $('td', api.table().container()).each(function () {
+	               $(this).attr('title', $(this).text());
+	            });
+	            $('td', api.table().container()).tooltip({container: 'body'});
+	            $('td', api.table().container()).find("button").tooltip({container : 'body'});
+	            $("a.btn").tooltip({container: 'body'});
+	        },
 			"columns": [
 	            { "data": "fecha_fin" },
 	            { "data": "lectura_Actual" },
@@ -442,11 +455,11 @@
 	            { "data": "cliente.nombreCompleto" },
 	            { "data": "contrato.numContrato" },
 	            { "data": "contrato.numMedidor" },
-	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' data-toggle='tooltip' "+
-					"data-placement='bottom' title='Editar'>"+
+	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' title='editar consumo'>"+
+// 	            	" data-toggle='tooltip' data-placement='top' data-container='body' title='editar' >"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
-					"<button type='button' class='eliminarConsumo btn btn-danger' data-toggle='tooltip' "+
-					"data-placement='bottom' title='Eliminar'>"+
+					"<button type='button' class='eliminarConsumo btn btn-danger' title='eliminar consumo'>"+
+// 					" data-toggle='tooltip' data-placement='top' data-container='body' title='eliminar' >"+
 					"<i class='fa fa-trash-o'></i> </button>"}
 	            ],
 	            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
@@ -455,7 +468,7 @@
 					 +"<'row'<'form-inline'"
 					 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
 	            "buttons":[{
-					"text": "<i class='fa fa-user-plus'></i>",
+					"text": "<i class='fa fa-plus-square'></i>",
 					"titleAttr": "Agregar usuario",
 					"className": "btn btn-success",
 					"action": function() {
@@ -480,27 +493,31 @@
 		});
 		seleccionarEditarConsumo('#tabla_consumo tbody', tablaConsumo);
 		seleccionarEliminarConsumo('#tabla_consumo tbody', tablaConsumo);
-
 	}
 	
 	var agregar_nuevo_consumo = function() {
 		limpiar_texto();
-		colapsar_desplegar($("#colapsar_desplegar2"));
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		if(expand == false){
-			expandir($("#expandir1"));
-			expand = true;
-		}
+		validarExpand(expand1, "#expandir1");
+		if(colap1.valor==false)
+			validarColap(colap1, "#colapsar_desplegar1");
+		
+		validarColap(colap2, "#colapsar_desplegar2");
+		if(expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
 	}
 	
 	var cancelar = function() {
 		limpiar_texto();
-		if(expand == true){
-			expandir($("#expandir1"));
-			expand = false;
+		if(expand1.valor == true)
+			validarExpand(expand1, "#expandir1");
+		
+		if(expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
+		
+		validarColap(colap1, "#colapsar_desplegar1");
+		if (colap2.valor ==true){}else{
+			validarColap(colap2, "#colapsar_desplegar2");
 		}
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		colapsar_desplegar($("#colapsar_desplegar2"));
 	}
 	
 	var limpiar_texto = function() {//limpiar texto del formulario
@@ -538,13 +555,6 @@
 // 				console.log("eliminado");
 // 			});
 		});
-	}
-	
-	function validarExpand() {
-		if(expand == true)
-			expand = false;
-		else
-			expand = true;
 	}
 	
 </script>

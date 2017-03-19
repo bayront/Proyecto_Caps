@@ -94,30 +94,56 @@ public class SL_ajax_table_categoriaIE extends HttpServlet {
 		
 		opcion = request.getParameter("opcion");
 		System.out.println("opcion a realizar: " + opcion);
-		switch (opcion) {
-		case "guardar":
-			nombreCat = request.getParameter("nombreCategoria");
-			tcID = Integer.parseInt(request.getParameter("tipoCategoria"));
-			guardar(nombreCat, tcID, response);
-			break;
-		
-		case "actualizar":
-			nombreCat = request.getParameter("nombreCategoria");
-			tcID = Integer.parseInt(request.getParameter("tipoCategoria"));
-			catID = Integer.parseInt(request.getParameter("catIE_ID"));
-			actualizar(nombreCat, tcID, catID, response);
-			break;
-		
-		case "eliminar":
-			catID = Integer.parseInt(request.getParameter("catIE_ID"));
-			eliminar(catID, response);	
-			break;
+		try {
+			switch (opcion) {
+			case "guardar":
+				System.out.println("nombreCat: "+request.getParameter("nombreCategoria"));
+				if(request.getParameter("nombreCategoria") != "" || !(request.getParameter("nombreCategoria").isEmpty())) {
+					nombreCat = request.getParameter("nombreCategoria");
+				}else {
+					nombreCat = null;
+					response.setContentType("text/plain");
+					out = response.getWriter();
+					out.print("ERROR");
+					break;
+				}
+				tcID = Integer.parseInt(request.getParameter("tipoCategoria"));
+				guardar(nombreCat, tcID, response);
+				break;
+			
+			case "actualizar":
+				System.out.println(request.getParameter("nombreCategoria"));
+				if(request.getParameter("nombreCategoria") != "" || !(request.getParameter("nombreCategoria").isEmpty())) {
+					nombreCat = request.getParameter("nombreCategoria");
+				}else {
+					nombreCat = null;
+					response.setContentType("text/plain");
+					out = response.getWriter();
+					out.print("ERROR");
+					break;
+				}
+				tcID = Integer.parseInt(request.getParameter("tipoCategoria"));
+				catID = Integer.parseInt(request.getParameter("catIE_ID"));
+				actualizar(nombreCat, tcID, catID, response);
+				break;
+			
+			case "eliminar":
+				catID = Integer.parseInt(request.getParameter("catIE_ID"));
+				eliminar(catID, response);	
+				break;
 
-		default:
+			default:
+				response.setContentType("text/plain");
+				out = response.getWriter();
+				out.print("VACIO");
+				break;
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			response.setContentType("text/plain");
 			out = response.getWriter();
-			out.print("VACIO");
-			break;
+			out.print("ERROR");
 		}
 		
 	}

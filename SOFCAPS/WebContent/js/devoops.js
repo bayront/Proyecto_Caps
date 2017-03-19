@@ -2465,6 +2465,51 @@ function mostrarMensaje(dialogo, titulo, mensaje, colorHead, tipoBoton) {
 		    }]
 	});
 }
+//VALIDAR EXPANDS Y COLAPS DE DIALOGOS
+//verificar dialogo expandido, existen 2 menus como estandar en cada jsp
+//por eso se crea un expand para cada 1 y un colap para cada 1 que son los botones de expand y colap
+function Expand1(){
+	this.valor=false;
+}
+function Colap1(){
+	this.valor=true;
+}
+function Expand2(){
+	this.valor=false;
+}
+function Colap2(){
+	this.valor=true;
+}
+
+function validar(control) {//se le pasa un objeto bandera que verifica cuando haga click 
+							//sobre el boton de expand o colap cambie los valores de la banderas
+	if(control.valor == true){
+		control.valor = false;
+	}
+	else{
+		control.valor = true;
+	}
+}
+function validarExpand(control, dialog) {
+	if(control.valor == true){//si esta expandido el dialogo que se pase, se contrae
+		control.valor = false;
+		expandir($(dialog));
+	}
+	else{
+		control.valor = true;//si no esta expandido se expande
+		expandir($(dialog));
+	}
+}
+function validarColap(control, dialog) {
+	if(control.valor == true){//si el dialogo que se pase esta colapsado se comprime
+		control.valor = false;
+		colapsar_desplegar($(dialog));
+	}
+	else{
+		control.valor = true;//si el dialogo no esta comprimido se colapsa
+		colapsar_desplegar($(dialog));
+	}
+}
 // ////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////
 //

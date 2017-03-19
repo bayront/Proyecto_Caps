@@ -21,40 +21,39 @@
 					<i class="fa fa-search"></i> <span>Crear Tarifas</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar1" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
-					<a id="expandir1" class="expand-link"> <i class="fa fa-expand"></i></a>
+					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir1" onclick="validar(expand1);" class="expand-link"> <i class="fa fa-expand"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content">
-				<form class="form-horizontal" role="form" id="formTarifa" method="post" action="validators.html">
+				<form class="form-horizontal" role="form" id="formTarifa" method="post" action="">
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
-					<input type="hidden" id="actual" name="actual"> 
 					<input type="hidden" id="Tarifa_ID" name="Tarifa_ID">
 					<div class="form-group">
 						<label class="col-sm-4 control-label text-info">limite
 							Inferior</label>
 						<div class="col-sm-4">
-							<input id="lim_Inf" name="lim_Inf" type="text" class="form-control" autofocus>
+							<input id="lim_Inf" name="lim_Inf" type="number" class="form-control tarifa" autofocus>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-4 control-label text-info">Limite
 							Superior</label>
 						<div class="col-sm-4">
-							<input id="lim_Sup" name="lim_Sup" type="text" class="form-control">
+							<input id="lim_Sup" name="lim_Sup" type="number" class="form-control tarifa">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-4 control-label text-info">monto</label>
 						<div class="col-sm-4">
-							<input id="monto" name="monto" type="text" class="form-control">
+							<input id="monto" name="monto" type="number" class="form-control tarifa">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-4 text-right control-label">Categoria</label>
 						<div class="col-sm-4">
-							<select class="populate placeholder" name="categoria_ID" id="categoria_ID">
+							<select class="populate placeholder tarifa" name="categoria_ID" id="categoria_ID">
 								<option value="">Categoria</option>
 							</select>
 						</div>
@@ -62,7 +61,7 @@
 					<div class="form-group">
 						<label class="col-sm-4 text-right control-label">Unidad de medida</label>
 						<div class="col-sm-4">
-							<select class="populate placeholder" name="unidadMedida_ID" id="unidadMedida_ID">
+							<select class="populate placeholder tarifa" name="unidadMedida_ID" id="unidadMedida_ID">
 								<option value="">Unidad de medida</option>
 							</select>
 						</div>
@@ -92,8 +91,8 @@
 					<i class="fa fa-th"></i> <span>Lista de Tarifas</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar2" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
-					<a id="expandir2" class="expand-link"> <i class="fa fa-expand"></i></a>
+					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> <i class="fa fa-expand"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -138,8 +137,10 @@
 	</form>
 </div>
 <script type="text/javascript">
-// 	var eliminar_Editar_Activo = false;
-// 	var tablaTarifa;
+	var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
+	var colap1 =  new Colap1();
+	var expand2 = new Expand2();
+	var colap2 =  new Colap2();
 	function AllTables() {
 		//cargar PDF Y EXCEL
 		$.getScript('plugins/datatables/nuevo/jszip.min.js', function(){
@@ -174,14 +175,14 @@
 					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
 // 			location.reload();
 // 			console.log("cambiar esto ahi mismo");
-// 			limpiar_texto();
+			limpiar_texto();
 			$('#tabla_tarifa').DataTable().ajax.reload();
 // 			$('#tabla_tarifa').DataTable().state.clear();
 // 			iniciarTabla();
 		}
 		if(r == "ERROR"){
 			mostrarMensaje("#dialog", "ERROR", 
-					"¡Ha ocurrido un error, no se pudó realizar la acción!", "#E97D7D", "btn-danger");
+					"¡Ha ocurrido un error, no se pudo realizar la acción!", "#E97D7D", "btn-danger");
 		}
 		if(r =="VACIO"){
 			mostrarMensaje("#dialog", "VACIO", 
@@ -207,6 +208,15 @@
 			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
         	"bJQueryUI": true,	
 			"language":idioma_esp,
+			drawCallback: function(settings){
+	            var api = this.api();
+	            $('td', api.table().container()).each(function () {
+	               $(this).attr('title', $(this).text());
+	            });
+	            $('td', api.table().container()).tooltip({container: 'body'});
+	            $('td', api.table().container()).find("button").tooltip({container : 'body'});
+	            $("a.btn").tooltip({container: 'body'});
+	        },
 			"columns": [
 	            { "data": "lim_Inf" },
 	            { "data": null,
@@ -219,12 +229,10 @@
 	                }},
 	            { "data": "monto" },
 	            { "data": "categoria.nomCategoria" },
-	            {"defaultContent":"<button type='button' class='editarTarifa btn btn-primary' data-toggle='tooltip' "+
-					"data-placement='bottom' title='Editar Tarifas'>"+
+	            {"defaultContent":"<button type='button' class='editarTarifa btn btn-primary' title='editar tarifa'>"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
-					"<button type='button' class='eliminar btn btn-danger'>"+
-					"<i class='fa fa-trash-o'></i>"+
-					"</button>"}
+					"<button type='button' class='eliminar btn btn-danger' title='eliminar tarifa'>"+
+					"<i class='fa fa-trash-o'></i> </button>"}
 	            ],
 	            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 					 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
@@ -232,7 +240,7 @@
 					 +"<'row'<'form-inline'"
 					 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
 	            "buttons":[{
-					"text": "<i class='fa fa-user-plus'></i>",
+					"text": "<i class='fa fa-plus-square'></i>",
 					"titleAttr": "Agregar tarifa",
 					"className": "btn btn-success",
 					"action": function() {
@@ -261,31 +269,44 @@
 	
 	var agregar_nuevo_tarifa = function() {
 		limpiar_texto();
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		colapsar_desplegar($("#colapsar_desplegar2"));
+		validarExpand(expand1, "#expandir1");
+		if(colap1.valor==false)
+			validarColap(colap1, "#colapsar_desplegar1");
+		validarColap(colap2, "#colapsar_desplegar2");
+		if(expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
+		
 	}
 	
 	var cancelar = function() {
 		limpiar_texto();
-		colapsar_desplegar($("#colapsar_desplegar1"));
-		colapsar_desplegar($("#colapsar_desplegar2"));
+		if(expand1.valor == true)
+			validarExpand(expand1, "#expandir1");
+		
+		if(expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
+		
+		validarColap(colap1, "#colapsar_desplegar1");
+		if (colap2.valor ==true){}else{
+			validarColap(colap2, "#colapsar_desplegar2");
+		}
 	}
 	
 	var guardar = function() {
 	$("#formTarifa").on("submit", function(e) { //recordar numeral
-		e.preventDefault();//detiene el evento
-		var frm = $(this).serialize();//parsea los datos del formulario
-		console.log(frm);
-		$.ajax({//enviar datos por ajax
-			method:"post",
-			url:"./SL_tarifa",
-			data: frm//datos a enviar
-			}).done(function(info) {//informacion que el servlet le reenvia al jsp
-			console.log(info);
-				colapsar_desplegar($("#colapsar_desplegar1"));
-				colapsar_desplegar($("#colapsar_desplegar2"));
-				verResultado(info);
-			});
+// 		e.preventDefault();//detiene el evento
+//  		var frm = $(this).serialize();//parsea los datos del formulario
+//  		console.log(frm);
+//  		$.ajax({//enviar datos por ajax
+//  			method:"post",
+//  			url:"./SL_tarifa",
+//  			data: frm//datos a enviar
+//  			}).done(function(info) {//informacion que el servlet le reenvia al jsp
+//  			console.log(info);
+//  				colapsar_desplegar($("#colapsar_desplegar1"));
+//  				colapsar_desplegar($("#colapsar_desplegar2"));
+//  				verResultado(info);
+//  			});
 		});
 	}
 	
@@ -320,20 +341,23 @@
 // 					$("#unidadMedida_ID").change();
 // 				}
 // 			});
-			var datos = table.row($(this).parents("tr")).data();
-				$("#lim_Inf").val(datos.lim_Inf);
-				$("#lim_Sup").val(datos.lim_Sup);
-				$("#monto").val(datos.monto);
-				$("#Tarifa_ID").val(datos.tarifa_ID);
-				$("#opcion").val("actualizar");
-				$("#categoria_ID").val(datos.categoria.categoria_ID);
-				$("#categoria_ID").change();
-				$("#unidadMedida_ID").val(datos.unidad_de_Medida.unidad_de_Medida_ID);
-				$("#unidadMedida_ID").change();
-				console.log("categoria: "+datos.categoria.categoria_ID+", monto: "+datos.monto);
-// 			$(tbody).off("click", "button.editarTarifa");
-			colapsar_desplegar($("#colapsar_desplegar1"));
-			colapsar_desplegar($("#colapsar_desplegar2"));
+			var datos = table.row($(this).parents("tr")).data();	
+			$("#lim_Inf").val(datos.lim_Inf);
+			$("#lim_Sup").val(datos.lim_Sup);
+			$("#monto").val(datos.monto);
+			$("#Tarifa_ID").val(datos.tarifa_ID);
+			$("#opcion").val("actualizar");
+			$("#categoria_ID").val(datos.categoria.categoria_ID);
+			$("#categoria_ID").change();
+			$("#unidadMedida_ID").val(datos.unidad_de_Medida.unidad_de_Medida_ID);
+			$("#unidadMedida_ID").change();
+			console.log("categoria: "+datos.categoria.categoria_ID+", monto: "+datos.monto);
+			validarExpand(expand1, "#expandir1");
+			if(colap1.valor==false)
+				validarColap(colap1, "#colapsar_desplegar1");
+			validarColap(colap2, "#colapsar_desplegar2");
+			if(expand2.valor == true)
+				validarExpand(expand2, "#expandir2");
 		});
 	}
 	
@@ -350,7 +374,6 @@
 				}
 			});
 			abrirDialogo();
-// 			$(tbody).off("click", "button.eliminar");
 		});
 	}
 	
@@ -396,14 +419,14 @@
 		$('[data-toggle="tooltip"]').tooltip();
 
 		//Cargar ejemplo para validaciones
-		LoadBootstrapValidatorScript(DemoFormValidator);	
+		LoadBootstrapValidatorScript(FormValidators);	
 		
 		WinMove();
 		
 		//Activar evento para guardar
-		guardar();
+// 		guardar();
 		
-		colapsar_desplegar($("#colapsar_desplegar1"));
+		validarColap(colap1, "#colapsar_desplegar1");
 		
 		//cargar selects
 		cargarSelect("#unidadMedida_ID", 3);//traer categorias
@@ -431,6 +454,63 @@
 	        		}
 				});
 	        }
+		});
+	}
+	function FormValidators() {
+		$('#formTarifa').bootstrapValidator({
+			message: 'Este valor no es valido',
+			submitHandler: function(validator, form, submitButton) {
+				$("#formTarifa").on("submit", function(e) {
+					e.preventDefault();//detiene el evento
+		  			var frm = $(this).serialize();//parsea los datos del formulario
+		  			console.log(frm);
+		  			$.ajax({//enviar datos por ajax
+		  				method:"post",
+		  				url:"./SL_tarifa",
+		  				data: frm//datos a enviar
+		  			}).done(function(info) {//informacion que el servlet le reenvia al jsp
+		  				if(expand1.valor == true)
+		  					validarExpand(expand1, "#expandir1");
+		  				
+		  				if(expand2.valor == true)
+		  					validarExpand(expand2, "#expandir2");
+		  				
+		  				validarColap(colap1, "#colapsar_desplegar1");
+		  				if (colap2.valor ==true){}else{
+		  					validarColap(colap2, "#colapsar_desplegar2");
+		  				}
+	 					verResultado(info);
+		  			});
+				});
+            },
+            live: 'enabled',
+            excluded: ':disabled',
+			fields: {
+				lim_Inf:{
+					validators: {
+						greaterThan: {
+							value: 0,
+							inclusive: false,
+							message: 'El campo debe ser mayor que 0'
+						},
+						notEmpty:{
+			                message: "Este campo es requerido y no debe estar vacio"
+			            }
+			        }
+				},
+				monto:{
+					validators:{
+						greaterThan: {
+							value: 0,
+							inclusive: false,
+							message: 'El campo debe ser mayor que 0'
+						},
+	                    notEmpty:{
+			                message: "Este campo es requerido y no debe estar vacio"
+			            }
+					}
+				}
+			}
 		});
 	}
 </script>

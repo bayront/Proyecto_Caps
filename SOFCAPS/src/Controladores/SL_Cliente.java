@@ -1,6 +1,8 @@
 package Controladores;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +19,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import Datos.DTCliente;
+import Datos.DTUsuario;
 import Datos.DataTableObject;
 import Entidades.Cliente;
+import Entidades.Usuario;
 
 /**
  * Servlet implementation class SL_Usuario
@@ -26,9 +30,10 @@ import Entidades.Cliente;
 @WebServlet("/SL_Cliente")
 public class SL_Cliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DTCliente datosCliente = new DTCliente();
-	PrintWriter out;
-       
+	private DTCliente datosCliente = DTCliente.getInstance();
+	private PrintWriter out;
+	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -62,25 +67,76 @@ public class SL_Cliente extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		response.setContentType("application/json");
-		PrintWriter out = response.getWriter();
-		List<Cliente> cliente = datosCliente.cliente();
+		out = response.getWriter();
+		if(Integer.parseInt(request.getParameter("carga")) == 1) {
+			try {
+				traerClientes(response);
+			} catch (SQLException e) {
+			// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else if(Integer.parseInt(request.getParameter("carga")) == 2) {
+			try {
+				traerClientesInactivos(response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	  }
+	
+	private void traerClientes(HttpServletResponse response) throws SQLException {
+		List<Cliente> clientes = new ArrayList<>();
+		ResultSet rs = datosCliente.cargarClientes();
+		while (rs.next()) {
+			Cliente c = new Cliente();
+			c.setCliente_ID(rs.getInt("cliente_id"));
+			c.setNombre1(rs.getString("nombre1"));
+			c.setNombre2(rs.getString("nombre2"));
+			c.setApellido1(rs.getString("Apellido1"));
+			c.setApellido2(rs.getString("Apellido2"));
+			c.setCedula(rs.getString("cedula"));
+			c.setCelular(rs.getInt("celular"));
+			c.setEstado(rs.getBoolean("estado"));
+			clientes.add(c);
+		}
 		DataTableObject dataTableObject = new DataTableObject();
 		dataTableObject.aaData = new ArrayList<>();
-		for (Cliente c : cliente) {
-			dataTableObject.aaData.add(c);
+		for (Cliente cliente : clientes) {
+			dataTableObject.aaData.add(cliente);
 		}
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		String json = gson.toJson(dataTableObject);
 		System.out.println(json.toString());
 		out.print(json);
-	}
+		}
 	
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	private void traerClientesInactivos(HttpServletResponse response) throws SQLException {
+		List<Cliente> clientes = new ArrayList<>();
+		ResultSet rs = datosCliente.cargarClientesInactivos();
+		while (rs.next()) {
+			Cliente c = new Cliente();
+			c.setCliente_ID(rs.getInt("cliente_id"));
+			c.setNombre1(rs.getString("nombre1"));
+			c.setNombre2(rs.getString("nombre2"));
+			c.setApellido1(rs.getString("Apellido1"));
+			c.setApellido2(rs.getString("Apellido2"));
+			c.setCedula(rs.getString("cedula"));
+			c.setCelular(rs.getInt("celular"));
+			c.setEstado(rs.getBoolean("estado"));
+			clientes.add(c);
+		}
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.aaData = new ArrayList<>();
+		for (Cliente cliente : clientes) {
+			dataTableObject.aaData.add(cliente);
+		}
+		String json = gson.toJson(dataTableObject);
+		System.out.println(json.toString());
+		out.print(json);
+		}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-//		System.out.println("hola post , este es el id : " + request.getParameter("cliente_id") + " del cliente");
 		String nombre1, nombre2, apellido1, apellido2, cedula, opcion;
 		int celular, cliente_id;
 		Boolean estado;
@@ -104,6 +160,10 @@ public class SL_Cliente extends HttpServlet {
 			cliente_id= Integer.parseInt(request.getParameter("cliente_id"));
 			eliminar(cliente_id, response);
 			break;
+		case "activar":
+			cliente_id= Integer.parseInt(request.getParameter("cliente_id"));
+			activar(cliente_id, response);
+			break;
 		case "guardar":
 			nombre1 = request.getParameter("nombre1").trim();
 			nombre2 = request.getParameter("nombre2").trim();
@@ -111,57 +171,40 @@ public class SL_Cliente extends HttpServlet {
 			apellido2= request.getParameter("apellido2").trim();
 			cedula = request.getParameter("cedula").trim();
 			celular = Integer.parseInt( request.getParameter("celular").trim());
-			estado = Boolean.parseBoolean(request.getParameter("estado").trim());
-			guardar(nombre1, nombre2, apellido1, apellido2, cedula, celular, estado, response);
+			guardar(nombre1, nombre2, apellido1, apellido2, cedula, celular, response);
 			break;
 		default:
-			final JSONObject json = new JSONObject();
-			response.setContentType("application/json");
+			response.setContentType("text/plain");
 			out = response.getWriter();
-			json.put("respuesta", "OPCION_VACIA");
-			System.out.println(json.toJSONString());
-			out.print(json.toJSONString());
+			out.print("VACIO");
 			break;
 		}
-		
-		//doGet(request, response);
-	}
+	 }
 	
-	/**
-	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
-	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
-	
-	protected void guardar(String nombre1, String nombre2, String apellido1, String apellido2, String cedula, int celular, Boolean estado, HttpServletResponse response) {
-		Cliente c = new Cliente();
-		boolean resultado = false;
-		try 
-		{
+
+	protected void guardar(String nombre1, String nombre2, String apellido1, String apellido2, String cedula, int celular,  HttpServletResponse response) {
+		
+		try {
+			Cliente c = new Cliente();
 			c.setNombre1(nombre1);
 			c.setNombre2(nombre2);
 			c.setApellido1(apellido1);
 			c.setApellido2(apellido2);
 			c.setCedula(cedula);
 			c.setCelular(celular);
-			c.setEstado(estado);
-			
-			 resultado = datosCliente.guardarCliente(c);
-			 verificar_resultado(resultado, response);
-			//response.sendRedirect("index.jsp?guardado");
-		} 
-		catch (Exception e) 
-		{
-			System.err.println("SL ERROR: "+e.getMessage());
+
+			 verificar_resultado(datosCliente.guardarCliente(c), response);	
+		} catch (Exception e) {
+			System.err.println("SL_Cliente ERROR: "+e.getMessage());
 		}
 	}
 	
 	protected void actualizar(int cliente_id, String nombre1, String nombre2, String apellido1, String apellido2, String cedula, int celular, Boolean estado, HttpServletResponse response) {
-		Cliente c = new Cliente();
-		boolean resultado = false;
-		try 
-		{
+		try {
+			Cliente c = new Cliente();
 			c.setCliente_ID(cliente_id);
 			c.setNombre1(nombre1);
 			c.setNombre2(nombre2);
@@ -170,48 +213,48 @@ public class SL_Cliente extends HttpServlet {
 			c.setCedula(cedula);
 			c.setCelular(celular);
 			c.setEstado(estado);
-			resultado = datosCliente.actualizarCliente(c);
-			verificar_resultado(resultado, response);
-			//response.sendRedirect("index.jsp?guardado");
-		} 
-		catch (Exception e) 
-		{
+			verificar_resultado(datosCliente.actualizarCliente(c), response);
+			} catch (Exception e) {
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
 	
-	protected void eliminar(int cliente_id, HttpServletResponse response) {
-		Cliente c = new Cliente();
-		boolean resultado = false;
-		try 
-		{
-			c.setCliente_ID(cliente_id);
-			resultado = datosCliente.eliminarCliente(c);
-			verificar_resultado(resultado, response);
-			//response.sendRedirect("index.jsp?guardado");
-		} 
-		catch (Exception e) 
-		{
-			System.err.println("SL ERROR: "+e.getMessage());
+	  protected void eliminar(int cliente_id, HttpServletResponse response) {
+			try {
+				Cliente c = new Cliente();
+				c.setCliente_ID(cliente_id);
+				verificar_resultado(datosCliente.eliminarCliente(c), response);
+			} catch (Exception e) {
+				System.err.println("SL ERROR: "+e.getMessage());
+			}
 		}
-	}
+	  
+	  protected void activar(int cliente_id, HttpServletResponse response) {
+			try {
+				Cliente c = new Cliente();
+				c.setCliente_ID(cliente_id);
+				verificar_resultado(datosCliente.activarCliente(c), response);
+			} catch (Exception e) {
+				System.err.println("SL ERROR: "+e.getMessage());
+			}
+		}
 	
 	protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {
-		final JSONObject json = new JSONObject();
-		if(r) {
-			response.setContentType("application/json");
-			out = response.getWriter();
-			json.put("respuesta", "BIEN");
-			System.out.println(json.toJSONString());
-			out.print(json.toJSONString());
-		}else {
-			response.setContentType("application/json");
-			out = response.getWriter();
-			json.put("respuesta", "ERROR");
-			System.out.println(json.toJSONString());
-			out.print(json.toJSONString());
+		try {
+			if(r) {
+				response.setContentType("text/plain");
+				out = response.getWriter();
+				out.print("BIEN");
+			}else {
+				response.setContentType("text/plain");
+				out = response.getWriter();
+				out.print("ERROR");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
- 
- 
-}
+	
+	}
+
+

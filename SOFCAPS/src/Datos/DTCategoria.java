@@ -76,7 +76,7 @@ public class DTCategoria {
 			while (rs.next()){
 				System.out.println("fila "+rs.getInt("categoria_ID"));
 				if(rs.getInt("categoria_ID") ==u.getCategoria_ID()){
-					rs.updateBoolean("eliminado", u.getEliminado());
+					rs.updateBoolean("eliminado", true);
 					rs.updateRow();
 					System.out.println("eliminado");
 				}

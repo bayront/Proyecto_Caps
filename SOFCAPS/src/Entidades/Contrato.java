@@ -19,6 +19,7 @@ public class Contrato
    private Integer cuotas;
    private Float montoContrato;
    private Integer contrato_ID;
+   private Cliente cliente;
    private RegimenPropiedad regimenPropiedad;
    private Sector sector;
    private Categoria categoria;
@@ -142,6 +143,14 @@ public class Contrato
 	}
 	public void setRecibosCaja(List<ReciboCaja> recibosCaja) {
 		this.recibosCaja = recibosCaja;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}   
     
 }

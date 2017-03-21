@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.mysql.jdbc.PreparedStatement;
+
 import Datos.DT_Opcion;
 import Datos.PoolConexion;
 import Entidades.Opcion;
@@ -30,10 +32,30 @@ public class DT_Opcion {
 	   return dtOp;
 	 }
 	 
-	public ResultSet cargarDatos()
+	public ResultSet cargarDatos(int rol_ID)
 	{
+		java.sql.PreparedStatement ps;
+		String sql = "SELECT o.opcion, ro.Rol_ID, ro.Opcion_ID FROM opcion o INNER JOIN rol_opcion ro ON "+
+				"o.Opcion_ID = ro.Opcion_ID WHERE ro.Rol_ID=?";
+		try
+		{
+			ps = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			ps.setInt(1, rol_ID);
+			rs = ps.executeQuery();
+			System.out.println("datos de opcion cargados");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("Error en DT_Opcion: "+e.getMessage());
+		}
+		return rs;
+	}
+	
+	public ResultSet cargarDatos2() {
+		// TODO Auto-generated method stub
 		Statement s;
-		String sql = ("SELECT * FROM opcion WHERE eliminado = 0;");
+		String sql = "SELECT * from opcion where eliminado = 0;";
 		try
 		{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -53,7 +75,7 @@ public class DT_Opcion {
 		boolean guardado = false;
 		try 
 		{
-			dtOp.cargarDatos();
+//			dtOp.cargarDatos();
 			rs.moveToInsertRow();
 			rs.updateString("descripcion", o.getDescripcion());
 			rs.updateString("opcion", o.getOpcion());
@@ -73,7 +95,7 @@ public class DT_Opcion {
 	
 	public boolean actualizarOpcion(Opcion o){
 		try {
-			dtOp.cargarDatos();
+//			dtOp.cargarDatos();
 			rs.beforeFirst();
 			rs.beforeFirst();
 			while (rs.next()){
@@ -100,7 +122,7 @@ public class DT_Opcion {
 		boolean guardado = false;
 		try 
 		{
-			dtOp.cargarDatos();
+//			dtOp.cargarDatos();
 			rs.beforeFirst();
 			rs.beforeFirst();
 			while (rs.next()){

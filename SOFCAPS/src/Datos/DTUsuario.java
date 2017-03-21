@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import Entidades.Cliente;
 import Entidades.Rol;
 import Entidades.Usuario;
 
@@ -27,7 +28,7 @@ public class DTUsuario {
 	public ResultSet cargarUsuarios()
 	{
 		Statement s;
-		String sql = ("SELECT * FROM usuario where eliminado=0;");
+		String sql = ("SELECT * FROM usuario where eliminado=false;");
 		try {
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
@@ -43,6 +44,25 @@ public class DTUsuario {
 		return rs;
 	}
 	
+	public ResultSet cargarUsuariosInactivos()
+	{
+		Statement s;
+		String sql = ("SELECT * FROM usuario where eliminado=true;");
+		try {
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("datos de usuarios cargados");
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error en DTUsuario, metodo cargarUsuarios: "+e.getMessage());
+		}
+		if(rs == null)
+			System.out.println("Resultset de Usuario vacio");
+		
+		return rs;
+	}
+
 	public boolean guardarUsuario(Usuario u){
 		boolean guardado = false;
 		try 
@@ -71,8 +91,8 @@ public class DTUsuario {
 			dtUsu.cargarUsuarios();
 			rs.beforeFirst();
 			while (rs.next()){
-				System.out.println("fila "+rs.getInt("Usuario_ID"));
-				if(rs.getInt("Usuario_ID") == u.getUsuario_ID()){
+				System.out.println("fila "+rs.getInt("usuario_id"));
+				if(rs.getInt("usuario_id") == u.getUsuario_ID()){
 					rs.updateBoolean("eliminado", true);
 					rs.updateRow();
 					guardado  = true;
@@ -93,11 +113,8 @@ public class DTUsuario {
 			rs.beforeFirst();
 			while (rs.next()){
 				System.out.println("fila "+rs.getInt("Usuario_ID"));
-				if(rs.getInt("Usuario_ID") ==u.getUsuario_ID()){
-					System.out.println(u.getLogin());
-					
-					rs.updateInt("Usuario_ID", u.getUsuario_ID());
-					rs.updateBoolean("eliminado", false);
+				if(rs.getInt("Usuario_ID") == u.getUsuario_ID()){
+					rs.updateBoolean("eliminado", u.getEliminado());
 					rs.updateString("login", u.getLogin());
 					rs.updateString("pass", u.getPass());
 					rs.updateRow();
@@ -110,4 +127,27 @@ public class DTUsuario {
 			return false;
 		}
 	}
+	public boolean activarUsuario(Usuario u){
+		boolean guardado = false;
+		try 
+		{
+			dtUsu.cargarUsuariosInactivos();
+			rs.beforeFirst();
+			while (rs.next()){
+				System.out.println("fila "+rs.getInt("usuario_id"));
+				if(rs.getInt("usuario_id") ==u.getUsuario_ID()){
+					rs.updateBoolean("eliminado", false);
+					rs.updateRow();
+					guardado  = true;
+				}
+			}
+		}
+		catch (Exception e) 
+		{
+			System.err.println("ERROR ELIMINAR en Usuario: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return guardado;
+	}
+	
 }

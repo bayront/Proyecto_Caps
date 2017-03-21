@@ -43,16 +43,38 @@ public class SL_Opcion extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("application/json");
-		out = response.getWriter();
-			try {
-				traerOpciones(response);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		try {
+			response.setContentType("application/json");
+			out = response.getWriter();
+			switch (Integer.parseInt(request.getParameter("carga"))) {
+			case 1:
+				int rol_ID = Integer.parseInt(request.getParameter("rol_ID"));
+				try {
+					traerOpciones(rol_ID, response);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case 2:
+				try {
+					traerOpciones2(response);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			default:
+				break;
 			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			response.setContentType("text/plain");
+			out = response.getWriter();
+			out.print("ERROR");
+		}
 	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -141,14 +163,34 @@ public class SL_Opcion extends HttpServlet {
 		}
 	}
 
-	protected void traerOpciones(HttpServletResponse response) throws SQLException {
+	protected void traerOpciones(int rol_ID, HttpServletResponse response) throws SQLException {
 		List<Opcion> opciones = new ArrayList<>();
-		ResultSet rs = datosOpcion.cargarDatos();
+		ResultSet rs = datosOpcion.cargarDatos(rol_ID);
 		while (rs.next()) {
 			Opcion o = new Opcion();
 			o.setOpcion_ID(rs.getInt("Opcion_ID"));
 			o.setOpcion(rs.getString("opcion"));
-			o.setDescripcion(rs.getString("descripcion"));
+//			o.setDescripcion(rs.getString("descripcion"));
+			opciones.add(o);
+		}
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.aaData = new ArrayList<>();
+		for (Opcion opcion : opciones) {
+			dataTableObject.aaData.add(opcion);
+		}
+		String json = gson.toJson(dataTableObject);
+		System.out.println(json.toString());
+		out.print(json);
+	}
+	private void traerOpciones2(HttpServletResponse response) throws SQLException {
+		// TODO Auto-generated method stub
+		List<Opcion> opciones = new ArrayList<>();
+		ResultSet rs = datosOpcion.cargarDatos2();
+		while (rs.next()) {
+			Opcion o = new Opcion();
+			o.setOpcion_ID(rs.getInt("Opcion_ID"));
+			o.setOpcion(rs.getString("opcion"));
+//			o.setDescripcion(rs.getString("descripcion"));
 			opciones.add(o);
 		}
 		DataTableObject dataTableObject = new DataTableObject();

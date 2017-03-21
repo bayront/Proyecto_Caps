@@ -163,20 +163,20 @@
 							<i title="Consumos" class="fa fa-tint"></i> <span class="hidden-xs">Consumos</span>
 					</a>
 						<ul class="dropdown-menu">
-<!-- 							<li><a class="ajax-link" href="ajax/consumo_bomba.jsp"> Consumo de la bomba</a></li> -->
+							<li><a class="ajax-link" href="ajax/consumo_bomba.jsp"> Consumo de la bomba</a></li>
 							<li><a class="ajax-link" href="ajax/ver-consumos.jsp"> Consumo de los clientes</a></li>
 						</ul>
 					</li>
 
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
-							<i title="Secretaría" class="fa fa-folder-open"></i><span class="hidden-xs">Área secretaría</span>
+							<i title="Secretaría" class="fa fa-folder-open"></i><span class="hidden-xs"> Área secretaría</span>
 					</a>
 						<ul class="dropdown-menu">
 							<li><a class="ajax-link" href="ajax/crear_tarifa.jsp">
-								<i class="fa fa-usd"></i>Gestión de tarifas</a>
+								<i class="fa fa-usd"></i> Gestión de tarifas</a>
 							</li>
-							<li><a class="ajax-link" href="ajax/crear_tarifa.jsp">
-								<i class="fa fa-archive"></i>Gestión de categorías</a>
+							<li><a class="ajax-link" href="ajax/crear-categoria.jsp">
+								<i class="fa fa-archive"></i> Gestión de categorías</a>
 							</li>
 						</ul>
 					</li>
@@ -184,7 +184,7 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 					<i title="Usuarios" class="fa fa-user"></i> <span class="hidden-xs">Usuarios</span></a>
 						<ul class="dropdown-menu">
-							<li><a class="ajax-link" href="ajax/crearUsuario.jsp">Gestión de usuarios</a></li>
+							<li><a class="ajax-link" href="ajax/usuarito.jsp">Gestión de usuarios</a></li>
 						</ul>
 					</li>
 					<li class="dropdown"><a href="ajax/Roles_Opciones.jsp" class="ajax-link">
@@ -193,7 +193,7 @@
 						<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i title="Finanzas" class="fa fa-briefcase"></i> <span class="hidden-xs">Finanzas</span></a>
 							<ul class="dropdown-menu">
-								<li><a class="ajax-link" href="#" style="padding: 9px 10px 9px 30px;">
+								<li><a class="ajax-link" href="ajax/OtrosIngEgreg.jsp" style="padding: 9px 10px 9px 30px;">
 								<p style="height:auto; white-space:normal; margin-bottom:0px;">
 								Gestión de ingresos y egresos</p></a></li>
 								<li class="dropdown"><a href="#" class="dropdown-toggle" 

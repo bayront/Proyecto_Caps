@@ -20,6 +20,7 @@ import com.google.gson.GsonBuilder;
 
 import Datos.DTUsuario;
 import Datos.DataTableObject;
+import Entidades.Cliente;
 import Entidades.Usuario;
 
 /**
@@ -50,22 +51,34 @@ public class SL_Usuario extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		out = response.getWriter();
+		if(Integer.parseInt(request.getParameter("carga")) == 1){
 		try {
 			traerUsuarios(response);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				}
+		}
+		else if(Integer.parseInt(request.getParameter("carga")) == 2) {
+			try {
+				traerUsuariosInactivos(response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
+		
 
 	private void traerUsuarios(HttpServletResponse response) throws SQLException {
 		List<Usuario> usuarios = new ArrayList<>();
 		ResultSet rs = datosUsuario.cargarUsuarios();
 		while (rs.next()) {
 			Usuario u = new Usuario();
-			u.setUsuario_ID(rs.getInt("Usuario_ID"));
+			u.setUsuario_ID(rs.getInt("usuario_ID"));
 			u.setLogin(rs.getString("login"));
 			u.setPass(rs.getString("pass"));
+			u.setEliminado(rs.getBoolean("eliminado"));
 			usuarios.add(u);
 		}
 		DataTableObject dataTableObject = new DataTableObject();
@@ -77,30 +90,54 @@ public class SL_Usuario extends HttpServlet {
 		System.out.println(json.toString());
 		out.print(json);
 	}
+	
+	private void traerUsuariosInactivos(HttpServletResponse response) throws SQLException {
+		List<Usuario> usuarios = new ArrayList<>();
+		ResultSet rs = datosUsuario.cargarUsuariosInactivos();
+		while (rs.next()) {
+			Usuario u = new Usuario();
+			u.setUsuario_ID(rs.getInt("usuario_ID"));
+			u.setLogin(rs.getString("login"));
+			u.setPass(rs.getString("pass"));
+			u.setEliminado(rs.getBoolean("eliminado"));
+			usuarios.add(u);
+		}
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.aaData = new ArrayList<>();
+		for (Usuario usuario : usuarios) {
+			dataTableObject.aaData.add(usuario);
+		}
+		String json = gson.toJson(dataTableObject);
+		System.out.println(json.toString());
+		out.print(json);
+		}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String login, pass, opcion;
-		int usuario_id;
+		Boolean eliminado;
+		int usuario_ID;
 		opcion = request.getParameter("opcion").trim();
 		System.out.println("opcion a realizar: " + opcion);
 		switch (opcion) {
 			case "actualizar":
 				login = request.getParameter("login").trim();
 				pass = request.getParameter("pass").trim();
-				usuario_id= Integer.parseInt(request.getParameter("Usuario_ID"));
-				
+				eliminado = Boolean.parseBoolean(request.getParameter("eliminado").trim());
+				usuario_ID= Integer.parseInt(request.getParameter("usuario_id"));
 				System.out.println("actualizar SL_Usuario");
-				
-				actualizar(usuario_id, login, pass, response);
+				actualizar(usuario_ID, login, pass, eliminado, response);
 				break;
 			case "eliminar":
-				System.out.println("eliminar SL_Usuario");
-				usuario_id= Integer.parseInt(request.getParameter("usuario_id"));
-				eliminar(usuario_id, response);
+				usuario_ID= Integer.parseInt(request.getParameter("usuario_ID"));
+				eliminar(usuario_ID, response);
 				break;					
 			case "guardar":
 				login = request.getParameter("login").trim();
 				pass = request.getParameter("pass").trim();
 				guardar(login, pass, response);
+				break;
+			case "activar":
+				usuario_ID= Integer.parseInt(request.getParameter("usuario_ID"));
+				activar(usuario_ID, response);
 				break;
 			default:
 				response.setContentType("text/plain");
@@ -129,12 +166,13 @@ public class SL_Usuario extends HttpServlet {
 	}
 	
 	
-	protected void actualizar(int usuario_id, String login, String pass, HttpServletResponse response) {
+	protected void actualizar(int usuario_id, String login, String pass, Boolean eliminado, HttpServletResponse response) {
 		try {
 			Usuario u = new Usuario();
 			u.setUsuario_ID(usuario_id);
 			u.setLogin(login);
 			u.setPass(pass);
+			u.setEliminado(eliminado);
 			verificar_resultado(datosUsuario.actualizarUsuario(u), response);
 		} catch (Exception e) {
 			System.err.println("SL ERROR: "+e.getMessage());
@@ -150,8 +188,16 @@ public class SL_Usuario extends HttpServlet {
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
-	
-	
+      protected void activar(int usuario_ID, HttpServletResponse response) {
+			try {
+				Usuario u = new Usuario();
+				u.setUsuario_ID(usuario_ID);
+				verificar_resultado(datosUsuario.activarUsuario(u), response);
+			} catch (Exception e) {
+				System.err.println("SL ERROR: "+e.getMessage());
+			}
+		}  
+      
 	protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {
 		try {
 			if(r) {

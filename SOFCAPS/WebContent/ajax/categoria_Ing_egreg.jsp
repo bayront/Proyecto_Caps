@@ -21,7 +21,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i> <span>Registros de consumos</span>
+					<i class="fa fa-search"></i> <span>Gestión de categorías</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"  id="colapsar_desplegar1" onclick="validar(colap1);"> 

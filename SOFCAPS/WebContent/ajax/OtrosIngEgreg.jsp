@@ -1,3 +1,4 @@
+<%@page import="Datos.DTOtros_Ing_Egreg, java.util.*, Entidades.Otros_Ing_Egreg , java.sql.ResultSet ;"%>
 <%@page language="java"%>
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
@@ -8,8 +9,8 @@
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
-			<li><a href="index.html">Tarifas</a></li>
-			<li><a href="#">Gestión de tarifas</a></li>
+			<li><a href="index.html">Otros Ingresos y Egresos</a></li>
+<!-- 			//<li><a href="#">Crear tarifa</a></li> -->
 		</ol>
 	</div>
 </div>
@@ -18,54 +19,67 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i> <span>Crear Tarifas</span>
+					<i class="fa fa-search"></i> <span>Registro de Otros Ingresos y Egresos</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
-					<a id="expandir1" onclick="validar(expand1);" class="expand-link"> <i class="fa fa-expand"></i></a>
+					<a class="collapse-link"  id="colapsar_desplegar1" onclick="validar(colap1);" > 
+						<i class="fa fa-chevron-up"></i> </a> 
+					<a class="expand-link" id="expandir1" onclick="validar(expand1);"> 
+						<i class="fa fa-expand"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content">
-				<form class="form-horizontal" role="form" id="formTarifa" method="post" action="">
+				<form class="form-horizontal" role="form" id="formOI" method="post" action="">
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
-					<input type="hidden" id="Tarifa_ID" name="Tarifa_ID">
+<!-- 					<input type="hidden" id="actual" name="actual">  -->
+					<input type="hidden" id="Otros_Ing_Egreg_ID" name="Otros_Ing_Egreg_ID">
+					
 					<div class="form-group">
-						<label class="col-sm-4 control-label text-info">limite
-							Inferior</label>
+						<label class="col-sm-4 control-label text-info">Descripción</label>
 						<div class="col-sm-4">
-							<input id="lim_Inf" name="lim_Inf" type="number" class="form-control tarifa" autofocus>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label text-info">Limite
-							Superior</label>
-						<div class="col-sm-4">
-							<input id="lim_Sup" name="lim_Sup" type="number" class="form-control tarifa">
+							<input id="descripcion" name="descripcion" type="text" class="form-control" autofocus>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-4 control-label text-info">monto</label>
 						<div class="col-sm-4">
-							<input id="monto" name="monto" type="number" class="form-control tarifa">
+							<input id="monto" name="monto" type="number" class="form-control">
 						</div>
 					</div>
+<!-- 					<div class="form-group"> -->
+<!-- 						<label class="col-sm-2 control-label">Fecha: </label> -->
+<!-- 						<div class="col-sm-4"> -->
+<!-- 							<input id="fecha" name="fecha" type="text" class="form-control" placeholder="0.0" -->
+<!-- 								data-toggle="tooltip" data-placement="bottom" -->
+<!-- 								title="Tooltip para fecha"> -->
+<!-- 						</div> 	 -->
+<!-- 					</div> -->
+					<div class="form-group">
+					<!-- FORMA PARA CREAR PERIODOS DE TIEMPO CON JQUERY UI -->
+						<label  class="col-sm-4 control-label text-info">Fecha </label>
+						<div class="col-sm-4">
+							<input id="fecha" name="fecha" type="text" class="form-control"
+								placeholder="fecha de inicio">
+						</div>
+					</div>
+					
 					<div class="form-group">
 						<label class="col-sm-4 text-right control-label">Categoria</label>
 						<div class="col-sm-4">
-							<select class="populate placeholder tarifa" name="categoria_ID" id="categoria_ID">
+							<select class="populate placeholder" name="categoria_Ing_Egreg_ID" id="categoria_Ing_Egreg_ID">
 								<option value="">Categoria</option>
 							</select>
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="col-sm-4 text-right control-label">Unidad de medida</label>
-						<div class="col-sm-4">
-							<select class="populate placeholder tarifa" name="unidadMedida_ID" id="unidadMedida_ID">
-								<option value="">Unidad de medida</option>
-							</select>
-						</div>
-					</div>
+<!-- 					<div class="form-group"> -->
+<!-- 						<label class="col-sm-4 text-right control-label">Unidad de medida</label> -->
+<!-- 						<div class="col-sm-4"> -->
+<!-- 							<select class="populate placeholder" name="unidadMedida_ID" id="unidadMedida_ID"> -->
+<!-- 								<option value="">Unidad de medida</option> -->
+<!-- 							</select> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
 					<div class="form-group">
 						<div class="col-sm-offset-4 col-sm-3">
 							<button id="btnEnviar" type="submit" class="btn btn-primary btn-label-left btn-lg">
@@ -88,22 +102,25 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name text-center">
-					<i class="fa fa-th"></i> <span>Lista de Tarifas</span>
+					<i class="fa fa-th"></i> <span>Lista de Otros ingresos y egresos</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
-					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> <i class="fa fa-expand"></i></a>
+					<a id="colapsar_desplegar2" class="collapse-link" onclick="validar(colap2);"> 
+						<i class="fa fa-chevron-up"></i>
+					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> 
+						<i class="fa fa-expand"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content no-padding table-responsive">
 				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="tabla_tarifa" style="width:100%;">
+					id="tabla_OI" style="width:100%;">
 					<thead>
 						<tr>
-							<th>Limite Inferior</th>
-							<th>Limite Superior</th>
+							<th>Descripción</th>
+							
 							<th>Monto</th>
+							<th>Fecha de registro</th>
 							<th>Categoría</th>
 							<th>Acción</th>
 						</tr>
@@ -115,8 +132,8 @@
 </div>
 
 <div>
-	<form id="frmEliminarTarifa" action="" method="POST">
-		<input type="hidden" id="tarifa_ID" name="tarifa_ID" value="">
+	<form id="frmEliminarOI" action="" method="POST">
+		<input type="hidden" id="Otros_Ing_Egreg_ID" name="Otros_Ing_Egreg_ID" value="">
 		<input type="hidden" id="opcion" name="opcion" value="eliminar">
 
 		<div id="modalbox">
@@ -137,6 +154,25 @@
 	</form>
 </div>
 <script type="text/javascript">
+var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
+var websocket = new WebSocket(wsUri);
+
+//evento que notifica que la conexion esta abierta
+websocket.onopen = function(evt) { //manejamos los eventos...
+    console.log("Conectado..."); //... y aparecerá en la pantalla
+};
+
+//evento onmessage para resibir mensaje del serverendpoint
+websocket.onmessage = function(evt) { // cuando se recibe un mensaje
+	console.log("Mensaje recibido de webSocket: " + evt.data);
+	verResultado(evt.data);
+};
+
+//evento si hay algun error en la comunicacion con el web_socket
+websocket.onerror = function(evt) {
+    console.log("oho!.. error:" + evt.data);
+};
+
 	var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
 	var colap1 =  new Colap1();
 	var expand2 = new Expand2();
@@ -148,25 +184,30 @@
 				$.getScript('plugins/datatables/nuevo/vfs_fonts.js',function(){
 					console.log("PDF Y EXCEL cargado");
 					iniciarTabla();
-					LoadSelect2Script(MakeSelect2);
 				});
 			});
 		});
+		LoadSelect2Script(MakeSelect2);
 	}
 	
 	function MakeSelect2() {
 		$('select').select2();
 		$('.dataTables_filter').each(
 			function() {
-				$(this).find('label input[type=search]').attr('placeholder','Buscar');
-		});
+				$(this).find('label input[type=text]').attr('placeholder','Buscar');
+			});
 	}
 	
 	var limpiar_texto = function() {//limpiar texto del formulario
 		$("#opcion").val("guardar");
-		$("#lim_Inf").val("");
-		$("#lim_Sup").val("");
+		$("#descripcion").val("");
 		$("#monto").val("");
+		$("#fecha").val("");
+	}
+	
+
+	function DemoTimePicker(){
+		$('#fecha').timepicker({setDate: new Date()});
 	}
 	
 	var verResultado = function(r) {
@@ -174,28 +215,34 @@
 			mostrarMensaje("#dialog", "CORRECTO", 
 					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
 			limpiar_texto();
-			$('#tabla_tarifa').DataTable().ajax.reload();
+			$('#tabla_OI').DataTable().ajax.reload();
+			websocket.send("ACTUALIZADO");
 		}
 		if(r == "ERROR"){
 			mostrarMensaje("#dialog", "ERROR", 
-					"¡Ha ocurrido un error, no se pudo realizar la acción!", "#E97D7D", "btn-danger");
+					"¡Ha ocurrido un error, no se pudó realizar la acción!", "#E97D7D", "btn-danger");
 		}
 		if(r =="VACIO"){
 			mostrarMensaje("#dialog", "VACIO", 
 					"¡No se especificó la acción a realizar!", "#FFF8A7", "btn-warning");
 		}
+		if(r =="ACTUALIZADO"){
+			mostrarMensaje("#dialog", "ACTUALIZADO", 
+					"¡Otro usuario a realizado un cambio, se actualizaron los datos!", "#86b6dd", "btn-primary");
+			$('#tabla_OI').DataTable().ajax.reload();
+		}
 	}
 	
 	function iniciarTabla(){
 		console.log("cargar DataTable");
-		var tablaTarifa = $('#tabla_tarifa').DataTable( {
+		var tablaO = $('#tabla_OI').DataTable( {
 			"destroy": true,
 			responsive: true,
 			'bProcessing': false,
 			'bServerSide': false,
 			"ajax": {
 				"method":"GET",
-				"url":"./SL_tarifa",
+				"url":"./SL_Otros_Ing_Egreg",
 				"data": {
 			        "carga": 1//para decirle al servlet que cargue datos
 			    },
@@ -210,21 +257,16 @@
 	            $("a.btn").tooltip({container: 'body'});
 	        },
 			"columns": [
-	            { "data": "lim_Inf" },
-	            { "data": null,
-	                render: function ( data, type, row ) {
-	                	if(data.lim_Sup == null){
-	                		return "";
-	                	}else{
-	                		return data.lim_Sup;
-	                	}
-	                }},
+	            { "data": "descripcion" },
 	            { "data": "monto" },
-	            { "data": "categoria.nomCategoria" },
-	            {"defaultContent":"<button type='button' class='editarTarifa btn btn-primary' title='editar tarifa'>"+
+	            { "data": "fecha" },
+	            { "data": "categoria_Ing_Egreg.nombreCategoria" },
+	            {"defaultContent":"<button type='button' class='editarOI btn btn-primary' data-toggle='tooltip' "+
+					"data-placement='top' title='Editar Otros ingresos o egresos'>"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
-					"<button type='button' class='eliminar btn btn-danger' title='eliminar tarifa'>"+
-					"<i class='fa fa-trash-o'></i> </button>"}
+					"<button type='button' class='eliminar btn btn-danger' title='Eliminar Otros ingresos o egresos'>"+
+					"<i class='fa fa-trash-o'></i>"+
+					"</button>"}
 	            ],
 	            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 					 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
@@ -233,10 +275,10 @@
 					 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
 	            "buttons":[{
 					"text": "<i class='fa fa-plus-square'></i>",
-					"titleAttr": "Agregar tarifa",
+					"titleAttr": "Agregar Otros ingresos o egresos",
 					"className": "btn btn-success",
 					"action": function() {
-						agregar_nuevo_tarifa();
+						agregar_nuevo_OI();
 					}
 				},
 				{
@@ -255,11 +297,11 @@
 	                titleAttr: 'pdf'
 	            }]
 		});
-		obtener_datos_editar('#tabla_tarifa tbody', tablaTarifa);
-		obtener_id_eliminar('#tabla_tarifa tbody', tablaTarifa);
+		obtener_datos_editar('#tabla_OI tbody', tablaO);
+		obtener_id_eliminar('#tabla_OI tbody', tablaO);
 	}
 	
-	var agregar_nuevo_tarifa = function() {
+	var agregar_nuevo_OI = function() {
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
@@ -267,9 +309,7 @@
 		validarColap(colap2, "#colapsar_desplegar2");
 		if(expand2.valor == true)
 			validarExpand(expand2, "#expandir2");
-		
 	}
-	
 	var cancelar = function() {
 		limpiar_texto();
 		if(expand1.valor == true)
@@ -284,19 +324,58 @@
 		}
 	}
 	
+	function guardar()
+	{
+		$("#formOI").on("submit", function(e) { 
+			e.preventDefault();
+			var frm = $(this).serialize();
+			console.log(frm);
+			$.ajax({//enviar datos por ajax
+				method:"post",
+				url:"./SL_Otros_Ing_Egreg",
+				data: frm//datos a enviar
+				}).done(function(info) {
+					console.log(info);
+					if(expand1.valor == true)
+  						validarExpand(expand1, "#expandir1");
+  				
+  					if(expand2.valor == true)
+  						validarExpand(expand2, "#expandir2");
+  				
+  					validarColap(colap1, "#colapsar_desplegar1");
+  					if (colap2.valor ==true){}else{
+  						validarColap(colap2, "#colapsar_desplegar2");
+  					}
+					verResultado(info);
+				});
+			});
+	}
+	
 	var obtener_datos_editar = function(tbody, table) {
-		$(tbody).on("click", "button.editarTarifa", function() {
-			var datos = table.row($(this).parents("tr")).data();	
-			$("#lim_Inf").val(datos.lim_Inf);
-			$("#lim_Sup").val(datos.lim_Sup);
+
+		$(tbody).on("click", "button.editarOI", function() {
+		
+			var datos = table.row($(this).parents("tr")).data();
+			var fechaS = datos.fecha;
+        	var f;
+        	console.log(fechaS);
+        	if(fechaS.slice(0,3) == "ene"){
+        		if(fechaS.slice(5,6)!=","){
+        			f = new Date(fechaS.slice(8,12), 0, fechaS.slice(4,6));
+        		}else{
+        			f = new Date(fechaS.slice(7,11), 0, fechaS.slice(3,5));
+        		}
+        	}else{
+        		f = new Date(datos.fecha);
+        	}
+        	var fecha2 = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+			$("#descripcion").val(datos.descripcion);
 			$("#monto").val(datos.monto);
-			$("#Tarifa_ID").val(datos.tarifa_ID);
+			$("#Otros_Ing_Egreg_ID").val(datos.otros_Ing_Egreg_ID);
 			$("#opcion").val("actualizar");
-			$("#categoria_ID").val(datos.categoria.categoria_ID);
-			$("#categoria_ID").change();
-			$("#unidadMedida_ID").val(datos.unidad_de_Medida.unidad_de_Medida_ID);
-			$("#unidadMedida_ID").change();
-			console.log("categoria: "+datos.categoria.categoria_ID+", monto: "+datos.monto);
+			$("#fecha").val(fecha2);
+			$("#categoria_Ing_Egreg_ID").val(datos.categoria_Ing_Egreg.categoria_Ing_Egreg_ID);
+			$("#categoria_Ing_Egreg_ID").change();
 			validarExpand(expand1, "#expandir1");
 			if(colap1.valor==false)
 				validarColap(colap1, "#colapsar_desplegar1");
@@ -304,18 +383,21 @@
 			if(expand2.valor == true)
 				validarExpand(expand2, "#expandir2");
 		});
+		
+		
+		
 	}
 	
 	var obtener_id_eliminar = function(tbody, table) {
 		$(tbody).on("click", "button.eliminar", function() {
 			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
-			var tarifa_ID;
+			var Otros_Ing_Egreg_ID;
 			table.rows().every(function(index, loop, rowloop) {
 				console.log("indices: "+ index +" : "+datos);
 				if(index == datos){
-					tarifa_ID = table.row(index).data().tarifa_ID;
-					console.log("tarifa_ID: " + tarifa_ID );
-					$("#frmEliminarTarifa #tarifa_ID").val(tarifa_ID);
+					Otros_Ing_Egreg_ID = table.row(index).data().otros_Ing_Egreg_ID;
+					console.log("Otros_Ing_Egreg_ID: " + Otros_Ing_Egreg_ID );
+					$("#frmEliminarOI #Otros_Ing_Egreg_ID").val(Otros_Ing_Egreg_ID);
 				}
 			});
 			abrirDialogo();
@@ -324,12 +406,12 @@
 	
 	function abrirDialogo() {
 		OpenModalBox(
-				"<div><h3>Borrar Tarifa</h3></div>",
-				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar esta tarifa?</p>",
+				"<div><h3>Borrar Otros ingresos y egresos</h3></div>",
+				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar esto?</p>",
 				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
-				"<button type='button' id='eliminar_tarifa' class='btn btn-danger btn-label-left'"+
+				"<button type='button' id='eliminar_OI' class='btn btn-danger btn-label-left'"+
 				" style=' color: #ece1e1;' >"+
-				"<span><i class='fa fa-trash-o'></i></span> Borrar tarifa</button>"+
+				"<span><i class='fa fa-trash-o'></i></span> Borrar</button>"+
 				"<div style='margin-top: 5px;'></div> </div>"+
 				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
 				"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
@@ -338,12 +420,12 @@
 	}
 	
 	var eliminar = function() {
-		$("#eliminar_tarifa").on("click", function() {
-			frmElim = $("#frmEliminarTarifa").serialize();
+		$("#eliminar_OI").on("click", function() {
+			frmElim = $("#frmEliminarOI").serialize();
 			console.log("datos a eliminar: " + frmElim);
 			$.ajax({
 				method:"POST",
-				url:"SL_tarifa",
+				url:"SL_Otros_Ing_Egreg",
 				data: frmElim
 			}).done(function(info) {
 				verResultado(info);
@@ -354,64 +436,62 @@
 	}
 	
 	$(document).ready(function() {
-
-		//cargar scripts dataTables
 		LoadDataTablesScripts2(AllTables);
-	
-		// Añadir Tooltip para formularios
+		
 		$('.form-control').tooltip();
-		//add tooltip
 		$('[data-toggle="tooltip"]').tooltip();
-
-		//Cargar ejemplo para validaciones
-		LoadBootstrapValidatorScript(FormValidators);	
-		
 		WinMove();
-		
 		validarColap(colap1, "#colapsar_desplegar1");
+	
+		LoadTimePickerScript(AllTimePickers);
 		
-		//cargar selects
-		cargarSelect("#unidadMedida_ID", 3);//traer categorias
-		cargarSelect("#categoria_ID", 2)//traer unidadMedidas
+		LoadBootstrapValidatorScript(FormValidators);	
+		//cargar scripts dataTables
+		$('#fecha').datepicker({
+			setDate : new Date(),
+			dateFormat: 'dd/mm/yy',
+			onSelect: function(dateText, inst) {
+				$("#fecha").val(dateText.toString());
+				//$("#fechaLecturaActual").val(dateText.toString());
+			}
+		});
+		cargarSelect("#categoria_Ing_Egreg_ID")//traer unidadMedidas
 	});
-///////////////////////funsión que carga un select que recibe el id del select y la opcion de la carga//////////////
-	function cargarSelect(select, carga) {//parametro id select
+	function cargarSelect(select) {//parametro id select
 		var datos;
 		$.ajax({
 	        type: "GET",
-	        url: "./SL_tarifa",
+	        url: "./SL_ajax_table_categoriaIE",
 	        dataType: "json",
-	        data: {
-		        "carga": carga//para decirle al servlet que cargue datos
-		    },
+// 	        data: {
+// 		        "carga": carga//para decirle al servlet que cargue datos
+// 		    },
 	        success: function(response)
 	        {
 	        	datos = response.aaData;
 	        	$(select).empty();
 	        	$(response.aaData).each(function(i, v) {
-	        		if(v.tipoMedida){
-	        			$(select).append('<option value="' + v.unidad_de_Medida_ID + '">' +
-	        					v.tipoMedida + '</option>');
-	        		}else if(v.nomCategoria){
-	        			$(select).append('<option value="' + v.categoria_ID + '">' + v.nomCategoria + '</option>');
-	        		}
+	        			$(select).append('<option value="' + v.categoria_Ing_Egreg_ID + '">' + v.nombreCategoria + '</option>');
+	        			
+	        		
 				});
 	        }
 		});
 	}
-/////////////////////funsión que valida el formulario de tarifas///////////////////////////////////////
+	
+	
 	function FormValidators() {
-		$('#formTarifa').bootstrapValidator({
+		$('#formOI').bootstrapValidator({
 			message: 'Este valor no es valido',
 			submitHandler: function(validator, form, submitButton) {
-				$("#formTarifa").on("submit", function(e) {
+				$("#formOI").on("submit", function(e) {
 					e.preventDefault();//detiene el evento
 		  			var frm = $(this).serialize();//parsea los datos del formulario
 		  			console.log(frm);
-		  			if($("#formTarifa #lim_Inf").val()!="" && $("#formTarifa #monto").val() != ""){
+		  			if($("#formOI #monto").val() !="" && $("#formOI #fecha").val() != ""){
 		  				$.ajax({//enviar datos por ajax
 			  				method:"post",
-			  				url:"./SL_tarifa",
+			  				url:"./SL_Otros_Ing_Egreg",
 			  				data: frm//datos a enviar
 			  			}).done(function(info) {//informacion que el servlet le reenvia al jsp
 			  				if(expand1.valor == true)
@@ -432,25 +512,20 @@
             live: 'enabled',
             excluded: ':disabled',
 			fields: {
-				lim_Inf:{
-					validators: {
-						greaterThan: {
-							value: 0,
-							inclusive: false,
-							message: 'El campo debe ser mayor o igual a 0'
-						},
-						notEmpty:{
-			                message: "Este campo es requerido y no debe estar vacio"
-			            }
-			        }
-				},
 				monto:{
 					validators:{
 						greaterThan: {
 							value: 0,
-							inclusive: true,
+							inclusive: false,
 							message: 'El campo debe ser mayor que 0'
 						},
+	                    notEmpty:{
+			                message: "Este campo es requerido y no debe estar vacio"
+			            }
+					}
+				},
+				fecha:{
+					validators:{
 	                    notEmpty:{
 			                message: "Este campo es requerido y no debe estar vacio"
 			            }

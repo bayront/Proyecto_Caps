@@ -64,6 +64,9 @@ body {
 .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td{
 	border: 1px solid #9bbecb;
 }
+table.table tbody{
+	background-color: #ecfff4;
+}
 h1, .h1, h2, .h2, h3, .h3 {
 	margin: 0;
 }
@@ -83,7 +86,7 @@ h1{
 	font-size: 20px;
 	line-height: 50px;
 	background: url(../img/Gota.png) right 48px no-repeat;
-	background-size: 17% 80%;
+	background-size: 12.5% 63%;
 	-webkit-transition: 0.5s;
 	-moz-transition: 0.5s;
 	-o-transition: 0.5s;

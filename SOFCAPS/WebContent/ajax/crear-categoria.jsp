@@ -28,9 +28,8 @@
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content">
-				<form class="form-horizontal" role="form" id="formTarifa" method="post" onsubmit="return validarFormulario()">
+				<form class="form-horizontal" role="form" id="formTarifa" method="post" >
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
-<!-- 					<input type="hidden" id="actual" name="actual">  -->
 					<input type="hidden" id="categoria_ID" name="categoria_ID">
 					<div class="form-group">
 						<label class="col-sm-4 control-label text-info">Nombre de la Categoría</label>
@@ -38,35 +37,6 @@
 							<input id="nomCategoria" name="nomCategoria" type="text" class="form-control" autofocus>
 						</div>
 					</div>
-<!-- 					<div class="form-group"> -->
-<!-- 						<label class="col-sm-4 control-label text-info">Limite -->
-<!-- 							Superior</label> -->
-<!-- 						<div class="col-sm-4"> -->
-<!-- 							<input id="lim_Sup" name="lim_Sup" type="text" class="form-control"> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 					<div class="form-group"> -->
-<!-- 						<label class="col-sm-4 control-label text-info">monto</label> -->
-<!-- 						<div class="col-sm-4"> -->
-<!-- 							<input id="monto" name="monto" type="text" class="form-control"> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 					<div class="form-group"> -->
-<!-- 						<label class="col-sm-4 text-right control-label">Categoria</label> -->
-<!-- 						<div class="col-sm-4"> -->
-<!-- 							<select class="populate placeholder" name="categoria_ID" id="categoria_ID"> -->
-<!-- 								<option value="">Categoria</option> -->
-<!-- 							</select> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 					<div class="form-group"> -->
-<!-- 						<label class="col-sm-4 text-right control-label">Unidad de medida</label> -->
-<!-- 						<div class="col-sm-4"> -->
-<!-- 							<select class="populate placeholder" name="unidadMedida_ID" id="unidadMedida_ID"> -->
-<!-- 								<option value="">Unidad de medida</option> -->
-<!-- 							</select> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
 					<div class="form-group">
 						<div class="col-sm-offset-4 col-sm-3">
 							<button id="btnEnviar" type="submit" class="btn btn-primary btn-label-left btn-lg" >
@@ -103,9 +73,6 @@
 					<thead>
 						<tr>
 							<th>Nombre Categoria</th>
-<!-- 							<th>Limite Superior</th> -->
-<!-- 							<th>Monto</th> -->
-<!-- 							<th>Categoría</th> -->
 							<th>Acción</th>
 						</tr>
 					</thead>
@@ -143,78 +110,29 @@ var colap1 =  new Colap1();
 var expand2 = new Expand2();
 var colap2 =  new Colap2();
 
-
-// window.onload = function () {
-// 	//document.formTarifa.focus();
-// 	document.formTarifa.addEventListener('submit', validarFormulario);
-// 	console.log("aca estoy");
-// 	}
-	 
-// 	function validarFormulario(evObject) {
-// 	evObject.preventDefault();
-// 	var todoCorrecto = true;
-// 	var formulario = document.formTarifa;
-// 	for (var i=0; i<formulario.length; i++) {
-// 	                if(formulario[i].type =='text') {
-// 	                               if (formulario[i].value == null || formulario[i].value.length == 0 || /^\s*$/.test(formulario[i].value)){
-// 	                               alert (formulario[i].name+ ' no puede estar vacío o contener sólo espacios en blanco');
-// 	                               todoCorrecto=false;
-// 	                               }
-// 	                }
-// 	                }
-// 	if (todoCorrecto ==true) {formulario.submit();}
-// 	}
-
-
-function validarFormulario(){
- 
-		var nomCategoria = document.getElementById('nomCategoria').value;
-		if(nomCategoria == null || nomCategoria.length == 0 || /^\s+$/.test(nomCategoria)){
-			alert('ERROR: El campo nombre no debe ir vacío o lleno de solamente espacios en blanco');
-			return false;
-		}return true;}
-
-
-// 	var eliminar_Editar_Activo = false;
-// 	var tablaTarifa;
 	function AllTables() {
-		//cargar PDF Y EXCEL
-		$.getScript('plugins/datatables/nuevo/jszip.min.js', function(){
-			$.getScript('plugins/datatables/nuevo/pdfmake.min.js',function(){
-				$.getScript('plugins/datatables/nuevo/vfs_fonts.js',function(){
-					console.log("PDF Y EXCEL cargado");
-					iniciarTabla();
-				});
-			});
-		});
+		iniciarTabla();
 		LoadSelect2Script(MakeSelect2);
 	}
 	
 	function MakeSelect2() {
 		$('select').select2();
 		$('.dataTables_filter').each(
-			function() {
-				$(this).find('label input[type=text]').attr('placeholder','Buscar');
-			});
+		function() {
+			$(this).find('label input[type=search]').attr('placeholder','Buscar');
+		});
 	}
 	
 	var limpiar_texto = function() {//limpiar texto del formulario
 		$("#opcion").val("guardar");
 		$("#nomCategoria").val("");
-// 		$("#lim_Sup").val("");
-// 		$("#monto").val("");
 	}
 	
 	var verResultado = function(r) {
 		if(r == "BIEN"){
 			mostrarMensaje("#dialog", "CORRECTO", 
 					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
-// 			location.reload();
-// 			console.log("cambiar esto ahi mismo");
-// 			limpiar_texto();
 			$('#tabla_tarifa').DataTable().ajax.reload();
-// 			$('#tabla_tarifa').DataTable().state.clear();
-// 			iniciarTabla();
 		}
 		if(r == "ERROR"){
 			mostrarMensaje("#dialog", "ERROR", 
@@ -246,28 +164,13 @@ function validarFormulario(){
 			"language":idioma_esp,
 			drawCallback: function(settings){
 	            var api = this.api();
-	            $('td', api.table().container()).each(function () {
-	               $(this).attr('title', $(this).text());
-	            });
-	            $('td', api.table().container()).tooltip({container: 'body'});
 	            $('td', api.table().container()).find("button").tooltip({container : 'body'});
 	            $("a.btn").tooltip({container: 'body'});
 	        },
 			"columns": [
 	            { "data": "nomCategoria" },
-// 	            { "data": "categoria_ID" },
-// 	            { "data": null,
-// 	                render: function ( data, type, row ) {
-// 	                	if(data.lim_Sup == null){
-// 	                		return "";
-// 	                	}else{
-// 	                		return data.lim_Sup;
-// 	                	}
-// 	                }},
-// 	            { "data": "monto" },
-// 	            { "data": "categoria.nomCategoria" },
 	            {"defaultContent":"<button type='button' class='editarTarifa btn btn-primary' data-toggle='tooltip' "+
-					"data-placement='bottom' title='Editar Categoría'>"+
+					"data-placement='top' title='Editar Categoría'>"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
 					"<button type='button' class='eliminar btn btn-danger' title='Eliminar Categoría'>"+
 					"<i class='fa fa-trash-o'></i>"+
@@ -286,20 +189,10 @@ function validarFormulario(){
 						agregar_nuevo_tarifa();
 					}
 				},
-				{
-	                extend:    'excelHtml5',
-	                text:      '<i class="fa fa-file-excel-o"></i>',
-	                titleAttr: 'excel'
-	            },
 	            {
 	                extend:    'csvHtml5',
 	                text:      '<i class="fa fa-file-text-o"></i>',
 	                titleAttr: 'csv'
-	            },
-	            {
-	                extend:    'pdfHtml5',
-	                text:      '<i class="fa fa-file-pdf-o"></i>',
-	                titleAttr: 'pdf'
 	            }]
 		});
 		obtener_datos_editar('#tabla_tarifa tbody', tablaTarifa);
@@ -335,70 +228,35 @@ function validarFormulario(){
 		e.preventDefault();//detiene el evento
 		var frm = $(this).serialize();//parsea los datos del formulario
 		console.log(frm);
-		$.ajax({//enviar datos por ajax
-			method:"post",
-			url:"./SL_Categoria",
-			data: frm//datos a enviar
-			}).done(function(info) {//informacion que el servlet le reenvia al jsp
-			console.log(info);
-			if(expand1.valor == true)
-				validarExpand(expand1, "#expandir1");
-				
-			if(expand2.valor == true)
-				validarExpand(expand2, "#expandir2");
-				
-			validarColap(colap1, "#colapsar_desplegar1");
-			if (colap2.valor ==true){}else{
-				validarColap(colap2, "#colapsar_desplegar2");
-			}
-			verResultado(info);
+		if($("#formTarifa #nomCategoria").val() != ""){
+			$.ajax({//enviar datos por ajax
+				method:"post",
+				url:"./SL_Categoria",
+				data: frm//datos a enviar
+				}).done(function(info) {//informacion que el servlet le reenvia al jsp
+				console.log(info);
+				if(expand1.valor == true)
+					validarExpand(expand1, "#expandir1");
+					
+				if(expand2.valor == true)
+					validarExpand(expand2, "#expandir2");
+					
+				validarColap(colap1, "#colapsar_desplegar1");
+				if (colap2.valor ==true){}else{
+					validarColap(colap2, "#colapsar_desplegar2");
+				}
+				verResultado(info);
 			});
+		}
 		});
 	}
 	
 	var obtener_datos_editar = function(tbody, table) {
-// 		if(eliminar_Editar_Activo == true){
-			
-// 		}else{
-			
-// 		}
 		$(tbody).on("click", "button.editarTarifa", function() {
-// 			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
-// 			var tarifa_ID, lim_Inf, lim_Sup, monto, catID, unidadID;
-// 			table.rows().every(function(index, loop, rowloop) {
-// 				console.log("indices: "+ index +" : "+datos);
-// 				if(index == datos){
-// 					tarifa_ID = table.row(index).data().tarifa_ID;
-// 					lim_Inf = table.row(index).data().lim_Inf;
-// 					lim_Sup = table.row(index).data().lim_Sup;
-// 					monto = table.row(index).data().monto;
-// 					catID = table.row(index).data().categoria.categoria_ID;
-// 					unidadID = table.row(index).data().unidad_de_Medida.unidad_de_Medida_ID;
-// 					console.log("unidad: "+unidadID+", cat: "+catID);
-// 					console.log("tarifa_ID: " + tarifa_ID);
-// 					$("#lim_Inf").val(lim_Inf);
-// 					$("#lim_Sup").val(lim_Sup);
-// 					$("#monto").val(monto);
-// 					$("#Tarifa_ID").val(tarifa_ID);
-// 					$("#opcion").val("actualizar");
-// 					$("#categoria_ID").val(catID);
-// 					$("#categoria_ID").change();
-// 					$("#unidadMedida_ID").val(unidadID);
-// 					$("#unidadMedida_ID").change();
-// 				}
-// 			});
 			var datos = table.row($(this).parents("tr")).data();
 				$("#nomCategoria").val(datos.nomCategoria);
-// 				$("#lim_Sup").val(datos.lim_Sup);
-// 				$("#monto").val(datos.monto);
 				$("#categoria_ID").val(datos.categoria_ID);
 				$("#opcion").val("actualizar");
-// 				$("#categoria_ID").val(datos.categoria.categoria_ID);
-// 				$("#categoria_ID").change();
-// 				$("#unidadMedida_ID").val(datos.unidad_de_Medida.unidad_de_Medida_ID);
-// 				$("#unidadMedida_ID").change();
-				//console.log("categoria: "+datos.categoria.categoria_ID+", monto: "+datos.monto);
-// 			$(tbody).off("click", "button.editarTarifa");
 				validarExpand(expand1, "#expandir1");
 				if(colap1.valor==false)
 					validarColap(colap1, "#colapsar_desplegar1");
@@ -421,7 +279,6 @@ function validarFormulario(){
 				}
 			});
 			abrirDialogo();
-// 			$(tbody).off("click", "button.eliminar");
 		});
 	}
 	
@@ -479,6 +336,7 @@ function validarFormulario(){
 		cargarSelect("#unidadMedida_ID", 3);//traer categorias
 		cargarSelect("#categoria_ID", 2)//traer unidadMedidas
 	});
+	
 	function cargarSelect(select, carga) {//parametro id select
 		var datos;
 		$.ajax({
@@ -511,15 +369,19 @@ function validarFormulario(){
 	 					callback: {
 	        					message: 'Este campo no debe ser igual a los otros registros',
 	         				callback: function (value, validator, $field) {
-	             				var tabla = $("#tabla_tarifa").DataTable();
-	         					var filas = tabla.rows();
-	         					var noigual = true;
-	             				filas.every(function(index, loop, rowloop) {
-	     							if(value == tabla.row(index).data().nomCategoria){
-	     								noigual = false;
-	     							}
-	             				});
-	             				return noigual;
+	         					if($('#formTarifa #opcion').val()!="actualizar"){
+	         						var tabla = $("#tabla_tarifa").DataTable();
+		         					var filas = tabla.rows();
+		         					var noigual = true;
+		             				filas.every(function(index, loop, rowloop) {
+		     							if(value == tabla.row(index).data().nomCategoria){
+		     								noigual = false;
+		     							}
+		             				});
+		             				return noigual;
+	         					}else{
+									return true;
+								}
 	         				}
 	     				}
 			        }

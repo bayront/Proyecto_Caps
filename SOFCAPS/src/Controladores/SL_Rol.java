@@ -32,7 +32,6 @@ import Entidades.Rol;
 public class SL_Rol extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DT_Rol datosRol = DT_Rol.getInstance();
-	private PrintWriter out;
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     /**
      * @see HttpServlet#HttpServlet()
@@ -46,10 +45,11 @@ public class SL_Rol extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PrintWriter out;
 		response.setContentType("application/json");
 		out = response.getWriter();
 		try {
-			traerRoles(response);
+			traerRoles( out, response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,6 +61,7 @@ public class SL_Rol extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		PrintWriter out;
 		System.out.println("hola post");
 		String nomRol;
 		int rol_ID;
@@ -122,6 +123,7 @@ public class SL_Rol extends HttpServlet {
 		}
 	}
 	private void verificarResultado(boolean r, HttpServletResponse response) {
+		PrintWriter out;
 		try {
 			if(r) {
 				response.setContentType("text/plain");
@@ -144,7 +146,7 @@ public class SL_Rol extends HttpServlet {
 		// TODO Auto-generated method stub
 	}
 
-	protected void traerRoles(HttpServletResponse response) throws SQLException {
+	protected void traerRoles(PrintWriter out, HttpServletResponse response) throws SQLException {
 		List<Rol> roles = new ArrayList<>();
 		ResultSet rs = datosRol.cargarRol();
 		while (rs.next()) {

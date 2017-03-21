@@ -9,8 +9,9 @@
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
-			<li><a href="index.html">Categoria</a></li>
-			<li><a href="#">Crear categoria</a></li>
+			<li><a href="index.jsp">Inicio</a></li>
+			<li><a href="#">Área de Secretaría</a></li>
+			<li><a href="#">Gestión de categorías</a></li>
 		</ol>
 	</div>
 </div>
@@ -19,7 +20,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i> <span>Crear Categorias</span>
+					<i class="fa fa-search"></i> <span>Formulario de Categorías</span>
 				</div>
 				<div class="box-icons">
 					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 

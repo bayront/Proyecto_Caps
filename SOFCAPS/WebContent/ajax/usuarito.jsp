@@ -9,9 +9,9 @@
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
-			<li><a href="#">Inicio</a></li>
-			<li><a href="#">Usuario</a></li>
-			<li><a href="#">Todos los usuarios</a></li>
+			<li><a href="index.jsp">Inicio</a></li>
+			<li><a href="#">Usuarios</a></li>
+			<li><a href="#">Gestión de usuarios</a></li>
 		</ol>
 	</div>
 </div>
@@ -22,7 +22,7 @@
 
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa  fa-user"></i> <span>Registrar Nuevo Usuario</span>
+					<i class="fa  fa-user"></i> <span>Formulario de Usuario</span>
 				</div>
 				<div class="box-icons">
 					<a id="colapsar_desplegar1" onclick="validar(colap1);"

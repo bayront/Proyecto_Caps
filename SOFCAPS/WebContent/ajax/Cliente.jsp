@@ -9,9 +9,9 @@
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
-			<li><a href="#">Inicio</a></li>
+			<li><a href="index.jsp">Inicio</a></li>
+			<li><a href="#">Gestión de Clientes</a></li>
 			<li><a href="#">Clientes</a></li>
-			<li><a href="#">Todos los clientes</a></li>
 		</ol>
 	</div>
 </div>

@@ -9,8 +9,9 @@
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
-			<li><a href="index.html">Otros Ingresos y Egresos</a></li>
-<!-- 			//<li><a href="#">Crear tarifa</a></li> -->
+			<li><a href="index.jsp">Inicio</a></li>
+			<li><a href="#">Finanzas</a></li>
+			<li><a href="#">Gestión de Otros Ingresos y Egresos</a></li>
 		</ol>
 	</div>
 </div>

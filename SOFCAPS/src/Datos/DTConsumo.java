@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import Entidades.Consumo;
+
 public class DTConsumo {
 	private static DTConsumo dtConsumo = new DTConsumo();//instancia de la clase
 	PoolConexion pc = PoolConexion.getInstance(); //
@@ -55,5 +57,10 @@ public class DTConsumo {
 			System.out.println("Error en DTConsumo, metodo cargarClienteContrato: "+e.getMessage());
 		}
 		return rs;
+	}
+
+	public boolean guardarConsumo(Consumo consumo) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

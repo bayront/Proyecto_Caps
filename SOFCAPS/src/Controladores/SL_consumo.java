@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -21,9 +23,12 @@ import com.google.gson.GsonBuilder;
 
 import Datos.DTConsumo;
 import Datos.DataTableObject;
+import Entidades.Categoria;
 import Entidades.Cliente;
 import Entidades.Consumo;
 import Entidades.Contrato;
+import Entidades.RegimenPropiedad;
+import Entidades.Sector;
 
 /**
  * Servlet implementation class SL_consumo
@@ -34,6 +39,7 @@ public class SL_consumo extends HttpServlet {
 	private DTConsumo datosConsumo = DTConsumo.getInstance();
 	private PrintWriter out;
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -77,15 +83,51 @@ public class SL_consumo extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		Date fecha_fin;
+		try {
+			System.out.println("la fecha es: " + request.getParameter("fecha_fin"));
+			fecha_fin = fecha.parse(request.getParameter("fecha_fin"));
+			float lectura = Float.parseFloat(request.getParameter("lectura"));
+			int cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
+			int contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
+			guardar(fecha_fin, lectura, cliente_ID, contrato_ID, response);
+		} catch (java.text.ParseException e) {
+			e.printStackTrace();
+			verificar_resultado(false, response);
+		}
+	}
+	
+	private void guardar(Date fecha_fin, float lectura, int cliente_ID, int contrato_ID, HttpServletResponse response) {
+		Contrato c = new Contrato();
+		Cliente cl = new Cliente();
+		Consumo consumo =  new Consumo();
+		try {
+			consumo.setFecha_fin(fecha_fin);
+			consumo.setLectura_Actual(lectura);
+			consumo.setActual(true);
+			consumo.setEliminado(false);
+			c.setContrato_ID(contrato_ID);
+			cl.setCliente_ID(cliente_ID);
+			consumo.setCliente(cl);
+			consumo.setContrato(c);
+			verificar_resultado(datosConsumo.guardarConsumo(consumo), response);
+		}catch (Exception e) {
+			System.err.println("ERROR EN EL SERVLET CONTRATO: "+e.getMessage());
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
+	 */
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
 	}
 	
 	protected void traerConsumos(HttpServletResponse response) throws SQLException, IOException {
@@ -142,4 +184,15 @@ public class SL_consumo extends HttpServlet {
 		System.out.println(json.toString());
 		out.print(json);
 	}
+	protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {
+		response.setContentType("text/plain");
+		if(r) {
+			out = response.getWriter();
+			out.print("BIEN");
+		}else {
+			out = response.getWriter();
+			out.print("ERROR");
+		}
+	}
+	
 }

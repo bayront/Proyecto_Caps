@@ -28,7 +28,7 @@ public class DT_Rol_Opcion {
 		{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
-			System.out.println("datos de roles cargados");
+			System.out.println("datos de rol_opcion_opciones cargados");
 		} 
 		catch (Exception e) 
 		{
@@ -48,7 +48,7 @@ public class DT_Rol_Opcion {
 		{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
-			System.out.println("datos de roles cargados");
+			System.out.println("datos de roles_opciones cargados");
 		} 
 		catch (Exception e) 
 		{
@@ -60,8 +60,8 @@ public class DT_Rol_Opcion {
 		
 		return rs;
 	}
-	public boolean guardarRol_Opcion(Rol r, Opcion o)
-	{
+	
+	public boolean guardarRol_Opcion(Rol r, Opcion o){
 		boolean guardado = false;
 		try 
 		{
@@ -80,13 +80,12 @@ public class DT_Rol_Opcion {
 		}
 		return guardado;
 	}
-	public boolean eliminarRol_Opcion(Rol r, Opcion o)
-	{
+	
+	public boolean eliminarRol_Opcion(Rol r, Opcion o){
 		boolean guardado = false;
 		try 
 		{
 			dtRolOp.cargarRol_Opcion();
-			rs.beforeFirst();
 			rs.beforeFirst();
 			while (rs.next()){
 				System.out.println("fila "+rs.getInt("Rol_ID"));

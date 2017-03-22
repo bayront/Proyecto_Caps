@@ -238,15 +238,6 @@
 	
 	function MakeSelect2() {
 		$('select').select2();
-// 		if($("#tabla_consumo_filter")){
-// 			console.log("existe filter");
-// 			$("#tabla_consumo_filter").css("background-color", "yellow");
-// 			if($("#tabla_consumo_filter").find('label').length){
-// 				console.log("existe label");
-// 			}else{
-// 				console.log("no existe label");
-// 			}
-// 		}
 	}
 	
 	function abrirDialogo(callback) {
@@ -284,76 +275,22 @@
 // 			});
 		});
 	}
-
-	$(document).ready(function() {
-
-		//cargar scripts dataTables
-		LoadDataTablesScripts2(AllTables);
-		
-		// Crear UI spinner
-		$("#numContrato").spinner();
-
-		// Inicializar DatePicker
-		$('#fecha_fin').datepicker({
-		setDate : new Date()
-		});
-	
-		// Añadir Tooltip para formularios
-		$('.form-control').tooltip();
-
-		//Cargar ejemplo para validaciones
-		LoadBootstrapValidatorScript(DemoFormValidator);
-
-		//MODALS
-		$('#abrir_modal').on('click',function(e) {
-			OpenModalBox(
-			"<div><h3>Buscar Cliente</h3></div>",
-			"<div class='table-responsive'>"
-			+ "<table class='table table-bordered table-striped table-hover table-heading table-datatable'"+
-			"id='datatable-filter'>"
-			+ "<thead>"
-			+ "<tr>"
-			+ "<th><label><input type='text' name='Nombres'/></label></th>"
-			+ "<th><label><input type='text' name='Num_Contrato'/></label></th>"
-			+ "<th><label><input type='text' name='Medidor'/></label></th>"
-			+ "<th></th>"
-			+ "</tr>"														
-			+ "</thead>"														
-			+ "<tfoot>"														
-			+ "<tr><th Style='color: #5d96c3;'>Nombre Completo</th>"+
-			"<th Style='color: #5d96c3;'>Numero Contrato</th>"+
-			"<th Style='color: #5d96c3;'>Medidor</th><th></th></tr>"														
-			+ "</tfoot>"														
-			+ "</table>"														
-			+ "</div>",
-			"<div Style='text-align: center; margin-bottom: -10px;'><button type='button' class='btn btn-secondary' onclick='CloseModalBox()'>Cancelar</button></div>");
-			filtrarTabla();		
-		});
-		
-		guardarConsumo();
-		
-		// Add Drag-n-Drop feature				
-		WinMove();	
-		
-		//add tooltip
-		$('[data-toggle="tooltip"]').tooltip();
-	});
 	
 	function filtrarTabla(){
-		    // Setup - add a text input to each footer cell
+		
 		    $('#datatable-filter thead th label input').each( function () {
 		        var title = $(this).attr("name");
 		        $(this).attr("placeholder", "Buscar por " + title);
 		    } );
-// 		    for(var i in data.artists.items) {
-// 		        console.log(data.artists.items[i].href);  // (o el campo que necesites)
-// 		    }
-		    // DataTable
 		    var table = $('#datatable-filter').DataTable({
 		    	"destroy": true,
 		    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
 		    	"bJQueryUI": true,
 				"language":idioma_esp,
+				drawCallback: function(settings){
+		            var api = this.api();
+		            $('td', api.table().container()).find("button").tooltip({container : 'body'});
+		        },
 				ajax: {
 					"method":"GET",
 					"url":"./SL_consumo",
@@ -366,12 +303,13 @@
 		            { "data": "nombreCompleto"},
 		            { "data": "contratos[0].numContrato" },
 		            { "data": "contratos[0].numMedidor" },
-		            {"defaultContent":"<button type='button' class='btn btn-primary'"+
-		            	" id='seleccionarCl'>Seleccionar</button>"}
+		            {"defaultContent":"<button type='button' style='margin-left:15px;' class='activar btn btn-primary'"+"
+		            +"title='seleccionar cliente' id='seleccionarCl' >"
+					+ "<i class='fa fa-upload'></i> </button>"}
 		            ]
 		    });
 		 
-		    // Apply the search
+		    // Aplicar la busqueda por columna
 		    table.columns().every( function () {
 		        var that = this;
 		        $( 'input', this.header() ).on( 'keyup change', function () {
@@ -441,10 +379,6 @@
 			"language":idioma_esp,
 			drawCallback: function(settings){
 	            var api = this.api();
-	            $('td', api.table().container()).each(function () {
-	               $(this).attr('title', $(this).text());
-	            });
-	            $('td', api.table().container()).tooltip({container: 'body'});
 	            $('td', api.table().container()).find("button").tooltip({container : 'body'});
 	            $("a.btn").tooltip({container: 'body'});
 	        },
@@ -456,10 +390,8 @@
 	            { "data": "contrato.numContrato" },
 	            { "data": "contrato.numMedidor" },
 	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' title='editar consumo'>"+
-// 	            	" data-toggle='tooltip' data-placement='top' data-container='body' title='editar' >"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
 					"<button type='button' class='eliminarConsumo btn btn-danger' title='eliminar consumo'>"+
-// 					" data-toggle='tooltip' data-placement='top' data-container='body' title='eliminar' >"+
 					"<i class='fa fa-trash-o'></i> </button>"}
 	            ],
 	            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
@@ -556,5 +488,58 @@
 // 			});
 		});
 	}
+	$(document).ready(function() {
+
+		//cargar scripts dataTables
+		LoadDataTablesScripts2(AllTables);
+		
+		// Crear UI spinner
+		$("#numContrato").spinner();
+
+		// Inicializar DatePicker
+		$('#fecha_fin').datepicker({
+		setDate : new Date()
+		});
+	
+		// Añadir Tooltip para formularios
+		$('.form-control').tooltip();
+
+		//Cargar ejemplo para validaciones
+		LoadBootstrapValidatorScript(DemoFormValidator);
+
+		//MODALS
+		$('#abrir_modal').on('click',function(e) {
+			OpenModalBox(
+			"<div><h3>Buscar Cliente</h3></div>",
+			"<div class='table-responsive'>"
+			+ "<table class='table table-bordered table-striped table-hover table-heading table-datatable'"+
+			"id='datatable-filter'>"
+			+ "<thead>"
+			+ "<tr>"
+			+ "<th><label><input type='text' name='Nombres'/></label></th>"
+			+ "<th><label><input type='text' name='Num_Contrato'/></label></th>"
+			+ "<th><label><input type='text' name='Medidor'/></label></th>"
+			+ "<th></th>"
+			+ "</tr>"														
+			+ "</thead>"														
+			+ "<tfoot>"														
+			+ "<tr><th Style='color: #5d96c3;'>Nombre Completo</th>"+
+			"<th Style='color: #5d96c3;'>Numero Contrato</th>"+
+			"<th Style='color: #5d96c3;'>Medidor</th><th></th></tr>"														
+			+ "</tfoot>"														
+			+ "</table>"														
+			+ "</div>",
+			"<div Style='text-align: center; margin-bottom: -10px;'><button type='button' class='btn btn-secondary' onclick='CloseModalBox()'>Cancelar</button></div>");
+			filtrarTabla();		
+		});
+		
+		guardarConsumo();
+		
+		// Add Drag-n-Drop feature				
+		WinMove();	
+		
+		//add tooltip
+		$('[data-toggle="tooltip"]').tooltip();
+	});
 	
 </script>

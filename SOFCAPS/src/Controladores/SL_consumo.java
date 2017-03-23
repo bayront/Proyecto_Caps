@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,6 +42,7 @@ public class SL_consumo extends HttpServlet {
 	private PrintWriter out;
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat parseador2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -64,7 +67,11 @@ public class SL_consumo extends HttpServlet {
 		out = response.getWriter();
 		if(Integer.parseInt(request.getParameter("carga")) == 1) {
 			try {
-				traerConsumos(response);
+				try {
+					traerConsumos(response);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -83,25 +90,37 @@ public class SL_consumo extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		String opcion = request.getParameter("opcion");
+		float lectura;
+		int contrato_ID, cliente_ID, consumo_ID;
+		Date fecha_fin;
+		try {
+			switch (opcion) {
+			case "guardar":
+					lectura = Float.parseFloat(request.getParameter("lectura"));
+					cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
+					contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
+					fecha_fin = fecha.parse(request.getParameter("fecha"));
+					System.out.println("la fecha es: " + fecha_fin);
+//					guardar(fecha_fin, lectura, cliente_ID, contrato_ID, response);
+				break;
+			case "actualizar":
+				
+				break;
+			default:
+				break;
+			}
+		} catch (java.text.ParseException e) {
+			e.printStackTrace();
+			verificar_resultado(false, response);
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Date fecha_fin;
-		try {
-			System.out.println("la fecha es: " + request.getParameter("fecha_fin"));
-			fecha_fin = fecha.parse(request.getParameter("fecha_fin"));
-			float lectura = Float.parseFloat(request.getParameter("lectura"));
-			int cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
-			int contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
-			guardar(fecha_fin, lectura, cliente_ID, contrato_ID, response);
-		} catch (java.text.ParseException e) {
-			e.printStackTrace();
-			verificar_resultado(false, response);
-		}
+		System.out.println("hola PUT");
 	}
 	
 	private void guardar(Date fecha_fin, float lectura, int cliente_ID, int contrato_ID, HttpServletResponse response) {
@@ -127,14 +146,15 @@ public class SL_consumo extends HttpServlet {
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+		System.out.println("hola DELETE");
 	}
 	
-	protected void traerConsumos(HttpServletResponse response) throws SQLException, IOException {
+	protected void traerConsumos(HttpServletResponse response) throws SQLException, IOException, ParseException {
 		List<Consumo> consumos = new ArrayList<>();
 		ResultSet rs = datosConsumo.cargarConsumos();
 		while (rs.next()) {
-			Consumo c = new Consumo(rs.getDate("fecha_fin"), rs.getFloat("consumoTotal"), 
+			String f = parseador2.format(rs.getDate("fecha_fin"));
+			Consumo c = new Consumo(parseador2.parse(f), rs.getFloat("consumoTotal"), 
 					rs.getFloat("lectura_Actual"), rs.getInt("Consumo_ID"),
 					new Cliente(rs.getInt("Cliente_ID")), new Contrato(rs.getInt("Contrato_ID")));
 			consumos.add(c);
@@ -157,7 +177,7 @@ public class SL_consumo extends HttpServlet {
 			dataTableObject.aaData.add(c);
 		}
 		String json = gson.toJson(dataTableObject);
-//		System.out.println(json.toString());
+		System.out.println(json.toString());
 		out.print(json);
 	}
 
@@ -184,6 +204,7 @@ public class SL_consumo extends HttpServlet {
 		System.out.println(json.toString());
 		out.print(json);
 	}
+	
 	protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {
 		response.setContentType("text/plain");
 		if(r) {

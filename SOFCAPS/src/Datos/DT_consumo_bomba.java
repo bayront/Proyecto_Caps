@@ -130,11 +130,12 @@ public class DT_consumo_bomba {
 	try 
 	{
 		dtconsB.cargarDatos();
+		
 		rs.moveToInsertRow();
 		rs.updateFloat("consumoActual", b.getConsumoActual());
 		rs.updateString("fechaLecturaActual", fecha.format(b.getFechaLecturaActual()));
 		rs.updateFloat("lecturaActual", b.getLecturaActual());
-		rs.updateString("observaciones", b.getObservaciones());
+		rs.updateString("observaciones", b.getObservaciones()); 
 		rs.updateBoolean("estado", false);
 		rs.insertRow();
 		rs.moveToCurrentRow();

@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,6 +52,7 @@ public class SL_Consumo_bomba extends HttpServlet {
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
 	SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat parseador2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
        
     public SL_Consumo_bomba() {
         super();
@@ -86,7 +89,8 @@ public class SL_Consumo_bomba extends HttpServlet {
 			bomba.setBomba_ID(rs.getInt("Bomba_ID"));
 			bomba.setConsumoActual(rs.getFloat("consumoActual"));
 			bomba.setLecturaActual(rs.getFloat("lecturaActual"));
-			bomba.setFechaLecturaActual(rs.getDate("fechaLecturaActual"));
+			String f = parseador2.format(rs.getDate("fechaLecturaActual"));
+			bomba.setFechaLecturaActual(parseador2.parse(f));
 			bomba.setObservaciones(rs.getString("observaciones"));
 			listaB.add(bomba);
 			

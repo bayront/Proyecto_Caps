@@ -211,6 +211,33 @@ websocket.onerror = function(evt) {
 		$('#fecha').timepicker({setDate: new Date()});
 	}
 	
+	function guardar() {
+		$("#formOI").on("submit", function(e) {
+			e.preventDefault();//detiene el evento
+  			var frm = $(this).serialize();//parsea los datos del formulario
+  			console.log(frm);
+  			if($("#formOI #monto").val() !="" && $("#formOI #fecha").val() != ""){
+  				$.ajax({//enviar datos por ajax
+	  				method:"post",
+	  				url:"./SL_Otros_Ing_Egreg",
+	  				data: frm//datos a enviar
+	  			}).done(function(info) {//informacion que el servlet le reenvia al jsp
+	  				if(expand1.valor == true)
+	  					validarExpand(expand1, "#expandir1");
+	  				
+	  				if(expand2.valor == true)
+	  					validarExpand(expand2, "#expandir2");
+	  				
+	  				validarColap(colap1, "#colapsar_desplegar1");
+	  				if (colap2.valor ==true){}else{
+	  					validarColap(colap2, "#colapsar_desplegar2");
+	  				}
+ 					verResultado(info);
+	  			});
+  			}
+		});
+	}
+	
 	var verResultado = function(r) {
 		if(r == "BIEN"){
 			mostrarMensaje("#dialog", "CORRECTO", 
@@ -260,7 +287,12 @@ websocket.onerror = function(evt) {
 			"columns": [
 	            { "data": "descripcion" },
 	            { "data": "monto" },
-	            { "data": "fecha" },
+	            { "data": null,
+	                render: function ( data, type, row ) {
+	                	f = new Date(data.fecha);
+	                	var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+	                	return fecha;
+	                }},
 	            { "data": "categoria_Ing_Egreg.nombreCategoria" },
 	            {"defaultContent":"<button type='button' class='editarOI btn btn-primary' data-toggle='tooltip' "+
 					"data-placement='top' title='Editar Otros ingresos o egresos'>"+
@@ -357,18 +389,7 @@ websocket.onerror = function(evt) {
 		$(tbody).on("click", "button.editarOI", function() {
 		
 			var datos = table.row($(this).parents("tr")).data();
-			var fechaS = datos.fecha;
-        	var f;
-        	console.log(fechaS);
-        	if(fechaS.slice(0,3) == "ene"){
-        		if(fechaS.slice(5,6)!=","){
-        			f = new Date(fechaS.slice(8,12), 0, fechaS.slice(4,6));
-        		}else{
-        			f = new Date(fechaS.slice(7,11), 0, fechaS.slice(3,5));
-        		}
-        	}else{
-        		f = new Date(datos.fecha);
-        	}
+			f = new Date(datos.fecha);
         	var fecha2 = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
 			$("#descripcion").val(datos.descripcion);
 			$("#monto").val(datos.monto);
@@ -457,7 +478,9 @@ websocket.onerror = function(evt) {
 			}
 		});
 		cargarSelect("#categoria_Ing_Egreg_ID")//traer unidadMedidas
+		guardar();
 	});
+	
 	function cargarSelect(select) {//parametro id select
 		var datos;
 		$.ajax({
@@ -484,32 +507,6 @@ websocket.onerror = function(evt) {
 	function FormValidators() {
 		$('#formOI').bootstrapValidator({
 			message: 'Este valor no es valido',
-			submitHandler: function(validator, form, submitButton) {
-				$("#formOI").on("submit", function(e) {
-					e.preventDefault();//detiene el evento
-		  			var frm = $(this).serialize();//parsea los datos del formulario
-		  			console.log(frm);
-		  			if($("#formOI #monto").val() !="" && $("#formOI #fecha").val() != ""){
-		  				$.ajax({//enviar datos por ajax
-			  				method:"post",
-			  				url:"./SL_Otros_Ing_Egreg",
-			  				data: frm//datos a enviar
-			  			}).done(function(info) {//informacion que el servlet le reenvia al jsp
-			  				if(expand1.valor == true)
-			  					validarExpand(expand1, "#expandir1");
-			  				
-			  				if(expand2.valor == true)
-			  					validarExpand(expand2, "#expandir2");
-			  				
-			  				validarColap(colap1, "#colapsar_desplegar1");
-			  				if (colap2.valor ==true){}else{
-			  					validarColap(colap2, "#colapsar_desplegar2");
-			  				}
-		 					verResultado(info);
-			  			});
-		  			}
-				});
-            },
             live: 'enabled',
             excluded: ':disabled',
 			fields: {

@@ -2,7 +2,10 @@ package Datos;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import Entidades.Consumo;
 
@@ -11,6 +14,7 @@ public class DTConsumo {
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
 	private static ResultSet rs;//RESULTSET estatico
+	DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
 	
 	public DTConsumo() {
 	}
@@ -60,7 +64,61 @@ public class DTConsumo {
 	}
 
 	public boolean guardarConsumo(Consumo consumo) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean guardado = false;
+		try 
+		{
+			boolean encontrado = false;
+			dtConsumo.cargarConsumos();
+			rs.beforeFirst();
+			while(rs.next()){
+				if(rs.getBoolean("actual") == true && rs.getInt("Contrato_ID") == consumo.getContrato().getContrato_ID()){
+					float lectura_anterior = (rs.getFloat("lectura_Actual"));
+					consumo.setConsumoTotal(consumo.getLectura_Actual() - lectura_anterior);
+					encontrado = true;
+				}
+			}
+			if(encontrado == false) {
+				agregarPrimerConsumo(consumo, rs);
+			}
+			rs.moveToInsertRow();
+			rs.updateInt("Cliente_ID", consumo.getCliente().getCliente_ID());
+			rs.updateInt("Contrato_ID", consumo.getContrato().getContrato_ID());
+			rs.updateString("fecha_fin", fecha.format(consumo.getFecha_fin()));
+			rs.updateFloat("lectura_Actual", consumo.getLectura_Actual()); 
+			rs.updateFloat("consumoTotal", consumo.getConsumoTotal()); 
+			rs.updateBoolean("eliminado", consumo.getEliminado());
+			rs.updateBoolean("actual", consumo.getActual());
+			rs.insertRow();
+			rs.moveToCurrentRow();
+			rs.previous();
+			rs.updateBoolean("actual", false);
+			rs.updateRow();
+			rs.moveToCurrentRow();
+			guardado = true;
+		}
+		catch (Exception e) 
+		{
+			System.err.println("ERROR GUARDAR " + e.getMessage());
+			e.printStackTrace();
+		}
+		return guardado;
+	}
+
+	private void agregarPrimerConsumo(Consumo consumo, ResultSet rs2) {
+		try {
+			rs2.moveToInsertRow();
+			rs2.updateInt("Cliente_ID", consumo.getCliente().getCliente_ID());
+			rs2.updateInt("Contrato_ID", consumo.getContrato().getContrato_ID());
+			rs2.updateString("fecha_fin", fecha.format(consumo.getFecha_fin()));
+			rs2.updateFloat("lectura_Actual", 0.0f); 
+			rs2.updateFloat("consumoTotal", 0.0f); 
+			rs2.updateBoolean("eliminado", consumo.getEliminado());
+			rs2.updateBoolean("actual", consumo.getActual());
+			rs2.insertRow();
+			rs2.moveToCurrentRow();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

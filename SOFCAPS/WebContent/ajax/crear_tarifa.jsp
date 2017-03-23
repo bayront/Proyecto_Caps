@@ -170,6 +170,33 @@
 		$("#monto").val("");
 	}
 	
+	function guardar() {
+		$("#formTarifa").on("submit", function(e) {
+			e.preventDefault();//detiene el evento
+  			var frm = $(this).serialize();//parsea los datos del formulario
+  			console.log(frm);
+  			if($("#formTarifa #lim_Inf").val()!="" && $("#formTarifa #monto").val() != ""){
+  				$.ajax({//enviar datos por ajax
+	  				method:"post",
+	  				url:"./SL_tarifa",
+	  				data: frm//datos a enviar
+	  			}).done(function(info) {//informacion que el servlet le reenvia al jsp
+	  				if(expand1.valor == true)
+	  					validarExpand(expand1, "#expandir1");
+	  				
+	  				if(expand2.valor == true)
+	  					validarExpand(expand2, "#expandir2");
+	  				
+	  				validarColap(colap1, "#colapsar_desplegar1");
+	  				if (colap2.valor ==true){}else{
+	  					validarColap(colap2, "#colapsar_desplegar2");
+	  				}
+ 					verResultado(info);
+	  			});
+  			}
+		});
+	}
+	
 	var verResultado = function(r) {
 		if(r == "BIEN"){
 			mostrarMensaje("#dialog", "CORRECTO", 
@@ -374,6 +401,7 @@
 		//cargar selects
 		cargarSelect("#unidadMedida_ID", 3);//traer categorias
 		cargarSelect("#categoria_ID", 2)//traer unidadMedidas
+		guardar();
 	});
 ///////////////////////funsión que carga un select que recibe el id del select y la opcion de la carga//////////////
 	function cargarSelect(select, carga) {//parametro id select
@@ -404,32 +432,6 @@
 	function FormValidators() {
 		$('#formTarifa').bootstrapValidator({
 			message: 'Este valor no es valido',
-			submitHandler: function(validator, form, submitButton) {
-				$("#formTarifa").on("submit", function(e) {
-					e.preventDefault();//detiene el evento
-		  			var frm = $(this).serialize();//parsea los datos del formulario
-		  			console.log(frm);
-		  			if($("#formTarifa #lim_Inf").val()!="" && $("#formTarifa #monto").val() != ""){
-		  				$.ajax({//enviar datos por ajax
-			  				method:"post",
-			  				url:"./SL_tarifa",
-			  				data: frm//datos a enviar
-			  			}).done(function(info) {//informacion que el servlet le reenvia al jsp
-			  				if(expand1.valor == true)
-			  					validarExpand(expand1, "#expandir1");
-			  				
-			  				if(expand2.valor == true)
-			  					validarExpand(expand2, "#expandir2");
-			  				
-			  				validarColap(colap1, "#colapsar_desplegar1");
-			  				if (colap2.valor ==true){}else{
-			  					validarColap(colap2, "#colapsar_desplegar2");
-			  				}
-		 					verResultado(info);
-			  			});
-		  			}
-				});
-            },
             live: 'enabled',
             excluded: ':disabled',
 			fields: {

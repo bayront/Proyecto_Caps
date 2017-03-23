@@ -329,17 +329,7 @@ function listarT() {
             { "data": "consumoActual" },
             { "data": null,
                 render: function ( data, type, row ) {
-                	var fechaS = data.fechaLecturaActual;
-                	var f;
-                	if(fechaS.slice(0,3) == "ene"){
-                		if(fechaS.slice(5,6)!=","){
-                			f = new Date(fechaS.slice(8,12), 0, fechaS.slice(4,6));
-                		}else{
-                			f = new Date(fechaS.slice(7,11), 0, fechaS.slice(3,5));
-                		}
-                	}else{
-                		f = new Date(data.fechaLecturaActual);
-                	}
+                	var f = new Date(data.fechaLecturaActual);
                 	var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
                 	return fecha;
                 }},
@@ -415,20 +405,8 @@ var obtener_datos_editar = function(tbody, table) {
 				bombID = table.row(index).data().bomba_ID;
 				consumoActual = table.row(index).data().consumoActual;
 				lecturaActual = table.row(index).data().lecturaActual;
-				var fechaS = table.row(index).data().fechaLecturaActual;
-            	var f;
-            	console.log(fechaS);
-            	if(fechaS.slice(0,3) == "ene"){
-            		if(fechaS.slice(5,6)!=","){
-            			f = new Date(fechaS.slice(8,12), 0, fechaS.slice(4,6));
-            		}else{
-            			f = new Date(fechaS.slice(7,11), 0, fechaS.slice(3,5));
-            		}
-            	}else{
-            		f = new Date(data.fechaLecturaActual);
-            	}
-            	var fecha2 = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
-				fecha = fecha2;
+				var f = new Date(table.row(index).data().fechaLecturaActual);
+            	var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
 				observaciones = table.row(index).data().observaciones;
 				$("#lecturaActual").val(lecturaActual);
 				$("#bombaID").val(bombID);

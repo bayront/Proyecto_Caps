@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,7 +43,7 @@ public class SL_Otros_Ing_Egreg extends HttpServlet {
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	private PrintWriter out;
 	SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
-       
+	SimpleDateFormat parseador2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -60,7 +62,12 @@ public class SL_Otros_Ing_Egreg extends HttpServlet {
 		System.out.println("cargar: " + request.getParameter("carga"));
 		try {
 			if(Integer.parseInt(request.getParameter("carga")) == 1) {
-				traerOI(response);
+				try {
+					traerOI(response);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}else if(Integer.parseInt(request.getParameter("carga")) == 2) {
 				traerCI(response);
 			}
@@ -231,7 +238,7 @@ public class SL_Otros_Ing_Egreg extends HttpServlet {
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
-	protected void traerOI (HttpServletResponse response)throws SQLException, IOException {
+	protected void traerOI (HttpServletResponse response)throws SQLException, IOException, ParseException {
 		PrintWriter out;
 		out = response.getWriter();
 		List<Otros_Ing_Egreg>oi = new ArrayList<>();
@@ -239,16 +246,14 @@ public class SL_Otros_Ing_Egreg extends HttpServlet {
 		while(rs.next()){
 			Otros_Ing_Egreg t = new Otros_Ing_Egreg();
 			Categoria_Ing_Egreg cat = new Categoria_Ing_Egreg();
-//			Unidad_de_Medida um = new Unidad_de_Medida();
-//			um.setUnidad_de_Medida_ID(rs.getInt("Unidad_de_Medida_ID"));
 			cat.setCategoria_Ing_Egreg_ID(rs.getInt("Categoria_Ing_Egreg_ID"));
 			cat.setNombreCategoria(rs.getString("nombreCategoria"));
 			t.setOtros_Ing_Egreg_ID(rs.getInt("Otros_Ing_Egreg_ID"));
-			t.setFecha(rs.getDate("fecha"));
+			String f = parseador2.format(rs.getDate("fecha"));
+			t.setFecha(parseador2.parse(f));
 			t.setDescripcion(rs.getString("descripcion"));
 			t.setMonto(rs.getFloat("monto"));
 			t.setCategoria_Ing_Egreg(cat);
-//			t.setUnidad_de_Medida(um);
 			oi.add(t);
 			
 		}
@@ -262,29 +267,7 @@ public class SL_Otros_Ing_Egreg extends HttpServlet {
 		System.out.println(json.toString());
 		out.print(json);
 	}
-//	private void traerUnidadMedida(HttpServletResponse response) throws SQLException, IOException {
-//		Gson gson2 = new GsonBuilder().setPrettyPrinting().create();
-//		PrintWriter out2;
-//		out2 = response.getWriter();
-//		List<Unidad_de_Medida> unidades = new ArrayList<>();
-//		ResultSet rs = dtUM.cargarUnidad_Medida();
-//		while(rs.next()){
-//			Unidad_de_Medida um = new Unidad_de_Medida();
-//			um.setTipoMedida(rs.getString("tipoMedida"));
-//			um.setUnidad_de_Medida_ID(rs.getInt("Unidad_de_Medida_ID"));
-//			unidades.add(um);
-//		}
-//		DataTableObject dataTableObject = new DataTableObject();
-//		dataTableObject.aaData = new ArrayList<>();
-//		for (Unidad_de_Medida unidad_de_Medida : unidades) {
-//			dataTableObject.aaData.add(unidad_de_Medida);
-//		}
-//		String json = gson2.toJson(dataTableObject);
-//		System.out.println(json.toString());
-//		out2.print(json);
-//	}
 	
-
 	private void traerCI(HttpServletResponse response) throws SQLException, IOException {
 		Gson gson2 = new GsonBuilder().setPrettyPrinting().create();
 		System.out.println("metodo 2");

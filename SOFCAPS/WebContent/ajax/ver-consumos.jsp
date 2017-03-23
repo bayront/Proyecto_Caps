@@ -1,3 +1,10 @@
+<%@page language="java"%>
+<%@page contentType="text/html"%> 
+<%@page pageEncoding="UTF-8"%> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<div id="dialog" class= "col-xm-offset-1 col-xm-10">
+	<div class="contenido" style="margin-left: 20px;"></div>
+</div> 
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -27,13 +34,13 @@
 
 			<div class="box-content">
 				<form class="form-horizontal" role="form" id="defaultForm"
-					method="PUT" action="./SL_consumo">
+					method="POST" action="./SL_consumo">
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
 					<input type="hidden" id="consumo_ID" name="consumo_ID"> 
 					<input type="hidden" id="cliente_ID" name="cliente_ID"> 
 					<input type="hidden" id="contrato_ID" name="contrato_ID">
 					
-					<div class="form-group">
+					<div class="form-group has-success has-feedback">
 						<label class="col-sm-4 control-label">Lectura Actual</label>
 						<div class="col-sm-5">
 							<input type="number" class="form-control" name="lectura"
@@ -82,7 +89,7 @@
 							</button>
 						</div>
 					</div>
-					<div class="form-group has-success">
+					<div class="form-group">
 						<label for="numContrato" class="col-sm-4 control-label">N&uacutemero
 							del contrato</label>
 						<div class="col-sm-4">
@@ -94,7 +101,7 @@
 					<div class="form-group">
 						<label class="col-sm-4 control-label">Medidor</label>
 						<div class="col-sm-5">
-							<input type="text" class="form-control" id="numMedidor"
+							<input type="text" class="form-control" id="numMedidor" name="numMedidor"
 								placeholder="medidor" data-toggle="tooltip" data-placement="top"
 								title="numero de medidor">
 						</div>
@@ -160,36 +167,6 @@
 		</div>
 	</div>
 </div>
-<!-- <div class="container"> -->
-<!-- 	<div class="table-responsive"> -->
-<!-- 		<table class="table" id="tablaNormal"> -->
-<!-- 			<thead> -->
-<!-- 				<tr> -->
-<!-- 					<th>Fecha_Corte</th> -->
-<!-- 					<th>Lectura</th> -->
-<!-- 					<th>Consumo</th> -->
-<!-- 				</tr> -->
-<!-- 			</thead> -->
-<!-- 			<tbody> -->
-<!-- 				<tr class="active"> -->
-<!-- 					<td>1</td> -->
-<!-- 					<td>Anna</td> -->
-<!-- 					<td>3939.3</td> -->
-<!-- 				</tr> -->
-<!-- 				<tr> -->
-<!-- 					<td>2</td> -->
-<!-- 					<td>Debbie</td> -->
-<!-- 					<td>32.34</td> -->
-<!-- 				</tr> -->
-<!-- 				<tr> -->
-<!-- 					<td>3</td> -->
-<!-- 					<td>como noo se</td> -->
-<!-- 					<td>2324.1</td> -->
-<!-- 				</tr> -->
-<!-- 			</tbody> -->
-<!-- 		</table> -->
-<!-- 	</div> -->
-<!-- </div> -->
 <div>
 	<form id="frmEliminarConsumo" action="" method="POST">
 		<input type="hidden" id="consumo_id" name="consumo_id" value="">
@@ -240,6 +217,28 @@
 		$('select').select2();
 	}
 	
+	var verResultado = function(r) {
+		if(r == "BIEN"){
+			mostrarMensaje("#dialog", "CORRECTO", 
+					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
+			limpiar_texto();
+			$('#tabla_consumo').DataTable().ajax.reload();
+		}
+		if(r == "ERROR"){
+			mostrarMensaje("#dialog", "ERROR", 
+					"¡Ha ocurrido un error, no se pudó realizar la acción!", "#E97D7D", "btn-danger");
+		}
+		if(r =="VACIO"){
+			mostrarMensaje("#dialog", "VACIO", 
+					"¡No se especificó la acción a realizar!", "#FFF8A7", "btn-warning");
+		}
+		if(r =="ACTUALIZADO"){
+			mostrarMensaje("#dialog", "ACTUALIZADO", 
+					"¡Otro usuario a realizado un cambio, se actualizaron los datos!", "#86b6dd", "btn-primary");
+			$('#tabla_OI').DataTable().ajax.reload();
+		}
+	}
+	
 	function abrirDialogo(callback) {
 		OpenModalBox(
 				"<div><h3>Borrar Consumo</h3></div>",
@@ -260,19 +259,27 @@
 			e.preventDefault();//detiene el evento
 			var frm = $(this).serialize();//parsea los datos del formulario
 			console.log(frm);
-// 			$.ajax({//enviar datos por ajax
-// 			method:"PUT",
-// 			url:"./SL_consumo",
-// 			data: frm//datos a enviar
-// 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
-// 			console.log(info);
-// 			//var json_info = JSON.parse(info);
-// 			//console.log(json_info);
-// // 			mostrar_mensaje(info);se envia a verificar que mensaje respondioel servlet
-// // 			limpiar_texto();
-// // 			listar();volver a listar datos
+			if($("form#defaultForm #lectura_Actual").val()!="" && $("form#defaultForm #fecha_fin").val()!=""
+					&& $("form#defaultForm #numMedidor").val()!=""){
+	 			$.ajax({//enviar datos por ajax
+	 			type:"POST",
+	 			url:"./SL_consumo",
+	 			data: frm//datos a enviar
+	 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
+	 			console.log(info);
+	 			if(expand1.valor == true)
+					validarExpand(expand1, "#expandir1");
 			
-// 			});
+				if(expand2.valor == true)
+					validarExpand(expand2, "#expandir2");
+				
+				validarColap(colap1, "#colapsar_desplegar1");
+				if (colap2.valor ==true){}else{
+					validarColap(colap2, "#colapsar_desplegar2");
+				}
+				verResultado(info);//se envia a verificar que mensaje respondio el servlet	
+	 			});
+			}
 		});
 	}
 	
@@ -303,7 +310,7 @@
 		            { "data": "nombreCompleto"},
 		            { "data": "contratos[0].numContrato" },
 		            { "data": "contratos[0].numMedidor" },
-		            {"defaultContent":"<button type='button' style='margin-left:15px;' class='activar btn btn-primary'"+"
+		            {"defaultContent":"<button type='button' style='margin-left:15px;' class='activar btn btn-primary'"
 		            +"title='seleccionar cliente' id='seleccionarCl' >"
 					+ "<i class='fa fa-upload'></i> </button>"}
 		            ]
@@ -339,8 +346,10 @@
 	var seleccionarEditarConsumo = function(tbody, table) {
 		$(tbody).on("click", "button.editarConsumo", function() {
 			var datos = table.row($(this).parents("tr")).data();
+			var f = new Date(datos.fecha_fin);
+			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
 			$("#lectura_Actual").val(datos.lectura_Actual);
-			$("#fecha_fin").val(datos.fecha_fin);
+			$("#fecha_fin").val(fecha);
 			$("#consumoTotal").val(datos.consumoTotal);
 			$("#nombreClienteCompleto").val(datos.cliente.nombreCompleto);
 			$("#numContrato").val(datos.contrato.numContrato);
@@ -383,7 +392,12 @@
 	            $("a.btn").tooltip({container: 'body'});
 	        },
 			"columns": [
-	            { "data": "fecha_fin" },
+	            { "data": null,
+	                render: function ( data, type, row ) {
+	                	var f = new Date(data.fecha_fin);
+	        			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+	                	return fecha;
+	                }},
 	            { "data": "lectura_Actual" },
 	            { "data": "consumoTotal" },
 	            { "data": "cliente.nombreCompleto" },
@@ -476,15 +490,14 @@
 		$("#eliminar_consumo").on("click", function() {
 			var consumo_id= $("#frmEliminarConsumo #consumo_id").val();//se obtiene el id del usuario que esta oculto
 			var opcion = $("#frmEliminarConsumo #opcion").val();//se obtiene la opcion que esta oculta
-			console.log("consumo_ID: " + consumo_id + ", opcion: " + opcion + " eliminar");
+			console.log("consumo_ID: " + consumo_id + ", opcion: " + opcion);
 // 			$.ajax({
-// 				method:"POST",
+// 				method:"DELETE",
 // 				url:"./SL_consumo",
 // 				data: {"consumo_ID":usuario_id, "opcion": opcion}//se envian los datos al servlet
 // 			}).done(function(info) {
-// // 				mostrar_mensaje(info);
-// // 				listar();
-// 				console.log("eliminado");
+// // 				verResultado(info);
+// 					CloseModalBox();
 // 			});
 		});
 	}
@@ -501,11 +514,11 @@
 		setDate : new Date()
 		});
 	
-		// A�adir Tooltip para formularios
+		// Añadir Tooltip para formularios
 		$('.form-control').tooltip();
 
 		//Cargar ejemplo para validaciones
-		LoadBootstrapValidatorScript(DemoFormValidator);
+		LoadBootstrapValidatorScript(FormValidConsumo);
 
 		//MODALS
 		$('#abrir_modal').on('click',function(e) {
@@ -542,4 +555,100 @@
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 	
+	function FormValidConsumo() {
+		$('form#defaultForm').bootstrapValidator({
+			message: 'Este valor no es valido',
+			fields: {
+				lectura:{
+					validators: {
+						notEmpty:{
+			                message: "Este campo es requerido y no debe estar vacio"
+			            },
+			            greaterThan: {
+							value: 0,
+							inclusive: false,
+							message: 'El campo debe ser mayor que 0'
+						},
+						callback: {
+           					message: 'la lectura actual debe ser mayor que los registros de este cliente',
+            				callback: function (value, validator, $field) {
+            						var tabla = $('#tabla_consumo').DataTable();
+                					var filas = tabla.rows();
+                					var noigual = true;
+                    				filas.every(function(index, loop, rowloop) {
+            							if(value < tabla.row(index).data().lectura && 
+            									$("form#defaultForm #contrato_ID").val() == tabla.row(index).data().contrato.contrato_ID){
+            								noigual = false;
+            							}
+                    				});
+                    				return noigual;
+            				}
+        				}
+			        }
+				},
+				fecha:{
+					validators: {
+						notEmpty:{
+			                message: "Este campo es requerido y no debe estar vacio"
+			            }
+			        }
+				},
+				consumoActual:{
+					validators: {
+						notEmpty:{
+			                message: "Este campo es requerido y no debe estar vacio"
+			            }
+			        }
+				},
+				numMedidor:{
+					validators: {
+						notEmpty:{
+			                message: "Este campo es requerido y no debe estar vacio"
+			            },
+			            callback: {
+           					message: 'seleccione un cliente',
+           					callback: function (value, validator, $field) {
+    			            	var noigual = true;
+        						if($("form#defaultForm #contrato_ID").val() == ""){
+        							noigual = false;
+        						}
+                				return noigual;
+        					}
+        				}
+			        }
+				},
+			}
+		});
+	}
+	
 </script>
+<!-- <div class="container"> -->
+<!-- 	<div class="table-responsive"> -->
+<!-- 		<table class="table" id="tablaNormal"> -->
+<!-- 			<thead> -->
+<!-- 				<tr> -->
+<!-- 					<th>Fecha_Corte</th> -->
+<!-- 					<th>Lectura</th> -->
+<!-- 					<th>Consumo</th> -->
+<!-- 				</tr> -->
+<!-- 			</thead> -->
+<!-- 			<tbody> -->
+<!-- 				<tr class="active"> -->
+<!-- 					<td>1</td> -->
+<!-- 					<td>Anna</td> -->
+<!-- 					<td>3939.3</td> -->
+<!-- 				</tr> -->
+<!-- 				<tr> -->
+<!-- 					<td>2</td> -->
+<!-- 					<td>Debbie</td> -->
+<!-- 					<td>32.34</td> -->
+<!-- 				</tr> -->
+<!-- 				<tr> -->
+<!-- 					<td>3</td> -->
+<!-- 					<td>como noo se</td> -->
+<!-- 					<td>2324.1</td> -->
+<!-- 				</tr> -->
+<!-- 			</tbody> -->
+<!-- 		</table> -->
+<!-- 	</div> -->
+<!-- </div> -->

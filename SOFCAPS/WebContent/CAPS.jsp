@@ -43,7 +43,7 @@
 		        <li class="active"><a href="#intro">CAPS</a></li>
 				<li><a href="#service">Informacion</a></li>
 				<li><a href="#about">Acerca de Nosotros</a></li>
-				<li><a href="#slider">Pendiente</a></li>
+				<li><a href="#slider">Poneloya</a></li>
 				<li data-toggle="modal" data-target="#popUpWindow"><a href="#popUpWindow">Iniciar Sesión </a></li>
 		      </ul>
             </div>
@@ -255,7 +255,7 @@
 				<div class="col-lg-8 col-lg-offset-2">
 					<div class="wow bounceInDown" data-wow-delay="0.4s">
 					<div class="section-heading">
-					<h2>Pendiente</h2>
+					<h2>Poneloya</h2>
 					<i class="fa fa-2x fa-angle-down"></i>
 
 					</div>
@@ -267,24 +267,25 @@
 		<div class="container">
 			<div class="slider-container">
 				<ul id="slider" class="slider-wrapper">
-           			 <li class="slide-current">
-                		<img src="http://endimages.s3.amazonaws.com/cache/c8/00/c800d5c5f4de5407ed2d605c865a6f6a.jpg" alt="Slider Imagen 1">
+				
+           			<li class="slide-current">
+                		<img src="plugins/home_page/img/cho.jpg" alt="Slider Imagen 1">
                 			<div class="caption">
                     			<h3 class="caption-title">caps</h3>
                    				 <p>Caps Poneloya</p>
                				 </div>
            			</li>
  
-          		 <li>
-                <img src="plugins/home_page/img/caps.jpg" alt="Slider Imagen 2">
-                <div class="caption">
-                    <h3 class="caption-title">Caps</h3>
-                    <p>Caps Poneloya</p>
-                </div>
-            </li>
+	          		 <li>
+		                <img src="plugins/home_page/img/mm.jpg" alt="Slider Imagen 2">
+		                <div class="caption">
+		                    <h3 class="caption-title">Caps</h3>
+		                    <p>Caps Poneloya</p>
+		                </div>
+	            	</li>
  
             <li>
-                <img src="plugins/home_page/img/caps.jpg" alt="Slider Imagen 3">
+                <img src="plugins/home_page/img/leon.jpg" alt="Slider Imagen 3">
                 <div class="caption">
                     <h3 class="caption-title"></h3>
                     <p>Caps Poneloya</p>
@@ -292,7 +293,7 @@
             </li>
  
             <li>
-                <img src="plugins/home_page/img/caps.jpg" alt="Slider Imagen 4">
+                <img src="plugins/home_page/img/roca.jpg" alt="Slider Imagen 4">
                 <div class="caption">
                     <h3 class="caption-title"></h3>
                     <p>Caps Poneloya</p>

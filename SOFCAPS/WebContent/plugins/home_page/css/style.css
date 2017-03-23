@@ -109,7 +109,7 @@ a:focus {
 .navbar-custom ul.nav li a {
 	font-size: 12px;
 	letter-spacing: 1px;
-    color: #b8f6dc;;
+    color: white;
 	text-transform: uppercase;
 	font-weight: 700;
 }
@@ -118,7 +118,7 @@ a:focus {
 	-webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     transition: all .2s ease-in-out;
-	color: #A52A2A;
+	color: darkblue;
 }
 
 .navbar-custom ul.nav ul.dropdown-menu {
@@ -319,7 +319,7 @@ hr {
 .intro {
 	width:100%;
 	position:relative;
-	background: url(../img/sunset.jpg) no-repeat top center;
+	background: url(../img/Lagos.jpg) no-repeat top center;
     background-size: cover;
     height: auto;
 }
@@ -362,7 +362,7 @@ hr {
 }
 
 .intro .slogan h4 {
-	color: #800000;
+	color: white;
 	text-shadow: -1px 1px 1px #000;
 }
 

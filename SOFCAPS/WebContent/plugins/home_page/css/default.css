@@ -1,9 +1,9 @@
 
 a,.tp-caption a.btn:hover {
-	color: #e1ec8d;
+	color: white;
 }
 .top-nav-collapse {
-	background: #F4A460;
+	background: skyblue;
 }
 
 .navbar-custom ul.nav ul.dropdown-menu li a:hover {
@@ -28,7 +28,7 @@ form#contact-form input:focus,form#contact-form select:focus,form#contact-form t
 }
 
 footer {
-    background-color: #F4A460;
+    background-color: teal;
 }
 
 .btn-skin {

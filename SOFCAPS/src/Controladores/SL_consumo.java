@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
+import java.util.Locale.Category;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,7 +42,7 @@ public class SL_consumo extends HttpServlet {
 	private DTConsumo datosConsumo = DTConsumo.getInstance();
 	private PrintWriter out;
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy", new Locale("es_ES"));
 	SimpleDateFormat parseador2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
     /**
      * @see HttpServlet#HttpServlet()
@@ -98,11 +99,11 @@ public class SL_consumo extends HttpServlet {
 			switch (opcion) {
 			case "guardar":
 					lectura = Float.parseFloat(request.getParameter("lectura"));
+					float lecturaRound= (float) (Math.round(lectura * 100.0) / 100.0);
 					cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
 					contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
 					fecha_fin = fecha.parse(request.getParameter("fecha"));
-					System.out.println("la fecha es: " + fecha_fin);
-//					guardar(fecha_fin, lectura, cliente_ID, contrato_ID, response);
+					guardar(fecha_fin, lecturaRound, cliente_ID, contrato_ID, response);
 				break;
 			case "actualizar":
 				

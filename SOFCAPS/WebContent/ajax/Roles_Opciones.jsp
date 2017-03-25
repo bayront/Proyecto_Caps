@@ -469,8 +469,9 @@ var seleccionarVerOpcion = function(tbody, table) {
 		});
 		var attr = "Rol_Opcion";
 		$('#'+'dashboard-'+attr).css('visibility', 'visible').css('position', 'relative');
-		$(this).closest('.nav').find('li').removeClass('active');
-		$(this).closest('li').addClass('active');
+		$("a#"+attr).closest('.nav').find('li').removeClass('active');
+		$("a#"+attr).closest('li').addClass('active');
+		
 		$("select#rol1").val(rol_ID);
 		$("select#rol1").change();
 	});
@@ -666,14 +667,4 @@ var frmOpcionAg2 = "<button type='submit' class='btn btn-success btn-label-left 
 // 		}
 // 		primer += 1;
 // 	}
-///////////////////////////////limpiar texto de los formularios///////////////////////////////7777
-// function limpiar(form) {
-// 	$(form).find("input").each(function(i, v) {
-// 		if($(v).is("#metodo")){
-// 			$(v).val("guardar");
-// 		}else{
-// 			$(v).val("");
-// 		}
-// 	});
-// }
 </script>

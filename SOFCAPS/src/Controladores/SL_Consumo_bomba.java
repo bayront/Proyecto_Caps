@@ -133,10 +133,11 @@ public class SL_Consumo_bomba extends HttpServlet {
 						e.printStackTrace();
 					}
 					lecturaActual = Float.parseFloat(request.getParameter("lecturaActual").trim());
+					float lecturaRound= (float) (Math.round(lecturaActual * 100.0) / 100.0);
 					observaciones = request.getParameter("observaciones").trim();
 					
 					bomba_ID= Integer.parseInt(request.getParameter("bombaID"));
-					actualizar(bomba_ID, consumoActual, fechaLecturaActual1, lecturaActual, observaciones, response);
+					actualizar(bomba_ID, consumoActual, fechaLecturaActual1, lecturaRound, observaciones, response);
 					break;
 				case "eliminar":
 					bomba_ID= Integer.parseInt(request.getParameter("bombaID"));
@@ -157,8 +158,9 @@ public class SL_Consumo_bomba extends HttpServlet {
 						e.printStackTrace();
 					}
 					lecturaActual = Float.parseFloat(request.getParameter("lecturaActual").trim());
+					float lecturaRound2= (float) (Math.round(lecturaActual * 100.0) / 100.0);
 					observaciones = request.getParameter("observaciones").trim();
-					guardar(bomba_ID, consumoActual, fechaLecturaActual1, lecturaActual, observaciones, response);
+					guardar(bomba_ID, consumoActual, fechaLecturaActual1, lecturaRound2, observaciones, response);
 					break;
 				default:
 					response.setContentType("text/plain");

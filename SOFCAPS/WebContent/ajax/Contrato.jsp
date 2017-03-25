@@ -408,12 +408,16 @@ var obtener_datos_editar = function(tbody, table) {
 				categoria = table.row(index).data().categoria.categoria_ID;
 				$("#contrato_ID").val(contrato_ID);
 				$("#nombreCliente").val(cliente).change();
+				$('.formContrato').bootstrapValidator('revalidateField', 'nombreCliente');
 				$("#numMedidor").val(numMedidor);
 				$("#cuotas").val(cuotas);
 				$("#montoContrato").val(montoContrato);
 				$("#regimenPropiedad").val(regimenPropiedad).change();
+				$('.formContrato').bootstrapValidator('revalidateField', 'regimenPropiedad');
 				$("#sector").val(sector).change();
+				$('.formContrato').bootstrapValidator('revalidateField', 'sector');
 				$("#categoria").val(categoria).change();
+				$('.formContrato').bootstrapValidator('revalidateField', 'categoria');
 				$("#opcion").val("actualizar");
 			}
 		});

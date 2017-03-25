@@ -33,56 +33,42 @@
 			<div class="box-content">
 				<form class="form-horizontal" role="form" id="formOI" method="post" action="">
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
-<!-- 					<input type="hidden" id="actual" name="actual">  -->
 					<input type="hidden" id="Otros_Ing_Egreg_ID" name="Otros_Ing_Egreg_ID">
 					
-					<div class="form-group">
+					<div class="form-group has-success">
 						<label class="col-sm-4 control-label text-info">Descripción</label>
 						<div class="col-sm-4">
-							<input id="descripcion" name="descripcion" type="text" class="form-control" autofocus>
+							<textarea title="No Requerido" id="descripcion" name="descripcion" class="form-control"></textarea>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group has-success">
 						<label class="col-sm-4 control-label text-info">monto</label>
 						<div class="col-sm-4">
-							<input id="monto" name="monto" type="number" class="form-control">
+							<input id="monto" name="monto" data-bv-numeric="true" class="form-control"
+							data-bv-numeric-message="¡Este valor no es un número!" title="Requerido">
 						</div>
 					</div>
-<!-- 					<div class="form-group"> -->
-<!-- 						<label class="col-sm-2 control-label">Fecha: </label> -->
-<!-- 						<div class="col-sm-4"> -->
-<!-- 							<input id="fecha" name="fecha" type="text" class="form-control" placeholder="0.0" -->
-<!-- 								data-toggle="tooltip" data-placement="bottom" -->
-<!-- 								title="Tooltip para fecha"> -->
-<!-- 						</div> 	 -->
-<!-- 					</div> -->
-					<div class="form-group">
+					<div class="form-group has-success has-feedback">
 					<!-- FORMA PARA CREAR PERIODOS DE TIEMPO CON JQUERY UI -->
 						<label  class="col-sm-4 control-label text-info">Fecha </label>
 						<div class="col-sm-4">
 							<input id="fecha" name="fecha" type="text" class="form-control"
-								placeholder="fecha de inicio">
+								placeholder="fecha del registro" title="Requerido">
+								<span class="fa fa-calendar txt-success form-control-feedback"></span>
 						</div>
 					</div>
 					
 					<div class="form-group">
-						<label class="col-sm-4 text-right control-label">Categoria</label>
+						<label class="col-sm-4 text-right control-label">Categoría</label>
 						<div class="col-sm-4">
-							<select class="populate placeholder" name="categoria_Ing_Egreg_ID" id="categoria_Ing_Egreg_ID">
-								<option value="">Categoria</option>
+							<select class="populate placeholder" name="categoria_Ing_Egreg_ID" 
+							id="categoria_Ing_Egreg_ID">
+								<option value="">--Seleccione la categoría--</option>
 							</select>
 						</div>
 					</div>
-<!-- 					<div class="form-group"> -->
-<!-- 						<label class="col-sm-4 text-right control-label">Unidad de medida</label> -->
-<!-- 						<div class="col-sm-4"> -->
-<!-- 							<select class="populate placeholder" name="unidadMedida_ID" id="unidadMedida_ID"> -->
-<!-- 								<option value="">Unidad de medida</option> -->
-<!-- 							</select> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-					<div class="form-group">
-						<div class="col-sm-offset-4 col-sm-3">
+					<div class="form-group" style="margin-top: 20px;">
+						<div class="col-sm-offset-3 col-sm-4">
 							<button id="btnEnviar" type="submit" class="btn btn-primary btn-label-left btn-lg">
 								<span><i class="fa fa-save"></i></span>Guardar
 							</button>
@@ -119,7 +105,6 @@
 					<thead>
 						<tr>
 							<th>Descripción</th>
-							
 							<th>Monto</th>
 							<th>Fecha de registro</th>
 							<th>Categoría</th>
@@ -155,6 +140,7 @@
 	</form>
 </div>
 <script type="text/javascript">
+////////////////////////////////variables para el WEBSOCKET//////////////////////////////////////////////////
 var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
 var websocket = new WebSocket(wsUri);
 
@@ -178,24 +164,23 @@ websocket.onerror = function(evt) {
 	var colap1 =  new Colap1();
 	var expand2 = new Expand2();
 	var colap2 =  new Colap2();
+//////////////////////////////////funsión que carga los plugin de los botones para el dataTable///////////////////
 	function AllTables() {
 		//cargar PDF Y EXCEL
 		$.getScript('plugins/datatables/nuevo/jszip.min.js', function(){
 			$.getScript('plugins/datatables/nuevo/pdfmake.min.js',function(){
 				$.getScript('plugins/datatables/nuevo/vfs_fonts.js',function(){
-					console.log("PDF Y EXCEL cargado");
 					iniciarTabla();
 				});
 			});
 		});
-		LoadSelect2Script(MakeSelect2);
 	}
 	
 	function MakeSelect2() {
 		$('select').select2();
 		$('.dataTables_filter').each(
 			function() {
-				$(this).find('label input[type=text]').attr('placeholder','Buscar');
+				$(this).find('label input[type=search]').attr('placeholder','Buscar registro');
 			});
 	}
 	
@@ -204,41 +189,12 @@ websocket.onerror = function(evt) {
 		$("#descripcion").val("");
 		$("#monto").val("");
 		$("#fecha").val("");
+		$("#categoria_Ing_Egreg_ID").val("");
+		$("#categoria_Ing_Egreg_ID").change();
+		$("#formOI").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 	}
-	
-
-	function DemoTimePicker(){
-		$('#fecha').timepicker({setDate: new Date()});
-	}
-	
-	function guardar() {
-		$("#formOI").on("submit", function(e) {
-			e.preventDefault();//detiene el evento
-  			var frm = $(this).serialize();//parsea los datos del formulario
-  			console.log(frm);
-  			if($("#formOI #monto").val() !="" && $("#formOI #fecha").val() != ""){
-  				$.ajax({//enviar datos por ajax
-	  				method:"post",
-	  				url:"./SL_Otros_Ing_Egreg",
-	  				data: frm//datos a enviar
-	  			}).done(function(info) {//informacion que el servlet le reenvia al jsp
-	  				if(expand1.valor == true)
-	  					validarExpand(expand1, "#expandir1");
-	  				
-	  				if(expand2.valor == true)
-	  					validarExpand(expand2, "#expandir2");
-	  				
-	  				validarColap(colap1, "#colapsar_desplegar1");
-	  				if (colap2.valor ==true){}else{
-	  					validarColap(colap2, "#colapsar_desplegar2");
-	  				}
- 					verResultado(info);
-	  			});
-  			}
-		});
-	}
-	
-	var verResultado = function(r) {
+/////////////////////////////////funsión que muestra un dialogo con el resultado de la opreación/////////////////
+	var verResultado = function(r) {////////////parametro: respuesta(String)
 		if(r == "BIEN"){
 			mostrarMensaje("#dialog", "CORRECTO", 
 					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
@@ -260,7 +216,7 @@ websocket.onerror = function(evt) {
 			$('#tabla_OI').DataTable().ajax.reload();
 		}
 	}
-	
+/////////////////////////////////////////funsión que carga el dataTable la primera vez//////////////////////////
 	function iniciarTabla(){
 		console.log("cargar DataTable");
 		var tablaO = $('#tabla_OI').DataTable( {
@@ -332,9 +288,10 @@ websocket.onerror = function(evt) {
 		});
 		obtener_datos_editar('#tabla_OI tbody', tablaO);
 		obtener_id_eliminar('#tabla_OI tbody', tablaO);
+		LoadSelect2Script(MakeSelect2);
 	}
-	
-	var agregar_nuevo_OI = function() {
+
+	var agregar_nuevo_OI = function() {/////funsión para limpiar el texto y expandir el dialogo del formulario
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
@@ -342,8 +299,11 @@ websocket.onerror = function(evt) {
 		validarColap(colap2, "#colapsar_desplegar2");
 		if(expand2.valor == true)
 			validarExpand(expand2, "#expandir2");
+		
+		$("#descripcion").focus();
 	}
-	var cancelar = function() {
+	
+	var cancelar = function() {///////funsión que limpia el texto y oculta el formulario
 		limpiar_texto();
 		if(expand1.valor == true)
 			validarExpand(expand1, "#expandir1");
@@ -356,38 +316,9 @@ websocket.onerror = function(evt) {
 			validarColap(colap2, "#colapsar_desplegar2");
 		}
 	}
-	
-	function guardar()
-	{
-		$("#formOI").on("submit", function(e) { 
-			e.preventDefault();
-			var frm = $(this).serialize();
-			console.log(frm);
-			$.ajax({//enviar datos por ajax
-				method:"post",
-				url:"./SL_Otros_Ing_Egreg",
-				data: frm//datos a enviar
-				}).done(function(info) {
-					console.log(info);
-					if(expand1.valor == true)
-  						validarExpand(expand1, "#expandir1");
-  				
-  					if(expand2.valor == true)
-  						validarExpand(expand2, "#expandir2");
-  				
-  					validarColap(colap1, "#colapsar_desplegar1");
-  					if (colap2.valor ==true){}else{
-  						validarColap(colap2, "#colapsar_desplegar2");
-  					}
-					verResultado(info);
-				});
-			});
-	}
-	
+/////////////////////funsión que activa el click para el boton editar del dataTable, y obtiene los datos////////////
 	var obtener_datos_editar = function(tbody, table) {
-
 		$(tbody).on("click", "button.editarOI", function() {
-		
 			var datos = table.row($(this).parents("tr")).data();
 			f = new Date(datos.fecha);
         	var fecha2 = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
@@ -405,18 +336,15 @@ websocket.onerror = function(evt) {
 			if(expand2.valor == true)
 				validarExpand(expand2, "#expandir2");
 		});
-		
-		
-		
 	}
-	
-	var obtener_id_eliminar = function(tbody, table) {
+///////////////////////////funsión que activa el evento click del boton eliminar que esta en el dataTable/////////////////////////
+	var obtener_id_eliminar = function(tbody, table) {////parametro: tbody del dataTable, y el dataTable completo
 		$(tbody).on("click", "button.eliminar", function() {
 			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
 			var Otros_Ing_Egreg_ID;
 			table.rows().every(function(index, loop, rowloop) {
 				console.log("indices: "+ index +" : "+datos);
-				if(index == datos){
+				if(index == datos){////////////////////////////////obtener los datos a eliminar
 					Otros_Ing_Egreg_ID = table.row(index).data().otros_Ing_Egreg_ID;
 					console.log("Otros_Ing_Egreg_ID: " + Otros_Ing_Egreg_ID );
 					$("#frmEliminarOI #Otros_Ing_Egreg_ID").val(Otros_Ing_Egreg_ID);
@@ -425,11 +353,11 @@ websocket.onerror = function(evt) {
 			abrirDialogo();
 		});
 	}
-	
+/////////////////////////////////////funsión que aber el dialogo para confirmar eliminació de los datos//////////
 	function abrirDialogo() {
 		OpenModalBox(
-				"<div><h3>Borrar Otros ingresos y egresos</h3></div>",
-				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar esto?</p>",
+				"<div><h3>Borrar el registro de ingreso o egreso</h3></div>",
+				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar este registro?</p>",
 				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
 				"<button type='button' id='eliminar_OI' class='btn btn-danger btn-label-left'"+
 				" style=' color: #ece1e1;' >"+
@@ -440,7 +368,7 @@ websocket.onerror = function(evt) {
 				"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 		eliminar();
 	}
-	
+/////////////////////////////////funsión que envia los datos a eliminar al servlet por ajax//////////////////////
 	var eliminar = function() {
 		$("#eliminar_OI").on("click", function() {
 			frmElim = $("#frmEliminarOI").serialize();
@@ -456,80 +384,108 @@ websocket.onerror = function(evt) {
 			CloseModalBox();
 		});
 	}
-	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////FUNSIÓN PRINCIPAL//////////////////////////////////////////
 	$(document).ready(function() {
+		//cargar scripts dataTables
 		LoadDataTablesScripts2(AllTables);
 		
 		$('.form-control').tooltip();
 		$('[data-toggle="tooltip"]').tooltip();
-		WinMove();
-		validarColap(colap1, "#colapsar_desplegar1");
-	
-		LoadTimePickerScript(AllTimePickers);
 		
-		LoadBootstrapValidatorScript(FormValidators);	
-		//cargar scripts dataTables
+		WinMove();
+
+		validarColap(colap1, "#colapsar_desplegar1");
+		
+		LoadBootstrapValidatorScript(FormValidators);
+		
 		$('#fecha').datepicker({
 			setDate : new Date(),
 			dateFormat: 'dd/mm/yy',
 			onSelect: function(dateText, inst) {
 				$("#fecha").val(dateText.toString());
-				//$("#fechaLecturaActual").val(dateText.toString());
+				$("#fecha").change();
+				$('#formOI').bootstrapValidator('revalidateField', 'fecha');
 			}
 		});
+		
 		cargarSelect("#categoria_Ing_Egreg_ID")//traer unidadMedidas
-		guardar();
 	});
-	
+/////////////////////////////////////funsión que carga el select mediante ajax///////////////////////////////////
 	function cargarSelect(select) {//parametro id select
 		var datos;
 		$.ajax({
 	        type: "GET",
 	        url: "./SL_ajax_table_categoriaIE",
 	        dataType: "json",
-// 	        data: {
-// 		        "carga": carga//para decirle al servlet que cargue datos
-// 		    },
 	        success: function(response)
 	        {
 	        	datos = response.aaData;
 	        	$(select).empty();
+	        	$(select).append("<option value=''>--Seleccione la categoría--</option>");
 	        	$(response.aaData).each(function(i, v) {
 	        			$(select).append('<option value="' + v.categoria_Ing_Egreg_ID + '">' + v.nombreCategoria + '</option>');
-	        			
-	        		
 				});
 	        }
 		});
 	}
-	
-	
+/////////////////////////////////////funsión que valida los campos del formulario////////////////////////////////
 	function FormValidators() {
 		$('#formOI').bootstrapValidator({
-			message: 'Este valor no es valido',
-            live: 'enabled',
-            excluded: ':disabled',
+			message: '¡Este valor no es valido!',
 			fields: {
 				monto:{
 					validators:{
 						greaterThan: {
 							value: 0,
 							inclusive: false,
-							message: 'El campo debe ser mayor que 0'
+							message: '¡El campo debe ser mayor que 0!'
 						},
 	                    notEmpty:{
-			                message: "Este campo es requerido y no debe estar vacio"
+			                message: "¡Este campo es requerido y no debe estar vacio!"
 			            }
 					}
 				},
 				fecha:{
 					validators:{
 	                    notEmpty:{
-			                message: "Este campo es requerido y no debe estar vacio"
+			                message: "¡Este campo es requerido y no debe estar vacio!"
+			            }
+					}
+				},
+				categoria_Ing_Egreg_ID:{
+					validators:{
+	                    notEmpty:{
+			                message: "¡Seleccione una categoría!"
 			            }
 					}
 				}
 			}
-		});
+		}).on('success.form.bv', function(e) {//evento que se activa cuando los datos son correctos
+            // Prevenir el evento submit
+            e.preventDefault();
+
+            //obtener datos del formulario
+            var $form = $(e.target);
+            var frm=$form.serialize();
+            console.log(frm);
+  			$.ajax({//enviar datos por ajax
+	  			method:"post",
+	  			url:"./SL_Otros_Ing_Egreg",
+	  			data: frm//datos a enviar
+	  		}).done(function(info) {//informacion que el servlet le reenvia al jsp
+	  			if(expand1.valor == true)
+  					validarExpand(expand1, "#expandir1");
+  			
+  				if(expand2.valor == true)
+  					validarExpand(expand2, "#expandir2");
+  			
+  				validarColap(colap1, "#colapsar_desplegar1");
+  				if (colap2.valor ==true){}else{
+  					validarColap(colap2, "#colapsar_desplegar2");
+  				}
+ 				verResultado(info);
+	  		});
+        });
 	}
 </script>

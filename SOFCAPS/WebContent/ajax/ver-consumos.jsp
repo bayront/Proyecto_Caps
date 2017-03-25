@@ -40,37 +40,6 @@
 					<input type="hidden" id="cliente_ID" name="cliente_ID"> 
 					<input type="hidden" id="contrato_ID" name="contrato_ID">
 					
-					<div class="form-group has-success has-feedback">
-						<label class="col-sm-4 control-label">Lectura Actual</label>
-						<div class="col-sm-5">
-							<input type="number" class="form-control" name="lectura"
-								id="lectura_Actual" data-toggle="tooltip" data-placement="top"title="lectura de consumo">
-						</div>
-					</div>
-
-					<div class="clearfix"></div>
-
-					<div class="form-group has-success has-feedback">
-						<label class="col-sm-4 control-label">Fecha de corte</label>
-						<div class="col-sm-5">
-							<input type="text" id="fecha_fin" class="form-control"
-								name="fecha" placeholder="Fecha de corte"> <span
-								class="fa fa-calendar txt-success form-control-feedback"></span>
-						</div>
-					</div>
-
-					<div class="clearfix"></div>
-
-					<div class="form-group has-success">
-						<label class="col-sm-4 control-label">Consumo</label>
-						<div class="col-sm-5">
-							<!-- PARA DEJAR SIN USO A INPUT AGREGAR ATRIBUTO *disabled* -->
-							<input type="text" class="form-control"
-								placeholder="el consumo es un campo calculado"
-								readonly="readonly" id="consumoTotal">
-						</div>
-					</div>
-
 					<h4 class="page-header"
 						Style="text-align: center; font-size: xx-large;">Cliente</h4>
 
@@ -90,7 +59,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="numContrato" class="col-sm-4 control-label">N&uacutemero
+						<label for="numContrato" class="col-sm-4 control-label">Número
 							del contrato</label>
 						<div class="col-sm-4">
 							<input type="text" id="numContrato" class="form-control"
@@ -106,6 +75,41 @@
 								title="numero de medidor">
 						</div>
 					</div>
+					<h4 class="page-header"
+						Style="text-align: center; font-size: xx-large;">Consumo</h4>
+						
+					<div class="form-group has-success has-feedback">
+						<label class="col-sm-4 control-label">Lectura Actual</label>
+						<div class="col-sm-5">
+							<input data-bv-numeric="true" class="form-control" name="lectura"
+								id="lectura_Actual" data-toggle="tooltip" data-placement="top"title="lectura de consumo">
+						</div>
+					</div>
+
+					<div class="clearfix"></div>
+
+					<div class="form-group has-success has-feedback">
+						<label class="col-sm-4 control-label">Fecha de corte</label>
+						<div class="col-sm-5">
+							<input type="text" id="fecha_fin" class="form-control"
+								name="fecha" placeholder="Fecha de corte"><span
+								class="fa fa-calendar txt-success form-control-feedback"></span>
+						</div>
+					</div>
+
+					<div class="clearfix"></div>
+
+					<div class="form-group has-success">
+						<label class="col-sm-4 control-label">Consumo</label>
+						<div class="col-sm-5">
+							<!-- PARA DEJAR SIN USO A INPUT AGREGAR ATRIBUTO *disabled* -->
+							<input type="text" class="form-control"
+								placeholder="el consumo es un campo calculado"
+								readonly="readonly" id="consumoTotal">
+						</div>
+					</div>
+
+					
 					<div class="form-group">
 						<div class="col-sm-offset-4 col-sm-3">
 							<button type="submit" class="btn btn-primary btn-label-left btn-lg"
@@ -144,11 +148,6 @@
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content no-padding table-responsive">
-<!-- 				<div style="display: block; text-align: center;"> -->
-<!-- 					<button type="button" class="btn btn-default btn-app-sm btn-circle" id="center_button"> -->
-<!-- 						<i class=" fa fa-plus"></i> -->
-<!-- 					</button> -->
-<!-- 				</div> -->
 				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
 					id="tabla_consumo" style="width:100%;">
 					<thead>
@@ -294,10 +293,6 @@
 		    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
 		    	"bJQueryUI": true,
 				"language":idioma_esp,
-				drawCallback: function(settings){
-		            var api = this.api();
-		            $('td', api.table().container()).find("button").tooltip({container : 'body'});
-		        },
 				ajax: {
 					"method":"GET",
 					"url":"./SL_consumo",
@@ -450,6 +445,8 @@
 		validarColap(colap2, "#colapsar_desplegar2");
 		if(expand2.valor == true)
 			validarExpand(expand2, "#expandir2");
+		
+		$("button#abrir_modal").focus();
 	}
 	
 	var cancelar = function() {
@@ -471,7 +468,7 @@
 		$("#consumo_ID").val("");
 		$("#cliente_ID").val("");
 		$("#contrato_ID").val("");
-		$("#lectura_Actual").val("").focus();
+		$("#lectura_Actual").val("");
 		$("#fecha_fin").val("");
 		$("#consumoTotal").val("");
 		$("#nombreClienteCompleto").val("");
@@ -511,8 +508,15 @@
 
 		// Inicializar DatePicker
 		$('#fecha_fin').datepicker({
-		setDate : new Date()
+			setDate : new Date(),
+			dateFormat: 'dd/mm/yy',
+			onSelect: function(dateText, inst) {
+				$("#fecha_fin").val(dateText.toString());
+				$("#fecha_fin").change();
+				$('form#defaultForm').bootstrapValidator('revalidateField', 'fecha');
+			}
 		});
+		
 	
 		// Añadir Tooltip para formularios
 		$('.form-control').tooltip();
@@ -542,7 +546,8 @@
 			+ "</tfoot>"														
 			+ "</table>"														
 			+ "</div>",
-			"<div Style='text-align: center; margin-bottom: -10px;'><button type='button' class='btn btn-secondary' onclick='CloseModalBox()'>Cancelar</button></div>");
+			"<div Style='text-align: center; margin-bottom: -5px;'><button type='button' class='btn-default btn-label-left btn-lg' "
+			+"onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span>Cancelar</button></div>");
 			filtrarTabla();		
 		});
 		
@@ -565,23 +570,29 @@
 			                message: "Este campo es requerido y no debe estar vacio"
 			            },
 			            greaterThan: {
-							value: 0,
-							inclusive: false,
-							message: 'El campo debe ser mayor que 0'
-						},
+	                        value: 0,
+	                        inclusive: false,
+	                        message: 'el valor debe ser mayor o igual a 0'
+	                    },
 						callback: {
-           					message: 'la lectura actual debe ser mayor que los registros de este cliente',
+           					message: 'la lectura actual debe ser mayor que la lectura de los registros anteriores',
             				callback: function (value, validator, $field) {
-            						var tabla = $('#tabla_consumo').DataTable();
-                					var filas = tabla.rows();
-                					var noigual = true;
-                    				filas.every(function(index, loop, rowloop) {
-            							if(value < tabla.row(index).data().lectura && 
-            									$("form#defaultForm #contrato_ID").val() == tabla.row(index).data().contrato.contrato_ID){
-            								noigual = false;
-            							}
-                    				});
-                    				return noigual;
+            					if($("form#defaultForm #contrato_ID").val()=="" && $("form#defaultForm #cliente_ID").val()==""){
+            						return {
+                                        valid: false,
+                                        message: 'seleccione un cliente antes de digitar la lectura'
+                                    }
+                                }
+            					var tabla = $('#tabla_consumo').DataTable();
+                				var filas = tabla.rows();
+                				var noigual = true;
+                    			filas.every(function(index, loop, rowloop) {
+            						if(value < tabla.row(index).data().lectura_Actual && 
+            								$("form#defaultForm #contrato_ID").val() == tabla.row(index).data().contrato.contrato_ID){
+            							noigual = false;
+            						}
+                    			});
+                    			return noigual;
             				}
         				}
 			        }
@@ -590,7 +601,25 @@
 					validators: {
 						notEmpty:{
 			                message: "Este campo es requerido y no debe estar vacio"
-			            }
+			            },
+			            callback: {
+           					message: 'la fecha debe ser mayor que los anteriores registros de este cliente',
+            				callback: function (value, validator, $field) {
+            					var tabla = $('#tabla_consumo').DataTable();
+                				var filas = tabla.rows();
+                				var noigual = true;
+                				var f = $("form#defaultForm #fecha_fin").val().split("/");
+                				var fecha1 = new Date(f[2], f[1]-1, f[0]);
+                    			filas.every(function(index, loop, rowloop) {
+                    				var fecha2 = new Date(tabla.row(index).data().fecha_fin);
+            						if(fecha1 <  fecha2 && $("form#defaultForm #contrato_ID").val() == 
+            						tabla.row(index).data().contrato.contrato_ID){
+            							noigual = false;
+            						}
+                    			});
+                    			return noigual;
+            				}
+        				}
 			        }
 				},
 				consumoActual:{

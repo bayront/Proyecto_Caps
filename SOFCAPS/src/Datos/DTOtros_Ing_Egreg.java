@@ -50,7 +50,7 @@ public class DTOtros_Ing_Egreg {
 	 
 	 public ResultSet cargarCOI(){
 			Statement s;
-			String sql = ("Select  otros_ing_egreg.Otros_Ing_Egreg_ID,otros_ing_egreg.descripcion, otros_ing_egreg.monto, otros_ing_egreg.fecha,categoria_ing_egreg.Categoria_Ing_Egreg_ID, categoria_ing_egreg.nombreCategoria  From otros_ing_egreg Inner Join categoria_ing_egreg On categoria_ing_egreg.Categoria_Ing_Egreg_ID = otros_ing_egreg.Categoria_Ing_Egreg_ID where otros_ing_egreg.eliminado = 0 and categoria_ing_egreg.eliminado = 0;");
+			String sql = ("Select  o.Otros_Ing_Egreg_ID, o.descripcion, o.monto, o.fecha, c.Categoria_Ing_Egreg_ID, c.nombreCategoria  From otros_ing_egreg o Inner Join categoria_ing_egreg c On o.Categoria_Ing_Egreg_ID = c.Categoria_Ing_Egreg_ID where o.eliminado = 0 and c.eliminado = 0;");
 			try 
 			{
 				s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -106,7 +106,6 @@ public class DTOtros_Ing_Egreg {
 			{
 				dtoi.cargarOI();
 				rs.beforeFirst();
-				rs.beforeFirst();
 				while (rs.next()){
 					System.out.println("fila "+ rs.getInt("Otros_Ing_Egreg_ID"));
 					if(rs.getInt("Otros_Ing_Egreg_ID") == o.getOtros_Ing_Egreg_ID()){
@@ -124,6 +123,7 @@ public class DTOtros_Ing_Egreg {
 			}
 			return eliminado;
 		}
+	 
 	 public boolean actualizarOI(Otros_Ing_Egreg  o)
 		{
 			boolean guardado = false;
@@ -134,23 +134,18 @@ public class DTOtros_Ing_Egreg {
 				while (rs.next()){
 					System.out.println("fila "+rs.getInt("Otros_Ing_Egreg_ID"));
 					if(rs.getInt("Otros_Ing_Egreg_ID") == o.getOtros_Ing_Egreg_ID()){
-						//System.out.println("lim_Sup: " + o.getLim_Sup());
-//						if(t.getLim_Sup() == 0) {
-//							rs.updateNull("lim_Sup");
-//						}
-//						rs.updateInt("lim_Inf", t.getLim_Inf());
 						rs.updateString("fecha",fecha.format(o.getFecha()));
 						rs.updateString("descripcion",o.getDescripcion());
 						rs.updateFloat("monto", o.getMonto());
 						rs.updateInt("Otros_Ing_Egreg_ID", o.getOtros_Ing_Egreg_ID());
 						rs.updateBoolean("eliminado", false);
 						rs.updateInt("Categoria_Ing_Egreg_ID", o.getCategoria_Ing_Egreg().getCategoria_Ing_Egreg_ID());
-						//rs.updateInt("Unidad_de_Medida_ID", t.getUnidad_de_Medida().getUnidad_de_Medida_ID());
 						rs.updateRow();
 						System.out.println("Otros ingresos y egresos actulizada");
 						guardado  = true;
 					}
 				}
+				rs.moveToCurrentRow();
 			}
 			catch (Exception e) 
 			{

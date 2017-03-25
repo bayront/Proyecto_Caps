@@ -75,10 +75,22 @@ public class DTConsumo {
 					float lectura_anterior = (rs.getFloat("lectura_Actual"));
 					consumo.setConsumoTotal(consumo.getLectura_Actual() - lectura_anterior);
 					encontrado = true;
+					System.out.println("lectura anterior encontrada");
+					rs.updateBoolean("actual", false);
+					rs.updateInt("Consumo_ID", rs.getInt("Consumo_ID"));
+					rs.updateInt("Contrato_ID", rs.getInt("Contrato_ID"));
+					rs.updateInt("Cliente_ID", rs.getInt("Cliente_ID"));
+					rs.updateFloat("lectura_Actual", rs.getFloat("lectura_Actual"));
+					rs.updateFloat("consumoTotal", rs.getFloat("consumoTotal"));
+					rs.updateBoolean("eliminado", rs.getBoolean("eliminado"));
+					rs.updateRow();
+					rs.moveToCurrentRow();
 				}
 			}
 			if(encontrado == false) {
+				System.out.println("no hay consumo anterior, este es el primero");
 				agregarPrimerConsumo(consumo, rs);
+				consumo.setConsumoTotal(consumo.getLectura_Actual());
 			}
 			rs.moveToInsertRow();
 			rs.updateInt("Cliente_ID", consumo.getCliente().getCliente_ID());
@@ -90,10 +102,7 @@ public class DTConsumo {
 			rs.updateBoolean("actual", consumo.getActual());
 			rs.insertRow();
 			rs.moveToCurrentRow();
-			rs.previous();
-			rs.updateBoolean("actual", false);
-			rs.updateRow();
-			rs.moveToCurrentRow();
+			
 			guardado = true;
 		}
 		catch (Exception e) 
@@ -113,7 +122,7 @@ public class DTConsumo {
 			rs2.updateFloat("lectura_Actual", 0.0f); 
 			rs2.updateFloat("consumoTotal", 0.0f); 
 			rs2.updateBoolean("eliminado", consumo.getEliminado());
-			rs2.updateBoolean("actual", consumo.getActual());
+			rs2.updateBoolean("actual", false);
 			rs2.insertRow();
 			rs2.moveToCurrentRow();
 		} catch (SQLException e) {

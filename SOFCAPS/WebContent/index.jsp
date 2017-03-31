@@ -3,11 +3,29 @@
 <%@page pageEncoding="UTF-8"%> 
 <!-- contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" -->
+<%
+ 	response.setHeader( "Pragma", "no-cache" );
+ 	response.setHeader( "Cache-Control", "no-store" );
+	response.setDateHeader( "Expires", 0 );
+	response.setDateHeader( "Expires", -1 );
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>SOFCAPS</title>
+<%
+	int Rol_Id = 0;
+	int Usuario_ID = 0;
+	String nombre_usuario = "";
+	String url = "";
+	nombre_usuario = (String) session.getAttribute("nombre_usuario");
+	nombre_usuario = nombre_usuario==null?"":nombre_usuario;
+	if(nombre_usuario.equals("")){
+		response.sendRedirect("CAPS.jsp");
+	}
+%>
+
 <meta name="description" content="description">
 <meta name="author" content="team_CAPS">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -85,27 +103,31 @@
 									class="dropdown-toggle account" data-toggle="dropdown">
 										<i class="fa fa-angle-down pull-right"></i>
 										<div class="user-mini pull-right">
-											<span class="welcome">Bienvenido!</span>Usuario CAPS <span></span>
+											<span class="welcome">Bienvenido!</span>
+											<span><%=nombre_usuario %></span>
 										</div>
 								</a>
 									<ul class="dropdown-menu">
-										<li><a href="#"> <i class="fa fa-user"></i> <span
-												class="hidden-sm text">Profile</span>
-										</a></li>
-										<li><a href="ajax/page_messages.html" class="ajax-link">
-												<i class="fa fa-envelope"></i> <span class="hidden-sm text">Messages</span>
-										</a></li>
-										<li><a href="ajax/gallery_simple.html" class="ajax-link">
-												<i class="fa fa-picture-o"></i> <span class="hidden-sm text">Albums</span>
-										</a></li>
-										<li><a href="ajax/calendar.html" class="ajax-link"> <i
-												class="fa fa-tasks"></i> <span class="hidden-sm text">Tasks</span>
-										</a></li>
-										<li><a href="#"> <i class="fa fa-cog"></i> <span
-												class="hidden-sm text">Settings</span>
-										</a></li>
-										<li><a href="#"> <i class="fa fa-power-off"></i> <span
-												class="hidden-sm text">Logout</span>
+<!-- 										<li><a href="#"> <i class="fa fa-user"></i> <span -->
+<!-- 												class="hidden-sm text">Profile</span> -->
+<!-- 										</a></li> -->
+<!-- 										<li><a href="ajax/page_messages.html" class="ajax-link"> -->
+<!-- 												<i class="fa fa-envelope"></i> <span class="hidden-sm text">Messages</span> -->
+<!-- 										</a></li> -->
+<!-- 										<li><a href="ajax/gallery_simple.html" class="ajax-link"> -->
+<!-- 												<i class="fa fa-picture-o"></i> <span class="hidden-sm text">Albums</span> -->
+<!-- 										</a></li> -->
+<!-- 										<li><a href="ajax/calendar.html" class="ajax-link"> <i -->
+<!-- 												class="fa fa-tasks"></i> <span class="hidden-sm text">Tasks</span> -->
+<!-- 										</a></li> -->
+<!-- 										<li><a href="#"> <i class="fa fa-cog"></i> <span -->
+<!-- 												class="hidden-sm text">Settings</span> -->
+<!-- 										</a></li> -->
+<!-- 										<li><a href="#"> <i class="fa fa-power-off"></i> <span -->
+<!-- 												class="hidden-sm text">Logout</span> -->
+<!-- 										</a></li> -->
+										<li><a href="CAPS.jsp"><i class="fa fa-power-off"></i>
+											<span>Cerrar Sesión</span>
 										</a></li>
 									</ul></li>
 							</ul>
@@ -121,7 +143,7 @@
 		<div class="row">
 			<div id="sidebar-left" class="col-xs-2 col-sm-2">
 				<ul class="nav main-menu">
-					<li><a href="#" class="active ajax-link">
+					<li><a href="ajax/dashboard.html" class="active ajax-link">
 							<i title="Inicio" data-placement="bottom" class="fa fa-dashboard"></i> <span class="hidden-xs">Inicio</span>
 					</a></li>
 					<li><a href="ajax/Cliente.jsp" class="ajax-link">

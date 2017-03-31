@@ -2,9 +2,11 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialog" class= "col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
 </div> 
+<!--///////////////////////Directorios donde estan los jsp /////////////////////////////// -->
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -14,14 +16,14 @@
 		</ol>
 	</div>
 </div>
+<!--///////////////////////Formulario principal de consumos de los clientes/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-plus-square-o"></i> <span>Registro de
-						Consumos</span>
+					<i class="fa fa-edit"></i> <span>Formulario de consumos de los clientes</span>
 				</div>
 				<div class="box-icons">
 					<a id="colapsar_desplegar1" class="collapse-link" onclick="validar(colap1);"> <i
@@ -72,7 +74,7 @@
 						<div class="col-sm-5">
 							<input type="text" class="form-control" id="numMedidor" name="numMedidor"
 								placeholder="medidor" data-toggle="tooltip" data-placement="top"
-								title="numero de medidor">
+								title="número del medidor">
 						</div>
 					</div>
 					<h4 class="page-header"
@@ -81,8 +83,8 @@
 					<div class="form-group has-success has-feedback">
 						<label class="col-sm-4 control-label">Lectura Actual</label>
 						<div class="col-sm-5">
-							<input data-bv-numeric="true" class="form-control" name="lectura"
-								id="lectura_Actual" data-toggle="tooltip" data-placement="top"title="lectura de consumo">
+							<input data-bv-numeric="true" class="form-control" name="lectura" data-bv-numeric-message="¡Este valor no es un número!"
+								id="lectura_Actual" data-toggle="tooltip" data-placement="top" title="Requerido">
 						</div>
 					</div>
 
@@ -92,7 +94,7 @@
 						<label class="col-sm-4 control-label">Fecha de corte</label>
 						<div class="col-sm-5">
 							<input type="text" id="fecha_fin" class="form-control"
-								name="fecha" placeholder="Fecha de corte"><span
+								name="fecha" placeholder="Fecha de corte" title="Requerido"><span
 								class="fa fa-calendar txt-success form-control-feedback"></span>
 						</div>
 					</div>
@@ -109,7 +111,6 @@
 						</div>
 					</div>
 
-					
 					<div class="form-group">
 						<div class="col-sm-offset-4 col-sm-3">
 							<button type="submit" class="btn btn-primary btn-label-left btn-lg"
@@ -125,13 +126,12 @@
 							</button>
 						</div>
 					</div>
-
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
-
+<!--///////////////////////DataTable de los consumos de los clientes/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
@@ -158,7 +158,7 @@
 							<th>Nombres_Cliente</th>
 							<th>Num_Contrato</th>
 							<th>Num_medidor</th>
-							<th></th>
+							<th>Acción</th>
 						</tr>
 					</thead>
 				</table>
@@ -166,12 +166,13 @@
 		</div>
 	</div>
 </div>
+<!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
 <div>
-	<form id="frmEliminarConsumo" action="" method="POST">
+	<form id="frmEliminarConsumo" action="" method="DELETE">
 		<input type="hidden" id="consumo_id" name="consumo_id" value="">
 		<input type="hidden" id="opcion" name="opcion" value="eliminar">
 
-<!-- 		Modal -->
+		<!-- 	Modal 	-->
 		<div id="modalbox">
 			<div class="devoops-modal">
 				<div class="devoops-modal-header">
@@ -190,15 +191,32 @@
 	</form>
 </div>
 
-
 <script type="text/javascript">
+//objetos websockets
+var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
+var websocket = new WebSocket(wsUri);
+
+//evento que notifica que la conexion esta abierta
+websocket.onopen = function(evt) { //manejamos los eventos...
+    console.log("Conectado..."); //... y aparecerá en la pantalla
+};
+
+//evento onmessage para resibir mensaje del serverendpoint
+websocket.onmessage = function(evt) { // cuando se recibe un mensaje
+	console.log("Mensaje recibido de webSocket: " + evt.data);
+	verResultado(evt.data);
+};
+
+//evento si hay algun error en la comunicacion con el web_socket
+websocket.onerror = function(evt) {
+    console.log("oho!.. error:" + evt.data);
+};
 
 	var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
 	var colap1 =  new Colap1();
 	var expand2 = new Expand2();
 	var colap2 =  new Colap2();
-	
-	// Iniciar dataTables
+/////////////////////////////////////Iniciar dataTables y cargar los plugins//////////////////////////////////////
 	function AllTables() {
 		//cargar PDF Y EXCEL
 		$.getScript('plugins/datatables/nuevo/jszip.min.js', function(){
@@ -206,22 +224,20 @@
 				$.getScript('plugins/datatables/nuevo/vfs_fonts.js',function(){
 					console.log("PDF Y EXCEL cargado");
 					iniciarTabla();
+					LoadSelect2Script(MakeSelect2);
 				});
 			});
 		});
-		LoadSelect2Script(MakeSelect2);
 	}
 	
-	function MakeSelect2() {
-		$('select').select2();
-	}
-	
-	var verResultado = function(r) {
+//////////////////////////funsión que muestra el resultado mediant un dialogo//////////////////////////////////////
+	var verResultado = function(r) {//parametro(resultado-String)
 		if(r == "BIEN"){
 			mostrarMensaje("#dialog", "CORRECTO", 
 					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
 			limpiar_texto();
 			$('#tabla_consumo').DataTable().ajax.reload();
+			websocket.send("ACTUALIZADO");
 		}
 		if(r == "ERROR"){
 			mostrarMensaje("#dialog", "ERROR", 
@@ -234,11 +250,19 @@
 		if(r =="ACTUALIZADO"){
 			mostrarMensaje("#dialog", "ACTUALIZADO", 
 					"¡Otro usuario a realizado un cambio, se actualizaron los datos!", "#86b6dd", "btn-primary");
-			$('#tabla_OI').DataTable().ajax.reload();
+			$('#tabla_consumo').DataTable().ajax.reload();
+		}
+		if(r == "LECTURAMENOR"){
+			mostrarMensaje("#dialog", "ERROR", 
+					"¡La lectura que ha digitado debe ser mayor que la lectura anterior!", "#E97D7D", "btn-danger");
+		}
+		if(r == "FECHAMENOR"){
+			mostrarMensaje("#dialog", "ERROR", 
+					"¡La fecha debe ser mayor que el registro anterior de este cliente!", "#E97D7D", "btn-danger");
 		}
 	}
-	
-	function abrirDialogo(callback) {
+/////////////////////////////funsión que abre un dialogo y mostrara un contenido//////////////////////////////////
+	function abrirDialogo(callback) {//parametro(funsion_js[eliminar])
 		OpenModalBox(
 				"<div><h3>Borrar Consumo</h3></div>",
 				"<p Style='text-align:center; color:salmon; font-size:x-large;'>Esta seguro de borrar este consumo?</p>",
@@ -252,38 +276,8 @@
 				"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 		callback();
 	}
-	
-	var guardarConsumo = function() {
-		$("form#defaultForm").on("submit", function(e) {
-			e.preventDefault();//detiene el evento
-			var frm = $(this).serialize();//parsea los datos del formulario
-			console.log(frm);
-			if($("form#defaultForm #lectura_Actual").val()!="" && $("form#defaultForm #fecha_fin").val()!=""
-					&& $("form#defaultForm #numMedidor").val()!=""){
-	 			$.ajax({//enviar datos por ajax
-	 			type:"POST",
-	 			url:"./SL_consumo",
-	 			data: frm//datos a enviar
-	 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
-	 			console.log(info);
-	 			if(expand1.valor == true)
-					validarExpand(expand1, "#expandir1");
-			
-				if(expand2.valor == true)
-					validarExpand(expand2, "#expandir2");
-				
-				validarColap(colap1, "#colapsar_desplegar1");
-				if (colap2.valor ==true){}else{
-					validarColap(colap2, "#colapsar_desplegar2");
-				}
-				verResultado(info);//se envia a verificar que mensaje respondio el servlet	
-	 			});
-			}
-		});
-	}
-	
+///////////////////funsión que crea un dataTable para traer en cliente y el contrato mediante un dialogo////////////
 	function filtrarTabla(){
-		
 		    $('#datatable-filter thead th label input').each( function () {
 		        var title = $(this).attr("name");
 		        $(this).attr("placeholder", "Buscar por " + title);
@@ -306,7 +300,7 @@
 		            { "data": "contratos[0].numContrato" },
 		            { "data": "contratos[0].numMedidor" },
 		            {"defaultContent":"<button type='button' style='margin-left:15px;' class='activar btn btn-primary'"
-		            +"title='seleccionar cliente' id='seleccionarCl' >"
+		            +"title='Seleccionar cliente' id='seleccionarCl' >"
 					+ "<i class='fa fa-upload'></i> </button>"}
 		            ]
 		    });
@@ -322,8 +316,8 @@
 		    } );
 		    cambiarCliente('#datatable-filter tbody', table);
 	}
-	
-	function cambiarCliente(tbody, table) {
+/////////////////////////////funsión que setea el cliente y contrato en los input del formulario////////////////////
+	function cambiarCliente(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		$(tbody).on("click","button#seleccionarCl",function(){
 			console.log("cambiar cliente");
 			var datos = table.row($(this).parents("tr")).data();
@@ -337,8 +331,8 @@
 			CloseModalBox();
 		});
 	}
-	
-	var seleccionarEditarConsumo = function(tbody, table) {
+///////////////////////////funsión que activa el evento click del boton editar del dataTable///////////////////////
+	var seleccionarEditarConsumo = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		$(tbody).on("click", "button.editarConsumo", function() {
 			var datos = table.row($(this).parents("tr")).data();
 			var f = new Date(datos.fecha_fin);
@@ -351,6 +345,11 @@
 			$("#numMedidor").val(datos.contrato.numMedidor);
 			$("#opcion").val("actualizar");
 			$("#consumo_ID").val(datos.consumo_ID);
+			$("#nombreClienteCompleto").prop('readonly', true);
+			$("#numContrato").prop('readonly', true);
+			$("#numMedidor").prop('readonly', true);
+			$("#abrir_modal").prop('disabled', true);
+			$("#abrir_modal").attr('title', 'No puede editar el cliente');
 			$("#cliente_ID").val(datos.cliente.cliente_ID);
 			$("#contrato_ID").val(datos.contrato.contrato_ID);
 			
@@ -362,7 +361,7 @@
 				validarExpand(expand2, "#expandir2");
 		});
 	}
-	
+///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
 	function iniciarTabla(){
 		validarColap(colap1, "#colapsar_desplegar1");
 		var tablaConsumo = $('#tabla_consumo').DataTable( {
@@ -398,9 +397,9 @@
 	            { "data": "cliente.nombreCompleto" },
 	            { "data": "contrato.numContrato" },
 	            { "data": "contrato.numMedidor" },
-	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' title='editar consumo'>"+
+	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' title='Editar consumo'>"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
-					"<button type='button' class='eliminarConsumo btn btn-danger' title='eliminar consumo'>"+
+					"<button type='button' class='eliminarConsumo btn btn-danger' title='Eliminar consumo'>"+
 					"<i class='fa fa-trash-o'></i> </button>"}
 	            ],
 	            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
@@ -436,7 +435,7 @@
 		seleccionarEliminarConsumo('#tabla_consumo tbody', tablaConsumo);
 	}
 	
-	var agregar_nuevo_consumo = function() {
+	var agregar_nuevo_consumo = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
@@ -449,7 +448,7 @@
 		$("button#abrir_modal").focus();
 	}
 	
-	var cancelar = function() {
+	var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
 		limpiar_texto();
 		if(expand1.valor == true)
 			validarExpand(expand1, "#expandir1");
@@ -463,7 +462,7 @@
 		}
 	}
 	
-	var limpiar_texto = function() {//limpiar texto del formulario
+	var limpiar_texto = function() {////////////////////////limpiar texto del formulario
 		$("#opcion").val("guardar");
 		$("#consumo_ID").val("");
 		$("#cliente_ID").val("");
@@ -474,30 +473,37 @@
 		$("#nombreClienteCompleto").val("");
 		$("#numContrato").val("");
 		$("#numMedidor").val("");
+		$("#nombreClienteCompleto").prop('readonly', false);
+		$("#numContrato").prop('readonly', false);
+		$("#numMedidor").prop('readonly', false);
+		$("#abrir_modal").prop('disabled', false);
+		$("#abrir_modal").attr('title', '');
+		$("form#defaultForm").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 	}
-	
-	var seleccionarEliminarConsumo = function(tbody, table) {
+/////////////////////////funsión que activa el evento click para eliminar un registro del dataTable////////////////
+	var seleccionarEliminarConsumo = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		$(tbody).on("click", "button.eliminarConsumo", function() {
 			var datos = table.row($(this).parents("tr")).data();
 			$("form#frmEliminarConsumo #consumo_id").val(datos.consumo_ID);
 			abrirDialogo(eliminarConsumo);
 		});
 	}
+//////////////////////////////////eliminar los datos seteados en el formulario/////////////////////////////////////
 	var eliminarConsumo = function() {
 		$("#eliminar_consumo").on("click", function() {
-			var consumo_id= $("#frmEliminarConsumo #consumo_id").val();//se obtiene el id del usuario que esta oculto
-			var opcion = $("#frmEliminarConsumo #opcion").val();//se obtiene la opcion que esta oculta
-			console.log("consumo_ID: " + consumo_id + ", opcion: " + opcion);
-// 			$.ajax({
-// 				method:"DELETE",
-// 				url:"./SL_consumo",
-// 				data: {"consumo_ID":usuario_id, "opcion": opcion}//se envian los datos al servlet
-// 			}).done(function(info) {
-// // 				verResultado(info);
-// 					CloseModalBox();
-// 			});
+			var consumo_ID = $("#frmEliminarConsumo #consumo_id").val();//se obtiene el id del usuario que esta oculto
+			console.log("consumo_ID:"+consumo_ID);
+			$.ajax({
+				type:"DELETE",
+				url:"./SL_consumo",
+				headers: {"consumo_ID": consumo_ID}
+			}).done(function(info) {
+				verResultado(info);
+				CloseModalBox();
+			});
 		});
 	}
+/////////////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////////
 	$(document).ready(function() {
 
 		//cargar scripts dataTables
@@ -521,10 +527,10 @@
 		// Añadir Tooltip para formularios
 		$('.form-control').tooltip();
 
-		//Cargar ejemplo para validaciones
+		//Cargar plugins para validaciones
 		LoadBootstrapValidatorScript(FormValidConsumo);
 
-		//MODALS
+		//MODAL para mostrar una tabla con el cliente y en contrato
 		$('#abrir_modal').on('click',function(e) {
 			OpenModalBox(
 			"<div><h3>Buscar Cliente</h3></div>",
@@ -548,51 +554,39 @@
 			+ "</div>",
 			"<div Style='text-align: center; margin-bottom: -5px;'><button type='button' class='btn-default btn-label-left btn-lg' "
 			+"onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span>Cancelar</button></div>");
+			
 			filtrarTabla();		
 		});
-		
-		guardarConsumo();
 		
 		// Add Drag-n-Drop feature				
 		WinMove();	
 		
-		//add tooltip
+		//añadir tooltip
 		$('[data-toggle="tooltip"]').tooltip();
 	});
-	
+///////////////////////////Funsión que valida el formulario de consumos de clientes////////////////////////////////
 	function FormValidConsumo() {
 		$('form#defaultForm').bootstrapValidator({
-			message: 'Este valor no es valido',
+			message: '¡Este valor no es valido!',
 			fields: {
 				lectura:{
 					validators: {
 						notEmpty:{
-			                message: "Este campo es requerido y no debe estar vacio"
+			                message: "¡Este campo es requerido y no debe estar vacio!"
 			            },
 			            greaterThan: {
 	                        value: 0,
 	                        inclusive: false,
-	                        message: 'el valor debe ser mayor o igual a 0'
+	                        message: '¡El valor debe ser mayor o igual a 0!'
 	                    },
 						callback: {
-           					message: 'la lectura actual debe ser mayor que la lectura de los registros anteriores',
+           					message: '¡Seleccione un cliente antes de digitar la lectura!',
             				callback: function (value, validator, $field) {
             					if($("form#defaultForm #contrato_ID").val()=="" && $("form#defaultForm #cliente_ID").val()==""){
-            						return {
-                                        valid: false,
-                                        message: 'seleccione un cliente antes de digitar la lectura'
-                                    }
+            						return false;
+                                }else{
+                                	return true;
                                 }
-            					var tabla = $('#tabla_consumo').DataTable();
-                				var filas = tabla.rows();
-                				var noigual = true;
-                    			filas.every(function(index, loop, rowloop) {
-            						if(value < tabla.row(index).data().lectura_Actual && 
-            								$("form#defaultForm #contrato_ID").val() == tabla.row(index).data().contrato.contrato_ID){
-            							noigual = false;
-            						}
-                    			});
-                    			return noigual;
             				}
         				}
 			        }
@@ -600,54 +594,45 @@
 				fecha:{
 					validators: {
 						notEmpty:{
-			                message: "Este campo es requerido y no debe estar vacio"
-			            },
-			            callback: {
-           					message: 'la fecha debe ser mayor que los anteriores registros de este cliente',
-            				callback: function (value, validator, $field) {
-            					var tabla = $('#tabla_consumo').DataTable();
-                				var filas = tabla.rows();
-                				var noigual = true;
-                				var f = $("form#defaultForm #fecha_fin").val().split("/");
-                				var fecha1 = new Date(f[2], f[1]-1, f[0]);
-                    			filas.every(function(index, loop, rowloop) {
-                    				var fecha2 = new Date(tabla.row(index).data().fecha_fin);
-            						if(fecha1 <  fecha2 && $("form#defaultForm #contrato_ID").val() == 
-            						tabla.row(index).data().contrato.contrato_ID){
-            							noigual = false;
-            						}
-                    			});
-                    			return noigual;
-            				}
-        				}
+			                message: "¡Este campo es requerido y no debe estar vacio!"
+			            }
 			        }
 				},
 				consumoActual:{
 					validators: {
 						notEmpty:{
-			                message: "Este campo es requerido y no debe estar vacio"
+			                message: "¡Este campo es requerido y no debe estar vacio!"
 			            }
 			        }
-				},
-				numMedidor:{
-					validators: {
-						notEmpty:{
-			                message: "Este campo es requerido y no debe estar vacio"
-			            },
-			            callback: {
-           					message: 'seleccione un cliente',
-           					callback: function (value, validator, $field) {
-    			            	var noigual = true;
-        						if($("form#defaultForm #contrato_ID").val() == ""){
-        							noigual = false;
-        						}
-                				return noigual;
-        					}
-        				}
-			        }
-				},
+				}
 			}
-		});
+		}).on('success.form.bv', function(e) {//evento que se activa cuando los datos son correctos
+            // Prevenir el evento submit
+            e.preventDefault();
+
+            //obtener datos del formulario
+            var $form = $(e.target);
+            var frm=$form.serialize();
+            console.log(frm);
+            $.ajax({//enviar datos por ajax
+	 			type:"POST",
+	 			url:"./SL_consumo",
+	 			data: frm//datos a enviar
+	 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
+	 			console.log(info);
+	 			if(expand1.valor == true)
+					validarExpand(expand1, "#expandir1");
+			
+				if(expand2.valor == true)
+					validarExpand(expand2, "#expandir2");
+				
+				validarColap(colap1, "#colapsar_desplegar1");
+				if (colap2.valor ==true){}else{
+					validarColap(colap2, "#colapsar_desplegar2");
+				}
+				verResultado(info);//se envia a verificar que mensaje respondio el servlet	
+	 			});
+        });
 	}
 	
 </script>

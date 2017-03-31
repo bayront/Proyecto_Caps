@@ -3,9 +3,11 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialog" class="col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
 </div>
+<!--///////////////////////Directorios donde estan los jsp /////////////////////////////// -->
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -15,12 +17,13 @@
 		</ol>
 	</div>
 </div>
+<!--///////////////////////Formulario principal de las categorías/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i> <span>Formulario de Categorías</span>
+					<i class="fa fa-edit"></i> <span>Formulario de Categorías</span>
 				</div>
 				<div class="box-icons">
 					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
@@ -35,7 +38,16 @@
 					<div class="form-group">
 						<label class="col-sm-4 control-label text-info">Nombre de la Categoría</label>
 						<div class="col-sm-4">
-							<input id="nomCategoria" name="nomCategoria" type="text" class="form-control" autofocus>
+							<input id="nomCategoria" name="nomCategoria" type="text" 
+							class="form-control" autofocus title="Requerido">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label text-info">Descripción</label>
+						<div class="col-sm-4">
+							<textarea maxlength="150" id="descripcion" name="descripcion" class="form-control" 
+							title="No requerido" style="max-width:100%; height:110px;"></textarea>
+							<div id="contadorText">150 caracteres permitidos</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -55,6 +67,7 @@
 		</div>
 	</div>
 </div>
+<!--///////////////////////DataTable de las categorías/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
@@ -70,10 +83,11 @@
 			</div>
 			<div class="box-content no-padding table-responsive">
 				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="tabla_tarifa" style="width:100%;">
+					id="tabla_categoria" style="width:100%;">
 					<thead>
 						<tr>
 							<th>Nombre Categoria</th>
+							<th>Descripción</th>
 							<th>Acción</th>
 						</tr>
 					</thead>
@@ -82,7 +96,7 @@
 		</div>
 	</div>
 </div>
-
+<!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
 <div>
 	<form id="frmEliminarTarifa" action="" method="POST">
 		<input type="hidden" id="categoria_ID" name="categoria_ID" value="">
@@ -105,35 +119,31 @@
 		</div>
 	</form>
 </div>
+	
 <script type="text/javascript">
+var nomCate = "";//variable para ver ver si estoy digitando un registro
 var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
 var colap1 =  new Colap1();
 var expand2 = new Expand2();
 var colap2 =  new Colap2();
-
+////////////////////////////Funsión para cargar los plugin de botones de dataTables y listar la tabla////////////////
 	function AllTables() {
 		iniciarTabla();
 		LoadSelect2Script(MakeSelect2);
 	}
 	
-	function MakeSelect2() {
-		$('select').select2();
-		$('.dataTables_filter').each(
-		function() {
-			$(this).find('label input[type=search]').attr('placeholder','Buscar');
-		});
-	}
-	
-	var limpiar_texto = function() {//limpiar texto del formulario
+	var limpiar_texto = function() {///////////////////////////////limpiar texto del formulario
 		$("#opcion").val("guardar");
 		$("#nomCategoria").val("");
+		$("#descripcion").val("");
+		$("form#formTarifa").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 	}
-	
-	var verResultado = function(r) {
+//////////////////////////funsión que muestra el resultado mediant un dialogo///////////////////////////////////
+	var verResultado = function(r) {//parametro(resultado-String)
 		if(r == "BIEN"){
 			mostrarMensaje("#dialog", "CORRECTO", 
 					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
-			$('#tabla_tarifa').DataTable().ajax.reload();
+			$('#tabla_categoria').DataTable().ajax.reload();
 		}
 		if(r == "ERROR"){
 			mostrarMensaje("#dialog", "ERROR", 
@@ -144,10 +154,10 @@ var colap2 =  new Colap2();
 					"¡No se especificó la acción a realizar!", "#FFF8A7", "btn-warning");
 		}
 	}
-	
+///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla////////////////////////////////
 	function iniciarTabla(){
 		console.log("cargar DataTable");
-		var tablaTarifa = $('#tabla_tarifa').DataTable( {
+		var tablaCat = $('#tabla_categoria').DataTable( {
 			"destroy": true,
 			responsive: true,
 			'bProcessing': false,
@@ -155,9 +165,6 @@ var colap2 =  new Colap2();
 			"ajax": {
 				"method":"GET",
 				"url":"./SL_Categoria",
-				"data": {
-			        "carga": 1//para decirle al servlet que cargue datos
-			    },
  				"dataSrc":"aaData"
 			},
 			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
@@ -169,13 +176,14 @@ var colap2 =  new Colap2();
 	            $("a.btn").tooltip({container: 'body'});
 	        },
 			"columns": [
-	            { "data": "nomCategoria" },
-	            {"defaultContent":"<button type='button' class='editarTarifa btn btn-primary' data-toggle='tooltip' "+
+	            { "data": "nomCategoria" , "width": "25%"},
+	            { "data": "descripcion" },
+	            {"defaultContent":"<button type='button' class='editarCat btn btn-primary' data-toggle='tooltip' "+
 					"data-placement='top' title='Editar Categoría'>"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
-					"<button type='button' class='eliminar btn btn-danger' title='Eliminar Categoría'>"+
+					"<button type='button' class='eliminarCat btn btn-danger' title='Eliminar Categoría'>"+
 					"<i class='fa fa-trash-o'></i>"+
-					"</button>"}
+					"</button>" , "width": "25%"}
 	            ],
 	            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 					 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
@@ -187,7 +195,7 @@ var colap2 =  new Colap2();
 					"titleAttr": "Agregar categoría",
 					"className": "btn btn-success",
 					"action": function() {
-						agregar_nuevo_tarifa();
+						agregar_nuevo_categoria();
 					}
 				},
 	            {
@@ -196,11 +204,11 @@ var colap2 =  new Colap2();
 	                titleAttr: 'csv'
 	            }]
 		});
-		obtener_datos_editar('#tabla_tarifa tbody', tablaTarifa);
-		obtener_id_eliminar('#tabla_tarifa tbody', tablaTarifa);
+		obtener_datos_editar('#tabla_categoria tbody', tablaCat);
+		obtener_id_eliminar('#tabla_categoria tbody', tablaCat);
 	}
-	
-	var agregar_nuevo_tarifa = function() {
+
+	var agregar_nuevo_categoria = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
@@ -208,9 +216,11 @@ var colap2 =  new Colap2();
 		validarColap(colap2, "#colapsar_desplegar2");
 		if(expand2.valor == true)
 			validarExpand(expand2, "#expandir2");
+		
+		$("#nomCategoria").focus();
 	}
 	
-	var cancelar = function() {
+	var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
 		limpiar_texto();
 		if(expand1.valor == true)
 			validarExpand(expand1, "#expandir1");
@@ -223,14 +233,130 @@ var colap2 =  new Colap2();
 			validarColap(colap2, "#colapsar_desplegar2");
 		}
 	}
+///////////////////////////funsión que activa el evento click del boton editar del dataTable////////////////////
+	var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
+		$(tbody).on("click", "button.editarCat", function() {
+			var datos = table.row($(this).parents("tr")).data();
+				$("#nomCategoria").val(datos.nomCategoria);
+				nomCate = datos.nomCategoria;
+				$("#descripcion").val(datos.descripcion);
+				$("#categoria_ID").val(datos.categoria_ID);
+				$("#opcion").val("actualizar");
+				validarExpand(expand1, "#expandir1");
+				if(colap1.valor==false)
+					validarColap(colap1, "#colapsar_desplegar1");
+				validarColap(colap2, "#colapsar_desplegar2");
+				if(expand2.valor == true)
+					validarExpand(expand2, "#expandir2");
+		});
+	}
+/////////////////////////funsión que activa el evento click para eliminar un registro del dataTable////////////////
+	var obtener_id_eliminar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
+		$(tbody).on("click", "button.eliminarCat", function() {
+			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+			var categoria_ID;
+			table.rows().every(function(index, loop, rowloop) {
+				console.log("indices: "+ index +" : "+datos);
+				if(index == datos){
+					categoria_ID = table.row(index).data().categoria_ID;
+					console.log("categoria_ID: " + categoria_ID );
+					$("#frmEliminarTarifa #categoria_ID").val(categoria_ID);
+				}
+			});
+			abrirDialogo();
+		});
+	}
 	
-	var guardar = function() {
-	$("#formTarifa").on("submit", function(e) { //recordar numeral
-		e.preventDefault();//detiene el evento
-		var frm = $(this).serialize();//parsea los datos del formulario
-		console.log(frm);
-		if($("#formTarifa #nomCategoria").val() != ""){
-			$.ajax({//enviar datos por ajax
+	function abrirDialogo() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
+		OpenModalBox(
+				"<div><h3>Borrar Categoria</h3></div>",
+				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar esta categoria?</p>",
+				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
+				"<button type='button' id='eliminar_tarifa' class='btn btn-danger btn-label-left'"+
+				" style=' color: #ece1e1;' >"+
+				"<span><i class='fa fa-trash-o'></i></span> Borrar Categoría</button>"+
+				"<div style='margin-top: 5px;'></div> </div>"+
+				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
+				"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
+				"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
+		eliminar();
+	}
+//////////////////////////////////eliminar los datos seteados en el formulario/////////////////////////////////////
+	var eliminar = function() {
+		$("#eliminar_tarifa").on("click", function() {
+			frmElim = $("#frmEliminarTarifa").serialize();
+			console.log("datos a eliminar: " + frmElim);
+			$.ajax({
+				method:"POST",
+				url:"SL_Categoria",
+				data: frmElim
+			}).done(function(info) {
+				verResultado(info);
+				console.log(info);
+			});
+			CloseModalBox();
+		});
+	}
+/////////////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////////
+	$(document).ready(function() {
+		//cargar scripts dataTables
+		LoadDataTablesScripts2(AllTables);
+	
+		// Añadir Tooltip para formularios
+		$('.form-control').tooltip();
+		//add tooltip
+		$('[data-toggle="tooltip"]').tooltip();
+
+		//Cargar ejemplo para validaciones
+		LoadBootstrapValidatorScript(formCategoria);	
+		
+		WinMove();
+		validarColap(colap1, "#colapsar_desplegar1");
+		
+		$('#descripcion').keyup(function() {//contador para el máximo de caracteres permitidos en la descripción
+	        var chars = $(this).val().length;
+	        var diff = 150 - chars;
+	        $('#contadorText').html(diff+" caracteres permitidos");   
+	    });
+	});
+////////////////////////funsión que valida el formulario de categorías///////////////////////////////////////
+	function formCategoria() {
+		$('#formTarifa').bootstrapValidator({
+			message: '¡Este valor no es valido!',
+			fields: {
+				nomCategoria:{
+					validators: {
+						callback: {
+	        				message: '¡Este campo no debe ser igual a los otros registros!',
+	         				callback: function (value, validator, $field) {
+	         					if(nomCate == value){
+	         						return true;
+	         					}
+	         					var tabla = $("#tabla_categoria").DataTable();
+	         					var filas = tabla.rows();
+	         					var noigual = true;
+	             				filas.every(function(index, loop, rowloop) {
+	     							if(value == tabla.row(index).data().nomCategoria){
+	     								noigual = false;
+	     							}
+	             				});
+	             				return noigual;
+	         				}
+	     				},
+						notEmpty:{
+			                message: "¡Este campo es requerido y no debe estar vacio!"
+			            }
+			        }
+				}
+			}
+		}).on('success.form.bv', function(e) {//evento que se activa cuando los datos son correctos
+            // Prevenir el evento submit
+            e.preventDefault();
+            //obtener datos del formulario
+            var $form = $(e.target);
+            var frm=$form.serialize();
+            console.log(frm);
+            $.ajax({//enviar datos por ajax
 				method:"post",
 				url:"./SL_Categoria",
 				data: frm//datos a enviar
@@ -248,147 +374,7 @@ var colap2 =  new Colap2();
 				}
 				verResultado(info);
 			});
-		}
-		});
-	}
-	
-	var obtener_datos_editar = function(tbody, table) {
-		$(tbody).on("click", "button.editarTarifa", function() {
-			var datos = table.row($(this).parents("tr")).data();
-				$("#nomCategoria").val(datos.nomCategoria);
-				$("#categoria_ID").val(datos.categoria_ID);
-				$("#opcion").val("actualizar");
-				validarExpand(expand1, "#expandir1");
-				if(colap1.valor==false)
-					validarColap(colap1, "#colapsar_desplegar1");
-				validarColap(colap2, "#colapsar_desplegar2");
-				if(expand2.valor == true)
-					validarExpand(expand2, "#expandir2");
-		});
-	}
-	
-	var obtener_id_eliminar = function(tbody, table) {
-		$(tbody).on("click", "button.eliminar", function() {
-			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
-			var categoria_ID;
-			table.rows().every(function(index, loop, rowloop) {
-				console.log("indices: "+ index +" : "+datos);
-				if(index == datos){
-					categoria_ID = table.row(index).data().categoria_ID;
-					console.log("categoria_ID: " + categoria_ID );
-					$("#frmEliminarTarifa #categoria_ID").val(categoria_ID);
-				}
-			});
-			abrirDialogo();
-		});
-	}
-	
-	function abrirDialogo() {
-		OpenModalBox(
-				"<div><h3>Borrar Categoria</h3></div>",
-				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar esta categoria?</p>",
-				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
-				"<button type='button' id='eliminar_tarifa' class='btn btn-danger btn-label-left'"+
-				" style=' color: #ece1e1;' >"+
-				"<span><i class='fa fa-trash-o'></i></span> Borrar Categoría</button>"+
-				"<div style='margin-top: 5px;'></div> </div>"+
-				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
-				"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
-				"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
-		eliminar();
-	}
-	
-	var eliminar = function() {
-		$("#eliminar_tarifa").on("click", function() {
-			frmElim = $("#frmEliminarTarifa").serialize();
-			console.log("datos a eliminar: " + frmElim);
-			$.ajax({
-				method:"POST",
-				url:"SL_Categoria",
-				data: frmElim
-			}).done(function(info) {
-				verResultado(info);
-				console.log(info);
-			});
-			CloseModalBox();
-		});
-	}
-	$(document).ready(function() {
-
-		//cargar scripts dataTables
-		LoadDataTablesScripts2(AllTables);
-	
-		// Añadir Tooltip para formularios
-		$('.form-control').tooltip();
-		//add tooltip
-		$('[data-toggle="tooltip"]').tooltip();
-
-		//Cargar ejemplo para validaciones
-		LoadBootstrapValidatorScript(formCategoria);	
-		
-		WinMove();
-		
-		//Activar evento para guardar
-		guardar();
-		
-		validarColap(colap1, "#colapsar_desplegar1");
-		
-		//cargar selects
-		cargarSelect("#unidadMedida_ID", 3);//traer categorias
-		cargarSelect("#categoria_ID", 2)//traer unidadMedidas
-	});
-	
-	function cargarSelect(select, carga) {//parametro id select
-		var datos;
-		$.ajax({
-	        type: "GET",
-	        url: "./SL_Categoria",
-	        dataType: "json",
-	        data: {
-		        "carga": carga//para decirle al servlet que cargue datos
-		    },
-	        success: function(response)
-	        {
-	        	datos = response.aaData;
-	        	$(select).empty();
-	        	$(response.aaData).each(function(i, v) {
-	        		$(select).append('<option value="' + v.categoria_ID + '">' + v.nomCategoria + '</option>');
-	        		
-				});
-	        }
-		});
-	}
-	function formCategoria() {
-		$('#formTarifa').bootstrapValidator({
-			message: 'Este valor no es valido',
-			fields: {
-				nomCategoria:{
-					validators: {
-						notEmpty:{
-			                message: "Este campo es requerido y no debe estar vacio"
-			            },
-	 					callback: {
-	        					message: 'Este campo no debe ser igual a los otros registros',
-	         				callback: function (value, validator, $field) {
-	         					if($('#formTarifa #opcion').val()!="actualizar"){
-	         						var tabla = $("#tabla_tarifa").DataTable();
-		         					var filas = tabla.rows();
-		         					var noigual = true;
-		             				filas.every(function(index, loop, rowloop) {
-		     							if(value == tabla.row(index).data().nomCategoria){
-		     								noigual = false;
-		     							}
-		             				});
-		             				return noigual;
-	         					}else{
-									return true;
-								}
-	         				}
-	     				}
-			        }
-				}
-			}
-		});
+        });
 	}
 	
 	</script>

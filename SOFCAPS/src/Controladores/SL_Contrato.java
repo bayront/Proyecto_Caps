@@ -116,7 +116,7 @@ public class SL_Contrato extends HttpServlet {
 		Date fechaContrato = null;
 		int contrato_ID, cuotas, cliente, regimenPropiedad, sector, categoria;
 		int numContrato = 1; 
-		float montoContrato;
+		float montoContrato, montoRound;
 		
 		opcion = request.getParameter("opcion").trim();
 		System.out.println("opcion a realizar: " + opcion);
@@ -128,11 +128,12 @@ public class SL_Contrato extends HttpServlet {
 			numMedidor = request.getParameter("numMedidor").trim();
 			cuotas = Integer.parseInt(request.getParameter("cuotas"));
 			montoContrato = Float.parseFloat(request.getParameter("montoContrato"));
+			montoRound = (float) (Math.round(montoContrato * 100.0) / 100.0);
 			cliente = Integer.parseInt(request.getParameter("nombreCliente"));
 			regimenPropiedad = Integer.parseInt(request.getParameter("regimenPropiedad"));
 			sector = Integer.parseInt(request.getParameter("sector"));
 			categoria = Integer.parseInt(request.getParameter("categoria"));
-			actualizar(contrato_ID, numMedidor, cuotas, montoContrato, cliente, regimenPropiedad, sector, categoria, response);
+			actualizar(contrato_ID, numMedidor, cuotas, montoRound, cliente, regimenPropiedad, sector, categoria, response);
 			break;
 		case "eliminar":
 			contrato_ID= Integer.parseInt(request.getParameter("contrato_ID"));
@@ -151,11 +152,12 @@ public class SL_Contrato extends HttpServlet {
 			}
 			cuotas = Integer.parseInt(request.getParameter("cuotas"));
 			montoContrato = Float.parseFloat(request.getParameter("montoContrato"));
+			montoRound = (float) (Math.round(montoContrato * 100.0) / 100.0);
 			cliente = Integer.parseInt(request.getParameter("nombreCliente"));
 			regimenPropiedad = Integer.parseInt(request.getParameter("regimenPropiedad"));
 			sector = Integer.parseInt(request.getParameter("sector"));
 			categoria = Integer.parseInt(request.getParameter("categoria"));
-			guardar(numMedidor, fechaContrato, numContrato, cuotas, montoContrato, cliente, regimenPropiedad, sector, categoria, response);
+			guardar(numMedidor, fechaContrato, numContrato, cuotas, montoRound, cliente, regimenPropiedad, sector, categoria, response);
 			break;
 		default:
 			response.setContentType("text/plain");

@@ -2,10 +2,11 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialogCat" class= "col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
 </div>  
-<!--Start Breadcrumb-->
+<!--///////////////////////Directorios donde estan los jsp /////////////////////////////// -->
 <div class="row">
 	<div id="breadcrumb" class="col-xs-12">
 		<ol class="breadcrumb">
@@ -15,8 +16,9 @@
 		</ol>
 	</div>
 </div>
-<!--End Breadcrumb-->
-				<!-- MODAL PARA MOSTRAR FORMULARIOS -->
+<!--///////////////////////Final de los directorios/////////////////////////////// -->
+
+<!--///////////////////////MODAL PARA MOSTRAR FORMULARIOS /////////////////////////////// -->
 <div id="modalbox">
 	<div class="devoops-modal">
 		<div class="devoops-modal-header">
@@ -138,6 +140,11 @@
 							<div class="no-move"></div>
 						</div>
 						<div class="box-content">
+							<div class="text-center" id="OcultarCancelarOp" style="display:none;">
+								<button type='button' class='btn btn-default btn-label-left btn-lg' 
+								onclick='cancelarAgOpcion();' >
+								<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button>
+							</div>
 							<div class="table-responsive">
 								<table class="table table-bordered table-striped table-hover table-heading table-datatable" 
 								id="tabla_opcion" style="width:100%;">
@@ -166,6 +173,8 @@
 <div style="height: 40px;"></div>
 
 <script type="text/javascript">
+var nomRolValid = "";
+var servlet="";
 var expand2 = new Expand2();//validacion para expandir el dialogo2
 /////////////////////////////////////columnas que se veran en el datatable de opciones////////////////////////////// 
 var columns_Rol_Opcion = [ { "data": "opcion" },
@@ -235,48 +244,11 @@ var verResultado = function(r) {
 				"¡No se especificó la opreración a realizar!", "#FFF8A7", "btn-warning");
 	}
 }
-///////////////////////////////////////activa el formulario para enviar datos vía ajax//////////////////////////////////
-var activarForm = function(servlet) {
-	$("form.formulario").on("submit", function(e) {
-		e.preventDefault();//detiene el evento
-		
-		var frm = $("form.formulario").serialize();
-		console.log(frm);
-		if($("form.formulario").find("#nomRol").length){
-			if($("form.formulario").find("#nomRol").val()!=""){
-				$.ajax({
-			        type: "POST",
-			        url: servlet,
-			        data: frm,
-			        dataType: "text",
-			        success: function(response){
-			        	console.log(response);
-			        	CloseModalBox();
-			        	verResultado(response);
-			        }
-				});
-			}
-		}else if($("form.formulario").find("#nomRol").length <=0){
-			$.ajax({
-		        type: "POST",
-		        url: servlet,
-		        data: frm,
-		        dataType: "text",
-		        success: function(response){
-		        	console.log(response);
-		        	CloseModalBox();
-		        	verResultado(response);
-		        }
-			});
-		}
-	});
-}
 //////////////////////////////////funsión que abre el dialogo con los datos pasados y llama a un callback que activa
 /////////////////////////////////el formulario para enviar datos al servlet y luego manda a llamar a una funsión
 /////////////////////////////////que valida los datos del formulario///////////////////////////////////////////////////
-function abrirDialogo(head, body, food, callback, servlet) {
+function abrirDialogo(head, body, food) {
 	OpenModalBox(head, body, food);
-	callback(servlet);
 	LoadBootstrapValidatorScript(formularioValid);
 }
 /////////////funsión que se llama al dar click al tag de roles que recarga el dataTabel de roles//////////////////////
@@ -294,6 +266,8 @@ function cancelarAgOpcion(){
 	CloseModalBox();
 	if(expand2.valor == true)
 		validarExpand(expand2, "#expandir2");
+	
+	$("#OcultarCancelarOp").css("display","none");
 }
 ////////////////////////funsión que activa el evento click sobre el boton agregar opcion de dataTable////////////////
 var seleccionarAgregarOpcion = function(tbody, table) {
@@ -312,12 +286,14 @@ var seleccionarAgregarOpcion = function(tbody, table) {
 		"<input type='hidden' id='opcion_ID' type='text' class='form-control' name='opcion_ID' value="+opcion_ID+" />"+
 		"<input type='hidden' id='rol_ID' type='text' class='form-control' name='rol_ID' value="+rol_ID+" />"+
 		"<div class='col-sm-12 col-md-offset-3 col-md-3'>"+ frmOpcionAg2;
-		abrirDialogo(head, body, foot, activarForm, "SL_Rol_Opcion");
+		servlet = "SL_Rol_Opcion";
+		abrirDialogo(head, body, foot);
 	});
 }
 /////////////////////////////funsión que se activa cuando se quiere agregar una opcion al rol/////////////////////////
 var agregarOpcion = function() {
 	$("#nuevaOpcion").on("click",function(){
+		$("#OcultarCancelarOp").css("display","block");
 		if($("#tabla_opcion thead th#desc").length){
 			$('#tabla_opcion').DataTable().state.clear();
 			$('#tabla_opcion').DataTable().clear().draw();
@@ -391,7 +367,8 @@ var seleccionarEliminarOpcion = function(tbody, table) {
 		"<button type='button' class='btn btn-default btn-label-left btn-lg' onclick='CloseModalBox();' >"+
 		"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button>"+
 		"</div> </form>";
-		abrirDialogo(head, body, foot, activarForm, "SL_Rol_Opcion");
+		servlet = "SL_Rol_Opcion";
+		abrirDialogo(head, body, foot);
 	});
 }
 /////////////////////////funsión que lista los roles en el dataTable///////////////////////////////////
@@ -442,17 +419,15 @@ var listarRol = function() {
 					var foot = "<div Style='text-align: center; margin-bottom: -10px;'>"+
 						"<button type='button' class='btn btn-default btn-label-left btn-lg' Style='margin-left: 10px;'"+
 						"onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>";
-					abrirDialogo(head, body, foot, activarForm, "SL_Rol");
+					servlet = "SL_Rol";
+					abrirDialogo(head, body, foot);
 				}
 			}]
 	});
 	seleccionarEditarRol('#tabla_rol tbody', tablaRol);
 	seleccionarEliminarRol('#tabla_rol tbody', tablaRol);
 	seleccionarVerOpcion('#tabla_rol tbody', tablaRol);
-	$('.dataTables_filter').each(
-		function() {
-			$(this).find('label input[type=search]').attr('placeholder', 'Buscar');
-	});
+	LoadSelect2Script(MakeSelect2);
 }
 /////////////////////////////funsión que envia el rol al otro tag para ver los roles//////////////////
 var seleccionarVerOpcion = function(tbody, table) {
@@ -497,7 +472,8 @@ var seleccionarEliminarRol = function(tbody, table) {
 		"<button type='button' class='btn btn-default btn-label-left btn-lg' onclick='CloseModalBox();' >"+
 		"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button>"+
 		"</div> </form>";
-		abrirDialogo(head, body, foot, activarForm, "SL_Rol");
+		servlet = "SL_Rol";
+		abrirDialogo(head, body, foot);
 	});
 }
 ///////////////////////////////////funsión que activa el boton para editar un rol del dataTable///////////////////////////
@@ -509,6 +485,7 @@ var seleccionarEditarRol = function(tbody, table) {
 			if(index == datos){
 				rol_ID = table.row(index).data().rol_ID;
 				nomRol = table.row(index).data().nomRol;
+				nomRolValid = nomRol;
 			}
 		});
 		var head = "<div><h3>Editar Rol</h3></div>";
@@ -519,7 +496,8 @@ var seleccionarEditarRol = function(tbody, table) {
 		var foot = "<div Style='text-align: center; margin-bottom: -10px;'>"+
 		"<button type='button' class='btn btn-default btn-label-left btn-lg' Style='margin-left: 10px;'"+
 		"onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>";
-		abrirDialogo(head, body, foot, activarForm, "SL_Rol");
+		servlet = "SL_Rol";
+		abrirDialogo(head, body, foot);
 	});
 }
 ///////////////////////funsión que activa el click del tag el cual manda a llamar a un funsion para cargar datos////////////////
@@ -552,7 +530,9 @@ function activarChange(selectRol) {
 ////////////////////////////////////funsión para cargar datatable rol al comienzo//////////////////////
 function AllTables() {
 	listarRol();
+	LoadSelect2Script(MakeSelect2);
 }
+
 ///////////////////////////////////FUNSIÓN PRINCIPAL////////////////////////////////////////////////////////
 $(document).ready(function() {
 	// Make all JS-activity for dashboard
@@ -567,38 +547,71 @@ $(document).ready(function() {
 	 activarChange("#rol1");
 	 agregarOpcion();
 });
+
 ///////////////////////////////////////funsión que valida los datos del formulario de roles/////////////////////////////
 function formularioValid() {
 	$('form.formulario').bootstrapValidator({
-		message: 'Este valor no es valido',
+		message: '¡Este valor no es valido!',
 		fields: {
 			nomRol:{
 				validators: {
 					notEmpty:{
-		                message: "Este campo es requerido y no debe estar vacio"
+		                message: "¡Este campo es requerido y no debe estar vacio!"
 		            },
 					callback: {
-       					message: 'Este campo no debe ser igual a los otros registros',
+       					message: '¡Este campo no debe ser igual a los otros registros!',
         				callback: function (value, validator, $field) {
-        					if($('form.formulario #metodo').val()!="actualizar"){
-        						var tabla = $("#tabla_rol").DataTable();
-            					var filas = tabla.rows();
-            					var noigual = true;
-                				filas.every(function(index, loop, rowloop) {
-        							if(value == tabla.row(index).data().nomRol){
-        								noigual = false;
-        							}
-                				});
-                				return noigual;
-        					}else{
+        					if(nomRolValid == value){
 								return true;
 							}
+        					var tabla = $("#tabla_rol").DataTable();
+        					var filas = tabla.rows();
+        					var noigual = true;
+            				filas.every(function(index, loop, rowloop) {
+    							if(value == tabla.row(index).data().nomRol){
+    								noigual = false;
+    							}
+            				});
+            				return noigual;
         				}
     				}
 		        }
 			}
 		}
-	});
+	}).on('success.form.bv', function(e) {//evento que se activa cuando los datos son correctos
+        // Prevenir el evento submit
+        e.preventDefault();
+
+        //obtener datos del formulario
+        var $form = $(e.target);
+        var frm=$form.serialize();
+        console.log(frm);
+        if($("form.formulario").find("#nomRol").length){
+        	$.ajax({
+		        type: "POST",
+		        url: servlet,
+		        data: frm,
+		        dataType: "text",
+		        success: function(response){
+		        	console.log(response);
+		        	CloseModalBox();
+		        	verResultado(response);
+		        }
+			});
+		}else if($("form.formulario").find("#nomRol").length <=0){
+			$.ajax({
+		        type: "POST",
+		        url: servlet,
+		        data: frm,
+		        dataType: "text",
+		        success: function(response){
+		        	console.log(response);
+		        	CloseModalBox();
+		        	verResultado(response);
+		        }
+			});
+		}
+    });
 }
 //////////////////////////////////datos que llenan el dialogo con un formulario de roles/////////////////////////////////
 var frmRolAg = "<form class='form-horizontal formulario' role='form' id='defaultForm' method='post' action=''>"+
@@ -632,39 +645,4 @@ var frmOpcionAg2 = "<button type='submit' class='btn btn-success btn-label-left 
 	"<button type='button' class='btn btn-default btn-label-left btn-lg' onclick='cancelarAgOpcion();' >"+
 	"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button>"+
 	"</div> </form>";
-
-///////////////////////////Metodo para cambiar valor de un elemnto cuando cambie el select/////////////////////////
-//	$(selectRol).change(function(){//cuando se elija otra opcion del select
-//	//parent(padre del elemento) - siblings(hermanos del el.) - find(busca hijo del el.)
-////         if($(selectRol).parent("div").siblings("form").find("input[id*=Rol]").length){
-////         	$(selectRol).parent("div").siblings("form").find("input[id*=Rol]").val($(selectRol+" option:selected").text());
-////         	$(selectRol).parent("div").siblings("form").find("input[id=rol_ID]").val($(selectRol).val());
-//// //         	if($(selectRol).parent("div").siblings("form").find("select[id=rol1]").length){
-//// // 				$("select#rol1").val($(selectRol).val());
-//// // 				$("select#rol1").change();
-//// // 				//AGREGAR LOS CAMBIOS AQUI
-//// //         	}
-////         }
-// if($(selectRol).parents("form").find("input[id*=Rol]").length){
-// 	//parents(padres del elemento) - *(que contenga) - [](un atributo del el.)
-// 	$(selectRol).parents("form").find("input[id*=Rol]").val($(selectRol+" option:selected").text());
-// 	$(selectRol).parents("form").find("input[id=rol_ID]").val($(selectRol).val());
-// }
-//});
-
-
-//////////////////////identificar la opcion seleccionada por defecto en select y setearlo a un elemento/////////////////////////
-// 	var primer = 0;
-// 	if (primer == 0) {
-// 		if ($(selectRol).parent("div").siblings("form").find("input[id*=Rol]").length) {
-// 			$("input#nomRol	").val(v.nomRol);
-// 			$(selectRol).parent("div").siblings("form")
-// 					.find("input[id=rol_ID]").val(v.rol_ID);
-// 		}
-// 		if ($(selectRol).parents("form").find("input[id*=Rol]").length) {
-// 			$("input#nom_Rol").val(v.nomRol);
-// 			$(selectRol).parents("form").find("input[id=rol_ID]").val(v.rol_ID);
-// 		}
-// 		primer += 1;
-// 	}
 </script>

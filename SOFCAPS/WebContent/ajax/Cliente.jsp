@@ -2,10 +2,11 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialogCli" class="col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
 </div>
-<!--///////////////////////Directorios donde estan los jsp ///////////////////////////////777 -->
+<!--///////////////////////Directorios donde estan los jsp /////////////////////////////// -->
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -22,7 +23,7 @@
 
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa  fa-user"></i> <span>Registrar Nuevo Cliente</span>
+					<i class="fa  fa-user"></i> <span>Formulario de Clientes</span>
 				</div>
 				<div class="box-icons">
 					<a id="colapsar_desplegar1" onclick="validar(colap1);"
@@ -108,8 +109,7 @@
 		</div>
 	</div>
 </div>
-
-
+<!--/////////////////////////////// DataTable de los clientes/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box" id="cuadro1">
@@ -130,7 +130,7 @@
 			<div class="box-content no-padding table-responsive">
 				<div style="text-align: center;">
 					<label Style='margin-top: 10px; margin-bottom: 10px;'> <input
-						type="checkbox" id="mostrar_clientes" onclick="listar()">MOSTRAR CLIENTES INACTIVOS
+						type="checkbox" id="mostrar_clientes" onclick="">MOSTRAR CLIENTES INACTIVOS
 					</label>
 				</div>
 				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
@@ -143,7 +143,7 @@
 							<th>Apellido2</th>
 							<th>Cédula</th>
 							<th>Celular</th>
-							<th></th>
+							<th>Acción</th>
 						</tr>
 					</thead>
 				</table>
@@ -151,7 +151,7 @@
 		</div>
 	</div>
 </div>
-
+<!--/////////////////////////////// Formalario y dialogo de eliminación/////////////////////////////// -->
 <form id="frmEliminarCliente" action="" method="POST">
 	<input type="hidden" id="cliente_id" name="cliente_id" value="">
 	<input type="hidden" id="opcion" name="opcion" value="eliminar">
@@ -170,7 +170,7 @@
 		</div>
 	</div>
 </form>
-
+<!--///////////////////////////// Formalario y dialogo de activación de clientes/////////////////////////////// -->
 <form id="frmActivarCliente" action="" method="POST">
 	<input type="hidden" id="cliente_id" name="cliente_id" value="">
 	<input type="hidden" id="opcion" name="opcion" value="activar">
@@ -192,12 +192,12 @@
 </form>
 
 <script type="text/javascript">
+	var cedulaValid = "";///////////variable para validar si el usuario esta editando un registro 
 	var expand1 = new Expand1();/////////////se crean los objetos que representan los botones de cada dialogo
 	var colap1 = new Colap1();
 	var expand2 = new Expand2();
 	var colap2 = new Colap2();
-
-///////////////////7//Abrir dialogo para eliminar Cliente/////////////////////////////////////////////
+////////////////////////////////Abrir dialogo para eliminar Cliente/////////////////////////////////////////////
 	function abrirDialogo() {
 		OpenModalBox(//modal(tutilo, contenido, foot)
 				"<div><h3>Borrar Cliente</h3></div>",
@@ -227,38 +227,6 @@
 						+ "<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 		activar();//activar evento para que el cliente sea activo otra vez
 	}
-
-////////////metodo guardar donde activa el evento submit del formulario de registro////////////////////////
-	var guardar = function() {
-		$("#defaultForm").on("submit", function(e) {
-			e.preventDefault();//detiene el evento
-			var frm = $(this).serialize();//parsea los datos del formulario
-			console.log(frm);
-			if($(this).find("#nombre1").val()!="" && $(this).find("#apellido1").val()!="" 
-					&& $(this).find("#cedula").val() !=""){
-				$.ajax({//enviar datos por ajax
-					method : "POST",
-					url : "./SL_Cliente",
-					data : frm
-				//datos a enviar
-				}).done(function(info) {//informacion que el servlet le reenvia al jsp
-					console.log(info);
-					if (expand1.valor == true)
-						validarExpand(expand1, "#expandir1");
-
-					if (expand2.valor == true)
-						validarExpand(expand2, "#expandir2");
-
-					validarColap(colap1, "#colapsar_desplegar1");
-					if (colap2.valor == true) {
-					} else {
-						validarColap(colap2, "#colapsar_desplegar2");
-					}
-					verResultado(info);//se envia a verificar que mensaje respondioel servlet
-				});
-			}
-		});
-	}
 /////////////Metodo para limpiar el texto del formulario de clientes//////////////////////////////////77
 	var limpiar_texto = function() {//limpiar texto del formulario
 		$("#opcion").val("guardar");
@@ -268,7 +236,7 @@
 		$("#apellido2").val("");
 		$("#cedula").val("");
 		$("#celular").val("");
-
+		$("#defaultForm").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 	}
 
 /////////////Metdoo que activa evento para eliminar con el boton que esta oculto al usuario,/////////////////////// 
@@ -293,7 +261,50 @@
 		});
 		limpiar_texto();
 	}
-	
+////////////////////////////////limpia el texto y valida los botones de control de dialogo/////////////////////////
+	var agregar_nuevo_cliente = function() {
+		limpiar_texto();
+		validarExpand(expand1, "#expandir1");
+		if (colap1.valor == false)
+			validarColap(colap1, "#colapsar_desplegar1");
+		validarColap(colap2, "#colapsar_desplegar2");
+		if (expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
+		
+		$("#nombre1").focus();
+	}
+///////////////////////////////cancelar la accion sobre el cliente////////////////////////////////////////////////
+	var cancelar = function() {
+		limpiar_texto();
+		if (expand1.valor == true)
+			validarExpand(expand1, "#expandir1");
+
+		if (expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
+
+		validarColap(colap1, "#colapsar_desplegar1");
+		if (colap2.valor == true) {
+		} else {
+			validarColap(colap2, "#colapsar_desplegar2");
+		}
+	}
+////////////////////////metodo que muestra un dialogo del resultado de la operacion/////////////////////////////////
+	var verResultado = function(r) {//parametro(resultado-String)
+		if (r == "BIEN") {
+			mostrarMensaje("#dialogCli", "CORRECTO",
+					"¡Se realizó la acción correctamente, todo bien!","#d7f9ec", "btn-info");
+			limpiar_texto();
+			cargar_cliente();
+		}
+		if (r == "ERROR") {
+			mostrarMensaje("#dialogCli", "ERROR",
+					"¡Ha ocurrido un error, no se pudo realizar la acción!","#E97D7D", "btn-danger");
+		}
+		if (r == "VACIO") {
+			mostrarMensaje("#dialogCli", "VACIO",
+					"¡No se especificó la acción a realizar!", "#FFF8A7","btn-warning");
+		}
+	}
 //////////////////metodo para activar el cliente a la base de datos///////////////////////////////////////////
 	var activar = function() {
 		$("#activar_cliente").on("click", function() {
@@ -314,135 +325,26 @@
 			CloseModalBox();
 		});
 	}
-////////////////////////////////limpia el texto y valida los botones de control de dialogo/////////////////////////
-	var agregar_nuevo_cliente = function() {
-		limpiar_texto();
-		validarExpand(expand1, "#expandir1");
-		if (colap1.valor == false)
-			validarColap(colap1, "#colapsar_desplegar1");
-		validarColap(colap2, "#colapsar_desplegar2");
-		if (expand2.valor == true)
-			validarExpand(expand2, "#expandir2");
-
+var boton= 1;//varaible para validar si el check de activar clientes esta checkeado
+/////////////////////////////////funsion que devuelve los botones dependiendo del check///////////////////////////
+function botones() {
+	if(boton ==1){
+		return "<button type='button' class='editar btn btn-primary' title='Editar Cliente'>" //poner botones en cada fila
+		+"<i class='fa fa-pencil-square-o'></i>"
+		+ "</button>  "
+		+ "<button type='button' title='Eliminar Cliente' class='eliminar btn btn-danger' >"
+		+ "<i class='fa fa-trash-o'></i>"
+		+ "</button>";
+	}else if(boton ==2){
+		return "<button type='button' style='margin-left:15px;' class='activar btn btn-primary' title='activar cliente'>"
+		+ "<i class='fa fa-upload'></i>"
+		+ "</button>";
 	}
-///////////////////////////////cancelar la accion sobre el cliente/////////////////////////////////////////////777
-	var cancelar = function() {
-		limpiar_texto();
-		if (expand1.valor == true)
-			validarExpand(expand1, "#expandir1");
-
-		if (expand2.valor == true)
-			validarExpand(expand2, "#expandir2");
-
-		validarColap(colap1, "#colapsar_desplegar1");
-		if (colap2.valor == true) {
-		} else {
-			validarColap(colap2, "#colapsar_desplegar2");
-		}
-	}
-////////////////////////metodo que muestra un dialogo del resultado de la operacion/////////////////////////////////
-	var verResultado = function(r) {
-		if (r == "BIEN") {
-			mostrarMensaje("#dialogCli", "CORRECTO",
-					"¡Se realizó la acción correctamente, todo bien!","#d7f9ec", "btn-info");
-			limpiar_texto();
-			$('#dt_cliente').DataTable().ajax.reload();
-		}
-		if (r == "ERROR") {
-			mostrarMensaje("#dialogCli", "ERROR",
-					"¡Ha ocurrido un error, no se pudo realizar la acción!","#E97D7D", "btn-danger");
-		}
-		if (r == "VACIO") {
-			mostrarMensaje("#dialogCli", "VACIO",
-					"¡No se especificó la acción a realizar!", "#FFF8A7","btn-warning");
-		}
-	}
-
+}
 ////////////////////////////Ejecutar el metodo DataTable para llenar el dataTable con ajax///////////////////////////7
 	var listar = function() {
 		console.log("cargando dataTable");
-		if (document.getElementById("mostrar_clientes").checked == false) {//valida si el usuario no ha tocado el checxbox
-			document.getElementById('cerrar').style.display = 'inline';
-			var table = $("#dt_cliente").DataTable({
-				"destroy" : true,//para que se puede destruir los datos y recargarlos
-				responsive : true,
-				'bProcessing' : false,
-				'bServerSide' : false,
-				ajax : {
-					"method" : "GET",
-					"url" : "./SL_Cliente",
-					"data" : {
-						"carga" : 1
-						//para decirle al servlet que cargue consumos + cliente + contrato
-					},
-					"dataSrc" : "aaData"
-				},
-				"lengthMenu" : [ [ 10, 25, 50, -1 ],[ 10, 25, 50, "Todo" ] ],
-				"language" : idioma_esp,
-				drawCallback : function(settings) {
-					var api = this.api();
-					$('td', api.table().container()).find("button").tooltip({container : 'body'});
-						$("a.btn").tooltip({container : 'body'});
-				},
-				'bJQueryUI' : true,
-				'aoColumns' : [
-					{'mData' : 'nombre1'},
-					{'mData' : 'nombre2'},
-					{'mData' : 'apellido1'},
-					{'mData' : 'apellido2'},
-					{'mData' : 'cedula'},
-					{'mData' : 'celular'},
-					{"defaultContent" : "<button type='button' class='editar btn btn-primary' title='editar Cliente'>" //poner botones en cada fila
-						+"<i class='fa fa-pencil-square-o'></i>"
-						+ "</button>  "
-						+ "<button type='button' title='eliminar Cliente' class='eliminar btn btn-danger' >"
-						+ "<i class='fa fa-trash-o'></i>"
-						+ "</button>"
-					}],
-					"dom" : "<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
-							+ "<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
-							+ "<rt>"
-							+ "<'row'<'form-inline'"
-							+ "<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
-					"buttons" : [
-						{
-							"text" : "<i class='fa fa-user-plus'></i>",
-							"titleAttr" : "Agregar Cliente",
-							"className" : "btn btn-success",
-							"action" : function() {
-											agregar_nuevo_cliente();
-										}
-						},
-						{
-							extend : 'excelHtml5',
-							text : '<i class="fa fa-file-excel-o"></i>',
-							titleAttr : 'excel'
-						},
-						{
-							extend : 'csvHtml5',
-							text : '<i class="fa fa-file-text-o"></i>',
-							titleAttr : 'csv'
-						},
-						{
-							extend : 'pdfHtml5',
-							text : '<i class="fa fa-file-pdf-o"></i>',
-							titleAttr : 'pdf'
-						} ]
-			});
-			obtener_datos_editar("#dt_cliente tbody", table);//despues de llenar se manda a activar el evento clickde obtener
-			obtener_id_eliminar("#dt_cliente tbody", table)//igual para el boton eliminar
-			$('.dataTables_filter').each(
-				function() {
-					$(this).find('label input[type=search]').attr('placeholder', 'Buscar');
-			});
-		}else {
-			document.getElementById('cerrar').style.display = 'none';
-			cargar_activar_cliente();
-		}
-	}
-//////////////////////////////////////metodo para llenar al dataTable con los clientes anulado////////////////////////
-	var cargar_activar_cliente = function() {
-		console.log("cargando dataTable");
+		boton= 1;
 		var table = $("#dt_cliente").DataTable({
 			"destroy" : true,//para que se puede destruir los datos y recargarlos
 			responsive : true,
@@ -452,8 +354,7 @@
 				"method" : "GET",
 				"url" : "./SL_Cliente",
 				"data" : {
-					"carga" : 2
-				//para decirle al servlet que cargue consumos + cliente + contrato
+					"carga" : boton//para decirle al servlet que cargue consumos + cliente + contrato
 				},
 				"dataSrc" : "aaData"
 			},
@@ -461,7 +362,7 @@
 			"language" : idioma_esp,
 			drawCallback : function(settings) {
 				var api = this.api();
-				$('td', api.table().container()).find("button").tooltip({container : 'body'	});
+				$('td', api.table().container()).find("button").tooltip({container : 'body'});
 				$("a.btn").tooltip({container : 'body'});
 			},
 			'bJQueryUI' : true,
@@ -472,36 +373,72 @@
 				{'mData' : 'apellido2'},
 				{'mData' : 'cedula'},
 				{'mData' : 'celular'},
-				{'defaultContent' : "<button type='button' style='margin-left:15px;' class='activar btn btn-primary' title='activar cliente'>"
-					+ "<i class='fa fa-upload'></i>"
-					+ "</button>"}
-			],
-			"dom" : "<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
-				+ "<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
-				+ "<rt>"
-				+ "<'row'<'form-inline'"
-				+ "<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
-			"buttons" : [
+				{"mData" : null,
+					render: function ( data, type, row ) {
+	                	return botones;
+	                }
+				}],
+				"dom" : "<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
+						+ "<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
+						+ "<rt>"
+						+ "<'row'<'form-inline'"
+						+ "<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
+				"buttons" : [
+					{
+						"text" : "<i class='fa fa-user-plus'></i>",
+						"titleAttr" : "Agregar Cliente",
+						"className" : "btn btn-success",
+						"action" : function() { agregar_nuevo_cliente(); }
+					},
 					{
 						extend : 'excelHtml5',
 						text : '<i class="fa fa-file-excel-o"></i>',
 						titleAttr : 'excel'
-					}, 
+					},
 					{
 						extend : 'csvHtml5',
 						text : '<i class="fa fa-file-text-o"></i>',
 						titleAttr : 'csv'
-					}, 
+					},
 					{
 						extend : 'pdfHtml5',
 						text : '<i class="fa fa-file-pdf-o"></i>',
 						titleAttr : 'pdf'
-					}]
+					} ]
 		});
-		obtener_id_activar("#dt_cliente tbody", table);
+		obtener_datos_editar("#dt_cliente tbody", table);//despues de llenar se manda a activar el evento clickde obtener
+		obtener_id_eliminar("#dt_cliente tbody", table)//igual para el boton eliminar
+		obtener_id_activar("#dt_cliente tbody", $('#dt_cliente').DataTable());//igual para el boton activar
 		$('.dataTables_filter').each(
 			function() {
-				$(this).find('label input[type=search]').attr('placeholder', 'Buscar');
+				$(this).find('label input[type=search]').attr('placeholder', 'Buscar registro');
+		});
+		$("#mostrar_clientes").change(function(){//evento que carga diferentes datos si el checkbox esta activo o no
+	        if($(this).is(':checked')){
+	        	boton= 2;
+				document.getElementById('cerrar').style.display = 'none';
+				cargar_cliente();
+	        }else{
+	        	boton= 1;
+	        	document.getElementById('cerrar').style.display = 'block';
+	        	$('#dt_cliente').DataTable().ajax.reload();
+	        }
+		});
+	}
+//////////////////////////////////////metodo para llenar al dataTable con los clientes anulado////////////////////////
+	var cargar_cliente = function() {
+		console.log("Cargando DataTable para activación");
+		$('#dt_cliente').DataTable().state.clear();
+		$('#dt_cliente').DataTable().clear().draw();
+		$.ajax({
+	        type: "GET",
+	        url: "./SL_Cliente",
+	        data: {
+		        "carga": boton//para decirle al servlet que cargue datos
+		    },
+	        success: function(response){
+	        	$('#dt_cliente').DataTable().rows.add(response.aaData).draw();
+	        }
 		});
 	}
 /////////////////////////activar el evento del boton actualizar que esta el las filas del dataTable/////////////////
@@ -510,12 +447,13 @@
 			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
 			table.rows().every(function(index, loop, rowloop) {
 				if (index == datos) {
-					console.log(table.row(index).data().cliente_ID);
 					var nombre1 = $("#nombre1").val(table.row(index).data().nombre1);
 					var nombre2 = $("#nombre2").val(table.row(index).data().nombre2);
 					var apellido1 = $("#apellido1").val(table.row(index).data().apellido1);
 					var apellido2 = $("#apellido2").val(table.row(index).data().apellido2);
 					var cedula = $("#cedula").val(table.row(index).data().cedula);
+					cedulaValid = cedula.val();
+					
 					var celular = $("#celular").val(table.row(index).data().celular);
 					var estado = $("#estado").val(table.row(index).data().estado);
 					var cliente_id = $("#cliente_id").val(table.row(index).data().cliente_ID);
@@ -531,13 +469,12 @@
 
 		});
 	}
-
 /////////////////////////activar evento del boton eliminar que esta en la fila seleccionada del dataTable///////////
-	var obtener_id_eliminar = function(tbody, table) {
+	var obtener_id_eliminar = function(tbody, table) {//parametros(id_tabla, objeto dataTable)
 		$(tbody).on("click","button.eliminar",function() {
 			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
 			table.rows().every(function(index, loop, rowloop) {
-				if (index == datos) {console.log(table.row(index).data().cliente_id);
+				if (index == datos) {
 					var cliente_id = $("#frmEliminarCliente #cliente_id").val(table.row(index).data().cliente_ID);
 				}
 			});
@@ -545,123 +482,169 @@
 		});
 	}
 ///////////////////////////////Activa el evento cuando de click al boton activar cliente del dataTable////////////////7
-	var obtener_id_activar = function(tbody, table) {
-		$(tbody).on("click","button.activar",function() {var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+	var obtener_id_activar = function(tbody, table) { //parametros(id_tabla, objeto dataTable)
+		$(tbody).on("click","button.activar",function() {
+			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
 			table.rows().every(function(index, loop, rowloop) {
-				if (index == datos) {console.log(table.row(index).data().cliente_id);
+				if (index == datos) {
 					var cliente_id = $("#frmActivarCliente #cliente_id").val(table.row(index).data().cliente_ID);
 				}
 			});
 			abrirDialogo2();
 		});
 	}
-
-	function MakeSelect2() {
-		$('select').select2();
-	}
 /////////////////////cargar plugin de dataTables y llamar a la funcion listar()//////////////////////////////////7
 	function AllTables() {
 		$.getScript('plugins/datatables/nuevo/jszip.min.js', function() {
 			$.getScript('plugins/datatables/nuevo/pdfmake.min.js', function() {
 				$.getScript('plugins/datatables/nuevo/vfs_fonts.js',function() {
-					console.log("PDF Y EXCEL cargado");
 					listar();
+					LoadSelect2Script(MakeSelect2);
 				});
 			});
 		});
-		LoadSelect2Script(MakeSelect2);
 	}
 
-////////////////////////////llamar a la funcio listar para que llene el dataTable//////////////////////////////
+/////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////
 	$(document).ready(function() {
-		$('#mensaje_info').hide();
+		/////////cargar plugin para validaciones de bootstrap
 		LoadBootstrapValidatorScript(formValidCli);
+		
+		///////cargar plugin para DataTable
 		LoadDataTablesScripts2(AllTables);
+		
 		validarColap(colap1, "#colapsar_desplegar1");
+		
 		$('.form-control').tooltip();
-		guardar();
 	});
 /////////////////////////////////////////valida el formulario de los clientes////////////////////////////////////////
 	function formValidCli() {
 		$('#defaultForm').bootstrapValidator({
-			message : 'Este valor no es valido',
+			message : '¡Este valor no es valido!',
 			fields : {
 				cedula : {
 					validators : {
+						stringLength: {
+							max: 18,
+							message: '¡Este campo solo permite 18 caracteres!'
+						},
 						notEmpty : {
-							message : "Este campo es requerido y no debe estar vacio"
-							},
-							regexp: {
-								regexp: /^[0-9]{3}(-)[0-9]{6}(-)[0-9]{4}[a-zA-Z]$/,
-								message: 'Este campo solo acepta el formato de la Cédula'
-		                    },
+							message : "¡Este campo es requerido y no debe estar vacio!"
+						},
+						regexp: {
+							regexp: /^[0-9]{3}(-)[0-9]{6}(-)[0-9]{4}[a-zA-Z]$/,
+							message: '¡Este campo solo acepta el formato de la Cédula!'
+		                },
 						callback : {
-							message : 'Este campo no debe ser igual a los otros registros',
+							message : '¡Este campo no debe ser igual a los otros registros!',
 							callback : function(value,validator, $field) {
-								if($('#defaultForm #opcion').val()!="actualizar"){
-									var tabla = $('#dt_cliente').DataTable();
-									var filas = tabla.rows();
-									var noigual = true;
-									filas.every(function(index,loop, rowloop) {
-										if (value == tabla.row(index).data().cedula) {
-											noigual = false;
-										}
-									});
-									return noigual;
-								}else{
+								if(cedulaValid == value){
 									return true;
 								}
+								var tabla = $('#dt_cliente').DataTable();
+								var filas = tabla.rows();
+								var noigual = true;
+								filas.every(function(index,loop, rowloop) {
+									if (value == tabla.row(index).data().cedula) {
+										noigual = false;
+									}
+								});
+								return noigual;
 							}
 						}
 					}
 				},
 				nombre1 : {
 					validators : {
+						stringLength: {
+							max: 49,
+							message: '¡Este campo solo permite 50 caracteres!'
+						},
 						notEmpty : {
-							message : "Este campo es requerido y no debe estar vacio"
+							message : "¡Este campo es requerido y no debe estar vacio!"
 						},
 						regexp: {
 							regexp: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/,
-							message: 'Este campo no acepta espacios en blanco'
+							message: '¡Este campo no acepta espacios en blanco ni caracteres especiales!'
 	                    }
 					}
 				},
 				nombre2 : {
 					validators : {
+						stringLength: {
+							max: 49,
+							message: '¡Este campo solo permite 50 caracteres!'
+						},
 						regexp: {
 							regexp: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/,
-							message: 'Este campo no acepta espacios en blanco'
+							message: '¡Este campo no acepta espacios en blanco ni caracteres especiales!'
 	                    }
 					}
 				},
 				apellido1 : {
 					validators : {
+						stringLength: {
+							max: 49,
+							message: '¡Este campo solo permite 50 caracteres!'
+						},
 						notEmpty : {
-							message : "Este campo es requerido y no debe estar vacio"
+							message : "¡Este campo es requerido y no debe estar vacio ni caracteres especiales!"
 						},
 						regexp: {
 							regexp: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/,
-							message: 'Este campo no acepta espacios en blanco'
+							message: '¡Este campo no acepta espacios en blanco ni caracteres especiales!'
 	                    }
 					}
 				},
 				apellido2 : {
 					validators : {
+						stringLength: {
+							max: 49,
+							message: '¡Este campo solo permite 50 caracteres!'
+						},
 						regexp: {
 							regexp: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/,
-							message: 'Este campo no acepta espacios en blanco'
+							message: '¡Este campo no acepta espacios en blanco ni caracteres especiales!'
 	                    }
 					}
 				},
 				celular:{
 					validators : {
 						digits:{
-							message : "Este campo solo acepta números"
+							message : "¡Este campo solo acepta números!"
 						}
 					}
 				}
 			}
-		});
+		}).on('success.form.bv', function(e) {//evento que se activa cuando los datos son correctos
+            // Prevenir el evento submit
+            e.preventDefault();
+		
+            //obtener datos del formulario
+            var $form = $(e.target);
+            var frm=$form.serialize();
+            console.log(frm);
+            $.ajax({//enviar datos por ajax
+				method : "POST",
+				url : "./SL_Cliente",
+				data : frm//datos a enviar
+			}).done(function(info) {//informacion que el servlet le reenvia al jsp
+				console.log(info);
+				if (expand1.valor == true)
+					validarExpand(expand1, "#expandir1");
+
+				if (expand2.valor == true)
+					validarExpand(expand2, "#expandir2");
+
+				validarColap(colap1, "#colapsar_desplegar1");
+				if (colap2.valor == true) {
+				} else {
+					validarColap(colap2, "#colapsar_desplegar2");
+				}
+				verResultado(info);//se envia a verificar que mensaje respondioel servlet
+			});
+            
+        });
 	}
 	
 </script>

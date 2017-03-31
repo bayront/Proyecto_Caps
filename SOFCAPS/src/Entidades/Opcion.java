@@ -8,7 +8,7 @@ public class Opcion
 {
    private String descripcion;
    private String opcion;
-   private Boolean eliminado;
+   private String url;
    private Integer opcion_ID;
    private List<Rol> roles;
 
@@ -40,10 +40,12 @@ public class Opcion
 	public void setRoles(List<Rol> roles) {
 		this.roles = roles;
 	}
-	public Boolean getEliminado() {
-		return eliminado;
+	public String getUrl() {
+		return url;
 	}
-	public void setEliminado(Boolean eliminado) {
-		this.eliminado = eliminado;
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
+	
 }

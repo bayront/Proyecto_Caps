@@ -73,7 +73,7 @@ public class SL_tarifa extends HttpServlet {
 		System.out.println("hola post");
 		int lim_Inf, lim_Sup, categoria_ID, unidadMedida_ID;
 		String opcion;
-		float monto;
+		float monto, montoRound;
 		int Tarifa_ID;
 		opcion = request.getParameter("opcion").trim();
 		System.out.println("opcion a realizar: " + opcion);
@@ -88,10 +88,11 @@ public class SL_tarifa extends HttpServlet {
 					lim_Sup = Integer.parseInt(request.getParameter("lim_Sup"));
 				}
 				monto= Float.parseFloat(request.getParameter("monto").trim());
+				montoRound = (float) (Math.round(monto * 100.0) / 100.0);
 				Tarifa_ID = Integer.parseInt(request.getParameter("Tarifa_ID").trim());
 				categoria_ID = Integer.parseInt(request.getParameter("categoria_ID").trim());
 				unidadMedida_ID = Integer.parseInt(request.getParameter("unidadMedida_ID").trim());
-				actualizar(Tarifa_ID,lim_Inf,lim_Sup,monto, categoria_ID, unidadMedida_ID, response);
+				actualizar(Tarifa_ID,lim_Inf,lim_Sup,montoRound, categoria_ID, unidadMedida_ID, response);
 				break;
 			
 			case "eliminar":
@@ -107,9 +108,10 @@ public class SL_tarifa extends HttpServlet {
 					lim_Sup = Integer.parseInt(request.getParameter("lim_Sup"));
 				}
 				monto = Float.parseFloat(request.getParameter("monto").trim());
+				montoRound = (float) (Math.round(monto * 100.0) / 100.0);
 				categoria_ID = Integer.parseInt(request.getParameter("categoria_ID").trim());
 				unidadMedida_ID = Integer.parseInt(request.getParameter("unidadMedida_ID").trim());
-				guardar(lim_Inf, lim_Sup,monto, categoria_ID, unidadMedida_ID, response);
+				guardar(lim_Inf, lim_Sup,montoRound, categoria_ID, unidadMedida_ID, response);
 				break;
 			default:
 				response.setContentType("text/plain");
@@ -262,7 +264,7 @@ public class SL_tarifa extends HttpServlet {
 		while(rs.next()){
 			Categoria cat = new Categoria();
 			cat.setNomCategoria(rs.getString("nomCategoria"));
-			cat.setCategoria_ID(rs.getInt("categoria_ID"));
+			cat.setCategoria_ID(rs.getInt("Categoria_ID"));
 			categorias.add(cat);
 		}
 		DataTableObject dataTableObject = new DataTableObject();

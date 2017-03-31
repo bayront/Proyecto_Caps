@@ -3,9 +3,11 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialog" class="col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
 </div>
+<!--///////////////////////Directorios donde estan los jsp /////////////////////////////// -->
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -15,12 +17,13 @@
 		</ol>
 	</div>
 </div>
+<!--///////////////////////Formulario principal de contrato /////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i> <span>Registrar Contrato</span>
+					<i class="fa fa-edit"></i> <span>Formulario de contratos</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link" id="colapsar_desplegar1" onclick="validar(colap1);"> 
@@ -47,7 +50,7 @@
 						
 					%>
 						<div class="form-group has-warning has-feedback">
-							<label class="col-sm-4 control-label">Seleccione el cliente</label>
+							<label class="col-sm-5 control-label">Seleccione el cliente</label>
 								<div class="col-sm-4">
 								<select id= "nombreCliente" name="nombreCliente" type = "simple"
 									class="populate placeholder">
@@ -69,7 +72,7 @@
 						
 					%>
 					<div class="form-group has-warning has-feedback">
-						<label class="col-sm-4 control-label">Regimen de propiedad</label>
+						<label class="col-sm-5 control-label">Regimen de propiedad</label>
 						<div class="col-sm-4">
 								<select id= "regimenPropiedad" name="regimenPropiedad" type = "simple"
 									class="populate placeholder">
@@ -91,7 +94,7 @@
 						ArrayList<Sector> listaS = new ArrayList<Sector>();
 						listaS = dt.listaSector();						
 						%>
-						<label class="col-sm-4 control-label">Sector</label>
+						<label class="col-sm-5 control-label">Sector</label>
 						<div class="col-sm-4">
 								<select id="sector" name="sector" type = "simple"
 									class="populate placeholder">
@@ -112,7 +115,7 @@
 						listaC = dt.listaCategoria();						
 						%>
 					<div class="form-group has-warning has-feedback">
-						<label class="col-sm-4 control-label">Categoría</label>
+						<label class="col-sm-5 control-label">Categoría</label>
 						<div class="col-sm-4">
 							<select id="categoria" name="categoria" type = "simple"
 								class="populate placeholder">
@@ -130,37 +133,37 @@
 					</div>
 										
 					<div class="form-group has-success has-feedback">
-						<label class="col-sm-4 control-label">Número de medidor</label>
+						<label class="col-sm-5 control-label">Número de medidor</label>
 						<div class="col-sm-4">
 							<input type="text" id= "numMedidor" name="numMedidor" class="form-control" placeholder="Numero de medidor"
-							data-toggle="tooltip" data-placement="bottom"
-							title="número del medidor único">
+							data-toggle="tooltip" data-placement="top"
+							title="Número del medidor único">
 						</div>
 					</div>
 					<div class="form-group has-success has-feedback">
-						<label class="col-sm-4 control-label">Monto contrato</label>
+						<label class="col-sm-5 control-label">Monto contrato</label>
 						<div class="col-sm-4">
-							<input type="number" id= "montoContrato" name="montoContrato" class="form-control" 
-							placeholder="Monto contrato" data-toggle="tooltip" data-placement="bottom"
-							title="Cantidad a pagar del cliente por el contrato">
+							<input id= "montoContrato" name="montoContrato" class="form-control" 
+							placeholder="Monto contrato" data-toggle="tooltip" data-placement="top" data-bv-numeric="true"
+							title="Cantidad a pagar del cliente por el contrato" data-bv-numeric-message="¡Este valor no es un número!">
 						</div>
 					</div>
 					<div class="form-group has-success has-feedback">
-						<label for="cuotas" class="col-sm-4 control-label">Cuotas</label>
+						<label for="cuotas" class="col-sm-5 control-label">Cuotas</label>
 						<div class="col-sm-4">
-							<input type="number" id= "cuotas" name="cuotas" class="form-control"
-								placeholder="Spinner">
+							<input id= "cuotas" name="cuotas" class="form-control" data-placement="top"
+								placeholder="Spinner" data-toggle="tooltip" title="Número de cuotas">
 						</div>
 					</div>
 					
 					<div class="form-group">
-						<div class="col-sm-offset-3 col-sm-3">
+						<div class="col-sm-offset-3 col-sm-3 text-center">
 							<button type="submit" class="btn btn-primary btn-label-left btn-lg" 
 							id="guardar" style="margin-left: 30px;">
 								<span><i class="fa fa-save"></i></span> Guardar
 							</button>
 						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-3 text-center">
 							<button type="button"
 								class="btn btn-default btn-label-left btn-lg" onclick="cancelar();">
 								<span><i class="fa fa-reply txt-danger"></i></span> Cancelar
@@ -172,7 +175,7 @@
 		</div>
 	</div>
 </div>
-
+<!--///////////////////////DataTable de los contratos/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
@@ -193,12 +196,12 @@
 					id="dt_Contrato" style="width:100%;">
 					<thead>
 						<tr>
-							<th>Nombre Cliente</th>
-							<th>Fecha Contrato</th>
+							<th>Nombre del cliente</th>
+							<th>Fecha contrato</th>
 							<th>Número contrato</th>
 							<th>Número de Medidor</th>
-							<th>Monto Contrato</th>
-							<th>Regimen Propiedad</th>
+							<th>Monto contrato</th>
+							<th>Regimen propiedad</th>
 							<th>Sector</th>
 							<th>Categoría</th>
 							<th></th>
@@ -209,7 +212,7 @@
 		</div>
 	</div>
 </div>
-
+<!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
 <div>
 	<form id="frmEliminarContrato" action="" method="POST">
 		<input type="hidden" id=contrato_ID name="contrato_ID" value="">
@@ -234,6 +237,7 @@
 </div>
 
 <script type="text/javascript">
+var numMed = "";////////////////////variable para saber si estoy editando un registro
 var expand1 = new Expand1();/////////////se crean los objetos que representan los botones de cada dialogo
 var colap1 = new Colap1();
 var expand2 = new Expand2();
@@ -252,6 +256,7 @@ function AllTables() {
 			$.getScript('plugins/datatables/nuevo/vfs_fonts.js',function(){
 				console.log("PDF Y EXCEL cargado");
 				listar();
+				LoadSelect2Script(MakeSelect2);
 			});
 		});
 	});
@@ -263,7 +268,7 @@ var obtenerFechaActual = function() {
 	$("#fechaContrato").val(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
 }
 
-var verResultado = function(r) {
+var verResultado = function(r) {//parametro(resultado-String)
 	if(r == "BIEN"){
 		mostrarMensaje("#dialog", "CORRECTO",
 				"¡Se realizó la operación correctamente, todo bien!","#d7f9ec", "btn-info");
@@ -278,37 +283,6 @@ var verResultado = function(r) {
 		mostrarMensaje("#dialog", "VACIO",
 				"¡No se especificó la operación a realizar!", "#FFF8A7","btn-warning");
 	}
-}
-///////////////////////////////////guardar los datos setados en el formulario///////////////////////////////////////
-var guardar = function() {
-	$("form").on("submit", function(e) {
-		e.preventDefault();//detiene el evento
-		var frm = $(this).serialize();//parsea los datos del formulario
-		console.log(frm);
-		if($(this).find("#montoContrato").val()!="" && $(this).find("#numMedidor").val()!="" 
-			&& $(this).find("#cuotas").val() != ""){
-			$.ajax({//enviar datos por ajax
-				method:"POST",
-				url:"./SL_Contrato",
-				data: frm//datos a enviar
-				}).done(function(info) {//informacion que el servlet le reenvia al jsp
-				console.log(info);
-				limpiar_texto();
-				verResultado(info);
-				if (expand1.valor == true)
-					validarExpand(expand1, "#expandir1");
-
-				if (expand2.valor == true)
-					validarExpand(expand2, "#expandir2");
-
-				validarColap(colap1, "#colapsar_desplegar1");
-				if (colap2.valor == true) {
-				} else {
-					validarColap(colap2, "#colapsar_desplegar2");
-				}
-			});
-		}
-	});
 }
 //////////////////////////////////eliminar los datos seteados en el formulario/////////////////////////////////////
 var eliminar = function() {
@@ -330,11 +304,15 @@ var eliminar = function() {
 function abrirDialogo() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
 	OpenModalBox(
 			"<div><h3>Borrar Contrato</h3></div>",
-			"<p Style='text-align: center;'>¿Esta seguro que desea eliminar este registro?</p>",
-			"<div Style='text-align: center; margin-bottom: -10px;'>"+
-			"<button type='button' id='eliminar_contrato' class='btn btn-primary'>Eliminar </button>"
-			+ "<button type='button' class='btn btn-secondary' Style='margin-left: 10px;' onclick='CloseModalBox()'> Cancelar</button>"
-			+ "</div>");
+			"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro que desea eliminar este registro?</p>",
+			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
+			"<button type='button' id='eliminar_contrato' class='btn btn-danger btn-label-left'"+
+			" style=' color: #ece1e1;' >"+
+			"<span><i class='fa fa-trash-o'></i></span> Borrar Contrato</button>"+
+			"<div style='margin-top: 5px;'></div> </div>"+
+			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
+			"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
+			"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 	eliminar();
 }
 
@@ -348,9 +326,10 @@ var limpiar_texto = function() {/////////////////////////limpiar texto del formu
 	$("#regimenPropiedad").val("").change();
 	$("#sector").val("").change();
 	$("#categoria").val("").change();
+	$("form.formContrato").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 }
 
-var agregar_nuevo_contrato = function() {///////////////////agregar nuevo registro limpiando texto y abriendo el form
+var agregar_nuevo_contrato = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
 	limpiar_texto();
 	validarExpand(expand1, "#expandir1");
 	if (colap1.valor == false)
@@ -358,9 +337,11 @@ var agregar_nuevo_contrato = function() {///////////////////agregar nuevo regist
 	validarColap(colap2, "#colapsar_desplegar2");
 	if (expand2.valor == true)
 		validarExpand(expand2, "#expandir2");
+	
+	$("#nombreCliente").focus();
 }
 
-var cancelar = function() {/////////////////////cancela la acción limpiando el texto y colapsando el formulario
+var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
 	limpiar_texto();
 	if (expand1.valor == true)
 		validarExpand(expand1, "#expandir1");
@@ -374,8 +355,8 @@ var cancelar = function() {/////////////////////cancela la acción limpiando el 
 		validarColap(colap2, "#colapsar_desplegar2");
 	}
 }
-
-var obtener_id_eliminar = function(tbody, table) {
+/////////////////////////funsión que activa el evento click para eliminar un registro del dataTable///////////////////
+var obtener_id_eliminar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 	$(tbody).on("click", "button.eliminarContrato", function() {
 		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
 		var contrato_ID;
@@ -390,13 +371,12 @@ var obtener_id_eliminar = function(tbody, table) {
 		abrirDialogo();
 	});
 }
-
-var obtener_datos_editar = function(tbody, table) {
+///////////////////////////funsión que activa el evento click del boton editar del dataTable///////////////////////
+var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 	$(tbody).on("click", "button.editarContrato", function() {
 		var datos = table.row($(this).parents("tr")).index();
 		var contrato_ID, numMedidor, cuotas, montoContrato, cliente, regimenPropiedad, sector, categoria;
 		table.rows().every(function(index, loop, rowloop) {
-			console.log("indices: "+ index +" : "+datos);
 			if(index == datos){
 				contrato_ID = table.row(index).data().contrato_ID;
 				numMedidor = table.row(index).data().numMedidor;
@@ -408,17 +388,14 @@ var obtener_datos_editar = function(tbody, table) {
 				categoria = table.row(index).data().categoria.categoria_ID;
 				$("#contrato_ID").val(contrato_ID);
 				$("#nombreCliente").val(cliente).change();
-				$('.formContrato').bootstrapValidator('revalidateField', 'nombreCliente');
 				$("#numMedidor").val(numMedidor);
 				$("#cuotas").val(cuotas);
 				$("#montoContrato").val(montoContrato);
 				$("#regimenPropiedad").val(regimenPropiedad).change();
-				$('.formContrato').bootstrapValidator('revalidateField', 'regimenPropiedad');
 				$("#sector").val(sector).change();
-				$('.formContrato').bootstrapValidator('revalidateField', 'sector');
 				$("#categoria").val(categoria).change();
-				$('.formContrato').bootstrapValidator('revalidateField', 'categoria');
 				$("#opcion").val("actualizar");
+				numMed = numMedidor;
 			}
 		});
 		validarExpand(expand1, "#expandir1");
@@ -453,7 +430,12 @@ var listar = function() {
 		},
 		"columns": [
             { "data": "cliente.nombreCompleto"},
-            { "data": "fechaContrato" },
+            { "data": null,
+                render: function ( data, type, row ) {
+                	var f = new Date(data.fechaContrato);
+        			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+                	return fecha;
+                }},
             { "data": "numContrato",  "width": "6%"},
             { "data": "numMedidor" },
             { "data": "montoContrato" },
@@ -461,10 +443,10 @@ var listar = function() {
             { "data": "sector.nombreSector" },
             { "data": "categoria.nomCategoria",  "width": "6%"},
             {"defaultContent":"<button type='button' class='editarContrato btn btn-primary' data-toggle='tooltip' "+
-				"data-placement='bottom' title='Editar contrato'>"+
+				"data-placement='top' title='Editar contrato'>"+
 				"<i class='fa fa-pencil-square-o'></i> </button>  "+
 				"<button type='button' class='eliminarContrato btn btn-danger' data-toggle='tooltip' "+
-				"data-placement='bottom' title='Eliminar contrato'>"+
+				"data-placement='top' title='Eliminar contrato'>"+
 				"<i class='fa fa-trash-o'></i> </button>"}
             ],
             "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
@@ -501,29 +483,30 @@ var listar = function() {
 	obtener_datos_editar("#dt_Contrato tbody",tablaContrato);
 	obtener_id_eliminar('#dt_Contrato tbody',tablaContrato);
 }
-////////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////////
 $(document).ready(function() {
+	
 	$("#cuotas").spinner();
 	
 	// Add slider for change test input length
 	FormLayoutExampleInputLength($( ".slider-style" ));
 	
-	// Initialize datepicker
+	// Inicializar datePicker
 	$('#input_date').datepicker({setDate: new Date()});
 	
-	// Add tooltip to form-controls
+	//Añadir tootlip para form-controls
 	$('.form-control').tooltip();
 	
 	LoadSelect2Script(DemoSelect2);
 	
-	// Load example of form validation
+	// Cargar plugin de validaciones
 	LoadBootstrapValidatorScript(formValidContrato);
 	
 	// Add drag-n-drop feature to boxes
 	WinMove();
+	
 	obtenerFechaActual();
 	
-	guardar();//activar evento de guardar
 	validarColap(colap1, "#colapsar_desplegar1");
 	
 	LoadDataTablesScripts2(AllTables);
@@ -536,115 +519,117 @@ function formValidContrato() {
 		fields : {
 			nombreCliente:{
 				validators: {
-					callback: {
-       					message: 'Seleccione una opción',
-        				callback: function (value, validator, $field) {
-        					if($('.formContrato #nombreCliente').val()==""){
-        						return false;
-        					}else{
-								return true;
-							}
-        				}
-    				}
+					notEmpty:{
+		                message: "¡Este campo es requerido y no debe estar vacio!"
+		            }
 		        }
 			},
 			regimenPropiedad:{
 				validators: {
-					callback: {
-       					message: 'Seleccione una opción',
-        				callback: function (value, validator, $field) {
-        					if($('.formContrato #regimenPropiedad').val()==""){
-        						return false;
-        					}else{
-								return true;
-							}
-        				}
-    				}
+					notEmpty:{
+		                message: "¡Este campo es requerido y no debe estar vacio!"
+		            }
 		        }
 			},
 			sector:{
 				validators: {
-					callback: {
-       					message: 'Seleccione una opción',
-        				callback: function (value, validator, $field) {
-        					if($('.formContrato #sector').val()==""){
-        						return false;
-        					}else{
-								return true;
-							}
-        				}
-    				}
+					notEmpty:{
+		                message: "¡Este campo es requerido y no debe estar vacio!"
+		            }
 		        }
 			},
 			categoria:{
 				validators: {
-					callback: {
-       					message: 'Seleccione una opción',
-        				callback: function (value, validator, $field) {
-        					if($('.formContrato #categoria').val()==""){
-        						return false;
-        					}else{
-								return true;
-							}
-        				}
-    				}
+					notEmpty:{
+		                message: "¡Este campo es requerido y no debe estar vacio!"
+		            }
 		        }
 			},
 			numMedidor:{
 				validators: {
 					callback: {
-       					message: 'este campo no debe ser igual a los otros registros',
+       					message: '¡Este campo no debe ser igual a los otros registros!',
         				callback: function (value, validator, $field) {
-        					if($('.formContrato #opcion').val()!="actualizar"){
-								var tabla = $('#dt_Contrato').DataTable();
-								var filas = tabla.rows();
-								var noigual = true;
-								filas.every(function(index,loop, rowloop) {
-									if (value == tabla.row(index).data().numMedidor) {
-											noigual = false;
-									}
-								});
-								return noigual;
-							}else{
+        					if(numMed == value){
 								return true;
 							}
+        					var tabla = $('#dt_Contrato').DataTable();
+							var filas = tabla.rows();
+							var noigual = true;
+							filas.every(function(index,loop, rowloop) {
+								if (value == tabla.row(index).data().numMedidor) {
+										noigual = false;
+								}
+							});
+							return noigual;
         				}
     				},
     				notEmpty:{
-		                message: "Este campo es requerido y no debe estar vacio"
-		            }
+		                message: "¡Este campo es requerido y no debe estar vacio!"
+		            },
+		            stringLength: {
+						max: 30,
+						message: '¡Este campo solo permite 30 caracteres!'
+					}
 		        }
 			},
 			cuotas:{
 				validators: {
     				notEmpty:{
-		                message: "Este campo es requerido y no debe estar vacio"
+		                message: "¡Este campo es requerido y no debe estar vacio!"
 		            },
 		            digits: {
-						message: 'El campo solo puede contener números enteros'
+						message: '¡El campo solo puede contener números enteros!'
 					},
 		            greaterThan: {
 						value: 0,
 						inclusive: true,
-						message: 'El campo debe ser mayor que 0'
+						message: '¡El campo debe ser mayor que 0!'
 					}
 		        }
 			},
 			montoContrato:{
 				validators: {
     				notEmpty:{
-		                message: "Este campo es requerido y no debe estar vacio"
+		                message: "¡Este campo es requerido y no debe estar vacio!"
 		            },
 		            greaterThan: {
 						value: 0,
 						inclusive: true,
-						message: 'El campo debe ser mayor que 0'
+						message: '¡El campo debe ser mayor que 0!'
 					}
 		        }
 			}
 		}
-	});
-}
+	}).on('success.form.bv', function(e) {//evento que se activa cuando los datos son correctos
+        // Prevenir el evento submit
+        e.preventDefault();
 
+        //obtener datos del formulario
+        var $form = $(e.target);
+        var frm=$form.serialize();
+        console.log(frm);
+        $.ajax({//enviar datos por ajax
+			method:"POST",
+			url:"./SL_Contrato",
+			data: frm//datos a enviar
+			}).done(function(info) {//informacion que el servlet le reenvia al jsp
+			console.log(info);
+			limpiar_texto();
+			verResultado(info);
+			if (expand1.valor == true)
+				validarExpand(expand1, "#expandir1");
+
+			if (expand2.valor == true)
+				validarExpand(expand2, "#expandir2");
+
+			validarColap(colap1, "#colapsar_desplegar1");
+			if (colap2.valor == true) {
+			} else {
+				validarColap(colap2, "#colapsar_desplegar2");
+			}
+		});
+    });
+}
 
 </script>

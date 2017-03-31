@@ -2510,6 +2510,13 @@ function validarColap(control, dialog) {
 		colapsar_desplegar($(dialog));
 	}
 }
+function MakeSelect2() {//dar formato a select e input de busqueda de dataTable
+	$('select').select2();
+	$('.dataTables_filter').each(
+	function() {
+		$(this).find('label input[type=search]').attr('placeholder', 'Buscar registro');
+	});
+}
 // ////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////
 //
@@ -2529,6 +2536,24 @@ $(document).ready(function () {
 		ajax_url = 'ajax/dashboard.html';
 	}
 	LoadAjaxContent(ajax_url);//hmtl pricnipal cargado
+	$.datepicker.regional['es'] = {
+	    closeText: 'Cerrar',
+	    prevText: '<Ant',
+	    nextText: 'Sig>',
+	    currentText: 'Hoy',
+	    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+	    monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+	    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+	    dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+	    dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+	    weekHeader: 'Sm',
+	    dateFormat: 'dd/mm/yy',
+	    firstDay: 1,
+	    isRTL: false,
+	    showMonthAfterYear: false,
+		yearSuffix: ''
+	};
+	$.datepicker.setDefaults($.datepicker.regional['es']);
 	$('.main-menu').on('click', 'a', function (e) {//dar click en etiqueta a
 		var parents = $(this).parents('li');//guardar li
 		var li = $(this).closest('li.dropdown');//closest:obtener objeto antecesor al actual, en este caso sera etiqueta li

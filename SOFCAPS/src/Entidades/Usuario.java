@@ -8,6 +8,7 @@ public class Usuario
 {
    private String login;
    private String pass;
+   private String nombre_usuario;
    private Integer usuCrea;
    private Integer usuMod;
    private Integer usuElim;
@@ -87,5 +88,11 @@ public class Usuario
 	}
 	public void setEliminado(Boolean eliminado) {
 		this.eliminado = eliminado;
-	} 
+	}
+	public String getNombre_usuario() {
+		return nombre_usuario;
+	}
+	public void setNombre_usuario(String nombre_usuario) {
+		this.nombre_usuario = nombre_usuario;
+	}
 }

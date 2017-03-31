@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.persistence.internal.jpa.parsing.FetchJoinNode;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -49,21 +51,12 @@ public class SL_consumo extends HttpServlet {
      */
     public SL_consumo() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see Servlet#destroy()
-	 */
-	public void destroy() {
-		// TODO Auto-generated method stub
-	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		response.setContentType("application/json");
 		out = response.getWriter();
 		if(Integer.parseInt(request.getParameter("carga")) == 1) {
@@ -74,14 +67,12 @@ public class SL_consumo extends HttpServlet {
 					e.printStackTrace();
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else if(Integer.parseInt(request.getParameter("carga")) == 2) {
 			try {
 				traerClienteContratos(response);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -98,17 +89,27 @@ public class SL_consumo extends HttpServlet {
 		try {
 			switch (opcion) {
 			case "guardar":
-					lectura = Float.parseFloat(request.getParameter("lectura"));
-					float lecturaRound= (float) (Math.round(lectura * 100.0) / 100.0);
-					cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
-					contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
-					fecha_fin = fecha.parse(request.getParameter("fecha"));
-					guardar(fecha_fin, lecturaRound, cliente_ID, contrato_ID, response);
+				lectura = Float.parseFloat(request.getParameter("lectura"));
+				float lecturaRound= (float) (Math.round(lectura * 100.0) / 100.0);
+				cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
+				contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
+				fecha_fin = fecha.parse(request.getParameter("fecha"));
+				guardar(fecha_fin, lecturaRound, cliente_ID, contrato_ID, response);
 				break;
 			case "actualizar":
-				
+				consumo_ID = Integer.parseInt(request.getParameter("consumo_ID"));
+				contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
+				lectura = Float.parseFloat(request.getParameter("lectura"));
+				float lecturaRound2= (float) (Math.round(lectura * 100.0) / 100.0);
+				fecha_fin = fecha.parse(request.getParameter("fecha"));
+				cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
+				contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
+				actualizar(consumo_ID, contrato_ID, fecha_fin, lecturaRound2, response);
 				break;
 			default:
+				response.setContentType("text/plain");
+				out = response.getWriter();
+				out.print("VACIO");
 				break;
 			}
 		} catch (java.text.ParseException e) {
@@ -116,38 +117,113 @@ public class SL_consumo extends HttpServlet {
 			verificar_resultado(false, response);
 		}
 	}
-
-	/**
-	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
-	 */
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("hola PUT");
-	}
 	
-	private void guardar(Date fecha_fin, float lectura, int cliente_ID, int contrato_ID, HttpServletResponse response) {
+	private void guardar(Date fecha_fin, float lectura, int cliente_ID, int contrato_ID, HttpServletResponse response) throws IOException {
 		Contrato c = new Contrato();
 		Cliente cl = new Cliente();
 		Consumo consumo =  new Consumo();
+		boolean lecturaMenor = false, fechaMenor = false;
 		try {
+			ResultSet r = datosConsumo.cargarTodosConsumos();
+			while(r.next()) {
+				if(lectura <= r.getFloat("lectura_Actual") && contrato_ID == r.getInt("Contrato_ID")) {
+					lecturaMenor = true;
+				}
+				if(fecha_fin.compareTo(r.getDate("fecha_fin")) <= 0 && contrato_ID == r.getInt("Contrato_ID")) {
+					fechaMenor = true;
+				}
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		if(lecturaMenor) {
+			response.setContentType("text/plain");
+			out = response.getWriter();
+			out.print("LECTURAMENOR");
+		}else if(fechaMenor) {
+			response.setContentType("text/plain");
+			out = response.getWriter();
+			out.print("FECHAMENOR");
+		}else {
+			try {
+				consumo.setFecha_fin(fecha_fin);
+				consumo.setLectura_Actual(lectura);
+				consumo.setActual(true);
+				consumo.setEliminado(false);
+				c.setContrato_ID(contrato_ID);
+				cl.setCliente_ID(cliente_ID);
+				consumo.setCliente(cl);
+				consumo.setContrato(c);
+				verificar_resultado(datosConsumo.guardarConsumo(consumo), response);
+			}catch (Exception e) {
+				System.err.println("ERROR EN EL SERVLET CONTRATO: "+e.getMessage());
+			}
+		}
+	}
+	
+	private void actualizar(int consumo_ID, int contrato_ID, Date fecha_fin, float lectura, HttpServletResponse response) throws IOException {
+		Consumo consumo =  new Consumo();
+		boolean lecturaMenor = false, fechaMenor = false;
+		int primerRegistro = 0;
+		try {
+			ResultSet r = datosConsumo.cargarTodosConsumos();
+			while(r.next()) {
+				if(r.getFloat("lectura_Actual") == 0) {
+					primerRegistro = r.getInt("Consumo_ID");
+				}
+				if(consumo_ID > r.getInt("Consumo_ID") && contrato_ID == r.getInt("Contrato_ID") && r.getFloat("lectura_Actual") > 0) {
+					if(lectura <= r.getFloat("lectura_Actual") && contrato_ID == r.getInt("Contrato_ID")) {
+						lecturaMenor = true;
+					}
+					if(fecha_fin.compareTo(r.getDate("fecha_fin")) <= 0 && contrato_ID == r.getInt("Contrato_ID")) {
+						fechaMenor = true;
+					}
+				}
+				if(consumo_ID == r.getInt("Consumo_ID") && r.getFloat("consumoTotal") == r.getFloat("lectura_Actual")){
+					Consumo c = new Consumo();
+					c.setConsumo_ID(primerRegistro);
+					c.setFecha_fin(fecha_fin);
+					c.setActual(false);
+					c.setEliminado(false);
+					c.setConsumoTotal(0.0f);
+					c.setLectura_Actual(0.0f);
+					datosConsumo.actualizarConsumo(c);
+				}
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		if(lecturaMenor) {
+			response.setContentType("text/plain");
+			out = response.getWriter();
+			out.print("LECTURAMENOR");
+		}else if(fechaMenor) {
+			response.setContentType("text/plain");
+			out = response.getWriter();
+			out.print("FECHAMENOR");
+		}else {
+			try {
+			consumo.setConsumo_ID(consumo_ID);
 			consumo.setFecha_fin(fecha_fin);
 			consumo.setLectura_Actual(lectura);
 			consumo.setActual(true);
 			consumo.setEliminado(false);
-			c.setContrato_ID(contrato_ID);
-			cl.setCliente_ID(cliente_ID);
-			consumo.setCliente(cl);
-			consumo.setContrato(c);
-			verificar_resultado(datosConsumo.guardarConsumo(consumo), response);
-		}catch (Exception e) {
-			System.err.println("ERROR EN EL SERVLET CONTRATO: "+e.getMessage());
+			verificar_resultado(datosConsumo.actualizarConsumo(consumo), response);
+			}catch (Exception e) {
+				System.err.println("ERROR EN EL SERVLET CONTRATO: "+e.getMessage());
+			}
 		}
+
 	}
 
 	/**
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("hola DELETE");
+		Consumo consumo =  new Consumo();
+		consumo.setConsumo_ID(Integer.parseInt(req.getHeader("consumo_ID")));
+		consumo.setEliminado(true);
+		verificar_resultado(datosConsumo.eliminarConsumo(consumo), resp);
 	}
 	
 	protected void traerConsumos(HttpServletResponse response) throws SQLException, IOException, ParseException {
@@ -216,5 +292,4 @@ public class SL_consumo extends HttpServlet {
 			out.print("ERROR");
 		}
 	}
-	
 }

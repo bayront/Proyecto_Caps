@@ -40,7 +40,7 @@ public class DTContrato {
 		if (opcion == 1){
 			sql = ("SELECT * FROM contrato WHERE estado = 0;");
 		} else {
-			sql = ("SELECT c.numMedidor, c.cuotas, c.montoContrato, c.Contrato_ID, c.Cliente_ID, c.RegimenPropiedad_ID, c.Sector_ID, c.Categoria_ID FROM contrato c WHERE estado = 0;");
+			sql = ("SELECT c.numContrato, c.numMedidor, c.cuotas, c.montoContrato, c.Contrato_ID, c.Cliente_ID, c.RegimenPropiedad_ID, c.Sector_ID, c.Categoria_ID FROM contrato c WHERE estado = 0;");
 		}
 			
 		try
@@ -84,7 +84,9 @@ public class DTContrato {
 			dtContrato.cargarDatos();
 			while(rs.next()) {
 				if(contrato.getCliente().getCliente_ID() == rs.getInt("Cliente_ID")) {
-					numContrato++;
+					if(rs.getInt("numContrato") > numContrato) {
+						numContrato = rs.getInt("numContrato") + 1;
+					}
 				}
 			}
 			rs.moveToInsertRow();
@@ -123,11 +125,24 @@ public class DTContrato {
 		boolean actualizado = false;
 		try 
 		{
+			int numContrato =1;
 			dtContrato.cargarDatos();
+			while(rs.next()) {
+				if(rs.getInt("Contrato_ID") == contrato.getContrato_ID()) {
+					if(contrato.getCliente().getCliente_ID() == rs.getInt("Cliente_ID")) {
+						numContrato = rs.getInt("numContrato");
+						break;
+					}
+				}else if(contrato.getCliente().getCliente_ID() == rs.getInt("Cliente_ID")) {
+					if(rs.getInt("numContrato") > numContrato) {
+						numContrato = rs.getInt("numContrato") + 1;
+					}
+				}
+			}
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getInt("Contrato_ID") == contrato.getContrato_ID()){
-					
+					rs.updateInt("numContrato", numContrato);
 					rs.updateInt("Contrato_ID", contrato.getContrato_ID());
 					rs.updateString("numMedidor", contrato.getNumMedidor());
 					rs.updateInt("cuotas", contrato.getCuotas());
@@ -254,8 +269,8 @@ public class DTContrato {
 			while(rs.next())
 			{
 				Categoria categoria = new Categoria();
-				categoria.setNomCategoria(rs.getString(2));
-				categoria.setCategoria_ID(rs.getInt(1));
+				categoria.setNomCategoria(rs.getString(1));
+				categoria.setCategoria_ID(rs.getInt(4));
 				listaCategoria.add(categoria);
 			}
 			ps.close();

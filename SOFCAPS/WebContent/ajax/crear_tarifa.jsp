@@ -2,9 +2,11 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialog" class="col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
 </div>
+<!--///////////////////////Directorios donde estan los jsp /////////////////////////////// -->
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -14,12 +16,13 @@
 		</ol>
 	</div>
 </div>
+<!--///////////////////////Formulario principal de las tarifas/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i> <span>Formulario de Tarifas</span>
+					<i class="fa fa-edit"></i> <span>Formulario de Tarifas</span>
 				</div>
 				<div class="box-icons">
 					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
@@ -32,27 +35,28 @@
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
 					<input type="hidden" id="Tarifa_ID" name="Tarifa_ID">
 					<div class="form-group">
-						<label class="col-sm-4 control-label text-info">limite
-							Inferior</label>
+						<label class="col-sm-4 control-label text-info">limite Inferior</label>
 						<div class="col-sm-4">
-							<input id="lim_Inf" name="lim_Inf" type="number" class="form-control tarifa" autofocus>
+							<input id="lim_Inf" name="lim_Inf" title="Requerido"
+							class="form-control tarifa" autofocus>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-4 control-label text-info">Limite
-							Superior</label>
+						<label class="col-sm-4 control-label text-info">Limite Superior</label>
 						<div class="col-sm-4">
-							<input id="lim_Sup" name="lim_Sup" type="number" class="form-control tarifa">
+							<input id="lim_Sup" name="lim_Sup" title="No requerido, sino existe lim_Sup digite 0"
+							class="form-control tarifa">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-4 control-label text-info">monto</label>
 						<div class="col-sm-4">
-							<input id="monto" name="monto" type="number" class="form-control tarifa">
+							<input id="monto" name="monto" data-bv-numeric="true" title="Requerido"
+							class="form-control tarifa" data-bv-numeric-message="¡Este valor no es un número!">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-4 text-right control-label">Categoria</label>
+						<label class="col-sm-4 text-right control-label">Categoría</label>
 						<div class="col-sm-4">
 							<select class="populate placeholder tarifa" name="categoria_ID" id="categoria_ID">
 								<option value="">Categoria</option>
@@ -84,6 +88,7 @@
 		</div>
 	</div>
 </div>
+<!--///////////////////////DataTable de las tarifas/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
@@ -114,7 +119,7 @@
 		</div>
 	</div>
 </div>
-
+<!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
 <div>
 	<form id="frmEliminarTarifa" action="" method="POST">
 		<input type="hidden" id="tarifa_ID" name="tarifa_ID" value="">
@@ -137,11 +142,13 @@
 		</div>
 	</form>
 </div>
+
 <script type="text/javascript">
 	var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
 	var colap1 =  new Colap1();
 	var expand2 = new Expand2();
 	var colap2 =  new Colap2();
+////////////////////////////Funsión para cargar los plugin de botones de dataTables y listar la tabla////////////////
 	function AllTables() {
 		//cargar PDF Y EXCEL
 		$.getScript('plugins/datatables/nuevo/jszip.min.js', function(){
@@ -155,49 +162,15 @@
 		});
 	}
 	
-	function MakeSelect2() {
-		$('select').select2();
-		$('.dataTables_filter').each(
-			function() {
-				$(this).find('label input[type=search]').attr('placeholder','Buscar');
-		});
-	}
-	
-	var limpiar_texto = function() {//limpiar texto del formulario
+	var limpiar_texto = function() {//////////////////////////////limpiar texto del formulario
 		$("#opcion").val("guardar");
 		$("#lim_Inf").val("");
 		$("#lim_Sup").val("");
 		$("#monto").val("");
+		$("form#formTarifa").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 	}
-	
-	function guardar() {
-		$("#formTarifa").on("submit", function(e) {
-			e.preventDefault();//detiene el evento
-  			var frm = $(this).serialize();//parsea los datos del formulario
-  			console.log(frm);
-  			if($("#formTarifa #lim_Inf").val()!="" && $("#formTarifa #monto").val() != ""){
-  				$.ajax({//enviar datos por ajax
-	  				method:"post",
-	  				url:"./SL_tarifa",
-	  				data: frm//datos a enviar
-	  			}).done(function(info) {//informacion que el servlet le reenvia al jsp
-	  				if(expand1.valor == true)
-	  					validarExpand(expand1, "#expandir1");
-	  				
-	  				if(expand2.valor == true)
-	  					validarExpand(expand2, "#expandir2");
-	  				
-	  				validarColap(colap1, "#colapsar_desplegar1");
-	  				if (colap2.valor ==true){}else{
-	  					validarColap(colap2, "#colapsar_desplegar2");
-	  				}
- 					verResultado(info);
-	  			});
-  			}
-		});
-	}
-	
-	var verResultado = function(r) {
+//////////////////////////funsión que muestra el resultado mediant un dialogo//////////////////////////////////////
+	var verResultado = function(r) {//parametro(resultado-String)
 		if(r == "BIEN"){
 			mostrarMensaje("#dialog", "CORRECTO", 
 					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
@@ -213,7 +186,7 @@
 					"¡No se especificó la acción a realizar!", "#FFF8A7", "btn-warning");
 		}
 	}
-	
+///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
 	function iniciarTabla(){
 		console.log("cargar DataTable");
 		var tablaTarifa = $('#tabla_tarifa').DataTable( {
@@ -287,7 +260,7 @@
 		obtener_id_eliminar('#tabla_tarifa tbody', tablaTarifa);
 	}
 	
-	var agregar_nuevo_tarifa = function() {
+	var agregar_nuevo_tarifa = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
@@ -296,9 +269,10 @@
 		if(expand2.valor == true)
 			validarExpand(expand2, "#expandir2");
 		
+		$("#lim_Inf").focus();
 	}
 	
-	var cancelar = function() {
+	var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
 		limpiar_texto();
 		if(expand1.valor == true)
 			validarExpand(expand1, "#expandir1");
@@ -311,8 +285,8 @@
 			validarColap(colap2, "#colapsar_desplegar2");
 		}
 	}
-	
-	var obtener_datos_editar = function(tbody, table) {
+///////////////////////////funsión que activa el evento click del boton editar del dataTable///////////////////////
+	var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		$(tbody).on("click", "button.editarTarifa", function() {
 			var datos = table.row($(this).parents("tr")).data();	
 			$("#lim_Inf").val(datos.lim_Inf);
@@ -333,8 +307,8 @@
 				validarExpand(expand2, "#expandir2");
 		});
 	}
-	
-	var obtener_id_eliminar = function(tbody, table) {
+/////////////////////////funsión que activa el evento click para eliminar un registro del dataTable///////////////////
+	var obtener_id_eliminar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		$(tbody).on("click", "button.eliminar", function() {
 			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
 			var tarifa_ID;
@@ -349,8 +323,8 @@
 			abrirDialogo();
 		});
 	}
-	
-	function abrirDialogo() {
+
+	function abrirDialogo() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
 		OpenModalBox(
 				"<div><h3>Borrar Tarifa</h3></div>",
 				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar esta tarifa?</p>",
@@ -364,7 +338,7 @@
 				"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 		eliminar();
 	}
-	
+//////////////////////////////////eliminar los datos seteados en el formulario/////////////////////////////////////
 	var eliminar = function() {
 		$("#eliminar_tarifa").on("click", function() {
 			frmElim = $("#frmEliminarTarifa").serialize();
@@ -380,7 +354,7 @@
 			CloseModalBox();
 		});
 	}
-	
+/////////////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////////
 	$(document).ready(function() {
 
 		//cargar scripts dataTables
@@ -401,10 +375,9 @@
 		//cargar selects
 		cargarSelect("#unidadMedida_ID", 3);//traer categorias
 		cargarSelect("#categoria_ID", 2)//traer unidadMedidas
-		guardar();
 	});
-///////////////////////funsión que carga un select que recibe el id del select y la opcion de la carga//////////////
-	function cargarSelect(select, carga) {//parametro id select
+///////////////////////funsión que carga un select que recibe el id del select y la opcion de la carga///////////////////////
+	function cargarSelect(select, carga) {//parametro (id_select, metodo a cargar-INT)
 		var datos;
 		$.ajax({
 	        type: "GET",
@@ -428,10 +401,10 @@
 	        }
 		});
 	}
-/////////////////////funsión que valida el formulario de tarifas///////////////////////////////////////
+////////////////////////funsión que valida el formulario de tarifas///////////////////////////////////////
 	function FormValidators() {
 		$('#formTarifa').bootstrapValidator({
-			message: 'Este valor no es valido',
+			message: '¡Este valor no es valido!',
             live: 'enabled',
             excluded: ':disabled',
 			fields: {
@@ -440,11 +413,26 @@
 						greaterThan: {
 							value: 0,
 							inclusive: false,
-							message: 'El campo debe ser mayor o igual a 0'
+							message: '¡El campo debe ser mayor o igual a 0!'
 						},
 						notEmpty:{
-			                message: "Este campo es requerido y no debe estar vacio"
-			            }
+			                message: "¡Este campo es requerido y no debe estar vacio!"
+			            },
+			            digits: {
+							message: '¡El campo solo puede contener números enteros!'
+						}
+			        }
+				},
+				lim_Sup:{
+					validators: {
+						greaterThan: {
+							value: 0,
+							inclusive: false,
+							message: '¡El campo debe ser mayor o igual a 0!'
+						},
+			            digits: {
+							message: '¡El campo solo puede contener números enteros!'
+						}
 			        }
 				},
 				monto:{
@@ -452,14 +440,39 @@
 						greaterThan: {
 							value: 0,
 							inclusive: true,
-							message: 'El campo debe ser mayor que 0'
+							message: '¡El campo debe ser mayor que 0!'
 						},
 	                    notEmpty:{
-			                message: "Este campo es requerido y no debe estar vacio"
+			                message: "¡Este campo es requerido y no debe estar vacio!"
 			            }
 					}
 				}
 			}
-		});
+		}).on('success.form.bv', function(e) {//evento que se activa cuando los datos son correctos
+            // Prevenir el evento submit
+            e.preventDefault();
+
+            //obtener datos del formulario
+            var $form = $(e.target);
+            var frm=$form.serialize();
+            console.log(frm);
+            $.ajax({//enviar datos por ajax
+  				method:"post",
+  				url:"./SL_tarifa",
+  				data: frm//datos a enviar
+  			}).done(function(info) {//informacion que el servlet le reenvia al jsp
+  				if(expand1.valor == true)
+  					validarExpand(expand1, "#expandir1");
+  				
+  				if(expand2.valor == true)
+  					validarExpand(expand2, "#expandir2");
+  				
+  				validarColap(colap1, "#colapsar_desplegar1");
+  				if (colap2.valor ==true){}else{
+  					validarColap(colap2, "#colapsar_desplegar2");
+  				}
+					verResultado(info);
+  			});
+        });
 	}
 </script>

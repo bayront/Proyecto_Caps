@@ -3,9 +3,11 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialog" class="col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
 </div>
+<!--///////////////////////Directorios donde estan los jsp /////////////////////////////// -->
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -15,12 +17,13 @@
 		</ol>
 	</div>
 </div>
+<!--///////////////////////Formulario principal de otros ingresos y egresos/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i> <span>Registro de Otros Ingresos y Egresos</span>
+					<i class="fa fa-edit"></i> <span>Formulario de Otros Ingresos y Egresos</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"  id="colapsar_desplegar1" onclick="validar(colap1);" > 
@@ -38,7 +41,9 @@
 					<div class="form-group has-success">
 						<label class="col-sm-4 control-label text-info">Descripción</label>
 						<div class="col-sm-4">
-							<textarea title="No Requerido" id="descripcion" name="descripcion" class="form-control"></textarea>
+							<textarea maxlength="250" title="No Requerido" id="descripcion" name="descripcion" 
+							class="form-control" style="max-width:100%; height:110px;"></textarea>
+							<div id="contadorText">250 caracteres permitidos</div>
 						</div>
 					</div>
 					<div class="form-group has-success">
@@ -84,6 +89,7 @@
 		</div>
 	</div>
 </div>
+<!--///////////////////////DataTable de otros ingresos y egresos/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
@@ -116,7 +122,7 @@
 		</div>
 	</div>
 </div>
-
+<!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
 <div>
 	<form id="frmEliminarOI" action="" method="POST">
 		<input type="hidden" id="Otros_Ing_Egreg_ID" name="Otros_Ing_Egreg_ID" value="">
@@ -139,6 +145,7 @@
 		</div>
 	</form>
 </div>
+
 <script type="text/javascript">
 ////////////////////////////////variables para el WEBSOCKET//////////////////////////////////////////////////
 var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
@@ -171,17 +178,10 @@ websocket.onerror = function(evt) {
 			$.getScript('plugins/datatables/nuevo/pdfmake.min.js',function(){
 				$.getScript('plugins/datatables/nuevo/vfs_fonts.js',function(){
 					iniciarTabla();
+					LoadSelect2Script(MakeSelect2);
 				});
 			});
 		});
-	}
-	
-	function MakeSelect2() {
-		$('select').select2();
-		$('.dataTables_filter').each(
-			function() {
-				$(this).find('label input[type=search]').attr('placeholder','Buscar registro');
-			});
 	}
 	
 	var limpiar_texto = function() {//limpiar texto del formulario
@@ -288,7 +288,6 @@ websocket.onerror = function(evt) {
 		});
 		obtener_datos_editar('#tabla_OI tbody', tablaO);
 		obtener_id_eliminar('#tabla_OI tbody', tablaO);
-		LoadSelect2Script(MakeSelect2);
 	}
 
 	var agregar_nuevo_OI = function() {/////funsión para limpiar el texto y expandir el dialogo del formulario
@@ -410,6 +409,12 @@ websocket.onerror = function(evt) {
 		});
 		
 		cargarSelect("#categoria_Ing_Egreg_ID")//traer unidadMedidas
+		
+		$('#descripcion').keyup(function() {//contador para el máximo de caracteres permitidos en la descripción
+	        var chars = $(this).val().length;
+	        var diff = 250 - chars;
+	        $('#contadorText').html(diff+" caracteres permitidos");   
+	    });
 	});
 /////////////////////////////////////funsión que carga el select mediante ajax///////////////////////////////////
 	function cargarSelect(select) {//parametro id select

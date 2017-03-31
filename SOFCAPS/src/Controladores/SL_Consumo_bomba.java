@@ -33,6 +33,7 @@ import Datos.DataTableObject;
 import Entidades.Bomba;
 import Entidades.Categoria_Ing_Egreg;
 import Entidades.TipoCategoria;
+import Entidades.Unidad_de_Medida;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -80,18 +81,25 @@ public class SL_Consumo_bomba extends HttpServlet {
 	
 	private void traerConsumoBomba(HttpServletResponse response) throws SQLException, ParseException {
 		List<Bomba> listaB = new ArrayList<>();
-		ResultSet rs = dTconsB.cargarDatos();
+		ResultSet rs = dTconsB.cargarDatosTabla();
 		System.out.println("listar resgistros de bomba");
 		while(rs.next()){
-//			String fechaLecturaActual = fecha.format(rs.getDate("fechaLecturaActual"));
-//			System.out.println(fechaLecturaActual);
 			Bomba bomba = new Bomba();
+			Unidad_de_Medida uniMed = new Unidad_de_Medida();
 			bomba.setBomba_ID(rs.getInt("Bomba_ID"));
 			bomba.setConsumoActual(rs.getFloat("consumoActual"));
 			bomba.setLecturaActual(rs.getFloat("lecturaActual"));
 			String f = parseador2.format(rs.getDate("fechaLecturaActual"));
 			bomba.setFechaLecturaActual(parseador2.parse(f));
-			bomba.setObservaciones(rs.getString("observaciones"));
+			String observacion = rs.getString("observaciones");
+			if(observacion == "" || observacion == null) {
+				bomba.setObservaciones("");
+			}else {
+				bomba.setObservaciones(rs.getString("observaciones"));
+			}
+			uniMed.setTipoMedida(rs.getNString("tipoMedida"));
+			uniMed.setUnidad_de_Medida_ID(rs.getInt("Unidad_de_Medida_ID"));
+			bomba.setUnidad_de_Medida(uniMed);
 			listaB.add(bomba);
 			
 		}
@@ -114,6 +122,7 @@ public class SL_Consumo_bomba extends HttpServlet {
 				String fechaLecturaActual = null;
 				java.util.Date fechaLecturaActual1 = null;
 				int bomba_ID = 0;
+				int uniMedID;
 				opcion = request.getParameter("opcion").trim();
 //				String fecha = request.getParameter("fecha");
 //				System.out.println("fecha_actual: " + fecha);
@@ -133,11 +142,10 @@ public class SL_Consumo_bomba extends HttpServlet {
 						e.printStackTrace();
 					}
 					lecturaActual = Float.parseFloat(request.getParameter("lecturaActual").trim());
-					float lecturaRound= (float) (Math.round(lecturaActual * 100.0) / 100.0);
 					observaciones = request.getParameter("observaciones").trim();
-					
 					bomba_ID= Integer.parseInt(request.getParameter("bombaID"));
-					actualizar(bomba_ID, consumoActual, fechaLecturaActual1, lecturaRound, observaciones, response);
+					uniMedID = Integer.parseInt(request.getParameter("unidadMedida"));
+					actualizar(bomba_ID, consumoActual, fechaLecturaActual1, lecturaActual, observaciones, uniMedID, response);
 					break;
 				case "eliminar":
 					bomba_ID= Integer.parseInt(request.getParameter("bombaID"));
@@ -158,9 +166,9 @@ public class SL_Consumo_bomba extends HttpServlet {
 						e.printStackTrace();
 					}
 					lecturaActual = Float.parseFloat(request.getParameter("lecturaActual").trim());
-					float lecturaRound2= (float) (Math.round(lecturaActual * 100.0) / 100.0);
 					observaciones = request.getParameter("observaciones").trim();
-					guardar(bomba_ID, consumoActual, fechaLecturaActual1, lecturaRound2, observaciones, response);
+					uniMedID = Integer.parseInt(request.getParameter("unidadMedida"));
+					guardar(bomba_ID, consumoActual, fechaLecturaActual1, lecturaActual, observaciones, uniMedID, response);
 					break;
 				default:
 					response.setContentType("text/plain");
@@ -171,14 +179,16 @@ public class SL_Consumo_bomba extends HttpServlet {
 	}
 
 	private void guardar(int bomba_ID, Float consumoActual, java.util.Date fechaLecturaActual1, Float lecturaActual,
-			String observaciones, HttpServletResponse response) {
+			String observaciones, int uniMedID, HttpServletResponse response) {
 		try {
 			Bomba bomb = new Bomba();
-			
+			Unidad_de_Medida med = new Unidad_de_Medida();
 			bomb.setConsumoActual(consumoActual);
 			bomb.setFechaLecturaActual(fechaLecturaActual1);
 			bomb.setLecturaActual(lecturaActual);
 			bomb.setObservaciones(observaciones);
+			med.setUnidad_de_Medida_ID(uniMedID);
+			bomb.setUnidad_de_Medida(med);
 			verificarResultado(dTconsB.guardarRegBomba(bomb), response);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -200,14 +210,17 @@ public class SL_Consumo_bomba extends HttpServlet {
 	}
 
 	private void actualizar(int bomba_ID, Float consumoActual, java.util.Date fechaLecturaActual1, Float lecturaActual,
-			String observaciones, HttpServletResponse response) {
+			String observaciones, int uniMedID, HttpServletResponse response) {
 		try {
 			Bomba bomb = new Bomba();
+			Unidad_de_Medida med = new Unidad_de_Medida();
 			bomb.setBomba_ID(bomba_ID);
 			bomb.setConsumoActual(consumoActual);
 			bomb.setFechaLecturaActual(fechaLecturaActual1);
 			bomb.setLecturaActual(lecturaActual);
 			bomb.setObservaciones(observaciones);
+			med.setUnidad_de_Medida_ID(uniMedID);
+			bomb.setUnidad_de_Medida(med);
 			verificarResultado(dTconsB.actualizarBomba(bomb), response);
 		} catch (Exception e) {
 			e.printStackTrace();

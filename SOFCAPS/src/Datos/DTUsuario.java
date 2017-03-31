@@ -71,6 +71,7 @@ public class DTUsuario {
 			rs.moveToInsertRow();
 			rs.updateString("login", u.getLogin());
 			rs.updateString("pass", u.getPass());
+			rs.updateString("nombre_usuario", u.getNombre_usuario());
 			rs.updateBoolean("eliminado", false);
 			rs.insertRow();
 			rs.moveToCurrentRow();
@@ -117,6 +118,7 @@ public class DTUsuario {
 					rs.updateBoolean("eliminado", u.getEliminado());
 					rs.updateString("login", u.getLogin());
 					rs.updateString("pass", u.getPass());
+					rs.updateString("nombre_usuario", u.getNombre_usuario());
 					rs.updateRow();
 				}
 			}
@@ -148,6 +150,33 @@ public class DTUsuario {
 			e.printStackTrace();
 		}
 		return guardado;
+	}
+	
+	public Usuario verificarUser(Usuario us)
+	{
+		
+		Statement s;
+		String sql = ("SELECT * From usuario where login="+"'"+us.getLogin()+"'"+" and pass="+"'"+us.getPass()+"' and eliminado=0;");
+		try
+		{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			if(rs.next())
+			{
+				us.setUsuario_ID(rs.getInt("Usuario_ID"));
+				us.setLogin(rs.getString("login"));
+				us.setPass(rs.getString("pass"));
+				us.setNombre_usuario(rs.getString("nombre_usuario"));
+			}
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("Error en Dt_Usuario: "+e.getMessage());
+		}
+		
+		return us;
 	}
 	
 }

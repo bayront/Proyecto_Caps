@@ -20,7 +20,6 @@ import com.google.gson.GsonBuilder;
 
 import Datos.DTUsuario;
 import Datos.DataTableObject;
-import Entidades.Cliente;
 import Entidades.Usuario;
 
 /**
@@ -55,21 +54,18 @@ public class SL_Usuario extends HttpServlet {
 		try {
 			traerUsuarios(response);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				}
+			}
 		}
 		else if(Integer.parseInt(request.getParameter("carga")) == 2) {
 			try {
 				traerUsuariosInactivos(response);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
 		
-
 	private void traerUsuarios(HttpServletResponse response) throws SQLException {
 		List<Usuario> usuarios = new ArrayList<>();
 		ResultSet rs = datosUsuario.cargarUsuarios();
@@ -78,6 +74,7 @@ public class SL_Usuario extends HttpServlet {
 			u.setUsuario_ID(rs.getInt("usuario_ID"));
 			u.setLogin(rs.getString("login"));
 			u.setPass(rs.getString("pass"));
+			u.setNombre_usuario(rs.getString("nombre_usuario"));
 			u.setEliminado(rs.getBoolean("eliminado"));
 			usuarios.add(u);
 		}
@@ -99,6 +96,7 @@ public class SL_Usuario extends HttpServlet {
 			u.setUsuario_ID(rs.getInt("usuario_ID"));
 			u.setLogin(rs.getString("login"));
 			u.setPass(rs.getString("pass"));
+			u.setNombre_usuario(rs.getString("nombre_usuario"));
 			u.setEliminado(rs.getBoolean("eliminado"));
 			usuarios.add(u);
 		}
@@ -110,30 +108,31 @@ public class SL_Usuario extends HttpServlet {
 		String json = gson.toJson(dataTableObject);
 		System.out.println(json.toString());
 		out.print(json);
-		}
+	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String login, pass, opcion;
-		Boolean eliminado;
+		String login, pass, opcion, nombre_usuario;
 		int usuario_ID;
 		opcion = request.getParameter("opcion").trim();
 		System.out.println("opcion a realizar: " + opcion);
 		switch (opcion) {
 			case "actualizar":
+				nombre_usuario = request.getParameter("nombre_usuario").trim();
 				login = request.getParameter("login").trim();
 				pass = request.getParameter("pass").trim();
-				eliminado = Boolean.parseBoolean(request.getParameter("eliminado").trim());
 				usuario_ID= Integer.parseInt(request.getParameter("usuario_id"));
 				System.out.println("actualizar SL_Usuario");
-				actualizar(usuario_ID, login, pass, eliminado, response);
+				actualizar(usuario_ID, nombre_usuario, login, pass, response);
 				break;
 			case "eliminar":
 				usuario_ID= Integer.parseInt(request.getParameter("usuario_ID"));
 				eliminar(usuario_ID, response);
 				break;					
 			case "guardar":
+				nombre_usuario = request.getParameter("nombre_usuario").trim();
 				login = request.getParameter("login").trim();
 				pass = request.getParameter("pass").trim();
-				guardar(login, pass, response);
+				guardar(nombre_usuario, login, pass, response);
 				break;
 			case "activar":
 				usuario_ID= Integer.parseInt(request.getParameter("usuario_ID"));
@@ -154,9 +153,10 @@ public class SL_Usuario extends HttpServlet {
 		// TODO Auto-generated method stub
 	}
 	
-	protected void guardar(String login, String pass,  HttpServletResponse response) {
+	protected void guardar(String nombre_usuario, String login, String pass, HttpServletResponse response) {
 		try {
 			Usuario u = new Usuario();
+			u.setNombre_usuario(nombre_usuario);
 			u.setLogin(login);
 			u.setPass(pass);
 			 verificar_resultado(datosUsuario.guardarUsuario(u), response);	
@@ -166,21 +166,22 @@ public class SL_Usuario extends HttpServlet {
 	}
 	
 	
-	protected void actualizar(int usuario_id, String login, String pass, Boolean eliminado, HttpServletResponse response) {
+	protected void actualizar(int usuario_id, String nombre_usuario, String login, String pass, HttpServletResponse response) {
 		try {
 			Usuario u = new Usuario();
 			u.setUsuario_ID(usuario_id);
+			u.setNombre_usuario(nombre_usuario);
 			u.setLogin(login);
 			u.setPass(pass);
-			u.setEliminado(eliminado);
+			u.setEliminado(false);
 			verificar_resultado(datosUsuario.actualizarUsuario(u), response);
 		} catch (Exception e) {
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
 	
-      protected void eliminar(int usuario_id,  HttpServletResponse response) {
-		try {
+    protected void eliminar(int usuario_id,  HttpServletResponse response) {
+    	try {
 			Usuario u = new Usuario();
 			u.setUsuario_ID(usuario_id);
 			verificar_resultado(datosUsuario.eliminarUsuario(u), response);
@@ -188,15 +189,15 @@ public class SL_Usuario extends HttpServlet {
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
-      protected void activar(int usuario_ID, HttpServletResponse response) {
-			try {
-				Usuario u = new Usuario();
-				u.setUsuario_ID(usuario_ID);
-				verificar_resultado(datosUsuario.activarUsuario(u), response);
-			} catch (Exception e) {
-				System.err.println("SL ERROR: "+e.getMessage());
-			}
-		}  
+    protected void activar(int usuario_ID, HttpServletResponse response) {
+		try {
+			Usuario u = new Usuario();
+			u.setUsuario_ID(usuario_ID);
+			verificar_resultado(datosUsuario.activarUsuario(u), response);
+		} catch (Exception e) {
+			System.err.println("SL ERROR: "+e.getMessage());
+		}
+	}  
       
 	protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {
 		try {

@@ -47,8 +47,8 @@ public class DTTarifa {
 	 
 	 public ResultSet cargarTarifaCategoria(){
 			Statement s;
-			String sql = ("select t.Tarifa_ID, t.lim_Inf, t.lim_Sup, t.monto, t.Unidad_de_Medida_ID, t.categoria_ID,"+
-			" c.nomCategoria from tarifa t, categoria c where c.categoria_ID = t.categoria_ID and t.estado = 0 and c.eliminado = 0;");
+			String sql = ("select t.Tarifa_ID, t.lim_Inf, t.lim_Sup, t.monto, t.Unidad_de_Medida_ID, t.Categoria_ID,"+
+			" c.nomCategoria from tarifa t, categoria c where c.Categoria_ID = t.Categoria_ID and t.estado = 0 and c.eliminado = 0;");
 			try 
 			{
 				s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -102,9 +102,7 @@ public class DTTarifa {
 			{
 				dttari.cargarTarifa();
 				rs.beforeFirst();
-				rs.beforeFirst();
 				while (rs.next()){
-					System.out.println("fila "+rs.getInt("Tarifa_ID"));
 					if(rs.getInt("Tarifa_ID") == t.getTarifa_ID()){
 						rs.updateBoolean("estado", true);
 						rs.updateRow();
@@ -128,11 +126,11 @@ public class DTTarifa {
 				dttari.cargarTarifa();
 				rs.beforeFirst();
 				while (rs.next()){
-					System.out.println("fila "+rs.getInt("Tarifa_ID"));
 					if(rs.getInt("Tarifa_ID") == t.getTarifa_ID()){
-						System.out.println("lim_Sup: " + t.getLim_Sup());
 						if(t.getLim_Sup() == 0) {
 							rs.updateNull("lim_Sup");
+						}else {
+							rs.updateInt("lim_Sup", t.getLim_Sup());
 						}
 						rs.updateInt("lim_Inf", t.getLim_Inf());
 						rs.updateFloat("monto", t.getMonto());

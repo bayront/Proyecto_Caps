@@ -41,6 +41,11 @@ button.ui-dialog-titlebar-close i{
 .ui-widget-header{
 	color: #215881;
 }
+#contadorText{
+	font-family: 'Roboto';
+    color: #a67846;
+    font-size: medium;
+}
 
 body {
 	color: #525252;

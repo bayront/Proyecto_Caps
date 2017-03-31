@@ -62,6 +62,7 @@ public class SL_Opcion extends HttpServlet {
 			o.setOpcion_ID(rs.getInt("Opcion_ID"));
 			o.setOpcion(rs.getString("opcion"));
 			o.setDescripcion(rs.getString("descripcion"));
+			o.setUrl(rs.getString("url"));
 			opciones.add(o);
 		}
 		DataTableObject dataTableObject = new DataTableObject();

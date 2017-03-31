@@ -29,12 +29,8 @@ import com.google.gson.GsonBuilder;
 public class SL_Categoria extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DTCategoria datosCategoria = DTCategoria.getInstance();
-//	private DT_UnidadMedida dtUM = DT_UnidadMedida.getInstance();
-	//private DTCategoria dtCat = DTCategoria.getInstance();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	
-	//PrinterWriter out;
-	//PrinterWriter out;
+	PrintWriter out;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -49,15 +45,8 @@ public class SL_Categoria extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("application/json");
-		System.out.println("cargar: " + request.getParameter("carga"));
 		try {
-			if(Integer.parseInt(request.getParameter("carga")) == 1) {
-				traerCategorias(response);
-			}else if(Integer.parseInt(request.getParameter("carga")) == 2) {
-				traerCategorias(response);
-			}else if(Integer.parseInt(request.getParameter("carga")) == 3) {
-				traerCategorias(response);
-			}
+			traerCategorias(response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,7 +61,7 @@ public class SL_Categoria extends HttpServlet {
 		System.out.println("hola post");
 		int categoria_ID;
 		
-		String opcion,nomCategoria;;
+		String opcion,nomCategoria, descripcion;
 	
 		
 		opcion = request.getParameter("opcion").trim();
@@ -81,17 +70,10 @@ public class SL_Categoria extends HttpServlet {
 		try {
 			switch (opcion) {
 			case "actualizar":
-				
-//				if(request.getParameter("lim_Sup").equals("") || request.getParameter("lim_Sup").isEmpty()) {
-//					lim_Sup = 0;
-//				}else {
-//					lim_Sup = Integer.parseInt(request.getParameter("lim_Sup"));
-//				}
-				
 				categoria_ID = Integer.parseInt(request.getParameter("categoria_ID").trim());
 				nomCategoria = request.getParameter("nomCategoria");
-
-				actualizar( categoria_ID, nomCategoria, response);
+				descripcion = request.getParameter("descripcion");
+				actualizar( categoria_ID, nomCategoria, descripcion, response);
 				break;
 			
 			case "eliminar":
@@ -101,20 +83,12 @@ public class SL_Categoria extends HttpServlet {
 				break;
 			
 			case "guardar":
-//				lim_Inf = Integer.parseInt(request.getParameter("lim_Inf")); 
-//				if(request.getParameter("lim_Sup").equals("") || request.getParameter("lim_Sup").isEmpty()) {
-//					lim_Sup = 0;
-//				}else {
-//					lim_Sup = Integer.parseInt(request.getParameter("lim_Sup"));
-//				}
-//				monto = Float.parseFloat(request.getParameter("monto").trim());
-				//categoria_ID = Integer.parseInt(request.getParameter("categoria_ID").trim());
 				nomCategoria = request.getParameter("nomCategoria");
-				guardar(nomCategoria, response);
+				descripcion = request.getParameter("descripcion");
+				guardar(nomCategoria, descripcion, response);
 				break;
 			default:
 				response.setContentType("text/plain");
-				PrintWriter out;
 				out = response.getWriter();
 				out.print("VACIO");
 				break;
@@ -126,43 +100,32 @@ public class SL_Categoria extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	private void actualizar(int categoria_ID, String nomCategoria, HttpServletResponse response) {
-		try 
-		{
-			
+	private void actualizar(int categoria_ID, String nomCategoria, String descripcion, HttpServletResponse response) {
+		try{
 			Categoria cat =  new Categoria();
 			cat.setCategoria_ID(categoria_ID);
 			cat.setNomCategoria(nomCategoria);
-			
+			cat.setDescripcion(descripcion);
 			verificar_resultado(datosCategoria.actualizarCategoria(cat), response);
-		} 
-		catch (Exception e) 
-		{
+		}catch (Exception e){
 			System.err.println("SL ERROR: "+e.getMessage());
+			e.printStackTrace();
 		}
-		
 	}
 
-	protected void guardar(String nomCategoria, HttpServletResponse response) {
-		try 
-		{
-
+	protected void guardar(String nomCategoria, String descripcion, HttpServletResponse response) {
+		try {
 			Categoria cat =  new Categoria();
 			cat.setNomCategoria(nomCategoria);
-			
-			
-			
+			cat.setDescripcion(descripcion);
 			verificar_resultado(datosCategoria.guardarCategoria(cat), response);
-		} 
-		catch (Exception e) 
-		{
+		}catch (Exception e){
 			System.err.println("SL ERROR: "+e.getMessage());
 		}
 	}
 	
 	protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {
 		response.setContentType("text/plain");
-		PrintWriter out;
 		if(r) {
 			out = response.getWriter();
 			out.print("BIEN");
@@ -173,87 +136,32 @@ public class SL_Categoria extends HttpServlet {
 	}
 
 	protected void eliminar(int categoria_ID, HttpServletResponse response) {
-		try 
-		{
+		try{
 			Categoria c = new Categoria();
 			c.setCategoria_ID(categoria_ID);
 			System.out.println("cat_ID_ "+categoria_ID);
 			verificar_resultado(datosCategoria.eliminarCategoria(c), response);
-		} 
-		catch (Exception e) 
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			System.out.println("ERROR EN EL SERVLET CATEGORIA INGRESOS Y EGRESOS: " + e.getMessage());
 		}
 	}
-//	protected void traertarifas (HttpServletResponse response)throws SQLException, IOException {
-//		PrintWriter out;
-//		out = response.getWriter();
-//		List<Tarifa>tarifas = new ArrayList<>();
-//		ResultSet rs = datosTarifa.cargarTarifaCategoria();
-//		while(rs.next()){
-//			Tarifa t = new Tarifa();
-//			Categoria cat = new Categoria();
-//			Unidad_de_Medida um = new Unidad_de_Medida();
-//			um.setUnidad_de_Medida_ID(rs.getInt("Unidad_de_Medida_ID"));
-//			cat.setCategoria_ID(rs.getInt("Categoria_ID"));
-//			cat.setNomCategoria(rs.getString("nomCategoria"));
-//			t.setTarifa_ID(rs.getInt("Tarifa_ID"));
-//			t.setLim_Inf(rs.getInt("lim_Inf"));
-//			int lim_Sup = rs.getInt("lim_Sup");
-//			if(lim_Sup == 0) {
-//				System.out.println("no hay lim_Sup: " + lim_Sup);
-//			}else {
-//				t.setLim_Sup(rs.getInt("lim_Sup"));
-//			}
-//			t.setMonto(rs.getFloat("monto"));
-//			t.setCategoria(cat);
-//			t.setUnidad_de_Medida(um);
-//			tarifas.add(t);
-//			
-//		}
-//		DataTableObject dataTableObject = new DataTableObject();
-//		dataTableObject.aaData = new ArrayList<>();
-//		for(Tarifa tarifa : tarifas){
-//			dataTableObject.aaData.add(tarifa);
-//		}
-//		String json = gson.toJson(dataTableObject);
-//		System.out.println(json.toString());
-//		out.print(json);
-//	}
-//	private void traerUnidadMedida(HttpServletResponse response) throws SQLException, IOException {
-//		Gson gson2 = new GsonBuilder().setPrettyPrinting().create();
-//		PrintWriter out2;
-//		out2 = response.getWriter();
-//		List<Unidad_de_Medida> unidades = new ArrayList<>();
-//		ResultSet rs = dtUM.cargarUnidad_Medida();
-//		while(rs.next()){
-//			Unidad_de_Medida um = new Unidad_de_Medida();
-//			um.setTipoMedida(rs.getString("tipoMedida"));
-//			um.setUnidad_de_Medida_ID(rs.getInt("Unidad_de_Medida_ID"));
-//			unidades.add(um);
-//		}
-//		DataTableObject dataTableObject = new DataTableObject();
-//		dataTableObject.aaData = new ArrayList<>();
-//		for (Unidad_de_Medida unidad_de_Medida : unidades) {
-//			dataTableObject.aaData.add(unidad_de_Medida);
-//		}
-//		String json = gson2.toJson(dataTableObject);
-//		System.out.println(json.toString());
-//		out2.print(json);
-//	}
 
 	private void traerCategorias(HttpServletResponse response) throws SQLException, IOException {
-		Gson gson2 = new GsonBuilder().setPrettyPrinting().create();
-		PrintWriter out2;
 		response.setContentType("application/json");
-		out2 = response.getWriter();
+		out = response.getWriter();
 		List<Categoria> categorias = new ArrayList<>();
 		ResultSet rs = datosCategoria.Categorias();
 		while(rs.next()){
 			Categoria cat = new Categoria();
 			cat.setNomCategoria(rs.getString("nomCategoria"));
-			cat.setCategoria_ID(rs.getInt("categoria_ID"));
+			cat.setCategoria_ID(rs.getInt("Categoria_ID"));
+			String desc = rs.getString("descripcion");
+			if(desc == "" || desc == null) {
+				cat.setDescripcion("");
+			}else {
+				cat.setDescripcion(rs.getString("descripcion"));
+			}
 			categorias.add(cat);
 		}
 		DataTableObject dataTableObject = new DataTableObject();
@@ -261,12 +169,8 @@ public class SL_Categoria extends HttpServlet {
 		for (Categoria categoria : categorias) {
 			dataTableObject.aaData.add(categoria);
 		}
-		String json = gson2.toJson(dataTableObject);
+		String json = gson.toJson(dataTableObject);
 		System.out.println("DATOS: " + json.toString());
-		out2.print(json);
+		out.print(json);
 	}
-	
-	
-
-
 }

@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 
 import Entidades.Bomba;
+import Entidades.TipoCategoria;
+import Entidades.Unidad_de_Medida;
 
 public class DT_consumo_bomba {
 	
@@ -19,28 +21,23 @@ public class DT_consumo_bomba {
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
 	PreparedStatement ps =null;
-	
 	DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
 	
-	private DT_consumo_bomba ()
-	 { 
-		 
+	private DT_consumo_bomba () { 
 	 }
 	
-	public static DT_consumo_bomba getInstance() 
-	 {
+	public static DT_consumo_bomba getInstance() {
 	   return dtconsB;
 	 }
 
-	
 	public float traer_Lectura(){
 		String sql =("SELECT * from bomba where estado = 0;");
 		float lectura = 0;
-		
+		Statement s;
 		try{
 			con = Conexion.getConnection();
-			ps = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			rs = ps.executeQuery();
+			s= con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.isLast()){
@@ -49,10 +46,8 @@ public class DT_consumo_bomba {
 				}
 			}
 			
-		}
-		catch (Exception e) 
-		{
-			
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
 		return lectura;
 	}
@@ -60,10 +55,11 @@ public class DT_consumo_bomba {
 	public float traer_LecturaParaActualizar(int id){
 		String sql =("SELECT * from bomba WHERE estado = 0");
 		float lectura = 0;
+		Statement s;
 		try {
 			con = Conexion.getConnection();
-			ps = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			rs = ps.executeQuery();
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
 			while(rs.next()){
 				if(rs.getInt("Bomba_ID") == id){
 					if(rs.previous()){
@@ -72,21 +68,15 @@ public class DT_consumo_bomba {
 						break;
 					}
 				}
-					
 			}
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return lectura;
 	}
-		
-		
-	
 	
 	public float calcularConsumo(float lect){
-		
 		float lectAnt = traer_Lectura();
 		float con = 0;
 		
@@ -106,141 +96,90 @@ public class DT_consumo_bomba {
 		return conAct;
 	}
 	
-	public ResultSet cargarDatos()
-	{
+	public ResultSet cargarDatos(){
 		Statement s;
 		String sql = ("SELECT * FROM bomba WHERE estado = 0;");
-		try
-		{
+		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
-		}
-		catch(Exception e)
-		{
+		}catch(Exception e){
 			e.printStackTrace();
 			System.out.println("Error en DT_consumo_bomba: "+e.getMessage());
 		}
 		return rs;
 	}
 	
-	
-	public boolean guardarRegBomba(Bomba b)
-	{
-	boolean guardado = false;
-	try 
-	{
-		dtconsB.cargarDatos();
-		
-		rs.moveToInsertRow();
-		rs.updateFloat("consumoActual", b.getConsumoActual());
-		rs.updateString("fechaLecturaActual", fecha.format(b.getFechaLecturaActual()));
-		rs.updateFloat("lecturaActual", b.getLecturaActual());
-		rs.updateString("observaciones", b.getObservaciones()); 
-		rs.updateBoolean("estado", false);
-		rs.insertRow();
-		rs.moveToCurrentRow();
-		guardado = true;
+	public ResultSet cargarDatosTabla(){
+		Statement s;
+		String sql = ("SELECT b.Bomba_ID, b.consumoActual, b.fechaLecturaActual, b.lecturaActual, b.observaciones, um.tipoMedida, um.Unidad_de_Medida_ID FROM bomba b inner join unidad_de_medida um on b.Unidad_de_Medida_ID = um.Unidad_de_Medida_ID WHERE b.estado = 0;");
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("Error en DT_consumo_bomba: "+e.getMessage());
+		}
+		return rs;
 	}
-	catch (Exception e) 
-	{
-		System.err.println("ERROR GUARDAR " + e.getMessage());
-		e.printStackTrace();
-	}
-	return guardado;
-}
-//	public ArrayList<Bomba> bomba()
-//	{
-//		ArrayList<Bomba> listaBomba = new ArrayList<Bomba>();
-//		String sql = ("SELECT * from Bomba");
-//		try 
-//		{
-//			con = Conexion.getConnection();
-//			ps = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-//			rs = ps.executeQuery();
-//			
-//			while (rs.next()) 
-//			{
-//				Bomba b = new Bomba();
-//				b.setConsumoActual(rs.getFloat("consumoActual"));
-//				b.setFechaLecturaActual(rs.getDate("fechaLecturaActual"));
-//				b.setLecturaActual(rs.getFloat("lectuaActual"));
-//				b.setObservaciones(rs.getString("observaciones"));
-//				listaBomba.add(b);
-//				
-//			}
-//			ps.close();
-//			con.close();
-//			System.out.println("datos cargados de usuarios");
-//		} 
-//		catch (Exception e) 
-//		{
-//			System.err.println("METODO CARGAR: "+e.getMessage());
-//		}
-//		
-//		return listaBomba;
-//	}
-	
 
-	
-//	public boolean guardarRegBomba(Bomba b)
-//	{
-//		calcularConsumo(b.getLecturaActual());
-//		System.out.println(b.getConsumoActual());
-//		try 
-//		{
-//			Connection cn = Conexion.getConnection();
-//			Statement s = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-//			rs = s.executeQuery("SELECT * from Bomba;");
-//			rs.moveToInsertRow();
-//			rs.updateFloat("consumoActual", b.getConsumoActual());
-//			rs.updateString("fechaLecturaActual", fecha.format(b.getFechaLecturaActual()));
-//			rs.updateFloat("lecturaActual", b.getLecturaActual());
-//			rs.updateString("observaciones", b.getObservaciones());
-//			rs.insertRow();
-//			rs.moveToCurrentRow();
-//			s.close();
-//			cn.close();
-//			return true;
-//		}
-//		catch (Exception e) 
-//		{
-//			System.err.println("ERROR AL GUARDAR: " + e.getMessage());
-//			e.printStackTrace();
-//			return false;
-//		}
-//	}
+	public boolean guardarRegBomba(Bomba b){
+		boolean guardado = false;
+		try {
+			dtconsB.cargarDatos();
+		
+			rs.moveToInsertRow();
+			rs.updateFloat("consumoActual", b.getConsumoActual());
+			rs.updateInt("Unidad_de_Medida_ID", b.getUnidad_de_Medida().getUnidad_de_Medida_ID());
+			rs.updateString("fechaLecturaActual", fecha.format(b.getFechaLecturaActual()));
+			rs.updateFloat("lecturaActual", b.getLecturaActual());
+			if(b.getObservaciones().isEmpty() || b.getObservaciones() == null) {
+				rs.updateNull("observaciones");
+			}else {
+				rs.updateString("observaciones", b.getObservaciones());
+			}
+			rs.updateBoolean("estado", false);
+			rs.insertRow();
+			rs.moveToCurrentRow();
+			guardado = true;
+		}catch (Exception e) {
+			System.err.println("ERROR GUARDAR " + e.getMessage());
+			e.printStackTrace();
+		}
+		return guardado;
+	}
 	
 	public boolean actualizarBomba(Bomba b){
 		boolean actualizado = false;
-		try 
-		{
+		try {
 			dtconsB.cargarDatos();
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getInt("Bomba_ID") == b.getBomba_ID()){
 					rs.updateInt("Bomba_ID", b.getBomba_ID());
 					rs.updateFloat("consumoActual", b.getConsumoActual());
+					rs.updateInt("Unidad_de_Medida_ID", b.getUnidad_de_Medida().getUnidad_de_Medida_ID());
 					rs.updateString("fechaLecturaActual", fecha.format(b.getFechaLecturaActual()));
 					rs.updateFloat("lecturaActual", b.getLecturaActual());
-					rs.updateString("observaciones", b.getObservaciones());
+					if(b.getObservaciones().isEmpty() || b.getObservaciones() == null) {
+						rs.updateNull("observaciones");
+					}else {
+						rs.updateString("observaciones", b.getObservaciones());
+					}
 					rs.updateBoolean("estado", false);
 					rs.updateRow();
 					actualizado = true;
 				}
 			}
+		}catch (Exception e){
+			System.err.println("ERROR AL ACTUALIZAR " + e.getMessage());
+			e.printStackTrace();
 		}
-			catch (Exception e) 
-			{
-				System.err.println("ERROR AL ACTUALIZAR " + e.getMessage());
-				e.printStackTrace();
-			}
-			return actualizado;
+		return actualizado;
 	}
 	
 	public boolean eliminarRegBomba(Bomba b){
 		boolean eliminado = false;
-		try 
-		{
+		try {
 			dtconsB.cargarDatos();
 			rs.beforeFirst();
 			while(rs.next()){
@@ -250,15 +189,30 @@ public class DT_consumo_bomba {
 					eliminado = true;
 				}
 			}
-		
-		}
-		catch (Exception e) 
-		{
+		}catch (Exception e) {
 			System.err.println("ERROR AL ELIMINAR " + e.getMessage());
 			e.printStackTrace();
 		}
 		return eliminado;
-
+	}
+	
+	public ArrayList<Unidad_de_Medida> listaUnidadDeMedida(){
+		ArrayList<Unidad_de_Medida> listaUnidadMedida = new ArrayList<Unidad_de_Medida>();
+		String sql = ("SELECT * FROM sofcaps.unidad_de_medida;");
+		Statement s;
+		try {
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			while(rs.next()){
+				Unidad_de_Medida uniMed = new Unidad_de_Medida();
+				uniMed.setTipoMedida(rs.getString("tipoMedida"));
+				uniMed.setUnidad_de_Medida_ID(rs.getInt("Unidad_de_Medida_ID"));
+				listaUnidadMedida.add(uniMed);
+			}
+		} catch (Exception e){
+			System.err.println("DATOS: ERROR " +e.getMessage());
+		}
+		return listaUnidadMedida;
 	}
 	
 }

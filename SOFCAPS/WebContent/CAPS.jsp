@@ -1,3 +1,14 @@
+<%@page import="java.sql.ResultSet"%>
+<%@page import="Datos.DT_Rol"%>
+<%@taglib prefix="msg" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%
+	response.setHeader("Pragma", "no-cache");
+	response.setHeader("Cache-Control", "no-store");
+	response.setDateHeader("Expires", 0);
+	response.setDateHeader("Expires", -1);
+%>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -6,9 +17,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="grupo CAPS">
-
     <title>CAPS PONELOYA</title>
-
+    <%
+	HttpSession hts = request.getSession(false);
+	hts.removeAttribute("login");
+	hts.invalidate();
+	%>
     <!-- Bootstrap Core CSS -->
 <!--     <link href="ajax/estilos/css/bootstrap.min.css" rel="stylesheet" type="text/css"> -->
     <link href="plugins/home_page/css/slider.css" rel="stylesheet" type="text/css">
@@ -21,10 +35,8 @@
     <!-- Squad theme CSS -->
     <link href="plugins/home_page/css/style.css" rel="stylesheet">
 	<link href="plugins/home_page/css/default.css" rel="stylesheet">
-	
 	<link href="plugins/select2/select2.css" rel="stylesheet">
 <!-- 	<link href="ajax/estilos/css/prueba.css" rel="stylesheet" type="text/css"> -->
-
 </head>
     <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
         <div class="container">
@@ -32,9 +44,9 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="ajax-link" href="index.jsp">
+                    <a class="ajax-link" href="CAPS.jsp">
                     <h1>CAPS PONELOYA </h1>
-                </a>
+                	</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -44,7 +56,7 @@
 				<li><a href="#service">Informacion</a></li>
 				<li><a href="#about">Acerca de Nosotros</a></li>
 				<li><a href="#slider">Poneloya</a></li>
-				<li data-toggle="modal" data-target="#popUpWindow"><a href="#popUpWindow">Iniciar SesiÛn </a></li>
+				<li data-toggle="modal" data-target="#popUpWindow"><a href="#popUpWindow">Iniciar Sesi√≥n </a></li>
 		      </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -66,10 +78,6 @@
 		</div>
     </section>
 	<!-- /Section: intro -->
-	
-	
-	
-
 <!-- Section: services -->
     <section id="service" class="home-section text-center bg-gray">
 		
@@ -79,7 +87,7 @@
 				<div class="col-lg-8 col-lg-offset-2">
 					<div class="wow bounceInDown" data-wow-delay="0.4s">
 					<div class="section-heading">
-					<h2 style="font-size:2.55em;">InformaciÛn</h2>
+					<h2 style="font-size:2.55em;">Informaci√≥n</h2>
 					<i class="fa fa-2x fa-angle-down"></i>
 					</div>
 					</div>
@@ -110,10 +118,10 @@
 					<div class="wow fadeInUp" data-wow-delay="0.2s">
 	                	<div class="service-box">
 							<div class="service-desc">
-								<h3>MisiÛn</h3>
-								<p class="forma">La organizaciÛn distribuye el agua potable a todos sus clientes las 24 horas al dÌa, 
-								lleva un control exacto del consumo de agua por cada clientes para lograr asÌ cada cierre de 
-								mes concluir en tiempo y forma con la elaboraciÛn de las facturas correspondiente a cada 
+								<h3>Misi√≥n</h3>
+								<p class="forma">La organizaci√≥n distribuye el agua potable a todos sus clientes las 24 horas al d√≠a, 
+								lleva un control exacto del consumo de agua por cada clientes para lograr as√≠ cada cierre de 
+								mes concluir en tiempo y forma con la elaboraci√≥n de las facturas correspondiente a cada 
 								cliente y de paso, llevar un control ordenado y exacto de la cantidad de agua total.</p>
 							</div>
 	                	</div>
@@ -206,7 +214,7 @@
 				<div class="wow bounceInUp" data-wow-delay="1s">
                 <div class="team boxed-grey">
                     <div class="inner">
-						<h5>Bayron ToruÒo</h5>
+						<h5>Bayron Toru√±o</h5>
                         <p class="subtitle">Typographer</p>
                         <div class="avatar"><img src="plugins/home_page/img/4.jpg" alt="" class="img-responsive img-circle" /></div>
 
@@ -335,37 +343,51 @@
 		<div class="modal fade" id="popUpWindow">
 			<div class="modal-dialog">
 				<div class="modal-content">
-				
 				<!-- /header -->
 				<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h5 Style='color:#3276D7; font-weight: bold;'>CAPS de Poneloya: Autenticaci√≥n de usuarios
+				<button id="cerrar_dialogo" type="button" class=" close" data-dismiss="modal">&times;</button></h5>
 				</div>
 				<!-- body -->
 				<div class="modal-body">
-					<form role="form">
+					<form action="./Autenticaci√≥n" method="post">
+					
 						<div class="form-group">
-							<input id="login" type="text" class="form-control" placeholder="Login">
+							<input Style='border-color:#3276D7;' id="username" name="username" type="text" class="form-control" placeholder="Usuario" required>
 						</div>
 						<div class="form-group">
-							<input id="pass" type="password" class="form-control" placeholder="Password">
+							<input Style='border-color:#3276D7;' id="password" name="password" type="password" class="form-control" placeholder="Contrase√±a" required>
 						</div>
+						<%
+								DT_Rol dtr = DT_Rol.getInstance();
+								ResultSet rs = dtr.cargarRol();
+							%>
+							
 						<div class="form-group">
 							<div class="col-xm-12 col-sm-12">
-								<select class="populate placeholder Rol" name="rol" id="rol">
-									<option value="">--Seleccione el Rol--</option>
-									<option value="1">Administrador</option>
-									<option value="2">Usuario</option>
-									<option value="3">Cliente</option>
+								<select Style='border-color:#3276D7;' class="populate placeholder Rol" name="rol" id="rol" required>
+									<option value="0">SELECCIONE EL ROL</option>
+									<%
+										while (rs.next()) {
+									%>
+									<option value="<%=rs.getInt("Rol_ID")%>"><%=rs.getString("nomRol")%></option>
+									<%
+										}
+									%>
 								</select>
 							</div>
 						</div>
+						<div class="form-group">
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-primary btn-block" Style='margin-top: 30px;' id="sesion">Iniciar sesi√≥n</button>
+							</div>
+						</div>
 					</form>
+					 <h6 Style='color:#3276D7; text-align:center;'> <label Style='color:red; font-size:20px; text-align:center;'>* </label> Esta cuenta es proporcionada por el administrador del sistema</h6>
+					 <div id="msg">
+					 <p Style='color:red; text-align:center; font-size:medium; font-weight:600;'><msg:out value="${msg}"/></p>
+					 </div>
 				</div>
-				<!-- button -->
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary btn-block">Iniciar sesiÛn</button>
-				</div>
-				
 				</div>
 			</div>
 		</div>
@@ -386,6 +408,7 @@
 <!--     <script src="ajax/estilos/css/jquery-3.2.0.min.js"></script>   -->
     
     <script>
+    
     function MakeSelect2() {
     	$('select').select2();
     	$('.select2-container').css({"width":"inherit", "text-align":"center", "font-size":"16px"});
@@ -483,6 +506,14 @@
             }());
             SliderModule.init({duration: 6000});
             $.getScript('plugins/select2/select2.min.js',MakeSelect2);
+            $("button#cerrar_dialogo").on("click", function() {
+				$("div#msg p").empty();
+			});
+            if($("div#msg p").text() == ""){
+        		console.log("No se ha autenticado");
+        	}else{
+        		$('#popUpWindow').modal('show');
+        	}
         });
 		</script>
     

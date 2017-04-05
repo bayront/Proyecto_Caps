@@ -10,7 +10,7 @@ public class Factura_Maestra
    private Boolean estadoFac;
    private Date fechaFactura;
    private Date fechaVencimiento;
-   private String ruc;
+   private String numFact;
    private Integer usuCrea;
    private Integer usuMod;
    private Integer usuElim;
@@ -47,11 +47,11 @@ public class Factura_Maestra
     public void setFechaFactura(Date fechaFactura) {
         this.fechaFactura = fechaFactura;
     }
-    public String getRuc() {
-        return ruc;
+    public String getNumFact() {
+        return numFact;
     }
-    public void setRuc(String ruc) {
-        this.ruc = ruc;
+    public void setNumFact(String numFact) {
+        this.numFact = numFact;
     }
     public Integer getUsuCrea() {
         return usuCrea;

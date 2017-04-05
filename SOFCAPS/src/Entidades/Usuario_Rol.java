@@ -3,8 +3,8 @@ package Entidades;
 public class Usuario_Rol {
 	private Integer rol_id;
 	private Integer usuario_id;
-	private Integer usuario_rol_id;
-	
+	private Usuario usuario;
+	private Rol rol;
 	
 	public Integer getRol_id() {
 		return rol_id;
@@ -18,11 +18,16 @@ public class Usuario_Rol {
 	public void setUsuario_id(Integer usuario_id) {
 		this.usuario_id = usuario_id;
 	}
-	public Integer getUsuario_rol_id() {
-		return usuario_rol_id;
+	public Usuario getUsuario() {
+		return usuario;
 	}
-	public void setUsuario_rol_id(Integer usuario_rol_id) {
-		this.usuario_rol_id = usuario_rol_id;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
-
+	public Rol getRol() {
+		return rol;
+	}
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
 }

@@ -9,6 +9,7 @@ public class Factura_Maestra
    private Float deslizamiento;
    private Boolean estadoFac;
    private Date fechaFactura;
+   private Date fechaVencimiento;
    private String ruc;
    private Integer usuCrea;
    private Integer usuMod;
@@ -18,7 +19,6 @@ public class Factura_Maestra
    private Date fechaElim;
    private Boolean anulado;
    private Integer factura_Maestra_ID;
-   private Categoria_Ing_Egreg categoria_Ing_Egreg;
    private Contrato contrato;
    private Cliente cliente;
    private Consumo consumo;
@@ -95,12 +95,6 @@ public class Factura_Maestra
     public void setAnulado(Boolean anulado) {
         this.anulado = anulado;
     }
-    public Categoria_Ing_Egreg getCategoria_Ing_Egreg() {
-        return categoria_Ing_Egreg;
-    }
-    public void setCategoria_Ing_Egreg(Categoria_Ing_Egreg categoria_Ing_Egreg) {
-        this.categoria_Ing_Egreg = categoria_Ing_Egreg;
-    }
     public Contrato getContrato() {
         return contrato;
     }
@@ -136,5 +130,11 @@ public class Factura_Maestra
 	}
 	public void setFacturas_Detalle(List<Factura_Detalle> facturas_Detalle) {
 		this.facturas_Detalle = facturas_Detalle;
+	}
+	public Date getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+	public void setFechaVencimiento(Date fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
 	} 
 }

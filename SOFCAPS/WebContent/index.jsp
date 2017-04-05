@@ -190,7 +190,9 @@
 							<li><a class="ajax-link" href="ajax/ver-consumos.jsp"> Consumo de los clientes</a></li>
 						</ul>
 					</li>
-
+					<li><a href="ajax/facturacion.jsp" class="ajax-link">
+							<i title="Factuación" class="fa fa-list-alt"></i> <span class="hidden-xs">Facturación</span>
+					</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i title="Secretaría" class="fa fa-folder-open"></i><span class="hidden-xs"> Área secretaría</span>
 					</a>
@@ -208,6 +210,7 @@
 					<i title="Usuarios" class="fa fa-user"></i> <span class="hidden-xs">Usuarios</span></a>
 						<ul class="dropdown-menu">
 							<li><a class="ajax-link" href="ajax/usuarito.jsp">Gestión de usuarios</a></li>
+							<li><a class="ajax-link" href="ajax/Usuario_Rol.jsp">Usuarios y Roles</a></li>
 						</ul>
 					</li>
 					<li class="dropdown"><a href="ajax/Roles_Opciones.jsp" class="ajax-link">

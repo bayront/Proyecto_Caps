@@ -22,7 +22,7 @@
 		<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 
 			<div class="box-header">
-				<div class="box-name">
+				<div class="box-name text-center">
 					<i class="fa  fa-user"></i> <span>Formulario de Clientes</span>
 				</div>
 				<div class="box-icons">
@@ -557,7 +557,7 @@ function botones() {
 				nombre1 : {
 					validators : {
 						stringLength: {
-							max: 49,
+							max: 50,
 							message: '¡Este campo solo permite 50 caracteres!'
 						},
 						notEmpty : {
@@ -572,7 +572,7 @@ function botones() {
 				nombre2 : {
 					validators : {
 						stringLength: {
-							max: 49,
+							max: 50,
 							message: '¡Este campo solo permite 50 caracteres!'
 						},
 						regexp: {
@@ -584,7 +584,7 @@ function botones() {
 				apellido1 : {
 					validators : {
 						stringLength: {
-							max: 49,
+							max: 50,
 							message: '¡Este campo solo permite 50 caracteres!'
 						},
 						notEmpty : {
@@ -599,7 +599,7 @@ function botones() {
 				apellido2 : {
 					validators : {
 						stringLength: {
-							max: 49,
+							max: 50,
 							message: '¡Este campo solo permite 50 caracteres!'
 						},
 						regexp: {

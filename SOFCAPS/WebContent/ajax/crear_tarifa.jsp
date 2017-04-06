@@ -44,7 +44,7 @@
 					<div class="form-group">
 						<label class="col-sm-4 control-label text-info">Limite Superior</label>
 						<div class="col-sm-4">
-							<input id="lim_Sup" name="lim_Sup" title="No requerido, sino existe lim_Sup digite 0"
+							<input id="lim_Sup" name="lim_Sup" title="No requerido, si no existe lim_Sup no digite nada"
 							class="form-control tarifa">
 						</div>
 					</div>
@@ -412,7 +412,7 @@
 					validators: {
 						greaterThan: {
 							value: 0,
-							inclusive: false,
+							inclusive: true,
 							message: '¡El campo debe ser mayor o igual a 0!'
 						},
 						notEmpty:{
@@ -427,7 +427,7 @@
 					validators: {
 						greaterThan: {
 							value: 0,
-							inclusive: false,
+							inclusive: true,
 							message: '¡El campo debe ser mayor o igual a 0!'
 						},
 			            digits: {

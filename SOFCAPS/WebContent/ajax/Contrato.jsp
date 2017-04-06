@@ -596,7 +596,7 @@ function formValidContrato() {
 		            greaterThan: {
 						value: 0,
 						inclusive: true,
-						message: '¡El campo debe ser mayor que 0!'
+						message: '¡El campo debe ser mayor o igual que 0!'
 					}
 		        }
 			}

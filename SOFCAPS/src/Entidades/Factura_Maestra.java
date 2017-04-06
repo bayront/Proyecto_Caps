@@ -24,6 +24,7 @@ public class Factura_Maestra
    private Consumo consumo;
    private List<ReciboCaja> recibosCaja;
    private List<Factura_Detalle> facturas_Detalle;
+   private float totalPago;
   
    public Factura_Maestra() 
    {
@@ -136,5 +137,13 @@ public class Factura_Maestra
 	}
 	public void setFechaVencimiento(Date fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
+	}
+
+	public float getTotalPago() {
+		return totalPago;
+	}
+
+	public void setTotalPago(float totalPago) {
+		this.totalPago = totalPago;
 	} 
 }

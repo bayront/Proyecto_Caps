@@ -326,6 +326,10 @@ var colap2 =  new Colap2();
 			fields: {
 				nomCategoria:{
 					validators: {
+						stringLength: {
+							max: 20,
+							message: '¡Este campo solo permite 20 caracteres!'
+						},
 						callback: {
 	        				message: '¡Este campo no debe ser igual a los otros registros!',
 	         				callback: function (value, validator, $field) {

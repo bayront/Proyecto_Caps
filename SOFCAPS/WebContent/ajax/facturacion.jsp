@@ -36,7 +36,7 @@
 			<div class="box-content">
 				<div id="ow-server-footer" style="margin:-15px; margin-bottom:30px;">
 					<a href="#" class="col-xs-6 col-sm-3 btn-info text-center" style="color:#2f2481; font-weight:600;"><i
-					class="fa fa-list"></i> <span>Ver historial de clientes</span> </a>
+					class="fa fa-list"></i> <span>Historial de facturas</span> </a>
 					<a href="#" class="col-xs-6 col-sm-3 btn-info text-center" style="color:#2f2481; font-weight:600;"><i
 					class="fa fa-plus-square"></i> <span>Crear recibo para factura</span></a> 
 					<a href="#" class="col-xs-6 col-sm-3 btn-info text-center" style="color:#2f2481; font-weight:600;"><i
@@ -332,14 +332,11 @@
 			"destroy": true,
 			'bProcessing': false,
 			'bServerSide': false,
-// 			ajax: {
-// 				"method":"GET",
-// 				"url":"./SL_consumo",
-// 				"data": {
-// 			        "carga": 1//para decirle al servlet que cargue consumos + cliente + contrato
-// 			    },
-// 				"dataSrc":"aaData"
-// 			},
+			ajax: {
+				"method":"GET",
+				"url":"./SL_Factura_Maestra",
+				"dataSrc":"aaData"
+			},
 			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
         	"bJQueryUI": true,
 			"language":idioma_esp,
@@ -348,23 +345,20 @@
 	            $('td', api.table().container()).find("button").tooltip({container : 'body'});
 	            $("a.btn").tooltip({container: 'body'});
 	        },
-// 			"columns": [
-// 	            { "data": null,
-// 	                render: function ( data, type, row ) {
-// 	                	var f = new Date(data.fecha_fin);
-// 	        			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
-// 	                	return fecha;
-// 	                }},
-// 	            { "data": "lectura_Actual" },
-// 	            { "data": "consumoTotal" },
-// 	            { "data": "cliente.nombreCompleto" },
-// 	            { "data": "contrato.numContrato" },
-// 	            { "data": "contrato.numMedidor" },
-// 	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' title='Editar consumo'>"+
-// 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
-// 					"<button type='button' class='eliminarConsumo btn btn-danger' title='Eliminar consumo'>"+
-// 					"<i class='fa fa-trash-o'></i> </button>"}
-// 	            ],
+			"columns": [
+				{ "data": "cliente.nombreCompleto" },
+	             { "data": "contrato.numMedidor" },
+	            { "data": "consumo.consumoTotal" },
+	            { "data": "totalPago" },
+	            { "data": "deslizamiento" },
+	            { "data": "consumo.fecha_fin" },
+	            { "data": "fechaVencimiento" },
+	            { "data": "numFact" },
+	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' title='Editar consumo'>"+
+					"<i class='fa fa-pencil-square-o'></i> </button>  "+
+					"<button type='button' class='eliminarConsumo btn btn-danger' title='Eliminar consumo'>"+
+					"<i class='fa fa-trash-o'></i> </button>"}
+	            ],
 	            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 					 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
 					 +"<rt>"

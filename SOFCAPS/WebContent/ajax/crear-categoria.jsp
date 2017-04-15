@@ -17,6 +17,35 @@
 		</ol>
 	</div>
 </div>
+<!--///////////////////////DataTable de las categorías/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-th"></i> <span>Lista de Categorias</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> <i class="fa fa-expand"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="tabla_categoria" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Nombre Categoria</th>
+							<th>Descripción</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 <!--///////////////////////Formulario principal de las categorías/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
@@ -63,35 +92,6 @@
 						</div>
 					</div>
 				</form>
-			</div>
-		</div>
-	</div>
-</div>
-<!--///////////////////////DataTable de las categorías/////////////////////////////// -->
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name text-center">
-					<i class="fa fa-th"></i> <span>Lista de Categorias</span>
-				</div>
-				<div class="box-icons">
-					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
-					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> <i class="fa fa-expand"></i></a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding table-responsive">
-				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="tabla_categoria" style="width:100%;">
-					<thead>
-						<tr>
-							<th>Nombre Categoria</th>
-							<th>Descripción</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-				</table>
 			</div>
 		</div>
 	</div>

@@ -457,12 +457,13 @@ a.show-sidebar:hover {
 	-moz-border-radius: 3px 3px 0 0;
 	border-radius: 3px 3px 0 0;
 	color: #363636;
-	font-size: 19px;
+	font-size: 22px;
 	position: relative;
 	overflow: hidden;
 	background: #b6d6d5;
 	border-bottom: 2px solid #9fa9b3;
 	height: 28px;
+	font-weight: bold;
 }
 
 .box-name, .modal-header-name {

@@ -16,6 +16,41 @@
 		</ol>
 	</div>
 </div>
+<!--///////////////////////DataTable de los consumos de los clientes/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-th"></i> <span>Lista de consumos</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i> </a> 
+					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> 
+						<i class="fa fa-expand"></i> </a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="tabla_consumo" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Fecha de corte</th>
+							<th>Lectura</th>
+							<th>Consumo</th>
+							<th>Nombres_Cliente</th>
+							<th>Num_Contrato</th>
+							<th>Num_medidor</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 <!--///////////////////////Formulario principal de consumos de los clientes/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
@@ -131,34 +166,34 @@
 		</div>
 	</div>
 </div>
-<!--///////////////////////DataTable de los consumos de los clientes/////////////////////////////// -->
-<div class="row">
+<!--///////////////////////DataTable del historial de consumos/////////////////////////////// -->
+<div id="historial" class="row" style="display:none;">
 	<div class="col-xs-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name text-center">
-					<i class="fa fa-th"></i> <span>Lista de consumos</span>
+					<i class="fa fa-th"></i> <span>Historial de consumos</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
-						<i class="fa fa-chevron-up"></i> </a> 
-					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> 
-						<i class="fa fa-expand"></i> </a>
+					<a id="abrir_historial" class="expand-link"> 
+						<i class="fa fa-expand"></i></a>
+					<a class="cerrar_historial" onclick="cerrarHistorial();"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content no-padding table-responsive">
+				<div style="width:100%; padding-top:15px;"></div>
 				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="tabla_consumo" style="width:100%;">
+					id="tabla_consumo_historial" style="width:100%;">
 					<thead>
 						<tr>
-							<th>Fecha_Corte</th>
+							<th>Nombres del Cliente</th>
+							<th>Fecha de corte</th>
 							<th>Lectura</th>
 							<th>Consumo</th>
-							<th>Nombres_Cliente</th>
 							<th>Num_Contrato</th>
 							<th>Num_medidor</th>
-							<th>Acción</th>
 						</tr>
 					</thead>
 				</table>
@@ -276,6 +311,62 @@ websocket.onerror = function(evt) {
 				"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 		callback();
 	}
+////////////////////////////////////////cerrar el modal del historial de consumos/////////////////////////////////
+	function cerrarHistorial() {
+		document.getElementById('historial').style.display = 'none';
+		expandir($("#abrir_historial"));
+		$('#tabla_consumo_historial').DataTable().state.clear();
+		$('#tabla_consumo_historial').DataTable().clear().draw();
+	}
+///////////////////funsión que crea un dataTable para traer en cliente y el contrato mediante un dialogo////////////
+	function cargarHistorial(contrato_ID){
+		if($.fn.DataTable.isDataTable('#tabla_consumo_historial')){
+			$('#tabla_consumo_historial').DataTable().state.clear();
+			$('#tabla_consumo_historial').DataTable().clear().draw();
+			$.ajax({
+		        type: "GET",
+		        url:"./SL_consumo",
+				data: {
+			        "carga": 3,
+			        "contrato_ID" : contrato_ID
+			    },
+		        success: function(response){
+		        	$('#tabla_consumo_historial').DataTable().rows.add(response.aaData).draw();
+		        }
+			});
+		}else{
+			var table = $('#tabla_consumo_historial').DataTable({
+				responsive: true,
+				"destroy": true,
+		    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+		    	"bJQueryUI": true,
+				"language":idioma_esp,
+				ajax: {
+					"method":"GET",
+					"url":"./SL_consumo",
+					"data": {
+				        "carga": 3,
+				        "contrato_ID" : contrato_ID
+				    },
+					"dataSrc":"aaData"
+				},
+				"columns": [
+					{ "data": "cliente.nombreCompleto" },
+					{ "data": null,
+		                render: function ( data, type, row ) {
+		                	var f = new Date(data.fecha_fin);
+		        			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+		                	return fecha;
+		                }
+					},
+		            { "data": "lectura_Actual" },
+		            { "data": "consumoTotal" },
+		            { "data": "contrato.numContrato" },
+		            { "data": "contrato.numMedidor" }
+		     	]
+		    });
+		}
+	}
 ///////////////////funsión que crea un dataTable para traer en cliente y el contrato mediante un dialogo////////////
 	function filtrarTabla(){
 		    $('#datatable-filter thead th label input').each( function () {
@@ -283,6 +374,7 @@ websocket.onerror = function(evt) {
 		        $(this).attr("placeholder", "Buscar por " + title);
 		    } );
 		    var table = $('#datatable-filter').DataTable({
+		    	responsive: true,
 		    	"destroy": true,
 		    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
 		    	"bJQueryUI": true,
@@ -361,6 +453,17 @@ websocket.onerror = function(evt) {
 				validarExpand(expand2, "#expandir2");
 		});
 	}
+///////////////////////////funsión que activa el evento click del boton ver historial del dataTable///////////////////////
+	var visualizarHistorial = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
+		$(tbody).on("click", "button.verHistorial", function() {
+			var datos = table.row($(this).parents("tr")).data();
+			var contrato_ID = datos.contrato.contrato_ID;
+			document.getElementById('historial').style.display = 'block';
+			expandir($("#abrir_historial"));
+			$("#abrir_historial").prop('disabled', true);
+			cargarHistorial(contrato_ID);
+		});
+	}
 ///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
 	function iniciarTabla(){
 		validarColap(colap1, "#colapsar_desplegar1");
@@ -400,7 +503,10 @@ websocket.onerror = function(evt) {
 	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' title='Editar consumo'>"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
 					"<button type='button' class='eliminarConsumo btn btn-danger' title='Eliminar consumo'>"+
-					"<i class='fa fa-trash-o'></i> </button>"}
+					"<i class='fa fa-trash-o'></i> </button> "+
+					"<button type='button' class='verHistorial btn btn-warning' data-toggle='tooltip' "+
+					"data-placement='top' title='ver historial de consumos'>"+
+					"<i class='fa fa-sitemap'></i> </button>"}
 	            ],
 	            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 					 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
@@ -433,6 +539,7 @@ websocket.onerror = function(evt) {
 		});
 		seleccionarEditarConsumo('#tabla_consumo tbody', tablaConsumo);
 		seleccionarEliminarConsumo('#tabla_consumo tbody', tablaConsumo);
+		visualizarHistorial('#tabla_consumo tbody', tablaConsumo);
 	}
 	
 	var agregar_nuevo_consumo = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form

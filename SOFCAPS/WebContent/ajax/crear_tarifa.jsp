@@ -16,6 +16,38 @@
 		</ol>
 	</div>
 </div>
+
+<!--///////////////////////DataTable de las tarifas/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-th"></i> <span>Lista de Tarifas</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> <i class="fa fa-expand"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="tabla_tarifa" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Limite Inferior</th>
+							<th>Limite Superior</th>
+							<th>Monto</th>
+							<th>Categoría</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 <!--///////////////////////Formulario principal de las tarifas/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
@@ -84,37 +116,6 @@
 						</div>
 					</div>
 				</form>
-			</div>
-		</div>
-	</div>
-</div>
-<!--///////////////////////DataTable de las tarifas/////////////////////////////// -->
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name text-center">
-					<i class="fa fa-th"></i> <span>Lista de Tarifas</span>
-				</div>
-				<div class="box-icons">
-					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
-					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> <i class="fa fa-expand"></i></a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding table-responsive">
-				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="tabla_tarifa" style="width:100%;">
-					<thead>
-						<tr>
-							<th>Limite Inferior</th>
-							<th>Limite Superior</th>
-							<th>Monto</th>
-							<th>Categoría</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-				</table>
 			</div>
 		</div>
 	</div>

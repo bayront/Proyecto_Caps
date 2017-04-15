@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,7 +41,7 @@ public class SL_Contrato extends HttpServlet {
 	private PrintWriter out;
 	private DTContrato dtContrato = DTContrato.getInstance();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	
+	SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 	
 	SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
 	  
@@ -62,12 +63,16 @@ public class SL_Contrato extends HttpServlet {
 			traerContrato(response);
 			
 		}catch (SQLException e){
+			System.out.println("error sql: "+e.getMessage());
 			e.printStackTrace();
+		} catch (java.text.ParseException e) {
+			e.printStackTrace();
+			System.out.println("error de parseo : "+e.getMessage());
 		}
 	}
     
     
-    private void traerContrato(HttpServletResponse response) throws SQLException {
+    private void traerContrato(HttpServletResponse response) throws SQLException, java.text.ParseException {
 		List<Contrato> listaC = new ArrayList<>();
 		ResultSet rs = dtContrato.cargarDatosTabla();
 		while(rs.next()){
@@ -77,7 +82,8 @@ public class SL_Contrato extends HttpServlet {
 			Sector se = new Sector();
 			Categoria ca = new Categoria();
 			co.setContrato_ID(rs.getInt("contrato_ID"));
-			co.setFechaContrato(rs.getDate("fechaContrato"));
+			String f = parseador.format(rs.getDate("fechaContrato"));
+			co.setFechaContrato(parseador.parse(f));
 			co.setNumContrato(rs.getInt("numContrato"));
 			co.setNumMedidor(rs.getString("numMedidor"));
 			co.setCuotas(rs.getInt("cuotas"));

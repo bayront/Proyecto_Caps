@@ -17,6 +17,39 @@
 		</ol>
 	</div>
 </div>
+<!--///////////////////////DataTable de otros ingresos y egresos/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-th"></i> <span>Lista de Otros ingresos y egresos</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" class="collapse-link" onclick="validar(colap2);"> 
+						<i class="fa fa-chevron-up"></i>
+					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> 
+						<i class="fa fa-expand"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="tabla_OI" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Descripción</th>
+							<th>Monto</th>
+							<th>Fecha de registro</th>
+							<th>Categoría</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 <!--///////////////////////Formulario principal de otros ingresos y egresos/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
@@ -85,39 +118,6 @@
 						</div>
 					</div>
 				</form>
-			</div>
-		</div>
-	</div>
-</div>
-<!--///////////////////////DataTable de otros ingresos y egresos/////////////////////////////// -->
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name text-center">
-					<i class="fa fa-th"></i> <span>Lista de Otros ingresos y egresos</span>
-				</div>
-				<div class="box-icons">
-					<a id="colapsar_desplegar2" class="collapse-link" onclick="validar(colap2);"> 
-						<i class="fa fa-chevron-up"></i>
-					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> 
-						<i class="fa fa-expand"></i></a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding table-responsive">
-				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="tabla_OI" style="width:100%;">
-					<thead>
-						<tr>
-							<th>Descripción</th>
-							<th>Monto</th>
-							<th>Fecha de registro</th>
-							<th>Categoría</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-				</table>
 			</div>
 		</div>
 	</div>

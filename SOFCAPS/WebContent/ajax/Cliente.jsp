@@ -16,13 +16,55 @@
 		</ol>
 	</div>
 </div>
+<!--/////////////////////////////// DataTable de los clientes/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box" id="cuadro1">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-th"></i> <span>Lista de Clientes</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i>
+					</a> 
+					<a id="expandir2" onclick="validar(expand2);" class="expand-link">
+						<i class="fa fa-expand"></i>
+					</a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<div style="text-align: center;">
+					<label Style='margin-top: 10px; margin-bottom: 10px;'> <input
+						type="checkbox" id="mostrar_clientes" onclick="">MOSTRAR CLIENTES INACTIVOS
+					</label>
+				</div>
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="dt_cliente" style="width: 100%;">
+					<thead>
+						<tr>
+							<th>Nombre1</th>
+							<th>Nombre2</th>
+							<th>Apellido1</th>
+							<th>Apellido2</th>
+							<th>Cédula</th>
+							<th>Celular</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 <!--/////////////////////////////// Formularios de Clientes/////////////////////////////// -->
 <div class="row" id="cerrar">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 
 			<div class="box-header">
-				<div class="box-name text-center">
+				<div class="box-name">
 					<i class="fa  fa-user"></i> <span>Formulario de Clientes</span>
 				</div>
 				<div class="box-icons">
@@ -85,8 +127,8 @@
 					<div class="form-group">
 						<label for="celular" class="col-sm-4 control-label">Celular</label>
 						<div class="col-sm-5">
-							<input id="celular" name="celular" type="text"
-								class="form-control" title="No requerido" />
+							<input id="celular" name="celular" type="text" max="99999999999"
+								class="form-control" title="No requerido" data-bv-lessthan-message="Inválido"/>
 						</div>
 					</div>
 					<div class="form-group">
@@ -105,48 +147,6 @@
 						</div>
 					</div>
 				</form>
-			</div>
-		</div>
-	</div>
-</div>
-<!--/////////////////////////////// DataTable de los clientes/////////////////////////////// -->
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box" id="cuadro1">
-			<div class="box-header">
-				<div class="box-name text-center">
-					<i class="fa fa-th"></i> <span>Lista de Clientes</span>
-				</div>
-				<div class="box-icons">
-					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
-						<i class="fa fa-chevron-up"></i>
-					</a> 
-					<a id="expandir2" onclick="validar(expand2);" class="expand-link">
-						<i class="fa fa-expand"></i>
-					</a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding table-responsive">
-				<div style="text-align: center;">
-					<label Style='margin-top: 10px; margin-bottom: 10px;'> <input
-						type="checkbox" id="mostrar_clientes" onclick="">MOSTRAR CLIENTES INACTIVOS
-					</label>
-				</div>
-				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="dt_cliente" style="width: 100%;">
-					<thead>
-						<tr>
-							<th>Nombre1</th>
-							<th>Nombre2</th>
-							<th>Apellido1</th>
-							<th>Apellido2</th>
-							<th>Cédula</th>
-							<th>Celular</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-				</table>
 			</div>
 		</div>
 	</div>
@@ -515,6 +515,9 @@ function botones() {
 		
 		validarColap(colap1, "#colapsar_desplegar1");
 		
+		// Add drag-n-drop feature to boxes
+		WinMove();
+		
 		$('.form-control').tooltip();
 	});
 /////////////////////////////////////////valida el formulario de los clientes////////////////////////////////////////
@@ -588,7 +591,7 @@ function botones() {
 							message: '¡Este campo solo permite 50 caracteres!'
 						},
 						notEmpty : {
-							message : "¡Este campo es requerido y no debe estar vacio ni caracteres especiales!"
+							message : "¡Este campo es requerido y no debe estar vacio!"
 						},
 						regexp: {
 							regexp: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/,

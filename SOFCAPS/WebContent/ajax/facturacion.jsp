@@ -25,9 +25,9 @@
 					<i class="fa fa-edit"></i> <span>Facturación</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar1" class="collapse-link" onclick="validar(colap1);"> <i
+					<a id="colapsar_desplegar1" class="collapse-link"> <i
 						class="fa fa-chevron-up"></i></a> 
-						<a id="expandir1" class="expand-link"  onclick="validar(expand1);"> 
+						<a id="expandir1" class="expand-link"> 
 						<i class="fa fa-expand"></i></a>
 				</div>
 				<div class="no-move"></div>
@@ -92,12 +92,12 @@
 		</div>
 	</div>
 </div>
-<!--///////////////////////DataTable de los facturas/////////////////////////////// -->
+<!--///////////////////////////////////DataTable de los facturas////////////////////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
 			<div class="box-header">
-				<div class="box-name text-center">
+				<div class="box-name">
 					<i class="fa fa-th"></i> <span>Lista de facturas recientes</span>
 				</div>
 				<div class="box-icons">
@@ -193,37 +193,28 @@
 		});
 	}
 	
-// //////////////////////////funsión que muestra el resultado mediant un dialogo//////////////////////////////////////
-// 	var verResultado = function(r) {//parametro(resultado-String)
-// 		if(r == "BIEN"){
-// 			mostrarMensaje("#dialog", "CORRECTO", 
-// 					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
-// 			limpiar_texto();
-// 			$('#tabla_consumo').DataTable().ajax.reload();
-// 			websocket.send("ACTUALIZADO");
-// 		}
-// 		if(r == "ERROR"){
-// 			mostrarMensaje("#dialog", "ERROR", 
-// 					"¡Ha ocurrido un error, no se pudó realizar la acción!", "#E97D7D", "btn-danger");
-// 		}
-// 		if(r =="VACIO"){
-// 			mostrarMensaje("#dialog", "VACIO", 
-// 					"¡No se especificó la acción a realizar!", "#FFF8A7", "btn-warning");
-// 		}
-// 		if(r =="ACTUALIZADO"){
-// 			mostrarMensaje("#dialog", "ACTUALIZADO", 
-// 					"¡Otro usuario a realizado un cambio, se actualizaron los datos!", "#86b6dd", "btn-primary");
-// 			$('#tabla_consumo').DataTable().ajax.reload();
-// 		}
-// 		if(r == "LECTURAMENOR"){
-// 			mostrarMensaje("#dialog", "ERROR", 
-// 					"¡La lectura que ha digitado debe ser mayor que la lectura anterior!", "#E97D7D", "btn-danger");
-// 		}
-// 		if(r == "FECHAMENOR"){
-// 			mostrarMensaje("#dialog", "ERROR", 
-// 					"¡La fecha debe ser mayor que el registro anterior de este cliente!", "#E97D7D", "btn-danger");
-// 		}
-// 	}
+//////////////////////////funsión que muestra el resultado mediante un dialogo//////////////////////////////////////
+	var verResultado = function(r) {//parametro(resultado-String)
+		if(r == "BIEN"){
+			mostrarMensaje("#dialog", "CORRECTO", 
+					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
+			limpiar_texto();
+			$('#tabla_factura').DataTable().ajax.reload();
+		}
+		if(r == "ERROR"){
+			mostrarMensaje("#dialog", "ERROR", 
+					"¡No existe esta fecha de corte en los registros!", "#E97D7D", "btn-danger");
+		}
+		if(r =="VACIO"){
+			mostrarMensaje("#dialog", "VACIO", 
+					"¡No se especificó la acción a realizar!", "#FFF8A7", "btn-warning");
+		}
+		if(r =="NOFACTURAS"){
+			mostrarMensaje("#dialog", "SIN FACTURAS", 
+					"¡No se genero ninguna factura, todo bien!", "#FFF8A7", "btn-warning");
+			limpiar_texto();
+		}
+	}
 // /////////////////////////////funsión que abre un dialogo y mostrara un contenido//////////////////////////////////
 // 	function abrirDialogo(callback) {//parametro(funsion_js[eliminar])
 // 		OpenModalBox(
@@ -326,7 +317,6 @@
 // 	}
 ///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
 	function iniciarTabla(){
-// 		validarColap(colap1, "#colapsar_desplegar1");
 		var tablaConsumo = $('#tabla_factura').DataTable( {
 			responsive: true,
 			"destroy": true,
@@ -351,8 +341,18 @@
 	            { "data": "consumo.consumoTotal" },
 	            { "data": "totalPago" },
 	            { "data": "deslizamiento" },
-	            { "data": "consumo.fecha_fin" },
-	            { "data": "fechaVencimiento" },
+	            { "data": null,
+	                render: function ( data, type, row ) {
+	                	var f = new Date(data.consumo.fecha_fin);
+	        			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+	                	return fecha;
+	                }},
+	             { "data": null,
+		         	render: function ( data, type, row ) {
+		             	var f = new Date(data.fechaVencimiento);
+		        		var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+		               	return fecha;
+		       	}},
 	            { "data": "numFact" },
 	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' title='Editar consumo'>"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
@@ -404,38 +404,17 @@
 // 		$("button#abrir_modal").focus();
 // 	}
 	
-// 	var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
-// 		limpiar_texto();
-// 		if(expand1.valor == true)
-// 			validarExpand(expand1, "#expandir1");
-		
-// 		if(expand2.valor == true)
-// 			validarExpand(expand2, "#expandir2");
-		
-// 		validarColap(colap1, "#colapsar_desplegar1");
-// 		if (colap2.valor ==true){}else{
-// 			validarColap(colap2, "#colapsar_desplegar2");
-// 		}
-// 	}
+	var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
+		limpiar_texto();
+		colapsar_desplegar($("#colapsar_desplegar1"));	
+	}
 	
-// 	var limpiar_texto = function() {////////////////////////limpiar texto del formulario
-// 		$("#opcion").val("guardar");
-// 		$("#consumo_ID").val("");
-// 		$("#cliente_ID").val("");
-// 		$("#contrato_ID").val("");
-// 		$("#lectura_Actual").val("");
-// 		$("#fecha_fin").val("");
-// 		$("#consumoTotal").val("");
-// 		$("#nombreClienteCompleto").val("");
-// 		$("#numContrato").val("");
-// 		$("#numMedidor").val("");
-// 		$("#nombreClienteCompleto").prop('readonly', false);
-// 		$("#numContrato").prop('readonly', false);
-// 		$("#numMedidor").prop('readonly', false);
-// 		$("#abrir_modal").prop('disabled', false);
-// 		$("#abrir_modal").attr('title', '');
-// 		$("form#defaultForm").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
-// 	}
+	var limpiar_texto = function() {////////////////////////limpiar texto del formulario
+		$("#opcion").val("generar");
+		$("#fecha_corte").val("");
+		$("#fecha_vence").val("");
+		$("form#defaultForm").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
+	}
 // /////////////////////////funsión que activa el evento click para eliminar un registro del dataTable////////////////
 // 	var seleccionarEliminarConsumo = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 // 		$(tbody).on("click", "button.eliminarConsumo", function() {
@@ -465,6 +444,8 @@
 		//cargar scripts dataTables
 		LoadDataTablesScripts2(AllTables);
 
+		LoadBootstrapValidatorScript(FormValidFactura);
+		
 		// Inicializar DatePicker
 		$('#fecha_corte').datepicker({
 			setDate : new Date(),
@@ -472,7 +453,7 @@
 			onSelect: function(dateText, inst) {
 				$("#fecha_corte").val(dateText.toString());
 				$("#fecha_corte").change();
-// 				$('form#defaultForm').bootstrapValidator('revalidateField', 'fecha');
+				$('#defaultForm').bootstrapValidator('revalidateField', 'fecha_corte');
 			}
 		});
 		$('#fecha_vence').datepicker({
@@ -481,121 +462,66 @@
 			onSelect: function(dateText, inst) {
 				$("#fecha_vence").val(dateText.toString());
 				$("#fecha_vence").change();
-// 				$('form#defaultForm').bootstrapValidator('revalidateField', 'fecha');
+				$('#defaultForm').bootstrapValidator('revalidateField', 'fecha_vence');
 			}
 		});
 		
+// 		Add Drag-n-Drop feature				
+		WinMove();
 	
 		// Añadir Tooltip para formularios
 		$('.form-control').tooltip();
 		$('[data-toggle=tooltip]').tooltip();
+	});
+/////////////////////////////////////funsión que valida los campos del formulario////////////////////////////////
+	function FormValidFactura() {
+		$('form#defaultForm').bootstrapValidator({
+			message: '¡Este valor no es valido!',
+			fields: {
+				fecha_corte:{
+					validators:{
+	                    notEmpty:{
+			                message: "¡Este campo es requerido y no debe estar vacio!"
+			            }
+					}
+				},
+				fecha_vence:{
+					validators:{
+	                    notEmpty:{
+			                message: "¡Este campo es requerido y no debe estar vacio!"
+			            },
+			            callback: {
+	       					message: '¡La fecha de vencimiento debe ser mayor que la fecha actual!',
+	        				callback: function (value, validator, $field) {
+		            				var f1 = $("form#defaultForm #fecha_vence").val().split("/");
+// 		            				var f2 = $("form#defaultForm #fecha_corte").val().split("/");
+		            				var fecha1 = new Date(f1[2], f1[1]-1, f1[0]);
+		            				var fecha2 = new Date();
+		            				if(fecha1 <=  fecha2)
+	        							return false;
+		            				else
+		            					return true;
+	        				}
+	    				}
+					}
+				}
+			}
+		}).on('success.form.bv', function(e) {//evento que se activa cuando los datos son correctos
+            // Prevenir el evento submit
+            e.preventDefault();
 
-// 		//Cargar plugins para validaciones
-// 		LoadBootstrapValidatorScript(FormValidConsumo);
-
-// 		//MODAL para mostrar una tabla con el cliente y en contrato
-// 		$('#abrir_modal').on('click',function(e) {
-// 			OpenModalBox(
-// 			"<div><h3>Buscar Cliente</h3></div>",
-// 			"<div class='table-responsive'>"
-// 			+ "<table class='table table-bordered table-striped table-hover table-heading table-datatable'"+
-// 			"id='datatable-filter'>"
-// 			+ "<thead>"
-// 			+ "<tr>"
-// 			+ "<th><label><input type='text' name='Nombres'/></label></th>"
-// 			+ "<th><label><input type='text' name='Num_Contrato'/></label></th>"
-// 			+ "<th><label><input type='text' name='Medidor'/></label></th>"
-// 			+ "<th></th>"
-// 			+ "</tr>"														
-// 			+ "</thead>"														
-// 			+ "<tfoot>"														
-// 			+ "<tr><th Style='color: #5d96c3;'>Nombre Completo</th>"+
-// 			"<th Style='color: #5d96c3;'>Numero Contrato</th>"+
-// 			"<th Style='color: #5d96c3;'>Medidor</th><th></th></tr>"														
-// 			+ "</tfoot>"														
-// 			+ "</table>"														
-// 			+ "</div>",
-// 			"<div Style='text-align: center; margin-bottom: -5px;'><button type='button' class='btn-default btn-label-left btn-lg' "
-// 			+"onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span>Cancelar</button></div>");
-			
-// 			filtrarTabla();		
-		});
-		
-// 		// Add Drag-n-Drop feature				
-// 		WinMove();	
-		
-// 		//añadir tooltip
-// 		$('[data-toggle="tooltip"]').tooltip();
-// 	});
-// ///////////////////////////Funsión que valida el formulario de consumos de clientes////////////////////////////////
-// 	function FormValidConsumo() {
-// 		$('form#defaultForm').bootstrapValidator({
-// 			message: '¡Este valor no es valido!',
-// 			fields: {
-// 				lectura:{
-// 					validators: {
-// 						notEmpty:{
-// 			                message: "¡Este campo es requerido y no debe estar vacio!"
-// 			            },
-// 			            greaterThan: {
-// 	                        value: 0,
-// 	                        inclusive: false,
-// 	                        message: '¡El valor debe ser mayor o igual a 0!'
-// 	                    },
-// 						callback: {
-//            					message: '¡Seleccione un cliente antes de digitar la lectura!',
-//             				callback: function (value, validator, $field) {
-//             					if($("form#defaultForm #contrato_ID").val()=="" && $("form#defaultForm #cliente_ID").val()==""){
-//             						return false;
-//                                 }else{
-//                                 	return true;
-//                                 }
-//             				}
-//         				}
-// 			        }
-// 				},
-// 				fecha:{
-// 					validators: {
-// 						notEmpty:{
-// 			                message: "¡Este campo es requerido y no debe estar vacio!"
-// 			            }
-// 			        }
-// 				},
-// 				consumoActual:{
-// 					validators: {
-// 						notEmpty:{
-// 			                message: "¡Este campo es requerido y no debe estar vacio!"
-// 			            }
-// 			        }
-// 				}
-// 			}
-// 		}).on('success.form.bv', function(e) {//evento que se activa cuando los datos son correctos
-//             // Prevenir el evento submit
-//             e.preventDefault();
-
-//             //obtener datos del formulario
-//             var $form = $(e.target);
-//             var frm=$form.serialize();
-//             console.log(frm);
-//             $.ajax({//enviar datos por ajax
-// 	 			type:"POST",
-// 	 			url:"./SL_consumo",
-// 	 			data: frm//datos a enviar
-// 	 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
-// 	 			console.log(info);
-// 	 			if(expand1.valor == true)
-// 					validarExpand(expand1, "#expandir1");
-			
-// 				if(expand2.valor == true)
-// 					validarExpand(expand2, "#expandir2");
-				
-// 				validarColap(colap1, "#colapsar_desplegar1");
-// 				if (colap2.valor ==true){}else{
-// 					validarColap(colap2, "#colapsar_desplegar2");
-// 				}
-// 				verResultado(info);//se envia a verificar que mensaje respondio el servlet	
-// 	 			});
-//         });
-// 	}
-	
+            //obtener datos del formulario
+            var $form = $(e.target);
+            var frm=$form.serialize();
+            console.log(frm);
+  			$.ajax({//enviar datos por ajax
+	  			method:"post",
+	  			url:"./SL_Factura_Maestra",
+	  			data: frm//datos a enviar
+	  		}).done(function(info) {//informacion que el servlet le reenvia al jsp
+	  			console.log(info);
+ 				verResultado(info);
+	  		});
+        });
+	}
 </script>

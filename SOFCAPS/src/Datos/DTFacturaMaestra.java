@@ -1,12 +1,15 @@
 package Datos;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import Entidades.Categoria;
 import Entidades.Cliente;
@@ -20,6 +23,7 @@ public class DTFacturaMaestra {
 	private static ResultSet rs; //ResultSet Global
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
+	DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
 	
 	private int opcion;
 	
@@ -185,6 +189,24 @@ public class DTFacturaMaestra {
 			e.printStackTrace();
 		}
 		return eliminado;
+	}
+
+	public int generarFacturas(Date fechaCorte, Date fechaVence) {
+		int cantidadFacturas = 0;
+        try {
+        	// Llamada al procedimiento almacenado
+			CallableStatement cst = con.prepareCall("{call factura_maestro_add(?,?,?)}");
+			cst.setString(1, fecha.format(fechaCorte));
+			cst.setString(2, fecha.format(fechaVence));
+			cst.registerOutParameter(3, java.sql.Types.INTEGER);
+			// Ejecuta el procedimiento almacenado
+            cst.execute();
+            
+            cantidadFacturas = cst.getInt(3);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cantidadFacturas;
 	}
 	
 	

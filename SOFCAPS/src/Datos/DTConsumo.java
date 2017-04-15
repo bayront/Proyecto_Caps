@@ -213,4 +213,21 @@ public class DTConsumo {
 		}
 		return guardado;
 	}
+
+	public ResultSet cargarHistorial(int contrato_ID) {
+		Statement s;
+		String sql = ("SELECT * FROM consumo cs WHERE cs.eliminado = 0 and Contrato_ID = "+contrato_ID+";");
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("historial de consumos cargados");
+		}catch (Exception e){
+			e.printStackTrace();
+			System.out.println("Error en DTConsumo, metodo cargarHistorial: "+e.getMessage());
+		}
+		if(rs == null)
+			System.out.println("Resultset de Consumo vacio");
+		
+		return rs;
+	}
 }

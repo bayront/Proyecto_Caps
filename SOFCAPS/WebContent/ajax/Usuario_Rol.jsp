@@ -17,6 +17,37 @@
 		</ol>
 	</div>
 </div>
+<!--///////////////////////DataTable de las categorias de usuarios y roles/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-th"></i> <span>Lista de Usuarios y Roles</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> 
+						<i class="fa fa-expand"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="dt_RolUsuario" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Usuario</th>
+							<th>Rol</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 	<!---------------------------- AQUI EMPIEZA FORMULARIO DE ROL USUARIO ---------------------------->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
@@ -111,38 +142,6 @@
 	</div>
 </div>
 <!-------------- AQUI TERMINA FORMULARIO DE ROL USUARIO ------------------------>
-
-<!--///////////////////////DataTable de las categorias de usuarios y roles/////////////////////////////// -->
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name text-center">
-					<i class="fa fa-th"></i> <span>Lista de Usuarios y Roles</span>
-				</div>
-				<div class="box-icons">
-					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
-						<i class="fa fa-chevron-up"></i></a> 
-					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> 
-						<i class="fa fa-expand"></i></a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding table-responsive">
-				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="dt_RolUsuario" style="width:100%;">
-					<thead>
-						<tr>
-							<th>Usuario</th>
-							<th>Rol</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
 
 <!--///////////////////////Formulario y dialogo de eliminción/////////////////////////////// -->
 <div>

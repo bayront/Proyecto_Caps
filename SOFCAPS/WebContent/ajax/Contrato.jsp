@@ -17,6 +17,43 @@
 		</ol>
 	</div>
 </div>
+<!--///////////////////////DataTable de los contratos/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-th"></i> <span>Lista de Contratos</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> 
+						<i class="fa fa-expand"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="dt_Contrato" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Nombre del cliente</th>
+							<th>Fecha contrato</th>
+							<th>Número contrato</th>
+							<th>Número de Medidor</th>
+							<th>Monto contrato</th>
+							<th>Regimen propiedad</th>
+							<th>Sector</th>
+							<th>Categoría</th>
+							<th></th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 <!--///////////////////////Formulario principal de contrato /////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
@@ -39,34 +76,24 @@
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
 					<input type="hidden" id="fechaContrato" name="fechaContrato">
 					<input type = "hidden" id="contrato_ID" name ="contrato_ID" >
-					<input type = "hidden" id="cliente_ID" name ="cliente_ID" >
+					
+					<input type = "hidden" id="nombreCliente" name ="nombreCliente" >
+					<div class="form-group has-warning has-feedback">
+						<label class="col-sm-5 control-label">Nombre del cliente:</label>
+						<div class="col-sm-4">
+							<input id = "nombreClienteCompleto" type="text" class="form-control" 
+							placeholder="Seleccione el nombre del cliente" name="nombreClienteCompleto"
+							data-toggle="tooltip" data-placement="bottom" title="Nombre completo del cliente">
+						</div>
+						<div class="col-sm-5 col-md-3">
+							<button type="button" class="blue" id="abrir_modal">
+								<span><i class="fa fa-search"></i></span> Buscar Cliente
+							</button>
+						</div>
+					</div>
 					
 					<%
 						DTContrato dt = DTContrato.getInstance();
-						ArrayList<Cliente> listaCl = new ArrayList<Cliente>();
-						listaCl = dt.listaCliente();
-						
-						ResultSet rs = dt.cargarDatos();
-						
-					%>
-						<div class="form-group has-warning has-feedback">
-							<label class="col-sm-5 control-label">Seleccione el cliente</label>
-								<div class="col-sm-4">
-								<select id= "nombreCliente" name="nombreCliente" type = "simple"
-									class="populate placeholder">
-									<option value="">-- Seleccione --</option>
-								<%
-									for(int i = 0; i < listaCl.size(); i++){
-								%>
-										<option value="<%=listaCl.get(i).getCliente_ID() %>"> <%=listaCl.get(i).getNombreCompleto() %></option>
-								<%
-									}
-								%>
-								</select>
-								</div>
-						</div>
-					
-					<%
 						ArrayList<RegimenPropiedad> listaR = new ArrayList<RegimenPropiedad>();
 						listaR = dt.listaRegimenPropiedad();
 						
@@ -175,43 +202,6 @@
 		</div>
 	</div>
 </div>
-<!--///////////////////////DataTable de los contratos/////////////////////////////// -->
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name text-center">
-					<i class="fa fa-th"></i> <span>Lista de Contratos</span>
-				</div>
-				<div class="box-icons">
-					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
-						<i class="fa fa-chevron-up"></i></a> 
-					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> 
-						<i class="fa fa-expand"></i></a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding table-responsive">
-				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="dt_Contrato" style="width:100%;">
-					<thead>
-						<tr>
-							<th>Nombre del cliente</th>
-							<th>Fecha contrato</th>
-							<th>Número contrato</th>
-							<th>Número de Medidor</th>
-							<th>Monto contrato</th>
-							<th>Regimen propiedad</th>
-							<th>Sector</th>
-							<th>Categoría</th>
-							<th></th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
 <!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
 <div>
 	<form id="frmEliminarContrato" action="" method="POST">
@@ -244,7 +234,6 @@ var expand2 = new Expand2();
 var colap2 = new Colap2();
 ////////////////////////////////////Correr plugin SELECT2 sobre los selects mencionados//////////////////////////////
 function DemoSelect2(){
-	$('#nombreCliente').select2({placeholder: "Seleccione cliente..."});
 	$('#regimenPropiedad').select2({placeholder: "Seleccione regimen..."});
 	$('#sector').select2({placeholder: "Seleccione sector..."});
 	$('#categoria').select2({placeholder: "Seleccione categoria..."});
@@ -320,6 +309,7 @@ var limpiar_texto = function() {/////////////////////////limpiar texto del formu
 	$("#opcion").val("guardar");
 	$("#contrato_ID").val("");
 	$("#nombreCliente").val("").change();
+	$("#nombreClienteCompleto").val("");
 	$("#numMedidor").val("");
 	$("#montoContrato").val("");
 	$("#cuotas").val("").change();
@@ -375,7 +365,7 @@ var obtener_id_eliminar = function(tbody, table) {//parametro(id_tabla, objeto d
 var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 	$(tbody).on("click", "button.editarContrato", function() {
 		var datos = table.row($(this).parents("tr")).index();
-		var contrato_ID, numMedidor, cuotas, montoContrato, cliente, regimenPropiedad, sector, categoria;
+		var contrato_ID, numMedidor, cuotas, montoContrato, cliente, nombreCliente, regimenPropiedad, sector, categoria;
 		table.rows().every(function(index, loop, rowloop) {
 			if(index == datos){
 				contrato_ID = table.row(index).data().contrato_ID;
@@ -383,11 +373,13 @@ var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto 
 				cuotas = table.row(index).data().cuotas;
 				montoContrato = table.row(index).data().montoContrato;
 				cliente = table.row(index).data().cliente.cliente_ID;
+				nombreCompleto = table.row(index).data().cliente.nombreCompleto;
 				regimenPropiedad = table.row(index).data().regimenPropiedad.regimenPropiedad_ID;
 				sector = table.row(index).data().sector.sector_ID;
 				categoria = table.row(index).data().categoria.categoria_ID;
 				$("#contrato_ID").val(contrato_ID);
 				$("#nombreCliente").val(cliente).change();
+				$("#nombreClienteCompleto").val(nombreCompleto);
 				$("#numMedidor").val(numMedidor);
 				$("#cuotas").val(cuotas);
 				$("#montoContrato").val(montoContrato);
@@ -483,6 +475,62 @@ var listar = function() {
 	obtener_datos_editar("#dt_Contrato tbody",tablaContrato);
 	obtener_id_eliminar('#dt_Contrato tbody',tablaContrato);
 }
+///////////////////funsión que crea un dataTable para traer en cliente mediante un dialogo////////////
+function filtrarTabla(){
+	console.log("buscarCliente");
+	    $('#datatable-filter thead th label input').each( function () {
+	        var title = $(this).attr("name");
+	        $(this).attr("placeholder", title);
+	    } );
+	    var table = $('#datatable-filter').DataTable({
+	    	"destroy": true,
+	    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+	    	"bJQueryUI": true,
+			"language":idioma_esp,
+			ajax: {
+				"method":"GET",
+				"url":"./SL_Cliente",
+				"data": {
+			        "carga": 1//para decirle al servlet que cargue solo clinte
+			    },
+				"dataSrc":"aaData"
+			},
+			"columns": [
+	            { "data": "nombre1"},
+	            { "data": "nombre2"},
+	            { "data": "apellido1"},
+	            { "data": "apellido2"},
+	            { "data": "cedula"},
+	            {"defaultContent":"<button type='button' style='margin-left:15px;' class='activar btn btn-primary'"
+	            +"title='Seleccionar cliente' id='seleccionarCl' >"
+				+ "<i class='fa fa-upload'></i> </button>"}
+	            ]
+	    });
+	 
+	    // Aplicar la busqueda por columna
+	    table.columns().every( function () {
+	        var that = this;
+	        $( 'input', this.header() ).on( 'keyup change', function () {
+	            if ( that.search() !== this.value ) {
+	                that.search( this.value) .draw();
+	            }
+	        } );
+	    } );
+	    cambiarCliente('#datatable-filter tbody', table);
+}
+/////////////////////////////funsión que setea el cliente y contrato en los input del formulario////////////////////
+function cambiarCliente(tbody, table) {//parametro(id_tabla, objeto dataTable)
+	$(tbody).on("click","button#seleccionarCl",function(){
+		console.log("cambiar cliente");
+		var datos = table.row($(this).parents("tr")).data();
+		console.log(datos);
+		$("#nombreClienteCompleto").val(datos.nombre1 + " " + datos.nombre2 + " " + datos.apellido1 + " " + datos.apellido2);
+		$("#nombreCliente").val(datos.cliente_ID);
+		
+		$('.formContrato').bootstrapValidator('revalidateField', 'nombreClienteCompleto');
+		CloseModalBox();
+	});
+}
 /////////////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////////
 $(document).ready(function() {
 	
@@ -511,16 +559,58 @@ $(document).ready(function() {
 	
 	LoadDataTablesScripts2(AllTables);
 	
+	//MODAL para mostrar una tabla con el cliente
+	$('#abrir_modal').on('click',function(e) {
+		OpenModalBox(
+		"<div><h3>Buscar Cliente</h3></div>",
+		"<div class='table-responsive'>"
+		+ "<table class='table table-bordered table-striped table-hover table-heading table-datatable'"+
+		"id='datatable-filter'>"
+		+ "<thead>"
+		+ "<tr>"
+		+ "<th><label><input type='text' name='Nombre 1'/></label></th>"
+		+ "<th><label><input type='text' name='Nombre 2'/></label></th>"
+		+ "<th><label><input type='text' name='Apellido 1'/></label></th>"
+		+ "<th><label><input type='text' name='Apellido 2'/></label></th>"
+		+ "<th><label><input type='text' name='Cédula'/></label></th>"
+		+ "<th></th>"
+		+ "</tr>"														
+		+ "</thead>"														
+		+ "<tfoot>"														
+		+ "<tr> <th Style='color: #5d96c3;'>Nombre1</th>"
+		+ "<th Style='color: #5d96c3;'>Nombre2</th>"
+		+ "<th Style='color: #5d96c3;'>Apellido1</th>"
+		+ "<th Style='color: #5d96c3;'>Apellido2</th>"
+		+"<th Style='color: #5d96c3;'>Número de cédula</th>"
+		+"<th></th> </tr>"													
+		+ "</tfoot>"														
+		+ "</table>"														
+		+ "</div>",
+		"<div Style='text-align: center; margin-bottom: -5px;'><button type='button' class='btn-default btn-label-left btn-lg' "
+		+"onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span>Cancelar</button></div>");
+		
+		filtrarTabla();		
+	});
 });
 ////////////////////////////////////Funsión que valida el formulario de contratos/////////////////////////////////////
 function formValidContrato() {
 	$('.formContrato').bootstrapValidator({
 		message : 'Este valor no es valido',
 		fields : {
-			nombreCliente:{
+			nombreClienteCompleto:{
 				validators: {
 					notEmpty:{
 		                message: "¡Este campo es requerido y no debe estar vacio!"
+		            },
+		            callback:{
+		            	message: "¡Seleccione un cliente!",
+		            	callback: function (value, validator, $field) {
+        					if($(".formContrato #nombreCliente").val()==""){
+        						return false;
+                            }else{
+                            	return true;
+                            }
+        				}
 		            }
 		        }
 			},

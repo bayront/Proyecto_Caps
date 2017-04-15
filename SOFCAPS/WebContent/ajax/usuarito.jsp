@@ -16,6 +16,45 @@
 		</ol>
 	</div>
 </div>
+<!--/////////////////////////////// DataTable de los usuarios/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box" id="cuadro1">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-th"></i> <span>Lista de Usuarios</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i>
+					</a> 
+					<a id="expandir2" onclick="validar(expand2);" class="expand-link">
+						<i class="fa fa-expand"></i>
+					</a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<div style="text-align: center;">
+					<label Style='margin-top: 10px; margin-bottom: 10px;'> <input
+						type="checkbox" id="mostrar_usuarios">MOSTRAR USUARIOS INACTIVOS
+					</label>
+				</div>
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="dt_usuario" style="width: 100%;">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Login</th>
+							<th>Password</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 <!--/////////////////////////////// Formularios de Clientes/////////////////////////////// -->
 <div class="row" id="cerrar">
 	<div class="col-xs-12 col-sm-12">
@@ -79,45 +118,6 @@
 						</div>
 					</div>
 				</form>
-			</div>
-		</div>
-	</div>
-</div>
-<!--/////////////////////////////// DataTable de los usuarios/////////////////////////////// -->
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box" id="cuadro1">
-			<div class="box-header">
-				<div class="box-name text-center">
-					<i class="fa fa-th"></i> <span>Lista de Usuarios</span>
-				</div>
-				<div class="box-icons">
-					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
-						<i class="fa fa-chevron-up"></i>
-					</a> 
-					<a id="expandir2" onclick="validar(expand2);" class="expand-link">
-						<i class="fa fa-expand"></i>
-					</a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding table-responsive">
-				<div style="text-align: center;">
-					<label Style='margin-top: 10px; margin-bottom: 10px;'> <input
-						type="checkbox" id="mostrar_usuarios">MOSTRAR USUARIOS INACTIVOS
-					</label>
-				</div>
-				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="dt_usuario" style="width: 100%;">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Login</th>
-							<th>Password</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-				</table>
 			</div>
 		</div>
 	</div>

@@ -59,10 +59,11 @@ public class SL_consumo extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		out = response.getWriter();
+		int contrato_ID = 0;
 		if(Integer.parseInt(request.getParameter("carga")) == 1) {
 			try {
 				try {
-					traerConsumos(response);
+					traerConsumos(contrato_ID, response);
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -75,7 +76,17 @@ public class SL_consumo extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}else if(Integer.parseInt(request.getParameter("carga")) == 3) {
+			try {
+				contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
+				traerConsumos(contrato_ID, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
+		
 	}
 
 	/**
@@ -226,9 +237,13 @@ public class SL_consumo extends HttpServlet {
 		verificar_resultado(datosConsumo.eliminarConsumo(consumo), resp);
 	}
 	
-	protected void traerConsumos(HttpServletResponse response) throws SQLException, IOException, ParseException {
+	protected void traerConsumos(int contrato_ID, HttpServletResponse response) throws SQLException, IOException, ParseException {
 		List<Consumo> consumos = new ArrayList<>();
-		ResultSet rs = datosConsumo.cargarConsumos();
+		ResultSet rs;
+		if(contrato_ID == 0)
+			rs = datosConsumo.cargarConsumos();
+		else
+			rs = datosConsumo.cargarHistorial(contrato_ID);
 		while (rs.next()) {
 			String f = parseador2.format(rs.getDate("fecha_fin"));
 			Consumo c = new Consumo(parseador2.parse(f), rs.getFloat("consumoTotal"), 

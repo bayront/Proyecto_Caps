@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,16 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import Datos.DTContrato;
+import Datos.DTConsumo;
 import Datos.DTFacturaMaestra;
+import Datos.DT_consumo_bomba;
 import Datos.DataTableObject;
-import Entidades.Categoria;
 import Entidades.Cliente;
 import Entidades.Consumo;
 import Entidades.Contrato;
 import Entidades.Factura_Maestra;
-import Entidades.RegimenPropiedad;
-import Entidades.Sector;
 @WebServlet("/SL_Factura_Maestra")
 public class SL_Factura_Maestra extends HttpServlet{
 
@@ -35,6 +35,8 @@ public class SL_Factura_Maestra extends HttpServlet{
 	private PrintWriter out;
 	private DTFacturaMaestra dtFactura = DTFacturaMaestra.getInstance();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat parseador2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 	
 	  
     /**
@@ -56,11 +58,62 @@ public class SL_Factura_Maestra extends HttpServlet{
 			
 		}catch (SQLException e){
 			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 	}
     
-    
-    private void traerFacturas(HttpServletResponse response) throws SQLException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String opcion = req.getParameter("opcion");
+		switch (opcion) {
+		case "generar":
+			try {
+				Date fechaCorte, fechaVence;
+				String fechaForm;
+				fechaForm = req.getParameter("fecha_corte");
+				fechaCorte = parseador.parse(fechaForm);
+				fechaForm = req.getParameter("fecha_vence");
+				fechaVence = parseador.parse(fechaForm);
+				generarFacturas(fechaCorte, fechaVence, resp);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			break;
+		default:
+			resp.setContentType("text/plain");
+			PrintWriter out;
+			out = resp.getWriter();
+			out.print("VACIO");
+			break;
+		}
+    }
+	
+	private void generarFacturas(Date fechaCorte, Date fechaVence, HttpServletResponse resp) throws IOException, SQLException {
+		DTConsumo dtConsumo = DTConsumo.getInstance();
+		ResultSet r = dtConsumo.cargarTodosConsumos();
+		boolean hayFechaCorte = false;
+		while(r.next()){
+			if(r.getDate("fecha_fin").equals(fechaCorte)) {
+				hayFechaCorte = true;
+				break;
+			}
+		}
+		if (hayFechaCorte) {
+			if (dtFactura.generarFacturas(fechaCorte, fechaVence) == 0) {
+				resp.setContentType("text/plain");
+				PrintWriter out;
+				out = resp.getWriter();
+				out.print("NOFACTURAS");
+			}else
+				verificar_resultado(true, resp);
+		}else
+			verificar_resultado(false, resp);
+			
+	}
+	
+	private void traerFacturas(HttpServletResponse response) throws SQLException, ParseException {
     	List<Factura_Maestra> listaF = new ArrayList<>();
 		ResultSet rs = dtFactura.cargarDatosTabla();
 		while(rs.next()){
@@ -71,13 +124,14 @@ public class SL_Factura_Maestra extends HttpServlet{
 			
 			fA.setNumFact(rs.getString(7));
 			fA.setDeslizamiento(rs.getFloat(4));
-			fA.setFechaVencimiento(rs.getDate(6));
+			String f = parseador2.format(rs.getDate(6));
+			fA.setFechaVencimiento(parseador2.parse(f));
 			fA.setTotalPago(rs.getFloat(8));
 			co.setConsumoTotal(rs.getFloat(3));
-			co.setFecha_fin(rs.getDate(5));
+			f = parseador2.format(rs.getDate(5));
+			co.setFecha_fin(parseador2.parse(f));
 			cl.setNombreCompleto(rs.getString(1));
 			con.setNumMedidor(rs.getString(2));
-			
 			
 			fA.setConsumo(co);
 			fA.setCliente(cl);
@@ -95,4 +149,15 @@ public class SL_Factura_Maestra extends HttpServlet{
 		out.print(json);
 	}
 	
+    protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {
+		response.setContentType("text/plain");
+		PrintWriter out;
+		if(r) {
+			out = response.getWriter();
+			out.print("BIEN");
+		}else {
+			out = response.getWriter();
+			out.print("ERROR");
+		}
+	}
 }

@@ -19,6 +19,39 @@
 		</ol>
 	</div>
 </div>
+<!--///////////////////////DataTable de los consumos de la bomba/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-th"></i> <span>Lista de consumos de la bomba</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" class="collapse-link" onclick="validar(colap2);"> <i class="fa fa-chevron-up"></i>
+					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> <i class="fa fa-expand"></i>
+					</a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<table class="table table-bordered table-striped table-hover table-heading table-datatable"
+					id="tbl_consumoB" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Consumo actual</th>
+							<th>Fecha de registro</th>
+							<th>Lectura actual</th>
+							<th>Observaciones</th>
+							<th>Unidad de medida</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 <!--///////////////////////Formulario principal de consumos de la bomba/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
@@ -130,39 +163,6 @@
 		</div>
 	</div>
 </div>
-<!--///////////////////////DataTable de los consumos de la bomba/////////////////////////////// -->
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name text-center">
-					<i class="fa fa-th"></i> <span>Lista de consumos de la bomba</span>
-				</div>
-				<div class="box-icons">
-					<a id="colapsar_desplegar2" class="collapse-link" onclick="validar(colap2);"> <i class="fa fa-chevron-up"></i>
-					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> <i class="fa fa-expand"></i>
-					</a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding table-responsive">
-				<table class="table table-bordered table-striped table-hover table-heading table-datatable"
-					id="tbl_consumoB" style="width:100%;">
-					<thead>
-						<tr>
-							<th>Consumo actual</th>
-							<th>Fecha de registro</th>
-							<th>Lectura actual</th>
-							<th>Observaciones</th>
-							<th>Unidad de medida</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
 <!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
 <div>
 	<form id="frmEliminarConsumoB" action="" method="POST">
@@ -206,6 +206,7 @@ websocket.onmessage = function(evt) { // cuando se recibe un mensaje
 websocket.onerror = function(evt) {
     console.log("oho!.. error:" + evt.data);
 };
+var actual = false;//variable para saber si el registro es el actual
 
 var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
 var colap1 =  new Colap1();
@@ -220,23 +221,27 @@ function DemoSelect2() {
 var verResultado = function(r) {//parametro(resultado-String)
 	if(r == "BIEN"){
 		mostrarMensaje("#dialogBomb", "CORRECTO", 
-				"¡Se realizó la operación correctamente, todo bien!", "#d7f9ec", "btn-info");
+			"¡Se realizó la operación correctamente, todo bien!", "#d7f9ec", "btn-info");
 		limpiar_texto();
 		$('#tbl_consumoB').DataTable().ajax.reload();
 		websocket.send("ACTUALIZADO");
 	}
 	if(r == "ERROR"){
 		mostrarMensaje("#dialogBomb", "ERROR", 
-				"¡Ha ocurrido un error, no se pudo realizar la operación!", "#E97D7D", "btn-danger");
+			"¡Ha ocurrido un error, no se pudo realizar la operación!", "#E97D7D", "btn-danger");
 	}
 	if(r =="VACIO"){
 		mostrarMensaje("#dialogBomb", "VACIO", 
-				"¡No se especificó la opreración a realizar!", "#FFF8A7", "btn-warning");
+			"¡No se especificó la opreración a realizar!", "#FFF8A7", "btn-warning");
 	}
 	if(r =="ACTUALIZADO"){
 		mostrarMensaje("#dialogBomb", "ACTUALIZADO", 
-				"¡Otro usuario a realizado un cambio, se actualizaron los datos!", "#86b6dd", "btn-primary");
+			"¡Otro usuario a realizado un cambio, se actualizaron los datos!", "#86b6dd", "btn-primary");
 		$('#tbl_consumoB').DataTable().ajax.reload();
+	}
+	if(r == "NOELIMINAR"){
+		mostrarMensaje("#dialogBomb", "ERROR", 
+			"¡No se puede eliminar un registro anterior al actual!", "#E97D7D", "btn-danger");
 	}
 }
 
@@ -257,16 +262,20 @@ function abrirDialogo() {////////////////////abre dialogo con muestra si desae e
 //////////////////////////////////eliminar los datos seteados en el formulario/////////////////////////////////////
 var eliminar = function() {
 	$("#eliminar_consumoB").on("click", function() {
-	frmElim = $("#frmEliminarConsumoB").serialize();
-		console.log("datos a eliminar: " + frmElim);
-		$.ajax({
-		method:"POST",
-		url:"SL_Consumo_bomba",
-		data: frmElim
-		}).done(function(info) {
-		 	limpiar_texto();
-		 	verResultado(info);
-		});
+		if(actual == false)
+			verResultado("NOELIMINAR");
+		else{
+			frmElim = $("#frmEliminarConsumoB").serialize();
+			console.log("datos a eliminar: " + frmElim);
+			$.ajax({
+			method:"POST",
+			url:"SL_Consumo_bomba",
+			data: frmElim
+			}).done(function(info) {
+			 	limpiar_texto();
+			 	verResultado(info);
+			});
+		}
 		CloseModalBox();
 	});
 }
@@ -384,12 +393,19 @@ var obtener_id_eliminar = function(tbody, table) {//parametro(id_tabla, objeto d
 	console.log("eliminar");
 	$(tbody).on("click", "button.eliminar_consumoB", function() {
 		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
-		var bomba_ID;
+		var bomba_ID, lecturaActual;
 		table.rows().every(function(index, loop, rowloop) {
 			if(index == datos){
+				lecturaActual = table.row(index).data().lecturaActual;
 				bomba_ID = table.row(index).data().bomba_ID;
 				$("#frmEliminarConsumoB #bombaID").val(bomba_ID);
 			}
+		});
+		table.rows().every(function(index, loop, rowloop) {
+			if(lecturaActual < table.row(index).data().lecturaActual)
+				actual = false;
+			else
+				actual = true;
 		});
 		//solo se obtiene el id que es oculto
 		abrirDialogo();
@@ -419,6 +435,12 @@ var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto 
 				$("#unidadMedida").change();
 				$("#opcion").val("actualizar");
 			}
+		});
+		table.rows().every(function(index, loop, rowloop) {
+			if(lecturaActual < table.row(index).data().lecturaActual)
+				actual = false;
+			else
+				actual = true;
 		});
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
@@ -503,33 +525,35 @@ function formValidBomba() {
 		            greaterThan: {
 						value: 0,
 						inclusive: false,
-						message: '¡El campo debe ser mayor que 0!'
+						message: '¡El campo debe ser mayor que 0!'	
 					},
 					callback: {
-          					message: '¡La lectura actual debe ser mayor que los otros registros anteriores!',
+          				message: '¡La lectura actual debe ser mayor que los otros registros anteriores!',
            				callback: function (value, validator, $field) {
            					if($("#formConsB #opcion").val() != "actualizar"){
            						var tabla = $('#tbl_consumoB').DataTable();
                					var filas = tabla.rows();
-               					var noigual = true;
+               					var noigual=true;
                    				filas.every(function(index, loop, rowloop) {
-           							if(value <= tabla.row(index).data().lecturaActual){
+           							if(value <= tabla.row(index).data().lecturaActual)
            								noigual = false;
-           							}
                    				});
                    				return noigual;
-           					}else{
+           					}else if(actual == false)
+           						return {valid: false,message: '¡No puede editar un registro anterior al actual!'};
+           					else{
            						var tabla = $('#tbl_consumoB').DataTable();
                					var filas = tabla.rows();
-               					var noigual = true;
+               					var noigual=true;
                    				filas.every(function(index, loop, rowloop) {
-                   					if(tabla.row(index).data().bomba_ID < $("#formConsB #bombaID").val()){
-                   						if(value <= tabla.row(index).data().lecturaActual){
+                   					if(tabla.row(index).data().bomba_ID < $("#formConsB #bombaID").val())
+                   						if(value <= tabla.row(index).data().lecturaActual)
                								noigual = false;
-               							}
-                   					}
                    				});
-                   				return noigual;
+                   				if (noigual == true)
+                   					return true;
+                   				else
+                   					return {valid: false,message: '¡La lectura actual debe ser mayor que los otros registros anteriores!'};
            					}
            				}
        				}
@@ -551,9 +575,8 @@ function formValidBomba() {
 	            				var fecha1 = new Date(f[2], f[1]-1, f[0]);
 	                			filas.every(function(index, loop, rowloop) {
 	                				var fecha2 = new Date(tabla.row(index).data().fechaLecturaActual);
-	        						if(fecha1 <  fecha2){
+	        						if(fecha1 <  fecha2)
 	        							noigual = false;
-	        						}
 	                			});
 	                			return noigual;
         					}else{
@@ -561,11 +584,9 @@ function formValidBomba() {
 	            				var fecha1 = new Date(f[2], f[1]-1, f[0]);
 	                			filas.every(function(index, loop, rowloop) {
 	                				var fecha2 = new Date(tabla.row(index).data().fechaLecturaActual);
-	                				if(tabla.row(index).data().bomba_ID < $("#formConsB #bombaID").val()){
-	                					if(fecha1 <  fecha2){
+	                				if(tabla.row(index).data().bomba_ID < $("#formConsB #bombaID").val())
+	                					if(fecha1 <  fecha2)
 		        							noigual = false;
-		        						}
-                   					}
 	                			});
 	                			return noigual;
         					}
@@ -624,9 +645,9 @@ function formValidBomba() {
     				validarExpand(expand2, "#expandir2");
     			
     			validarColap(colap1, "#colapsar_desplegar1");
-    			if (colap2.valor ==true){}else{
+    			if (colap2.valor ==false)
     				validarColap(colap2, "#colapsar_desplegar2");
-    			}
+    			
     			verResultado(info);
     	});
     });

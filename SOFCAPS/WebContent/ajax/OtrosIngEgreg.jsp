@@ -17,39 +17,6 @@
 		</ol>
 	</div>
 </div>
-<!--///////////////////////DataTable de otros ingresos y egresos/////////////////////////////// -->
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-th"></i> <span>Lista de Otros ingresos y egresos</span>
-				</div>
-				<div class="box-icons">
-					<a id="colapsar_desplegar2" class="collapse-link" onclick="validar(colap2);"> 
-						<i class="fa fa-chevron-up"></i>
-					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> 
-						<i class="fa fa-expand"></i></a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding table-responsive">
-				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="tabla_OI" style="width:100%;">
-					<thead>
-						<tr>
-							<th>Descripción</th>
-							<th>Monto</th>
-							<th>Fecha de registro</th>
-							<th>Categoría</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
 <!--///////////////////////Formulario principal de otros ingresos y egresos/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
@@ -101,7 +68,7 @@
 						<div class="col-sm-4">
 							<select class="populate placeholder" name="categoria_Ing_Egreg_ID" 
 							id="categoria_Ing_Egreg_ID">
-								<option value="">--Seleccione la categoría--</option>
+								<option value="0">--Seleccione la categoría--</option>
 							</select>
 						</div>
 					</div>
@@ -116,8 +83,42 @@
 								<span><i class="fa fa-reply txt-danger"></i></span>Cancelar
 							</button>
 						</div>
+				
 					</div>
 				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!--///////////////////////DataTable de otros ingresos y egresos/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name text-center">
+					<i class="fa fa-th"></i> <span>Lista de Otros ingresos y egresos</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" class="collapse-link" onclick="validar(colap2);"> 
+						<i class="fa fa-chevron-up"></i>
+					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> 
+						<i class="fa fa-expand"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="tabla_OI" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Descripción</th>
+							<th>Monto</th>
+							<th>Fecha de registro</th>
+							<th>Categoría</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
 			</div>
 		</div>
 	</div>
@@ -183,6 +184,24 @@ websocket.onerror = function(evt) {
 			});
 		});
 	}
+	
+	
+	function imprimir()
+	{
+		var descripcion ="";
+		var monto = "";
+		var fecha = "";		
+		descripcion = $("#descripcion").val();
+		monto = $("#monto").val();
+		fecha = $('#fecha').val();
+	
+			
+		window.open("SL_ReporteOtros?descripcion="+descripcion+"&monto="+monto+"&fecha="+fecha, '_blank');
+
+		console.log("Error en metodo imprimir");
+	}
+
+
 	
 	var limpiar_texto = function() {//limpiar texto del formulario
 		$("#opcion").val("guardar");
@@ -271,9 +290,12 @@ websocket.onerror = function(evt) {
 					}
 				},
 				{
-	                extend:    'excelHtml5',
-	                text:      '<i class="fa fa-file-excel-o"></i>',
-	                titleAttr: 'excel'
+	                
+	                text:      '<i class="fa fa-print fa-o"></i>',
+	                titleAttr: 'Imprimir reporte',
+	                action: function(){
+	                	imprimir();
+	                }
 	            },
 	            {
 	                extend:    'csvHtml5',

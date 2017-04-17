@@ -18,5 +18,21 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-dbcp-1.4.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-pool-1.6.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.servlet-api-3.0.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-lang3-3.3.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/iText-2.1.7.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jasperreports-chart-customizers-6.3.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jasperreports-chart-themes-6.3.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jasperreports-fonts-6.3.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jasperreports-functions-6.3.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jasperreports-javaflow-6.3.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/joda-time-2.9.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/org.springframework.beans-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/org.springframework.core-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jasperreports-6.3.1.jar"/>
 	<classpathentry kind="output" path="src"/>
 </classpath>

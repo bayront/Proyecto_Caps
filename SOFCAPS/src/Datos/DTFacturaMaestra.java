@@ -33,30 +33,6 @@ public class DTFacturaMaestra {
 	   return dtFactura;
 	 }
 	
-	public ResultSet cargarDatosFactura()
-	{
-		Statement s;
-		String sql;
-		if (opcion == 1){
-			sql = ("SELECT * FROM factura_maestra WHERE anulado = 0;");
-		} else {
-			sql = ("SELECT c.numContrato, c.numMedidor, c.cuotas, c.montoContrato, c.Contrato_ID, c.Cliente_ID, c.RegimenPropiedad_ID, c.Sector_ID, c.Categoria_ID FROM contrato c WHERE estado = 0;");
-		}
-			
-		try
-		{
-			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			rs = s.executeQuery(sql);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			System.out.println("Error en DTContrato: "+e.getMessage());
-		}
-		return rs;
-	}
-	
-	
 	public ResultSet cargarDatosTabla()
 	{
 		Statement s;
@@ -74,121 +50,38 @@ public class DTFacturaMaestra {
 		return rs;
 	}
 	
-	public boolean guardarContrato(Contrato contrato)
-	{
-		opcion = 1;
-		boolean guardado = false;
-		try 
-		{
-			int numContrato = 1;
-//			dtContrato.cargarDatos();
-			while(rs.next()) {
-				if(contrato.getCliente().getCliente_ID() == rs.getInt("Cliente_ID")) {
-					if(rs.getInt("numContrato") > numContrato) {
-						numContrato = rs.getInt("numContrato") + 1;
-					}
-				}
-			}
-			rs.moveToInsertRow();
-			rs.updateBoolean(1, false);
-//			rs.updateString(2, fecha.format(contrato.getFechaContrato()));
-			rs.updateInt(3, numContrato);
-			rs.updateString(4, contrato.getNumMedidor());
-			rs.updateInt(5, 1);
-//			rs.updateString(8, fecha.format(contrato.getFechaContrato()));
-			rs.updateInt(11, contrato.getCuotas());
-			rs.updateFloat(12, contrato.getMontoContrato());
-			rs.updateInt(14, contrato.getCliente().getCliente_ID());
-			rs.updateInt(15, contrato.getRegimenPropiedad().getRegimenPropiedad_ID());
-			rs.updateInt(16, contrato.getSector().getSector_ID());
-			rs.updateInt(17, contrato.getCategoria().getCategoria_ID());
-			 
-			rs.insertRow();
-			rs.moveToCurrentRow();
-			guardado = true;
-		}
-		catch (Exception e) 
-		{
-			System.err.println("ERROR al GUARDAR " + e.getMessage());
+	public ResultSet historialFacturasCliente(String numMedidor) {
+		Statement s;
+		String sql = ("SELECT * FROM facturascliente where factura.numMedidor = '"+numMedidor+"';");
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("historial de facturas cliente cargadas");
+		}catch (Exception e){
 			e.printStackTrace();
+			System.out.println("Error en DTFacturaMaestra, metodo historialFacturasCliente: "+e.getMessage());
 		}
-		return guardado;
+		if(rs == null)
+			System.out.println("Resultset de FacturaMaestra vacio");
+		
+		return rs;
 	}
 	
-	/**
-	 * @param contrato
-	 * @return
-	 */
-	public boolean actualizarContrato(Contrato contrato)
-	{
-		opcion = 2;
-		boolean actualizado = false;
-		try 
-		{
-			int numContrato =1;
-//			dtContrato.cargarDatos();
-			while(rs.next()) {
-				if(rs.getInt("Contrato_ID") == contrato.getContrato_ID()) {
-					if(contrato.getCliente().getCliente_ID() == rs.getInt("Cliente_ID")) {
-						numContrato = rs.getInt("numContrato");
-						break;
-					}
-				}else if(contrato.getCliente().getCliente_ID() == rs.getInt("Cliente_ID")) {
-					if(rs.getInt("numContrato") > numContrato) {
-						numContrato = rs.getInt("numContrato") + 1;
-					}
-				}
-			}
-			rs.beforeFirst();
-			while(rs.next()){
-				if(rs.getInt("Contrato_ID") == contrato.getContrato_ID()){
-					rs.updateInt("numContrato", numContrato);
-					rs.updateInt("Contrato_ID", contrato.getContrato_ID());
-					rs.updateString("numMedidor", contrato.getNumMedidor());
-					rs.updateInt("cuotas", contrato.getCuotas());
-					rs.updateFloat("montoContrato", contrato.getMontoContrato());
-					rs.updateInt("Cliente_ID", contrato.getCliente().getCliente_ID());
-					rs.updateInt("RegimenPropiedad_ID", contrato.getRegimenPropiedad().getRegimenPropiedad_ID());
-					rs.updateInt("Sector_ID", contrato.getSector().getSector_ID());
-					rs.updateInt("Categoria_ID", contrato.getCategoria().getCategoria_ID());
-					rs.updateRow();
-					actualizado = true;
-				}
-			}
-			
-			
-		}
-		catch (Exception e) 
-		{
-			System.err.println("ERROR AL ACTUALIZAR " + e.getMessage());
+	public ResultSet facturasSinCancelar() {
+		Statement s;
+		String sql = ("SELECT * FROM facturassincancelar;");
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("historial de facturas sin cancelar cargadas");
+		}catch (Exception e){
 			e.printStackTrace();
+			System.out.println("Error en DTFacturaMaestra, metodo facturasSinCancelar: "+e.getMessage());
 		}
-		return actualizado;
-	}
-	
-	public boolean eliminarContratro(Contrato contrato)
-	{
-		opcion = 1;
-		boolean eliminado = false;
-		try 
-		{
-			System.err.println("ERROR AL ELIMINAR CONTRATO NUMERO: " + contrato.getContrato_ID());
-//			dtContrato.cargarDatos();
-			rs.beforeFirst();
-			while(rs.next()){
-				if(rs.getInt("Contrato_ID") == contrato.getContrato_ID()){
-					rs.updateBoolean(1, true);
-					rs.updateRow();
-					eliminado = true;
-				}
-			}
-		}
-		catch (Exception e) 
-		{
-			System.err.println("ERROR AL ELIMINAR " + e.getMessage());
-			e.printStackTrace();
-		}
-		return eliminado;
+		if(rs == null)
+			System.out.println("Resultset de FacturaMaestra vacio");
+		
+		return rs;
 	}
 
 	public int generarFacturas(Date fechaCorte, Date fechaVence) {

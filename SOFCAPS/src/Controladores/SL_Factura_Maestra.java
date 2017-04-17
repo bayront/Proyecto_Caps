@@ -53,13 +53,34 @@ public class SL_Factura_Maestra extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	response.setContentType("application/json");
 		out = response.getWriter();
-		try {
-			traerFacturas(response);
-			
-		}catch (SQLException e){
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
+		String numMedidor;
+		if(Integer.parseInt(request.getParameter("carga")) == 1) {
+			try {
+				try {
+					traerFacturas(response);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}else if(Integer.parseInt(request.getParameter("carga")) == 2) {
+			try {
+				numMedidor = request.getParameter("numMedidor");
+				historialFacturaCliente(numMedidor, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else if(Integer.parseInt(request.getParameter("carga")) == 3) {
+			try {
+				facturasSinCancelar(response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 	}
     
@@ -147,6 +168,82 @@ public class SL_Factura_Maestra extends HttpServlet{
 		String json = gson.toJson(dataTableObject);
 		System.out.println(json.toString());
 		out.print(json);
+	}
+	
+	private void historialFacturaCliente (String numMedidor, HttpServletResponse response) throws SQLException, IOException, ParseException {
+		List<Factura_Maestra> listaF = new ArrayList<>();
+		ResultSet rs = dtFactura.historialFacturasCliente(numMedidor);
+//		System.out.println("Este es el numero de medidor: "+ numMedidor);
+		while(rs.next()){
+			Factura_Maestra fA = new Factura_Maestra();
+			Consumo co = new Consumo();
+			Contrato con = new Contrato();
+			Cliente cl = new Cliente();
+			
+			fA.setNumFact(rs.getString(7));
+			fA.setDeslizamiento(rs.getFloat(4));
+			String f = parseador2.format(rs.getDate(6));
+			fA.setFechaVencimiento(parseador2.parse(f));
+			fA.setTotalPago(rs.getFloat(8));
+			co.setConsumoTotal(rs.getFloat(3));
+			f = parseador2.format(rs.getDate(5));
+			co.setFecha_fin(parseador2.parse(f));
+			cl.setNombreCompleto(rs.getString(1));
+			con.setNumMedidor(rs.getString(2));
+			
+			fA.setConsumo(co);
+			fA.setCliente(cl);
+			fA.setContrato(con);
+			
+			listaF.add(fA);
+			System.out.println("Este es el numero de medidor: "+ rs.getString(2));
+		}
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.aaData = new ArrayList<>();
+		for (Factura_Maestra fA : listaF) {
+			dataTableObject.aaData.add(fA);
+		}
+		String json = gson.toJson(dataTableObject);
+		System.out.println(json.toString());
+		out.print(json);	
+	}
+	
+	private void facturasSinCancelar (HttpServletResponse response) throws SQLException, IOException, ParseException {
+		List<Factura_Maestra> listaF = new ArrayList<>();
+		ResultSet rs = dtFactura.facturasSinCancelar();
+		while(rs.next()){
+			Factura_Maestra fA = new Factura_Maestra();
+			Consumo co = new Consumo();
+			Contrato con = new Contrato();
+			Cliente cl = new Cliente();
+			
+			fA.setNumFact(rs.getString(7));
+			fA.setDeslizamiento(rs.getFloat(4));
+			String f = parseador2.format(rs.getDate(6));
+			fA.setFechaVencimiento(parseador2.parse(f));
+			fA.setTotalPago(rs.getFloat(8));
+			co.setConsumoTotal(rs.getFloat(3));
+			f = parseador2.format(rs.getDate(5));
+			co.setFecha_fin(parseador2.parse(f));
+			cl.setNombreCompleto(rs.getString(1));
+			con.setNumMedidor(rs.getString(2));
+			
+			fA.setConsumo(co);
+			fA.setCliente(cl);
+			fA.setContrato(con);
+			
+			listaF.add(fA);
+			System.out.println("Este es el numero de medidor: "+ rs.getString(2));
+		}
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.aaData = new ArrayList<>();
+		for (Factura_Maestra fA : listaF) {
+			dataTableObject.aaData.add(fA);
+		}
+		String json = gson.toJson(dataTableObject);
+		System.out.println(json.toString());
+		out.print(json);
+		
 	}
 	
     protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {

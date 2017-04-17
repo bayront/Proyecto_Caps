@@ -52,7 +52,7 @@ public class DTFacturaMaestra {
 	
 	public ResultSet historialFacturasCliente(String numMedidor) {
 		Statement s;
-		String sql = ("SELECT * FROM facturascliente where factura.numMedidor = '"+numMedidor+"';");
+		String sql = ("SELECT * FROM facturascliente where facturascliente.numMedidor = '"+numMedidor+"' order by facturascliente.fecha_fin;");
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);

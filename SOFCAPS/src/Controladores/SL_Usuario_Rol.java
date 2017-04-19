@@ -110,7 +110,8 @@ public class SL_Usuario_Rol extends HttpServlet {
 					System.out.println("El Usuario y rol son correcto!!!");
 					HttpSession hts = request.getSession(true);
 					hts.setAttribute("nombre_usuario", userVerificado.getNombre_usuario());
-			
+					hts.setAttribute("userVerificado", userVerificado);
+					hts.setAttribute("Rol", r);
 					response.sendRedirect("index.jsp?msj=1");
 				} 
 				else{

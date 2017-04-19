@@ -5,8 +5,7 @@
 	pageEncoding="UTF-8"%>
 <%
 	response.setHeader("Pragma", "no-cache");
-	response.setHeader("Cache-Control", "no-store");
-	response.setDateHeader("Expires", 0);
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setDateHeader("Expires", -1);
 %>
 <!DOCTYPE html>
@@ -20,7 +19,6 @@
     <title>CAPS PONELOYA</title>
     <%
 	HttpSession hts = request.getSession(false);
-	hts.removeAttribute("login");
 	hts.invalidate();
 	%>
     <!-- Bootstrap Core CSS -->

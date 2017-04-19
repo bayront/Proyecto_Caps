@@ -315,4 +315,21 @@ public class DTContrato {
 		return listaCliente;
 	}
 	
+	public ResultSet cargarVistaClienteContrato(int cliente_ID)
+	{
+		Statement s;
+		String sql = ("select * from contrato WHERE estado = 0 and contrato.Cliente_ID = " + cliente_ID + ";");
+		try
+		{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("Error en DT_Contrato: "+e.getMessage());
+		}
+		return rs;
+	}
+	
 }

@@ -9,11 +9,13 @@ import Entidades.Factura_Detalle;
 import Entidades.Factura_Maestra;
 import Entidades.Contrato;
 import Entidades.Reconexion;
+import Entidades.Cliente;
 
 
 public class DT_reciboCaja {
 	private static DT_reciboCaja tdReciboCaja = new DT_reciboCaja();
 	private static ResultSet rs;
+	PoolConexion pc = PoolConexion.getInstance(); 
 	Connection con = PoolConexion.getConnection();
 	
 	private DT_reciboCaja () { 
@@ -32,9 +34,8 @@ public class DT_reciboCaja {
 			rs = s.executeQuery(sql);
 			while(rs.next()){
 				Serie serie = new Serie();
-				serie.setIdserie(rs.getInt("idserie"));
-				serie.setNombre(rs.getString("Nombre"));
-				serie.setSignificado(rs.getString("significado"));
+				serie.setSerie_ID(rs.getInt("Serie_ID"));
+				serie.setDescripcion(rs.getString("descripcion"));
 				listaSeries.add(serie);
 			}
 		} catch (Exception e){
@@ -62,25 +63,6 @@ public class DT_reciboCaja {
 		return listaFacturas;
 	}
 	
-	public ArrayList<Contrato> listaContratos(){
-		ArrayList<Contrato> listaContratos = new ArrayList<Contrato>();
-		String sql = ("SELECT * FROM sofcaps.contrato;");
-		Statement s;
-		try {
-			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			rs = s.executeQuery(sql);
-			while(rs.next()){
-				Contrato contrato = new Contrato();
-				contrato.setContrato_ID(rs.getInt("Contrato_ID"));
-				contrato.setNumContrato(rs.getInt("numContrato"));
-				listaContratos.add(contrato);
-			}
-		} catch (Exception e){
-			System.err.println("DATOS: ERROR " +e.getMessage());
-		}
-		return listaContratos;
-	}
-	
 	public ArrayList<Reconexion> listaReconexiones(){
 		ArrayList<Reconexion> listaReconexiones = new ArrayList<Reconexion>();
 		String sql = ("SELECT * FROM sofcaps.reconexion;");
@@ -98,5 +80,6 @@ public class DT_reciboCaja {
 		}
 		return listaReconexiones;
 	}
+	 
 	
 }

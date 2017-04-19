@@ -3,28 +3,23 @@ package Entidades;
 
 import java.util.Date;
 
-public class ReciboCaja 
+public class ReciboCaja_Maestro
 {
    private String descripcion;
    private Boolean estado;
+   private String numReciboCaja;
    private Date fecha;
-   private Float monto;
-   private String ruc;
+   private Float montoTotal;
    private Integer usuaCrea;
    private Integer usuaMod;
    private Integer usuaElim;
    private Date fechaCrea;
    private Date fechaMod;
    private Date fechaElim;
-   private Integer tipo;
-   private Integer recibo_Caja_ID;
-   private Categoria_Ing_Egreg categoria_Ing_Egreg;
-   private Contrato contrato;
+   private Integer reciboCaja_Maestro_ID;
    private Cliente cliente;
-   private Factura_Maestra factura_Maestra;
-   private Reconexion reconexion;
 
-   public ReciboCaja() 
+   public ReciboCaja_Maestro() 
    {
    }
 
@@ -46,19 +41,19 @@ public class ReciboCaja
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-    public Float getMonto() {
-        return monto;
+    public Float getMontoTotal() {
+        return montoTotal;
     }
-    public void setMonto(Float monto) {
-        this.monto = monto;
+    public void setMontoTotal(Float montoTotal) {
+        this.montoTotal = montoTotal;
     }
-    public String getRuc() {
-        return ruc;
-    }
-    public void setRuc(String ruc) {
-        this.ruc = ruc;
-    }
-    public Integer getUsuaCrea() {
+    public String getNumReciboCaja() {
+		return numReciboCaja;
+	}
+	public void setNumReciboCaja(String numReciboCaja) {
+		this.numReciboCaja = numReciboCaja;
+	}
+	public Integer getUsuaCrea() {
         return usuaCrea;
     }
     public void setUsuaCrea(Integer usuaCrea) {
@@ -94,47 +89,17 @@ public class ReciboCaja
     public void setFechaElim(Date fechaElim) {
         this.fechaElim = fechaElim;
     }
-    public Integer getTipo() {
-        return tipo;
-    }
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
-    }
-    public Categoria_Ing_Egreg getCategoria_Ing_Egreg() {
-        return categoria_Ing_Egreg;
-    }
-    public void setCategoria_Ing_Egreg(Categoria_Ing_Egreg categoria_Ing_Egreg) {
-        this.categoria_Ing_Egreg = categoria_Ing_Egreg;
-    }
-    public Contrato getContrato() {
-        return contrato;
-    }
-    public void setContrato(Contrato contrato) {
-        this.contrato = contrato;
-    }
     public Cliente getCliente() {
         return cliente;
     }
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    public Factura_Maestra getFactura_Maestra() {
-        return factura_Maestra;
-    }
-    public void setFactura_Maestra(Factura_Maestra factura_Maestra) {
-        this.factura_Maestra = factura_Maestra;
-    }
-    public Reconexion getReconexion() {
-        return reconexion;
-    }
-    public void setReconexion(Reconexion reconexion) {
-        this.reconexion = reconexion;
-    }
-	public Integer getRecibo_Caja_ID() {
-		return recibo_Caja_ID;
+	public Integer getReciboCaja_Maestro_ID() {
+		return reciboCaja_Maestro_ID;
 	}
-	public void setRecibo_Caja_ID(Integer recibo_Caja_ID) {
-		this.recibo_Caja_ID = recibo_Caja_ID;
-	}  
-   
+	public void setReciboCaja_Maestro_ID(Integer reciboCaja_Maestro_ID) {
+		this.reciboCaja_Maestro_ID = reciboCaja_Maestro_ID;
+	}
+	
 }

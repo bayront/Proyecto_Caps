@@ -1,13 +1,12 @@
 <%@page language="java"%>
 <%@page contentType="text/html"%> 
-<%@page pageEncoding="UTF-8"%> 
+<%@page pageEncoding="UTF-8" import="Entidades.*, Datos.*, java.sql.ResultSet;"%> 
 <!-- contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" -->
 <%
- 	response.setHeader( "Pragma", "no-cache" );
- 	response.setHeader( "Cache-Control", "no-store" );
-	response.setDateHeader( "Expires", 0 );
-	response.setDateHeader( "Expires", -1 );
+	response.setHeader("Pragma", "No-cache");
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setDateHeader("Expires", -1);
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -15,14 +14,64 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>SOFCAPS</title>
 <%
-	int Rol_Id = 0;
-	int Usuario_ID = 0;
 	String nombre_usuario = "";
-	String url = "";
 	nombre_usuario = (String) session.getAttribute("nombre_usuario");
 	nombre_usuario = nombre_usuario==null?"":nombre_usuario;
-	if(nombre_usuario.equals("")){
+// 	if(nombre_usuario.equals("")){
+// 		response.sendRedirect("CAPS.jsp");
+// 	}
+
+	
+	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+
+	Usuario us = new Usuario();
+	us = (Usuario)session.getAttribute("userVerificado");
+	
+	Rol r = new Rol();
+	r = (Rol)session.getAttribute("Rol");
+	
+	String url="";
+	url = request.getRequestURI();
+	//System.out.println("url: "+url);
+	int index = request.getRequestURI().lastIndexOf("/");
+	//System.out.println("index: "+index);
+	String miPagina = request.getRequestURI().substring(index);
+	//System.out.println("miPagina: "+miPagina);
+	boolean permiso = false;
+	String opcionActual = "";
+	
+	
+	ResultSet rs;
+	
+	if(us != null && r != null)
+	{
+		rs=dtvro.obtenerOpc(r);
+		while(rs.next())
+		{
+			opcionActual = rs.getString("opciones");
+			System.out.println("opcionActual: "+opcionActual);
+			if(opcionActual.equals(miPagina))
+			{
+				permiso = true;
+				break;
+			}
+			else
+			{
+				permiso = false;
+			}
+		}
+	}
+	else
+	{
+		System.out.println("Pagina caps");
 		response.sendRedirect("CAPS.jsp");
+		return;
+	}
+	
+	if(!permiso)
+	{
+		System.out.println("Pagina de error");
+		response.sendRedirect("../pag_Error.jsp");
 	}
 %>
 
@@ -149,11 +198,17 @@
 					<li><a href="ajax/Cliente.jsp" class="ajax-link">
 							<i title="Gestión Cliente" class="fa fa-group"></i> <span class="hidden-xs">Gestión de clientes</span>
 					</a></li>
+					<li><a href="ajax/Reconexion.jsp" class="ajax-link">
+							<i title="Gestion Reconexion" class="fa fa-group"></i> <span class="hidden-xs">Gestión Reconexion</span>
+					</a></li>
 					<li><a href="ajax/Contrato.jsp" class="ajax-link">
 							<i title="Gestión Contrato" class="fa fa-pencil-square-o"></i> <span class="hidden-xs">Gestión de contratos</span>
 					</a></li>
 					<li><a href="ajax/ReciboCaja.jsp" class="ajax-link">
 							<i title="Recibo caja" class="fa fa-dashboard"></i> <span class="hidden-xs">Recibos de caja</span>
+					</a></li>
+					<li><a href="ajax/Reconexion.jsp" class="ajax-link">
+							<i title="Clientes morosos" class="fa fa-exclamation"></i> <span class="hidden-xs">Clientes morosos</span>
 					</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i class="fa fa-list"></i> <span class="hidden-xs">Paginas</span>

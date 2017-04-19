@@ -2,110 +2,236 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialog" class="col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
 </div>
+
+<!--///////////////////////Directorios donde estan los jsp /////////////////////////////// -->
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
 			<li><a href="index.jsp">Inicio</a></li>
-			<li><a href="#">Reconexion</a></li>
+			<li><a href="#">Reconexión</a></li>
 		</ol>
 	</div>
 </div>
 
+<!--///////////////////////DataTable de los contratos/////////////////////////////// -->
 <div class="row">
-	<div class="col-xs-12 col-sm-12">
+	<div class="col-xs-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i> <span>Registro de Otros Ingresos y Egresos</span>
+					<i class="fa fa-th"></i> <span>Lista de Reconexiones</span>
 				</div>
 				<div class="box-icons">
-					<a class="collapse-link"  id="colapsar_desplegar1" onclick="validar(colap1);" > 
-						<i class="fa fa-chevron-up"></i> </a> 
-					<a class="expand-link" id="expandir1" onclick="validar(expand1);"> 
+					<a id="colapsar_desplegar2" class="collapse-link"> 
+<!-- 					onclick="validar(colap2);"  -->
+						<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir2" class="expand-link"> 
+<!-- 					onclick="validar(expand2);" -->
 						<i class="fa fa-expand"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
-			<div class="box-content">
-				<form class="form-horizontal" role="form" id="formOI" method="post" action="">
-					<input type="hidden" id="opcion" name="opcion" value="guardar">
-					<input type="hidden" id="Otros_Ing_Egreg_ID" name="Otros_Ing_Egreg_ID">
-					
-			<div class="form-group has-success">
-			<label class="col-sm-4 control-label text-info">Nombre del Cliente </label>
-				<div class="col-sm-4">
-					<input id="monto" name="NombreCliente" data-bv-numeric="true" class="form-control"
-					 title="Requerido">
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="dt_Reconexion" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Nombre del Cliente</th>
+							<th>Fecha Reconexión</th>
+							<th>Fecha Cancelado</th>
+							<th>Número de Factura</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
+<div>
+	<form id="frmEliminarReconexion" action="" method="POST">
+		<input type="hidden" id=reconexion_ID name="reconexion_ID" value="">
+		<input type="hidden" id="opcion" name="opcion" value="eliminar">
+
+		<div id="modalbox">
+			<div class="devoops-modal">
+				<div class="devoops-modal-header">
+					<div class="modal-header-name">
+						<span>Basic table</span>
+					</div>
+					<div class="box-icons">
+						<a class="close-link"> <i class="fa fa-times"></i>
+						</a>
+					</div>
 				</div>
+				<div class="devoops-modal-inner"></div>
+				<div class="devoops-modal-bottom"></div>
 			</div>
+		</div>
+	</form>
+</div>
 
-
-<div class="form-group">
-	<label class="col-sm-4 text-right control-label">Factura</label>
-			<div class="col-sm-4">
-				<select class="populate placeholder" name="FacturaMaestra" 
-					id="FacturaMaestra">
-						<option value="">--Seleccione la Factura--</option>
-				</select>
-			</div>
-	</div>
-	<div class="form-group has-success has-feedback">
-	<!-- FORMA PARA CREAR PERIODOS DE TIEMPO CON JQUERY UI -->
-	<label  class="col-sm-4 control-label text-info">Fecha de Reconexion</label>
-		<div class="col-sm-4">
-			<input id="fecha" name="fecha" type="text" class="form-control"
-				placeholder="fecha de Reconexion" title="Requerido">
-			<span class="fa fa-calendar txt-success form-control-feedback"></span>
-		</div>
-	</div>
-	
-	<div class="form-group has-success has-feedback">
-	<!-- FORMA PARA CREAR PERIODOS DE TIEMPO CON JQUERY UI -->
-	<label  class="col-sm-4 control-label text-info">Fecha de Cancelado</label>
-		<div class="col-sm-4">
-			<input id="fecha_cancelado" name="fecha" type="text" class="form-control"
-				placeholder="fecha de Cancelado" title="Requerido">
-			<span class="fa fa-calendar txt-success form-control-feedback"></span>
-		</div>
-	</div>	
-				</form>
-			</div>
-		</div>
-	</div>
-</div>	
 
 <script type="text/javascript">
-// Run timepicker
-function DemoTimePicker(){
-	$('#input_time').timepicker({setDate: new Date()});
+
+////////////////////////////////Funsión para cargar los plugin de botones de dataTables y listar la tabla////////////////
+function AllTables() {
+	$.getScript('plugins/datatables/nuevo/jszip.min.js', function(){
+		$.getScript('plugins/datatables/nuevo/pdfmake.min.js',function(){
+			$.getScript('plugins/datatables/nuevo/vfs_fonts.js',function(){
+				console.log("PDF Y EXCEL cargado");
+				listar();
+				LoadSelect2Script(MakeSelect2);
+			});
+		});
+	});
 }
+
+function abrirDialogo() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
+	OpenModalBox(
+			"<div><h3>Borrar Registro</h3></div>",
+			"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro que desea eliminar este registro?</p>",
+			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
+			"<button type='button' id='eliminar_reconexion' class='btn btn-danger btn-label-left'"+
+			" style=' color: #ece1e1;' >"+
+			"<span><i class='fa fa-trash-o'></i></span> Borrar Registro</button>"+
+			"<div style='margin-top: 5px;'></div> </div>"+
+			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
+			"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
+			"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
+	eliminar();
+}
+
+var verResultado = function(r) {//parametro(resultado-String)
+	if(r == "BIEN"){
+		mostrarMensaje("#dialog", "CORRECTO",
+				"¡Se realizó la operación correctamente, todo bien!","#d7f9ec", "btn-info");
+		$('#dt_Reconexion').DataTable().ajax.reload();
+	}
+	if(r == "ERROR"){
+		mostrarMensaje("#dialog", "ERROR",
+				"¡Ha ocurrido un error, no se pudo realizar la operación!","#E97D7D", "btn-danger");
+	}
+	if(r =="VACIO"){
+		mostrarMensaje("#dialog", "VACIO",
+				"¡No se especificó la operación a realizar!", "#FFF8A7","btn-warning");
+	}
+}
+
+//////////////////////////////////eliminar los datos seteados en el formulario/////////////////////////////////////
+var eliminar = function() {
+	$("#eliminar_reconexion").on("click", function() {
+		frmElim = $("#frmEliminarReconexion").serialize();
+		console.log("datos a eliminar: " + frmElim);
+		$.ajax({
+			method:"POST",
+			url:"./SL_Reconexion",
+			data: frmElim
+		}).done(function(info) {
+ 			 verResultado(info);
+		});
+		CloseModalBox();
+	});
+}
+
+
+
+/////////////////////////activar evento del boton eliminar que esta en la fila seleccionada del dataTable///////////
+var obtener_id_eliminar = function(tbody, table) {//parametros(id_tabla, objeto dataTable)
+	$(tbody).on("click","button.eliminar",function() {
+		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+		table.rows().every(function(index, loop, rowloop) {
+			if (index == datos) {
+				var reconexion_ID = $("#frmEliminarReconexion #reconexion_ID").val(table.row(index).data().reconexion_ID);
+			}
+		});
+		abrirDialogo();
+	});
+}
+
+/////////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla/////////////////////////////////////////
+var listar = function() {
+	console.log("cargando dataTable");
+	var tablaReconexion= $('#dt_Reconexion').DataTable( {
+		responsive: true,
+		'destroy': true,
+		'bProcessing': false,
+		'bServerSide': false,
+		ajax: {
+			"method":"GET",
+			"url":"./SL_Reconexion",
+			"dataSrc":"aaData"
+		},
+		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+    	"bJQueryUI": true,
+		"language":idioma_esp,
+		drawCallback : function(settings) {
+			var api = this.api();
+			$('td', api.table().container()).find("button").tooltip({container : 'body'	});
+			$("a.btn").tooltip({container : 'body'});
+		},
+		"columns": [
+            { "data": "cliente.nombreCompleto"},
+            { "data": null,
+                render: function ( data, type, row ) {
+                	var f1 = new Date(data.fecha_reconexion);
+        			var fecha1 = f1.getDate()+"/"+(f1.getMonth()+1)+"/"+f1.getFullYear();
+                	return fecha1;
+                }},
+            { "data": null,
+                 render: function ( data, type, row ) {
+                   	var f2 = new Date(data.f_cancel);
+            		var fecha2 = f2.getDate()+"/"+(f2.getMonth()+1)+"/"+f2.getFullYear();
+                    return fecha2;
+                   }},
+            { "data": "factura_Maestra.numFact"},
+            {"defaultContent":
+				"<button type='button' class='eliminar btn btn-danger' data-toggle='tooltip' "+
+				"data-placement='top' title='Eliminar Reconexión'>"+
+				"<i class='fa fa-trash-o'></i> </button>"}
+            ],
+            "dom" : "<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
+				+ "<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
+				+ "<rt>"
+				+ "<'row'<'form-inline'"
+				+ "<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
+			"buttons":[
+				{
+	                extend:    'excelHtml5',
+	                text:      '<i class="fa fa-file-excel-o"></i>',
+	                titleAttr: 'excel'
+	            },
+	            {
+	                extend:    'csvHtml5',
+	                text:      '<i class="fa fa-file-text-o"></i>',
+	                titleAttr: 'csv'
+	            },
+	            {
+	                extend:    'pdfHtml5',
+	                text:      '<i class="fa fa-file-pdf-o"></i>',
+	                titleAttr: 'pdf'
+	            }]
+
+	});
+	tablaReconexion.columns.adjust().draw();
+	obtener_id_eliminar('#dt_Reconexion tbody',tablaReconexion);
+
+}
+
+
+/////////////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////////
 $(document).ready(function() {
-	// Create Wysiwig editor for textare
-	TinyMCEStart('#wysiwig_simple', null);
-	TinyMCEStart('#wysiwig_full', 'extreme');
-	// Add slider for change test input length
-	FormLayoutExampleInputLength($( ".slider-style" ));
-	// Initialize datepicker
-	$('#fecha').datepicker({setDate: new Date()});
-	$('#fecha_cancelado').datepicker({setDate: new Date()});
-	// Load Timepicker plugin
-	LoadTimePickerScript(DemoTimePicker);
-	// Add tooltip to form-controls
-	$('.form-control').tooltip();
-	LoadSelect2Script(DemoSelect2);
-	// Load example of form validation
-	LoadBootstrapValidatorScript(DemoFormValidator);
+	///////cargar plugin para DataTable
+	LoadDataTablesScripts2(AllTables);
 	// Add drag-n-drop feature to boxes
 	WinMove();
+	
 });
-	
 </script>
-
-
-
-	
-	
-	

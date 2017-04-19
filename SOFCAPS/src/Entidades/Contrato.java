@@ -24,7 +24,7 @@ public class Contrato
    private Sector sector;
    private Categoria categoria;
    private List<Factura_Maestra> facturas_Maestras;
-   private List<ReciboCaja> recibosCaja;
+   private List<ReciboCaja_Maestro> recibosCaja;
    
 
    	public Contrato() 
@@ -138,10 +138,10 @@ public class Contrato
 	public void setFacturas_Maestras(List<Factura_Maestra> facturas_Maestras) {
 		this.facturas_Maestras = facturas_Maestras;
 	}
-	public List<ReciboCaja> getRecibosCaja() {
+	public List<ReciboCaja_Maestro> getRecibosCaja() {
 		return recibosCaja;
 	}
-	public void setRecibosCaja(List<ReciboCaja> recibosCaja) {
+	public void setRecibosCaja(List<ReciboCaja_Maestro> recibosCaja) {
 		this.recibosCaja = recibosCaja;
 	}
 

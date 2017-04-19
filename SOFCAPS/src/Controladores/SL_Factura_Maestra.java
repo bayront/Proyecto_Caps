@@ -81,6 +81,14 @@ public class SL_Factura_Maestra extends HttpServlet{
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
+		}else if(Integer.parseInt(request.getParameter("carga")) == 4) {
+			try {
+				historialFacturas(response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 	}
     
@@ -101,6 +109,10 @@ public class SL_Factura_Maestra extends HttpServlet{
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			break;
+		case "eliminar":
+			String numFact = req.getParameter("numFact");
+			anularFactura(numFact, resp);
 			break;
 		default:
 			resp.setContentType("text/plain");
@@ -132,6 +144,18 @@ public class SL_Factura_Maestra extends HttpServlet{
 		}else
 			verificar_resultado(false, resp);
 			
+	}
+	
+	private void anularFactura(String numFact, HttpServletResponse response) {
+		try {
+			Factura_Maestra factura = new Factura_Maestra();
+			factura.setNumFact(numFact);
+			verificar_resultado(dtFactura.anularFacturaMaestra(factura), response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ERROR EN EL SERVLET FACTURA_MAESTRA: " + e.getMessage());
+		}
+		
 	}
 	
 	private void traerFacturas(HttpServletResponse response) throws SQLException, ParseException {
@@ -173,7 +197,6 @@ public class SL_Factura_Maestra extends HttpServlet{
 	private void historialFacturaCliente (String numMedidor, HttpServletResponse response) throws SQLException, IOException, ParseException {
 		List<Factura_Maestra> listaF = new ArrayList<>();
 		ResultSet rs = dtFactura.historialFacturasCliente(numMedidor);
-//		System.out.println("Este es el numero de medidor: "+ numMedidor);
 		while(rs.next()){
 			Factura_Maestra fA = new Factura_Maestra();
 			Consumo co = new Consumo();
@@ -196,7 +219,6 @@ public class SL_Factura_Maestra extends HttpServlet{
 			fA.setContrato(con);
 			
 			listaF.add(fA);
-			System.out.println("Este es el numero de medidor: "+ rs.getString(2));
 		}
 		DataTableObject dataTableObject = new DataTableObject();
 		dataTableObject.aaData = new ArrayList<>();
@@ -206,6 +228,43 @@ public class SL_Factura_Maestra extends HttpServlet{
 		String json = gson.toJson(dataTableObject);
 		System.out.println(json.toString());
 		out.print(json);	
+	}
+	
+	private void historialFacturas (HttpServletResponse response) throws SQLException, IOException, ParseException {
+		List<Factura_Maestra> listaF = new ArrayList<>();
+		ResultSet rs = dtFactura.historialFacturas();
+		while(rs.next()){
+			Factura_Maestra fA = new Factura_Maestra();
+			Consumo co = new Consumo();
+			Contrato con = new Contrato();
+			Cliente cl = new Cliente();
+			
+			fA.setNumFact(rs.getString(7));
+			fA.setDeslizamiento(rs.getFloat(4));
+			String f = parseador2.format(rs.getDate(6));
+			fA.setFechaVencimiento(parseador2.parse(f));
+			fA.setTotalPago(rs.getFloat(8));
+			co.setConsumoTotal(rs.getFloat(3));
+			f = parseador2.format(rs.getDate(5));
+			co.setFecha_fin(parseador2.parse(f));
+			cl.setNombreCompleto(rs.getString(1));
+			con.setNumMedidor(rs.getString(2));
+			
+			fA.setConsumo(co);
+			fA.setCliente(cl);
+			fA.setContrato(con);
+			
+			listaF.add(fA);
+		}
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.aaData = new ArrayList<>();
+		for (Factura_Maestra fA : listaF) {
+			dataTableObject.aaData.add(fA);
+		}
+		String json = gson.toJson(dataTableObject);
+		System.out.println(json.toString());
+		out.print(json);
+		
 	}
 	
 	private void facturasSinCancelar (HttpServletResponse response) throws SQLException, IOException, ParseException {
@@ -233,7 +292,6 @@ public class SL_Factura_Maestra extends HttpServlet{
 			fA.setContrato(con);
 			
 			listaF.add(fA);
-			System.out.println("Este es el numero de medidor: "+ rs.getString(2));
 		}
 		DataTableObject dataTableObject = new DataTableObject();
 		dataTableObject.aaData = new ArrayList<>();

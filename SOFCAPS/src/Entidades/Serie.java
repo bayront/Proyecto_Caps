@@ -1,32 +1,21 @@
 package Entidades;
 
 public class Serie {
-	private int idserie;
-	private String nombre;
-	private String significado;
+	private int serie_ID;
+	private String descripcion;
 	
-	public Serie() 
-	   {  
-	   }
+	public Serie() {  }
 	
-	public int getIdserie() {
-		return idserie;
+	public int getSerie_ID() {
+		return serie_ID;
 	}
-	public void setIdserie(int idserie) {
-		this.idserie = idserie;
+	public void setSerie_ID(int serie_ID) {
+		this.serie_ID = serie_ID;
 	}
-	public String getNombre() {
-		return nombre;
+	public String getDescripcion() {
+		return descripcion;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	public String getSignificado() {
-		return significado;
-	}
-	public void setSignificado(String significado) {
-		this.significado = significado;
-	}
-	
-	
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}	
 }

@@ -1,7 +1,65 @@
 <%@page language="java"%>
 <%@page contentType="text/html"%> 
-<%@page pageEncoding="UTF-8"%> 
+<%@page pageEncoding="UTF-8" import="Entidades.Usuario, Entidades.Rol, Datos.DT_Vw_rol_opciones, java.sql.ResultSet ;"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<%
+response.setHeader("Pragma", "No-cache");
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.setDateHeader("Expires", -1);
+%>
+<%
+	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+
+	Usuario us = new Usuario();
+	us = (Usuario)session.getAttribute("userVerificado");
+	
+	Rol r = new Rol();
+	r = (Rol)session.getAttribute("Rol");
+	
+	String url="";
+	url = request.getRequestURI();
+	//System.out.println("url: "+url);
+	int index = request.getRequestURI().lastIndexOf("/");
+	//System.out.println("index: "+index);
+	String miPagina = request.getRequestURI().substring(index);
+	//System.out.println("miPagina: "+miPagina);
+	boolean permiso = false;
+	String opcionActual = "";
+	
+	
+	ResultSet rs;
+	
+	if(us != null && r != null)
+	{
+		rs=dtvro.obtenerOpc(r);
+		while(rs.next())
+		{
+			opcionActual = rs.getString("opciones");
+			System.out.println("opcionActual: "+opcionActual);
+			if(opcionActual.equals(miPagina))
+			{
+				permiso = true;
+				break;
+			}
+			else
+			{
+				permiso = false;
+			}
+		}
+	}
+	else
+	{
+		System.out.println("Pagina caps");
+		response.sendRedirect("../CAPS.jsp");
+		return;
+	}
+	
+	if(!permiso)
+	{	
+		System.out.println("Pagina de error");
+		response.sendRedirect("pag_Error.jsp");
+	}
+%>
 <!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialog" class= "col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>

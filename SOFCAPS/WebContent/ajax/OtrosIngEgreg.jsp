@@ -1,8 +1,66 @@
-<%@page import="Datos.DTOtros_Ing_Egreg, java.util.*, Entidades.Otros_Ing_Egreg , java.sql.ResultSet ;"%>
+<%@page import="Entidades.Usuario, Entidades.Rol, Datos.DT_Vw_rol_opciones,Datos.DTOtros_Ing_Egreg, java.util.*, Entidades.Otros_Ing_Egreg , java.sql.ResultSet ;"%>
 <%@page language="java"%>
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<%
+response.setHeader("Pragma", "No-cache");
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.setDateHeader("Expires", -1);
+%>
+<%
+	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+
+	Usuario us = new Usuario();
+	us = (Usuario)session.getAttribute("userVerificado");
+	
+	Rol r = new Rol();
+	r = (Rol)session.getAttribute("Rol");
+	
+	String url="";
+	url = request.getRequestURI();
+	//System.out.println("url: "+url);
+	int index = request.getRequestURI().lastIndexOf("/");
+	//System.out.println("index: "+index);
+	String miPagina = request.getRequestURI().substring(index);
+	//System.out.println("miPagina: "+miPagina);
+	boolean permiso = false;
+	String opcionActual = "";
+	
+	
+	ResultSet resultset;
+	
+	if(us != null && r != null)
+	{
+		resultset=dtvro.obtenerOpc(r);
+		while(resultset.next())
+		{
+			opcionActual = resultset.getString("opciones");
+			System.out.println("opcionActual: "+opcionActual);
+			if(opcionActual.equals(miPagina))
+			{
+				permiso = true;
+				break;
+			}
+			else
+			{
+				permiso = false;
+			}
+		}
+	}
+	else
+	{
+		System.out.println("Pagina caps");
+		response.sendRedirect("../CAPS.jsp");
+		return;
+	}
+	
+	if(!permiso)
+	{	
+		System.out.println("Pagina de error");
+		response.sendRedirect("pag_Error.jsp");
+	}
+%>
 <!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialog" class="col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
@@ -15,6 +73,39 @@
 			<li><a href="#">Finanzas</a></li>
 			<li><a href="#">Gestión de Otros Ingresos y Egresos</a></li>
 		</ol>
+	</div>
+</div>
+<!--///////////////////////DataTable de otros ingresos y egresos/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name text-center">
+					<i class="fa fa-th"></i> <span>Lista de Otros ingresos y egresos</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" class="collapse-link" onclick="validar(colap2);"> 
+						<i class="fa fa-chevron-up"></i>
+					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> 
+						<i class="fa fa-expand"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="tabla_OI" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Descripción</th>
+							<th>Monto</th>
+							<th>Fecha de registro</th>
+							<th>Categoría</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
 	</div>
 </div>
 <!--///////////////////////Formulario principal de otros ingresos y egresos/////////////////////////////// -->
@@ -86,39 +177,6 @@
 				
 					</div>
 				</form>
-			</div>
-		</div>
-	</div>
-</div>
-<!--///////////////////////DataTable de otros ingresos y egresos/////////////////////////////// -->
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name text-center">
-					<i class="fa fa-th"></i> <span>Lista de Otros ingresos y egresos</span>
-				</div>
-				<div class="box-icons">
-					<a id="colapsar_desplegar2" class="collapse-link" onclick="validar(colap2);"> 
-						<i class="fa fa-chevron-up"></i>
-					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> 
-						<i class="fa fa-expand"></i></a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding table-responsive">
-				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="tabla_OI" style="width:100%;">
-					<thead>
-						<tr>
-							<th>Descripción</th>
-							<th>Monto</th>
-							<th>Fecha de registro</th>
-							<th>Categoría</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-				</table>
 			</div>
 		</div>
 	</div>

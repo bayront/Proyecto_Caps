@@ -1,9 +1,12 @@
 package Controladores;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.HashMap;
+import java.util.*;
+import java.io.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -12,7 +15,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sun.javafx.collections.MappingChange.Map;
+
 import Datos.Conexion;
+import Datos.DTCategoria;
+import Datos.DTOtros_Ing_Egreg;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -43,23 +50,37 @@ public class SL_ReporteOtros extends HttpServlet {
 		
 		try 
 		{
+			 
 			Connection con = null;
 			
 			con = Conexion.getConnection();
+			String valor ="";
+			String v="";
 			String descripcion ="";
 			
 			String monto ="";
-			String fecha ="";
 			
+//			Map<String,Object> parameters = (Map<String, Object>) new HashMap<String,Object>();
+//			((HashMap<String,Object>) parameters).put("parameter1",new String("Este es un String para pasar por parametro"));
+//			InputStream reportStream = new FileInputStream("If.jrxml");
+			valor= request.getParameter("parameter1");
+			v= request.getParameter("a");
 			descripcion = request.getParameter("descripcion");
 			monto = request.getParameter("monto");
-			fecha = request.getParameter("fecha");
+			
+			//fecha = request.getParameter("parameter1");
+			//fecha = parameter1;
+			//System.out.println("SlReporte fecha"+fecha);
+			
+			
 			//Aquí se ponen los parámetros a como se llaman en el reporte
 			HashMap<String, Object>hm = new HashMap<>();
-			
+			hm.put("mar", valor);
+			hm.put("anio",v);
 			hm.put("descripcion", descripcion);
 			hm.put("monto", monto);
-			hm.put("fecha", fecha);
+			//hm.put("fecha", fecha);
+			
 			
 			System.out.println(hm);
 			OutputStream otps = response.getOutputStream();
@@ -75,6 +96,7 @@ public class SL_ReporteOtros extends HttpServlet {
 			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
 			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(otps));
 			exporter.exportReport();
+			System.out.println("SlReporte parametro"+" "+valor);
 			
 		}
 		catch (Exception e) 

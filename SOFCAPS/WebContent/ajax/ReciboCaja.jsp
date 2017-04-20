@@ -64,6 +64,10 @@ response.setDateHeader("Expires", -1);
 		response.sendRedirect("pag_Error.jsp");
 	}
 %>
+<!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
+<div id="dialog" class= "col-xm-offset-1 col-xm-10">
+	<div class="contenido" style="margin-left: 20px;"></div>
+</div> 
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -220,6 +224,21 @@ function activarSelect(select){
 	$(select).removeAttr('disabled');
 }
 	
+//////////////////////////funsión que muestra el resultado mediante un dialogo//////////////////////////////////////
+var verResultado = function(r) {//parametro(resultado-String)
+	if(r == "BIEN"){
+		mostrarMensaje("#dialog", "CORRECTO", 
+			"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
+//  		limpiar_texto();
+//  		$('#tabla_factura').DataTable().ajax.reload();
+ 	}else if(r == "ERROR"){
+ 		mostrarMensaje("#dialog", "ERROR", 
+ 				"¡Ha ocurrido un error, no se pudo realizar la acción!", "#E97D7D", "btn-danger");
+ 	}else{
+ 		mostrarMensaje("#dialog", "MONTO RESTANTE", 
+ 				"Este documento tiene un monto restante a pagar de: "+r, "#d7f9ec", "btn-info");
+ 	}
+ }
 ///////////////////funsión que crea un dataTable para traer en cliente y el contrato mediante un dialogo////////////
 function filtrarTabla(){
 	    $('#datatable-filter thead th label input').each( function () {
@@ -304,10 +323,10 @@ function cargarSelectFactura(select) {//parametro id select
                  	$(select).empty();
                  	$(select).append("<option value=''>--Seleccione la factura--</option>");
                  	$(response.aaData).each(function(i, v) {
-                 			$(select).append('<option value="' + v.numFact + '">' + v.numFact +'</option>');
+                 			$(select).append('<option value="' + v.numFact + '"> Número de factura: ' + v.numFact +'</option>');
                  			
          			});
-                 	activarChangeFactura("#factura", response.aaData);             	
+                activarChangeFactura("#factura", response.aaData);             	
       			console.log("id cliente form: " + cliente_ID_form );
  			});  	        	
          }
@@ -331,10 +350,10 @@ function cargarSelectReconexion(select) {//parametro id select
                  	$(select).empty();
                  	$(select).append("<option value=''>--Seleccione la orden de reconexion--</option>");
                  	$(response.aaData).each(function(i, v) {
-                 			$(select).append('<option value="' + v.numFact + '">' + v.numFact +'</option>');
+                 			$(select).append('<option value="' + v.reconexion_ID+ '"> Fecha de la reconexion' 
+                 					+ v.fecha_reconexion +'</option>');
                  			
-         			});
-                 	activarChangeFactura("#factura", response.aaData);             	
+         			});            	
       			console.log("id cliente form: " + cliente_ID_form );
  			});  	        	
          }
@@ -357,9 +376,9 @@ function cargarSelectContrato(select) {//parametro id select
                  	$(select).empty();
                  	$(select).append("<option value=''>--Seleccione el contrato--</option>");
                  	$(response.aaData).each(function(i, v) {
-                 			$(select).append('<option value="' + v.numContrato + '">' +"No. Contrato: " + v.numContrato + " - " + "No. Medidor: " + v.numMedidor +'</option>');
+                 			$(select).append('<option value="' + v.contrato_ID + '">' +"No. Contrato: " + v.numContrato + " - " + "No. Medidor: " + v.numMedidor +'</option>');
          			});
-             		           	
+                activarChangeContrato(select, response.aaData);
       			console.log("id cliente form: " + cliente_ID_form );
  			});  	        	
          }
@@ -374,16 +393,63 @@ $(function () {
     }).datepicker("setDate", new Date());
  });
 
-function activarChangeFactura(select, response) {
+function activarChangeFactura(select, aaData) {
 	$(select).change(function(){
 		var factura = $("#factura").val();
-		console.log("numfact selected: " + factura);
-		$(response).each(function(i, v) {
+		var montoTotal, factura_maestra_ID;
+		$(aaData).each(function(i, v) {
  			if(factura == v.numFact){
- 				console.log("resultado");
- 				$("#montoTotal").val(v.pagoTotal);
+ 				montoTotal = v.totalPago;
+ 				factura_maestra_ID = v.factura_Maestra_ID;
  			}
 		});
+		$.ajax({
+	         type: "GET",
+	         url: "./SL_Factura_Maestra",
+	         dataType: "json",
+	         data: {"factura_Maestra_ID": factura_maestra_ID, "carga" : 5, "montoTotal" : montoTotal},
+	         success: function(response){
+	        	 if(response == "ERROR")
+	        		 verResultado(response);
+	        	 else{
+	        		 $("#montoTotal").val(response);
+	        		 verResultado(response);
+	        	 }
+	         }
+	 	});
+	});
+}
+
+function activarChangeContrato(select, aaData) {
+	$(select).change(function(){
+		var contrato_ID = $(select).val();
+		var montoContrato, cuotas;
+		$(aaData).each(function(i, v) {
+ 			if(contrato_ID == v.contrato_ID){
+ 				montoContrato = v.montoContrato;
+ 				cuotas = v.cuotas;
+ 			}
+		});
+		console.log("montoContrato: "+montoContrato+", cuotas: "+cuotas);
+		$.ajax({
+	         type: "POST",
+	         url: "./SL_Contrato",
+	         dataType: "json",
+	         data: {"contrato_ID": contrato_ID, 
+	        	 "opcion" : "calcular",
+	        	 "montoContrato" : montoContrato
+	         },
+	         success: function(response){
+	        	 if(response == "ERROR")
+	        		 verResultado(response);
+	        	 else{
+	        		 $("#montoTotal").val(response.montoContrato);
+	        		 mostrarMensaje("#dialog", "MONTO RESTANTE", 
+	        	 				"Este documento tiene un monto restante a pagar de: "+
+	        	 				response.montoContrato+" </br>Cuota No. "+response.cuotas, "#d7f9ec", "btn-info");
+	        	 }
+	         }
+	 	});
 	});
 }
 
@@ -453,7 +519,7 @@ $(document).ready(function() {
 		+ "<th><label><input type='text' name='Nombre2'/></label></th>"
 		+ "<th><label><input type='text' name='Apellido1'/></label></th>"
 		+ "<th><label><input type='text' name='Apellido2'/></label></th>"
-		+ "<th><label><input type='text' name='Número de cédula'/></label></th>"
+		+ "<th><label><input type='text' name='Cédula'/></label></th>"
 		+ "<th></th>"
 		+ "</tr>"														
 		+ "</thead>"														

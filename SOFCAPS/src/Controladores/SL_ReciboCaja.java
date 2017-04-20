@@ -22,9 +22,11 @@ import Datos.DataTableObject;
 
 import Entidades.Contrato;
 import Entidades.Factura_Maestra;
+import Entidades.Reconexion;
 import Entidades.Cliente;
 import Datos.DTContrato;
 import Datos.DTFacturaMaestra;
+import Datos.DTReconexion;
 
 /**
  * Servlet implementation class SL_ReciboCaja
@@ -33,10 +35,10 @@ import Datos.DTFacturaMaestra;
 public class SL_ReciboCaja extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PrintWriter out;
-	private DT_reciboCaja dTrCaja= DT_reciboCaja.getInstance();
+	private DT_reciboCaja dt_reciboCaja = DT_reciboCaja.getInstance();
 	private DTContrato dTcontrato= DTContrato.getInstance();
-	private DT_reciboCaja dTreciboCaja = DT_reciboCaja.getInstance();
 	private DTFacturaMaestra dtFacturaMaestra = DTFacturaMaestra.getInstance();
+	private DTReconexion dtReconexion = DTReconexion.getInstance();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
        
     /**
@@ -63,9 +65,24 @@ public class SL_ReciboCaja extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}else if(Integer.parseInt(request.getParameter("idserie")) == 3) {
+			traerReconexiones(idCliente , response);
 		}
 	}
 	
+	private void traerReconexiones(int idCliente, HttpServletResponse response) {
+		System.out.println("traer reconexiones del cliente");
+		List<Reconexion> reconexiones = dtReconexion.listaReconexiones(idCliente);
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.aaData = new ArrayList<>();
+		for (Reconexion r : reconexiones) {
+			dataTableObject.aaData.add(r);
+		}
+		String json = gson.toJson(dataTableObject);
+		System.out.println(json.toString());
+		out.print(json);
+	}
+
 	private void traerVistaClienteContrato(int cliente_ID, HttpServletResponse response) throws SQLException {
 		List<Contrato> listaC = new ArrayList<>();
 		ResultSet rs = dTcontrato.cargarVistaClienteContrato(cliente_ID);	
@@ -77,6 +94,8 @@ public class SL_ReciboCaja extends HttpServlet {
 			contrato.setNumMedidor(rs.getString("numMedidor"));
 			contrato.setContrato_ID(rs.getInt("Contrato_ID"));
 			contrato.setNumContrato(rs.getInt("numContrato"));
+			contrato.setMontoContrato(rs.getFloat("montoContrato"));
+			contrato.setCuotas(rs.getInt("cuotas"));
 			contrato.setCliente(cliente);
 			listaC.add(contrato);
 			
@@ -94,14 +113,14 @@ public class SL_ReciboCaja extends HttpServlet {
 	
 	private void traerNumeroFactura(int cliente_ID, HttpServletResponse response) throws SQLException {
 		List<Factura_Maestra> listaFC = new ArrayList<>();
+		System.out.println("cliente a ver facturas: "+cliente_ID);
 		ResultSet rs = dtFacturaMaestra.cargarNumeroDeFactura(cliente_ID);	
 		  
 		while(rs.next()){
 			Factura_Maestra factura_maestra = new Factura_Maestra();
-			
 			factura_maestra.setNumFact(rs.getString("numFact"));
 			factura_maestra.setTotalPago(rs.getFloat("totalPago") + rs.getFloat("deslizamiento"));
-			
+			factura_maestra.setFactura_Maestra_ID(rs.getInt("Factura_Maestra_ID"));
 			listaFC.add(factura_maestra);
 		}
 		

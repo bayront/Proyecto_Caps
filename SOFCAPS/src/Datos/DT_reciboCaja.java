@@ -63,23 +63,4 @@ public class DT_reciboCaja {
 		return listaFacturas;
 	}
 	
-	public ArrayList<Reconexion> listaReconexiones(){
-		ArrayList<Reconexion> listaReconexiones = new ArrayList<Reconexion>();
-		String sql = ("SELECT * FROM sofcaps.reconexion;");
-		Statement s;
-		try {
-			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			rs = s.executeQuery(sql);
-			while(rs.next()){
-				Reconexion reconexion = new Reconexion();
-				reconexion.setReconexion_ID(rs.getInt("Reconexion_ID"));
-				listaReconexiones.add(reconexion);
-			}
-		} catch (Exception e){
-			System.err.println("DATOS: ERROR " +e.getMessage());
-		}
-		return listaReconexiones;
-	}
-	 
-	
 }

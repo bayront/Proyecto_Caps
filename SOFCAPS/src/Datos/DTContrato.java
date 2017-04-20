@@ -331,5 +331,56 @@ public class DTContrato {
 		}
 		return rs;
 	}
+
+	public float calcularMontoRestante(int contrato_ID) throws SQLException {
+		float montoRestante;
+		Statement s;
+		String sql = "select sum(round((r.monto),2)) as monto "+
+				"from recibocaja_detalle r where r.Serie_ID = 2 and r.numDocumento = "+contrato_ID+";";
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("montoRestante de contrato cargado");
+		}catch (Exception e){
+			e.printStackTrace();
+			System.out.println("Error en DTFacturaMaestra, metodo calcularMontoRestante: "+e.getMessage());
+		}finally {
+			if(rs == null) {
+				System.out.println("Resultset de monto de contrato vacio");
+				montoRestante = 0.0f;
+			}else
+				if(rs.first())
+					montoRestante = rs.getFloat("monto");
+				else
+					montoRestante = 0.0f;
+		}
+		
+		return montoRestante;
+	}
+
+	public int calcularCuotasRestantes(int contrato_ID) throws SQLException {
+		int cuotas;
+		Statement s;
+		String sql = "select count(*) as cuotas "+
+				"from recibocaja_detalle r where r.Serie_ID = 2 and r.numDocumento = "+contrato_ID+";";
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("cuotas restantes del contrato cargado");
+		}catch (Exception e){
+			e.printStackTrace();
+			System.out.println("Error en DTFacturaMaestra, metodo calcularCuotasRestantes: "+e.getMessage());
+		}finally {
+			if(rs == null) {
+				System.out.println("Resultset de cuotas contratos vacio");
+				cuotas = 0;
+			}else
+				if(rs.first())
+					cuotas = rs.getInt("cuotas");
+				else
+					cuotas = 0;
+		}
+		return cuotas;
+	}
 	
 }

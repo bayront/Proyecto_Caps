@@ -270,16 +270,29 @@ response.setDateHeader("Expires", -1);
 	var verResultado = function(r) {//parametro(resultado-String)
 		if(r == "BIEN"){
 			mostrarMensaje("#dialog", "CORRECTO", 
-					"¡Se ha anulado correctamente la factura!", "#d7f9ec", "btn-info");
-			limpiar_texto();
-			$('#tabla_factura').DataTable().ajax.reload();
-		}
-		if(r == "ERROR"){
-			mostrarMensaje("#dialog", "ERROR", 
-					"¡No se puedo anular esta factura!", "#E97D7D", "btn-danger");
-		}
-	}
-// /////////////////////////////funsión que abre un dialogo y mostrara un contenido//////////////////////////////////
+				"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
+	 		limpiar_texto();
+	 		$('#tabla_factura').DataTable().ajax.reload();
+	 	}
+	 	if(r == "ERROR"){
+	 		mostrarMensaje("#dialog", "ERROR", 
+	 				"¡Ha ocurrido un error, no se pudo realizar la acción!", "#E97D7D", "btn-danger");
+	 	}
+	 	if(r == "NOFECHA"){
+	 		mostrarMensaje("#dialog", "ERROR", 
+	 				"¡No existe esta fecha de corte en los registros!", "#E97D7D", "btn-danger");
+	 	}
+	 	if(r =="VACIO"){
+	 		mostrarMensaje("#dialog", "VACIO", 
+	 				"¡No se especificó la acción a realizar!", "#FFF8A7", "btn-warning");
+	 	}
+	 	if(r =="NOFACTURAS"){
+	 		mostrarMensaje("#dialog", "SIN FACTURAS", 
+	 				"¡No se genero ninguna factura, todo bien!", "#FFF8A7", "btn-warning");
+	 		limpiar_texto();
+	 	}
+	 }
+/////////////////////////////////funsión que abre un dialogo y mostrara un contenido//////////////////////////////////
 	function abrirDialogo() {//parametro(funsion_js[eliminar])
 		OpenModalBox(
 				"<div><h3>Anular Factura</h3></div>",
@@ -325,6 +338,7 @@ function cerrasFacturasSinCancelar() {
 	$('#tabla_facturas_sin_cancelar').DataTable().state.clear();
 	$('#tabla_facturas_sin_cancelar').DataTable().clear().draw();
 }
+
 // ///////////////////funsión que crea un dataTable para traer el historial de facturas de un cliente mediante un dialogo////////////
 	function historialFacturasCliente(numMedidor){
 		if($.fn.DataTable.isDataTable('#tabla_facturas_historial')){
@@ -536,7 +550,6 @@ function cerrasFacturasSinCancelar() {
 
 ///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
 	function iniciarTabla(){
-		validarColap(colap1, "#colapsar_desplegar1");
 		var tablaFactura = $('#tabla_factura').DataTable( {
 			responsive: true,
 			"destroy": true,
@@ -577,9 +590,7 @@ function cerrasFacturasSinCancelar() {
 		               	return fecha;
 		       	}},
 	            { "data": "numFact" },
-	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' title='Editar consumo'>"+
-					"<i class='fa fa-pencil-square-o'></i> </button>  "+
-					"<button type='button' class='eliminarConsumo btn btn-danger' title='Eliminar consumo'>"+
+	            {"defaultContent":"<button type='button' class='eliminarFac btn btn-danger' title='Anular factura'>"+
 					"<i class='fa fa-trash-o'></i> </button> "+
 					"<button type='button' class='verHistorial btn btn-warning' data-toggle='tooltip' "+
 					"data-placement='top' title='ver historial facturas'>"+
@@ -619,7 +630,6 @@ function cerrasFacturasSinCancelar() {
 	
 	var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
 		limpiar_texto();
-		colapsar_desplegar($("#colapsar_desplegar1"));	
 	}
 	
 	var limpiar_texto = function() {////////////////////////limpiar texto del formulario

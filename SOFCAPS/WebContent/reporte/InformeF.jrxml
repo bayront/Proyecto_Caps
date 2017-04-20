@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-04-19T16:18:41 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InformeF" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6283b489-e0fe-4ffe-ac3e-af2a73734968">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SOFCAPS"/>
+	<style name="Crosstab_CH" mode="Opaque" backcolor="#F5FFFA">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CG" mode="Opaque" backcolor="#BFFFDF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CT" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="mar" class="java.lang.String"/>
+	<parameter name="anio" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[Select  o.Otros_Ing_Egreg_ID,o.fecha,  DATE_FORMAT(fecha, '%M') as Meses, DATE_FORMAT(fecha, '%Y') as Anio, o.descripcion, o.monto,  c.Categoria_Ing_Egreg_ID, c.nombreCategoria , c.TipoCategoria_ID 
+From otros_ing_egreg o Inner Join categoria_ing_egreg c 
+On o.Categoria_Ing_Egreg_ID = c.Categoria_Ing_Egreg_ID where  DATE_FORMAT(fecha, '%M') =  $P{mar}  AND DATE_FORMAT(fecha, '%Y')= $P{anio} AND o.eliminado=0 and c.eliminado=0]]>
+	</queryString>
+	<field name="Otros_Ing_Egreg_ID" class="java.lang.Integer"/>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="Meses" class="java.lang.String"/>
+	<field name="Anio" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="monto" class="java.lang.Float"/>
+	<field name="Categoria_Ing_Egreg_ID" class="java.lang.Integer"/>
+	<field name="nombreCategoria" class="java.lang.String"/>
+	<field name="TipoCategoria_ID" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="65" y="0" width="305" height="60" uuid="1f3ca26e-ae6b-425a-8930-0c37600becc8">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Times New Roman" size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comité Agua Potable y Saneamiento CAPS- Poneloya]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="105" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="150" height="30" uuid="9dce8f5c-a92a-487b-9e32-d58f60915d15"/>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="18"/>
+				</textElement>
+				<text><![CDATA[Poneloya Mes de:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="10" width="70" height="30" uuid="76744dde-4eb2-44d6-9621-9ea70754fa64"/>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="18"/>
+				</textElement>
+				<text><![CDATA[Año:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="440" y="10" width="60" height="30" uuid="ef5a09f7-d78f-4674-b9c8-37cf51482eb0"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{anio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="150" y="47" width="260" height="30" uuid="abd1acd4-f22d-4170-80cc-295f49e2abd6">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Informe Financiero]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="150" y="10" width="100" height="30" uuid="e17d367b-5cc6-4d32-b070-020f7c2fa688"/>
+				<textFieldExpression><![CDATA[$P{mar}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="297" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="30" width="550" height="160" uuid="d4b97c91-58ac-4f50-a035-0baf65445c3c">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab_CH"/>
+					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab_CG"/>
+					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab_CT"/>
+					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab_CD"/>
+				</reportElement>
+				<rowGroup name="nombreCategoria" width="180" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{nombreCategoria}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField>
+								<reportElement x="0" y="0" width="180" height="30" uuid="4c84ef64-a58f-4dab-934f-42f0391b7227"/>
+								<textElement>
+									<font fontName="Times New Roman" size="16"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{nombreCategoria}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CT">
+							<staticText>
+								<reportElement x="0" y="0" width="180" height="40" uuid="f56f22c4-3b18-4ee4-a754-f5ecee20363c"/>
+								<textElement>
+									<font size="16" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Total ]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="TipoCategoria_ID" height="30" totalPosition="End">
+					<bucket class="java.lang.Integer">
+						<bucketExpression><![CDATA[$F{TipoCategoria_ID}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField>
+								<reportElement x="0" y="0" width="160" height="30" isRemoveLineWhenBlank="true" uuid="2938e465-ee28-49f2-ad82-36bd064c9e3b"/>
+								<textElement textAlignment="Center">
+									<font size="20" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{TipoCategoria_ID}.intValue()==01?"Ingresos":"Egresos"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents mode="Opaque" style="Crosstab_CT">
+							<staticText>
+								<reportElement x="0" y="0" width="190" height="30" isRemoveLineWhenBlank="true" uuid="0dbed295-743d-4ade-9c7a-a7adc66fa10f"/>
+								<textElement textAlignment="Center">
+									<font size="20" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Saldo Total]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="monto_MEASURE" class="java.lang.Float" calculation="Sum">
+					<measureExpression><![CDATA[$F{monto}]]></measureExpression>
+				</measure>
+				<crosstabCell width="160" height="30">
+					<cellContents mode="Opaque" style="Crosstab_CD">
+						<textField pattern="#,##0.###;(#,##0.###-)">
+							<reportElement x="0" y="0" width="160" height="30" isRemoveLineWhenBlank="true" uuid="545400da-b09b-4ef9-9d77-88089f737c63"/>
+							<textElement textAlignment="Left">
+								<font size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{monto_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="190" height="30" columnTotalGroup="TipoCategoria_ID">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField pattern="#,##0.###;(#,##0.###-)">
+							<reportElement x="0" y="0" width="190" height="30" isRemoveLineWhenBlank="true" uuid="38970479-6390-4106-a223-b09218994e39"/>
+							<textElement textAlignment="Left">
+								<font size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{monto_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="160" height="40" rowTotalGroup="nombreCategoria">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField pattern="#,##0.###;(#,##0.###-)">
+							<reportElement x="0" y="0" width="160" height="40" uuid="67657425-586e-476a-9fe4-914850a29f09"/>
+							<textElement textAlignment="Left">
+								<font size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{monto_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="190" height="40" rowTotalGroup="nombreCategoria" columnTotalGroup="TipoCategoria_ID">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField pattern="#,##0.###;(#,##0.###-)">
+							<reportElement x="0" y="0" width="190" height="40" uuid="ec1fc687-0f50-45a5-a52f-ef9ce2a65c1e"/>
+							<textElement textAlignment="Left">
+								<font size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{monto_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

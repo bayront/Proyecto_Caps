@@ -10,6 +10,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import Entidades.Cliente;
 import Entidades.Reconexion;
@@ -22,6 +24,7 @@ public class DTReconexion {
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
 	SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+	SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 	Date fechaActual = new Date(); 
 	
 	private DTReconexion() {
@@ -48,6 +51,30 @@ public class DTReconexion {
 			System.out.println("Resultset de Reconexion vacio");
 		
 		return rs;
+	}
+	
+	public List<Reconexion> listaReconexiones(int cliente_ID){
+		List<Reconexion> listaReconexiones = new ArrayList<Reconexion>();
+		String sql = ("SELECT * FROM reconexion rx where rx.cancelado = 0 and rx.Cliente_ID = "+cliente_ID+";");
+		Statement s;
+		try {
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("datos de reconexiones del cliente cargados");
+			while(rs.next()){
+				Reconexion reconexion = new Reconexion();
+				Factura_Maestra factura_Maestra = new Factura_Maestra();
+				reconexion.setReconexion_ID(rs.getInt("Reconexion_ID"));
+				String f1 = parseador.format(rs.getDate("fecha_reconexion"));
+				reconexion.setFecha_reconexion(parseador.parse(f1));
+				factura_Maestra.setFactura_Maestra_ID(rs.getInt("Factura_Maestra_ID"));
+				reconexion.setFactura_Maestra(factura_Maestra);
+				listaReconexiones.add(reconexion);
+			}
+		} catch (Exception e){
+			System.err.println("DATOS: ERROR " +e.getMessage());
+		}
+		return listaReconexiones;
 	}
 	
 	

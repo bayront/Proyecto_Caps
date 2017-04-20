@@ -165,6 +165,11 @@ public class SL_Contrato extends HttpServlet {
 			categoria = Integer.parseInt(request.getParameter("categoria"));
 			guardar(numMedidor, fechaContrato, numContrato, cuotas, montoRound, cliente, regimenPropiedad, sector, categoria, response);
 			break;
+		case "calcular":
+			contrato_ID= Integer.parseInt(request.getParameter("contrato_ID"));
+			montoContrato = Float.parseFloat(request.getParameter("montoContrato"));
+			traerMontoRestante(contrato_ID, montoContrato, response);
+			break;
 		default:
 			response.setContentType("text/plain");
 			PrintWriter out;
@@ -174,7 +179,27 @@ public class SL_Contrato extends HttpServlet {
 		}
 	}
     
-    private void eliminar(int contrato_ID, HttpServletResponse response) {
+    private void traerMontoRestante(int contrato_ID, float montoContrato, HttpServletResponse response) throws IOException {
+		System.out.println("contrato_ID: "+contrato_ID+", monto: "+montoContrato);
+		try {
+			montoContrato = montoContrato - dtContrato.calcularMontoRestante(contrato_ID);
+			int cuotas = dtContrato.calcularCuotasRestantes(contrato_ID) + 1;
+			Contrato contrato = new Contrato();
+			contrato.setCuotas(cuotas);
+			contrato.setMontoContrato(montoContrato);
+			String json = gson.toJson(contrato);
+			response.setContentType("application/json");
+			PrintWriter out = response.getWriter();
+			out.print(json);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.setContentType("text/plain");
+			PrintWriter out = response.getWriter();
+			out.print("ERROR");
+		}
+	}
+
+	private void eliminar(int contrato_ID, HttpServletResponse response) {
 		try {
 			Contrato contrato = new Contrato();
 			contrato.setContrato_ID(contrato_ID);

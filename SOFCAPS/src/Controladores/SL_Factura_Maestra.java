@@ -89,10 +89,29 @@ public class SL_Factura_Maestra extends HttpServlet{
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
+		}else if(Integer.parseInt(request.getParameter("carga")) == 5) {
+			Float montoTotal = Float.parseFloat(request.getParameter("montoTotal"));
+			int factura_Maestra_ID = Integer.parseInt(request.getParameter("factura_Maestra_ID"));
+			traerMontoRestante(montoTotal, factura_Maestra_ID, response);
 		}
 	}
     
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void traerMontoRestante(Float montoTotal, int factura_Maestra_ID, HttpServletResponse response) throws IOException {
+    	System.out.println("factura_maestra_ID: "+ factura_Maestra_ID+", monto: "+montoTotal);
+    	try {
+			montoTotal = montoTotal - dtFactura.calcularMontoRestante(factura_Maestra_ID);
+			response.setContentType("text/plain");
+			PrintWriter out = response.getWriter();
+			out.print(montoTotal);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.setContentType("text/plain");
+			PrintWriter out = response.getWriter();
+			out.print("ERROR");
+		}
+	}
+
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String opcion = req.getParameter("opcion");
 		switch (opcion) {
 		case "generar":
@@ -136,13 +155,15 @@ public class SL_Factura_Maestra extends HttpServlet{
 		if (hayFechaCorte) {
 			if (dtFactura.generarFacturas(fechaCorte, fechaVence) == 0) {
 				resp.setContentType("text/plain");
-				PrintWriter out;
-				out = resp.getWriter();
+				PrintWriter out = resp.getWriter();
 				out.print("NOFACTURAS");
 			}else
 				verificar_resultado(true, resp);
-		}else
-			verificar_resultado(false, resp);
+		}else {
+			resp.setContentType("text/plain");
+			PrintWriter out = resp.getWriter();
+			out.print("NOFECHA");
+		}
 			
 	}
 	

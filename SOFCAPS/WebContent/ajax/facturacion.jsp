@@ -93,8 +93,8 @@ response.setDateHeader("Expires", -1);
 
 			<div class="box-content">
 				<div id="ow-server-footer" style="margin:-15px; margin-bottom:30px;">
-					<a href="#" id="historialFacturas" class="col-xs-6 col-sm-3 btn-info text-center" style="color:#2f2481; font-weight:600;"><i
-					class="fa fa-list"></i> <span>Historial de facturas</span> </a>
+				<a href="#" id="historialFacturas" class="col-xs-6 col-sm-3 btn-info text-center" style="color:#2f2481; font-weight:600;"><i
+					class="fa fa-desktop"></i> <span>Historial de facturas</span></a>
 					<a href="#" class="col-xs-6 col-sm-3 btn-info text-center" style="color:#2f2481; font-weight:600;"><i
 					class="fa fa-plus-square"></i> <span>Crear recibo para factura</span></a> 
 					<a href="#" id="facturasSinCancelar" class="col-xs-6 col-sm-3 btn-info text-center" style="color:#2f2481; font-weight:600;"><i
@@ -224,7 +224,7 @@ response.setDateHeader("Expires", -1);
 				<div class="box-icons">
 					<a id="abrir_historial" class="expand-link"> 
 						<i class="fa fa-expand"></i></a>
-					<a class="cerrar_historial" onclick="cerrarHistorial();"> 
+					<a class="cerrar_historial" onclick="cerrarHistorialFacturascliente();"> 
 						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
@@ -232,7 +232,7 @@ response.setDateHeader("Expires", -1);
 			<div class="box-content no-padding table-responsive">
 				<div style="width:100%; padding-top:15px;"></div>
 				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="tabla_facturas_historial" style="width:100%;">
+					id="tabla_facturas_historial_cliente" style="width:100%;">
 					<thead>
 						<tr>
 							<th>Cliente</th>
@@ -250,6 +250,85 @@ response.setDateHeader("Expires", -1);
 		</div>
 	</div>
 </div>
+
+<!--///////////////////////DataTable de las facturas sin cancelar/////////////////////////////// -->
+<div id="facturas_sin_cancelar" class="row" style="display:none;">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name text-center">
+					<i class="fa fa-th"></i> <span>Facturas sin cancelar</span>
+				</div>
+				<div class="box-icons">
+					<a id="abrir_facturas_sin_cancelar" class="expand-link"> 
+						<i class="fa fa-expand"></i></a>
+					<a class="cerrar_facturas_sin_cancelar" onclick="cerrasFacturasSinCancelar();"> 
+						<i class="fa fa-times"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<div style="width:100%; padding-top:15px;"></div>
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="tabla_facturas_sin_cancelar" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Cliente</th>
+							<th>Medidor</th>
+							<th>Consumo</th>
+							<th>Total pago</th>
+							<th>Deslizamiento</th>
+							<th>Fecha de corte</th>
+							<th>Vencimiento</th>
+							<th>Num_factura</th>
+							<th></th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!--///////////////////////DataTable de las facturas sin cancelar/////////////////////////////// -->
+<div id="historialFactura" class="row" style="display:none;">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name text-center">
+					<i class="fa fa-th"></i> <span>Historial Facturas</span>
+				</div>
+				<div class="box-icons">
+					<a id="abrir_historial_facturas" class="expand-link"> 
+						<i class="fa fa-expand"></i></a>
+					<a class="cerrar_historial_facturas" onclick="cerrasHistorialFacturas();"> 
+						<i class="fa fa-times"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<div style="width:100%; padding-top:15px;"></div>
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="tabla_historial_facturas" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Cliente</th>
+							<th>Medidor</th>
+							<th>Consumo</th>
+							<th>Total pago</th>
+							<th>Deslizamiento</th>
+							<th>Fecha de corte</th>
+							<th>Vencimiento</th>
+							<th>Num_factura</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <script type="text/javascript">
 // /////////////////////////////////////Iniciar dataTables y cargar los plugins//////////////////////////////////////
@@ -325,25 +404,78 @@ response.setDateHeader("Expires", -1);
 		});
 	}
 
-function cerrarHistorial() {
+function cerrarHistorialFacturascliente() {
 		document.getElementById('historial').style.display = 'none';
 		expandir($("#abrir_historial"));
-		$('#tabla_facturas_historial').DataTable().state.clear();
-		$('#tabla_facturas_historial').DataTable().clear().draw();
+		$('#tabla_facturas_historial_cliente').DataTable().state.clear();
+		$('#tabla_facturas_historial_cliente').DataTable().clear().draw();
 	}
 	
 function cerrasFacturasSinCancelar() {
-	document.getElementById('facturasSinCancelar').style.display = 'none';
+	document.getElementById('facturas_sin_cancelar').style.display = 'none';
 	expandir($("#abrir_facturas_sin_cancelar"));
 	$('#tabla_facturas_sin_cancelar').DataTable().state.clear();
 	$('#tabla_facturas_sin_cancelar').DataTable().clear().draw();
 }
 
-// ///////////////////funsión que crea un dataTable para traer el historial de facturas de un cliente mediante un dialogo////////////
+function cerrasHistorialFacturas() {
+	document.getElementById('historialFactura').style.display = 'none';
+	expandir($("#abrir_historial_facturas"));
+	$('#tabla_historial_facturas').DataTable().state.clear();
+	$('#tabla_historial_facturas').DataTable().clear().draw();
+}
+
+///////////////////////////funcion que activa el evento click del boton ver historial del dataTable///////////////////////
+var visualizarHistorialCliente = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
+	$(tbody).on("click", "button.verHistorial", function() {
+		var datos = table.row($(this).parents("tr")).data();
+		var numMedidor = datos.contrato.numMedidor;
+		document.getElementById('historial').style.display = 'block';
+		expandir($("#abrir_historial"));
+		$("#abrir_historial").prop('disabled', true);
+		historialFacturasCliente(numMedidor);
+		
+	});
+}
+
+///////////////////////////funcion que activa el evento click del boton ver historial del dataTable///////////////////////
+var visualizarFacturasSinCancelar = function() {//parametro(id_tabla, objeto dataTable)
+		document.getElementById('facturas_sin_cancelar').style.display = 'block';
+		expandir($("#abrir_facturas_sin_cancelar"));
+		$("#abrir_facturas_sin_cancelar").prop('disabled', true);
+		facturasSinCancelar();
+}
+
+///////////////////////////funcion que activa el evento click del boton ver historial del dataTable///////////////////////
+var visualizarHistorialFacturas = function() {//parametro(id_tabla, objeto dataTable)
+		document.getElementById('historialFactura').style.display = 'block';
+		expandir($("#abrir_historial_facturas"));
+		$("#abrir_historial_facturas").prop('disabled', true);
+		historialFacturas();
+}
+
+/////////////////////////////funcion que anula la factura////////////////////
+function anularFacturas(tbody, table) {//parametro(id_tabla, objeto dataTable)
+	$(tbody).on("click","button.anularFactura",function(){
+		var datos = table.row($(this).parents("tr")).index();;
+		var numFact;
+		
+		table.rows().every(function(index, loop, rowloop) {
+			console.log("indices: "+ index +" : "+datos);
+			if(index == datos){
+				numFact = table.row(index).data().numFact;
+				$("#frmAnularFactura #numFact").val(numFact);
+			}
+		});
+		abrirDialogo();
+	});
+}
+
+// ///////////////////funsión que crea un dataTable para traer el historial de facturas de un cliente////////////
 	function historialFacturasCliente(numMedidor){
 		if($.fn.DataTable.isDataTable('#tabla_facturas_historial')){
-			$('#tabla_facturas_historial').DataTable().state.clear();
-			$('#tabla_facturas_historial').DataTable().clear().draw();
+			$('#tabla_facturas_historial_cliente').DataTable().state.clear();
+			$('#tabla_facturas_historial_cliente').DataTable().clear().draw();
 			$.ajax({
 		        type: "GET",
 		        url:"./SL_Factura_Maestra",
@@ -352,11 +484,11 @@ function cerrasFacturasSinCancelar() {
 			        "numMedidor" : numMedidor
 			    },
 		        success: function(response){
-		        	$('#tabla_facturas_historial').DataTable().rows.add(response.aaData).draw();
+		        	$('#tabla_facturas_historial_cliente').DataTable().rows.add(response.aaData).draw();
 		        }
 			});
 		}else{
-			var table = $('#tabla_facturas_historial').DataTable({
+			var table = $('#tabla_facturas_historial_cliente').DataTable({
 				responsive: true,
 				"destroy": true,
 		    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
@@ -394,40 +526,14 @@ function cerrasFacturasSinCancelar() {
 		    });
 		}
 	}
-
-///////////////////////////funcion que activa el evento click del boton ver historial del dataTable///////////////////////
-	var visualizarHistorial = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
-		$(tbody).on("click", "button.verHistorial", function() {
-			var datos = table.row($(this).parents("tr")).data();
-			var numMedidor = datos.contrato.numMedidor;
-			document.getElementById('historial').style.display = 'block';
-			expandir($("#abrir_historial"));
-			$("#abrir_historial").prop('disabled', true);
-			historialFacturasCliente(numMedidor);
-			
-		});
-	}
 	
-///////////////////////////funcion que activa el evento click del boton ver historial del dataTable///////////////////////
-	var facturassinCancelar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
-		$(tbody).on("click", "button.verHistorial", function() {
-			var datos = table.row($(this).parents("tr")).data();
-			var numMedidor = datos.contrato.numMedidor;
-			document.getElementById('facturasSinCancelar').style.display = 'block';
-			expandir($("#abrir_facturas_sin_cancelar"));
-			$("#abrir_facturas_sin_cancelar").prop('disabled', true);
-			historialFacturasCliente(numMedidor);
-			
-		});
-	}
-	
-///////////////////funcion que crea un dataTable para traer facturas sin cancelar////////////
+	// ///////////////////funcion que crea un dataTable para traer las facturas sin cancelar////////////
 	function facturasSinCancelar(){
-		    $('#datatable-filter thead th label input').each( function () {
-		        var title = $(this).attr("name");
-		        $(this).attr("placeholder", "Buscar por " + title);
-		    } );
-		    var table = $('#datatable-filter').DataTable({
+		$('#tabla_facturas_sin_cancelar thead th label input').each( function () {
+	        var title = $(this).attr("name");
+	        $(this).attr("placeholder", "Buscar por " + title);
+	    } );
+			var table = $('#tabla_facturas_sin_cancelar').DataTable({
 				responsive: true,
 				"destroy": true,
 		    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
@@ -460,48 +566,21 @@ function cerrasFacturasSinCancelar() {
 			               	return fecha;
 			       	}},
 		            { "data": "numFact" },
-		            {"defaultContent":"<button type='button' style='margin-left:15px;' class='anularFactura btn btn-danger'"
-		          	+"title='Anular Factura' id='anularFactura' >"
-					+ "<i class='fa fa-upload'></i> </button>"}
-		     		]
+		            {"defaultContent":"<button type='button' class='anularFactura btn btn-danger' data-toggle='tooltip' "+
+						"data-placement='top' title='anular Factura'>"+
+						"<i class='fa fa-trash-o'></i> </button>"}
+		     	]
 		    });
-		 
-		    // Aplicar la busqueda por columna
-		    table.columns().every( function () {
-		        var that = this;
-		        $( 'input', this.header() ).on( 'keyup change', function () {
-		            if ( that.search() !== this.value ) {
-		                that.search( this.value) .draw();
-		            }
-		        } );
-		    } );
-		    anularFacturas('#datatable-filter tbody', table);
-	}
-	
-/////////////////////////////funcion que anula la factura////////////////////
-	function anularFacturas(tbody, table) {//parametro(id_tabla, objeto dataTable)
-		$(tbody).on("click","button.anularFactura",function(){
-			var datos = table.row($(this).parents("tr")).index();;
-			var numFact;
-			
-			table.rows().every(function(index, loop, rowloop) {
-				console.log("indices: "+ index +" : "+datos);
-				if(index == datos){
-					numFact = table.row(index).data().numFact;
-					$("#frmAnularFactura #numFact").val(numFact);
-				}
-			});
-			abrirDialogo();
-		});
+			anularFacturas('#tabla_facturas_sin_cancelar tbody', table);
 	}
 	
 ///////////////////funcion que crea un dataTable para traer historial de todas las facturas////////////
 	function historialFacturas(){
-		    $('#datatable-facturas-sin-cancelar thead th label input').each( function () {
-		        var title = $(this).attr("name");
-		        $(this).attr("placeholder", "Buscar por " + title);
-		    } );
-		    var table = $('#datatable-facturas-sin-cancelar').DataTable({
+		$('#tabla_historial_facturas thead th label input').each( function () {
+	        var title = $(this).attr("name");
+	        $(this).attr("placeholder", "Buscar por " + title);
+	    } );
+		    var table = $('#tabla_historial_facturas').DataTable({
 				responsive: true,
 				"destroy": true,
 		    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
@@ -537,7 +616,7 @@ function cerrasFacturasSinCancelar() {
 		     	]
 		    });
 		 
-		    // Aplicar la busqueda por columna
+// 		    Aplicar la busqueda por columna
 		    table.columns().every( function () {
 		        var that = this;
 		        $( 'input', this.header() ).on( 'keyup change', function () {
@@ -590,7 +669,7 @@ function cerrasFacturasSinCancelar() {
 		               	return fecha;
 		       	}},
 	            { "data": "numFact" },
-	            {"defaultContent":"<button type='button' class='eliminarFac btn btn-danger' title='Anular factura'>"+
+	            {"defaultContent":"<button type='button' class='anularFactura btn btn-danger' title='Anular factura'>"+
 					"<i class='fa fa-trash-o'></i> </button> "+
 					"<button type='button' class='verHistorial btn btn-warning' data-toggle='tooltip' "+
 					"data-placement='top' title='ver historial facturas'>"+
@@ -624,7 +703,8 @@ function cerrasFacturasSinCancelar() {
 	                titleAttr: 'pdf'
 	            }]
 		});
-		visualizarHistorial('#tabla_factura tbody', tablaFactura);
+		anularFacturas('#tabla_factura tbody', tablaFactura);
+		visualizarHistorialCliente('#tabla_factura tbody', tablaFactura);
 	}
 	
 	
@@ -666,80 +746,14 @@ function cerrasFacturasSinCancelar() {
 			}
 		});
 		
-		//MODAL para mostrar una tabla con facturas sin cancelar
+		//muestra una tabla con facturas sin cancelar
 		$('#facturasSinCancelar').on('click',function(e) {
-			OpenModalBox(
-			"<div><h3>Facturas sin cancelar</h3></div>",
-			"<div class='table-responsive'>"
-			+ "<table class='table table-bordered table-striped table-hover table-heading table-datatable'"+
-			"id='datatable-filter'>"
-			+ "<thead>"
-			+ "<tr>"
-			+ "<th><label><input type='text' name='Cliente'/></label></th>"
-			+ "<th><label><input type='text' name='Medidor'/></label></th>"
-			+ "<th><label><input type='text' name='Consumo'/></label></th>"
-			+ "<th><label><input type='text' name='Total pago'/></label></th>"
-			+ "<th><label><input type='text' name='Deslizamiento'/></label></th>"
-			+ "<th><label><input type='text' name='Fecha de corte'/></label></th>"
-			+ "<th><label><input type='text' name='Vencimiento'/></label></th>"
-			+ "<th><label><input type='text' name='Num_factura'/></label></th>"
-			+ "<th></th>"
-			+ "</tr>"														
-			+ "</thead>"														
-			+ "<tfoot>"														
-			+ "<tr><th Style='color: #5d96c3;'>Cliente</th>"+
-			"<th Style='color: #5d96c3;'>Medidor</th>"+
-			"<th Style='color: #5d96c3;'>Fecha de corte</th>"+
-			"<th Style='color: #5d96c3;'>Total pago</th>"+
-			"<th Style='color: #5d96c3;'>Deslizamiento</th>"+
-			"<th Style='color: #5d96c3;'>Fecha de corte</th>"+
-			"<th Style='color: #5d96c3;'>Vencimiento</th>"+
-			"<th Style='color: #5d96c3;'>Num_factura</th><th></th></tr>"														
-			+ "</tfoot>"														
-			+ "</table>"														
-			+ "</div>",
-			"<div Style='text-align: center; margin-bottom: -5px;'><button type='button' class='btn-default btn-label-left btn-lg' "
-			+"onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span>Cancelar</button></div>");
-			
-			facturasSinCancelar();
+			visualizarFacturasSinCancelar();
 		});
 		
-		//MODAL para mostrar una tabla del historial de todas las facturas
+		//muestra una tabla del historial de todas las facturas
 		$('#historialFacturas').on('click',function(e) {
-			OpenModalBox(
-			"<div><h3>Facturas sin cancelar</h3></div>",
-			"<div class='table-responsive'>"
-			+ "<table class='table table-bordered table-striped table-hover table-heading table-datatable'"+
-			"id='datatable-facturas-sin-cancelar'>"
-			+ "<thead>"
-			+ "<tr>"
-			+ "<th><label><input type='text' name='Cliente'/></label></th>"
-			+ "<th><label><input type='text' name='Medidor'/></label></th>"
-			+ "<th><label><input type='text' name='Consumo'/></label></th>"
-			+ "<th><label><input type='text' name='Total pago'/></label></th>"
-			+ "<th><label><input type='text' name='Deslizamiento'/></label></th>"
-			+ "<th><label><input type='text' name='Fecha de corte'/></label></th>"
-			+ "<th><label><input type='text' name='Vencimiento'/></label></th>"
-			+ "<th><label><input type='text' name='Num_factura'/></label></th>"
-			+ "<th></th>"
-			+ "</tr>"														
-			+ "</thead>"														
-			+ "<tfoot>"														
-			+ "<tr><th Style='color: #5d96c3;'>Cliente</th>"+
-			"<th Style='color: #5d96c3;'>Medidor</th>"+
-			"<th Style='color: #5d96c3;'>Fecha de corte</th>"+
-			"<th Style='color: #5d96c3;'>Total pago</th>"+
-			"<th Style='color: #5d96c3;'>Deslizamiento</th>"+
-			"<th Style='color: #5d96c3;'>Fecha de corte</th>"+
-			"<th Style='color: #5d96c3;'>Vencimiento</th>"+
-			"<th Style='color: #5d96c3;'>Num_factura</th></tr>"														
-			+ "</tfoot>"														
-			+ "</table>"														
-			+ "</div>",
-			"<div Style='text-align: center; margin-bottom: -5px;'><button type='button' class='btn-default btn-label-left btn-lg' "
-			+"onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span>Cancelar</button></div>");
-			
-			historialFacturas();
+			visualizarHistorialFacturas();
 		});
 		
 // 		Add Drag-n-Drop feature				

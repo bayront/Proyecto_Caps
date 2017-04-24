@@ -566,9 +566,9 @@ function anularFacturas(tbody, table) {//parametro(id_tabla, objeto dataTable)
 			               	return fecha;
 			       	}},
 		            { "data": "numFact" },
-		            {"defaultContent":"<button type='button' class='anularFactura btn btn-warning' data-toggle='tooltip' "+
+		            {"defaultContent":"<button type='button' class='anularFactura btn btn-danger' data-toggle='tooltip' "+
 						"data-placement='top' title='anular Factura'>"+
-						"<i class='fa fa-sitemap'></i> </button>"}
+						"<i class='fa fa-trash-o'></i> </button>"}
 		     	]
 		    });
 			anularFacturas('#tabla_facturas_sin_cancelar tbody', table);
@@ -669,7 +669,7 @@ function anularFacturas(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		               	return fecha;
 		       	}},
 	            { "data": "numFact" },
-	            {"defaultContent":"<button type='button' class='eliminarFac btn btn-danger' title='Anular factura'>"+
+	            {"defaultContent":"<button type='button' class='anularFactura btn btn-danger' title='Anular factura'>"+
 					"<i class='fa fa-trash-o'></i> </button> "+
 					"<button type='button' class='verHistorial btn btn-warning' data-toggle='tooltip' "+
 					"data-placement='top' title='ver historial facturas'>"+
@@ -703,6 +703,7 @@ function anularFacturas(tbody, table) {//parametro(id_tabla, objeto dataTable)
 	                titleAttr: 'pdf'
 	            }]
 		});
+		anularFacturas('#tabla_factura tbody', tablaFactura);
 		visualizarHistorialCliente('#tabla_factura tbody', tablaFactura);
 	}
 	

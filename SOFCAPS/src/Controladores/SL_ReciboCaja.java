@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,12 +24,13 @@ import Datos.DataTableObject;
 
 import Entidades.Contrato;
 import Entidades.Factura_Maestra;
+import Entidades.ReciboCaja;
 import Entidades.Reconexion;
+import Entidades.Serie;
 import Entidades.Cliente;
 import Datos.DTContrato;
 import Datos.DTFacturaMaestra;
 import Datos.DTReconexion;
-
 /**
  * Servlet implementation class SL_ReciboCaja
  */
@@ -40,6 +43,10 @@ public class SL_ReciboCaja extends HttpServlet {
 	private DTFacturaMaestra dtFacturaMaestra = DTFacturaMaestra.getInstance();
 	private DTReconexion dtReconexion = DTReconexion.getInstance();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	
+	SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy", new Locale("es_ES"));
+	SimpleDateFormat parseador2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+	
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -67,9 +74,37 @@ public class SL_ReciboCaja extends HttpServlet {
 			}
 		}else if(Integer.parseInt(request.getParameter("idserie")) == 3) {
 			traerReconexiones(idCliente , response);
+		}else if(Integer.parseInt(request.getParameter("idserie")) == 4) {
+			try {
+				cargarRecibosDetalles();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
+	private void cargarRecibosDetalles() throws SQLException {
+		List<ReciboCaja> listaRecibo = new ArrayList<>();
+		ResultSet rs = dt_reciboCaja.cargarRecibos();
+		while(rs.next()){
+			ReciboCaja reciboCaja = new ReciboCaja();
+			Cliente cliente = new Cliente();
+			cliente.setNombreCompleto(rs.getString("nombreCompleto"));
+			cliente.setCliente_ID(rs.getInt("Cliente_ID"));
+			reciboCaja.setCliente(cliente);
+			listaRecibo.add(reciboCaja);
+		}
+		
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.aaData = new ArrayList<>();
+		for (ReciboCaja reciboCaja : listaRecibo) {
+			dataTableObject.aaData.add(reciboCaja);
+		}
+		String json = gson.toJson(dataTableObject);
+		System.out.println(json.toString());
+		out.print(json);
+	}
+
 	private void traerReconexiones(int idCliente, HttpServletResponse response) {
 		System.out.println("traer reconexiones del cliente");
 		List<Reconexion> reconexiones = dtReconexion.listaReconexiones(idCliente);
@@ -137,8 +172,58 @@ public class SL_ReciboCaja extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String opcion = request.getParameter("opcion");
+		float monto;
+		int serie_ID, numDocumento, cliente_ID;
+		Date fechaRecibo;
+		switch (opcion) {
+		case "guardar":
+			monto = Float.parseFloat(request.getParameter("monto"));
+			cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
+			serie_ID = Integer.parseInt(request.getParameter("serie"));
+			if(serie_ID == 1)
+				numDocumento = Integer.parseInt(request.getParameter("factura"));
+			else if(serie_ID == 2)
+				numDocumento = Integer.parseInt(request.getParameter("contrato"));
+			else
+				numDocumento = Integer.parseInt(request.getParameter("reconexion"));
+			guardar(serie_ID, numDocumento, monto, response);
+			break;
+			case "eliminar":
+				System.out.println("eliminado");
+//				lectura = Float.parseFloat(request.getParameter("lectura"));
+//				float lecturaRound= (float) (Math.round(lectura * 100.0) / 100.0);
+//				cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
+//				contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
+//				fecha_fin = fecha.parse(request.getParameter("fecha"));
+//				guardar(fecha_fin, lecturaRound, cliente_ID, contrato_ID, response);
+				break;
+		default:
+			response.setContentType("text/plain");
+			out = response.getWriter();
+			out.print("VACIO");
+			break;
+		}
 	}
 
+	private void guardar(int serie_ID, int numDocumento, float monto, HttpServletResponse response) throws IOException {
+		Serie serie = new Serie();
+		serie.setSerie_ID(serie_ID);
+		ReciboCaja r = new ReciboCaja();
+		r.setNumDocumento(numDocumento);
+		r.setMontoTotal(monto);
+		r.setSerie(serie);
+		verificar_resultado(dt_reciboCaja.guardarRecibo(r), response);
+	}
+
+	protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {
+		response.setContentType("text/plain");
+		if(r) {
+			out = response.getWriter();
+			out.print("BIEN");
+		}else {
+			out = response.getWriter();
+			out.print("ERROR");
+		}
+	}
 }

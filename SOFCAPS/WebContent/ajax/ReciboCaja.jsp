@@ -93,21 +93,21 @@ response.setDateHeader("Expires", -1);
 			<div class="box-content">
 				<form class="form-horizontal" role="form" id ="formReciboCaja">
 					<input type="hidden" id="cliente_ID" name="cliente_ID">
+					<input type="hidden" id="opcion" name="opcion" value="guardar">
 					<div class="form-group has-error has-feedback">
-						<label class="col-sm-2 control-label">Fecha:</label>
-						<div class="col-sm-3">
-							<input type="text" id="input_date" class="form-control"
-								placeholder="Date" readonly > <span
-								class="fa fa-calendar txt-danger form-control-feedback"></span>
+						<label class="col-sm-4 control-label">Fecha:</label>
+						<div class="col-sm-4">
+							<input type="text" name="fechaRecibo" id="input_date" class="form-control" placeholder="Date" readonly > 
+								<span class="fa fa-calendar txt-danger form-control-feedback"></span>
 						</div>
 					</div>
 					
 					<div class="form-group">
-						<label class="col-sm-2 control-label">Nombre del cliente:</label>
+						<label class="col-sm-4 control-label">Nombre del cliente:</label>
 						<div class="col-sm-5">
 							<input id = "nombreClienteCompleto" type="text" class="form-control" placeholder="Seleccione el nombre del cliente"
 								data-toggle="tooltip" data-placement="bottom"
-								title="Tooltip para el nombre del cliente" readonly>
+								title="Nombre completo del cliente" readonly>
 						</div>
 						<div class="col-sm-5 col-md-3">
 							<button type="button" class="blue" id="abrir_modal">
@@ -116,89 +116,117 @@ response.setDateHeader("Expires", -1);
 						</div>
 					</div>
 					
+					<input type="hidden" id="serieDescripcion" name="serieDescripcion">
 					<div class="form-group">
-						<%
-							DT_reciboCaja rc =DT_reciboCaja.getInstance();
-						
-							ArrayList<Serie> listaSeries = new ArrayList<Serie>();
-							listaSeries = rc.listaSeries();
-						%>
-					
-							<label class="col-sm-2 control-label">En concepto de:</label>
-								<div class="col-sm-5">
-									<select id="concepto" class="populate placeholder">
-									<option value="" >--Seleccione un concepto a pagar--</option>
-									<%
-										for(int i = 0; i < listaSeries.size(); i++){
-										%>
-											<option value="<%=listaSeries.get(i).getSerie_ID() %>"> <%=listaSeries.get(i).getDescripcion() %></option>
-										<%
-											}
-								%>	
-									</select>
-								</div>
+					<%
+						DT_reciboCaja rc =DT_reciboCaja.getInstance();
+						ArrayList<Serie> listaSeries = new ArrayList<Serie>();
+						listaSeries = rc.listaSeries();
+					%>
+						<label class="col-sm-4 control-label">En concepto de:</label>
+						<div class="col-sm-5">
+							<select id="concepto" name="serie" class="populate placeholder">
+							<option value="" >--Seleccione un concepto a pagar--</option>
+							<%
+								for(int i = 0; i < listaSeries.size(); i++){
+								%>
+									<option value="<%=listaSeries.get(i).getSerie_ID() %>"><%=listaSeries.get(i).getDescripcion() %></option>
+							<%
+								}
+							%>	
+							</select>
 						</div>
+					</div>
 						
-						<div class="clearfix"></div>
-						
-						<div class="form-group has-success has-feedback">
-							<label class="col-sm-2 control-label">Facturas: </label>
-								<div class="col-sm-4">
-									<select id="factura"
-										class="populate placeholder">
-										<option value="">--Seleccione la factura--</option>
-									</select>
-								</div>
+					<div class="clearfix"></div>	
+					<div class="form-group has-success has-feedback">
+						<label class="col-sm-4 control-label">Facturas: </label>
+						<div class="col-sm-4">
+							<select id="factura" name="factura" class="populate placeholder">
+								<option value="">--Seleccione la factura--</option>
+							</select>
 						</div>
+					</div>
 						
-						<div class="form-group has-success has-feedback">
-							<label class="col-sm-2 control-label">Contratos:</label>
-								<div class="col-sm-4">
-									<select id="contrato" class="populate placeholder">
-										<option value="">--Seleccione el contrato--</option>
-									</select>
-								</div>
+					<div class="form-group has-success has-feedback">
+						<label class="col-sm-4 control-label">Contratos:</label>
+						<div class="col-sm-4">
+							<select id="contrato" name="contrato" class="populate placeholder">
+								<option value="">--Seleccione el contrato--</option>
+							</select>
 						</div>
+					</div>
 						
-						<div class="form-group has-success has-feedback">
-							<label class="col-sm-2 control-label">Reconexiones: </label>
-								<div class="col-sm-4">
-									<select id="reconexion"
-										class="populate placeholder">
-										<option value="">--Seleccione la orden de reconexión--</option>
-									</select>
-								</div>
+					<div class="form-group has-success has-feedback">
+						<label class="col-sm-4 control-label">Reconexiones: </label>
+						<div class="col-sm-4">
+							<select id="reconexion" name="reconexion" class="populate placeholder">
+								<option value="">--Seleccione la orden de reconexión--</option>
+							</select>
 						</div>
+					</div>
 						
-						<div class="form-group has-error has-feedback">
-						<label class="col-sm-2 control-label">Monto total: </label>
-						<div class="col-sm-2">
+					<div class="form-group has-error has-feedback">
+						<label class="col-sm-4 control-label">Monto total: </label>
+						<div class="col-sm-3">
 							<input type="number" id="montoTotal" class="form-control"
-								placeholder="C$ 0.00" > <span
+								name="monto" placeholder="C$ 0.00" > <span
 								class="fa fa-money txt-danger form-control-feedback"></span>
 						</div>
 					</div>
-	
 					
 					<div class="clearfix"></div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-3">
-							<button type="cancel" class="btn btn-warning btn-label-left">
+							<button id="btnAgregar" type="button" class="btn btn-warning btn-label-left">
 								<span><i class="fa fa-location-arrow txt-danger"></i></span> Agregar a la lista
 							</button>
 						</div>
-						<div class="col-sm-2">
+						<div class="col-sm-3">
 							<button type="submit" class="btn btn-primary btn-label-left">
-								<span><i class="fa fa-save"></i></span> Guardar
+								<span><i class="fa fa-save"></i></span> Guardar Recibo
 							</button>
 						</div>
-						<div class="col-sm-2">
+						<div class="col-sm-3">
 							<button type="button" class="btn btn-default btn-label-left" >
-								<span><i class="fa fa-mail-reply"></i></span> Cancelar
+								<span><i class="fa fa-mail-reply txt-danger"></i></span> Cancelar acción
 							</button>
 						</div>
 					</div>
 				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!--///////////////////////DataTable de los recibos de caja/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-th"></i> <span>Detalles del Recibo</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir2" class="expand-link"> 
+						<i class="fa fa-expand"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="dt_ReciboCaja" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Nombre del cliente</th>
+							<th>Concepto</th>
+							<th>Documento</th>
+							<th>Monto</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
 			</div>
 		</div>
 	</div>
@@ -211,10 +239,6 @@ function DemoSelect2(){
 	$('#contrato').select2();
 	$('#factura').select2();
 	$('#reconexion').select2();
-}
-
-function DemoTimePicker(){
-	$('#input_time').timepicker({setDate: new Date()});
 }
 /////////////////////////////Funciones para activar y desactivar los select////////////////////////////////////
 function desactivarSelect(select){
@@ -229,16 +253,111 @@ var verResultado = function(r) {//parametro(resultado-String)
 	if(r == "BIEN"){
 		mostrarMensaje("#dialog", "CORRECTO", 
 			"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
-//  		limpiar_texto();
-//  		$('#tabla_factura').DataTable().ajax.reload();
+ 		$('#dt_ReciboCaja').DataTable().ajax.reload();
  	}else if(r == "ERROR"){
  		mostrarMensaje("#dialog", "ERROR", 
  				"¡Ha ocurrido un error, no se pudo realizar la acción!", "#E97D7D", "btn-danger");
- 	}else{
+ 	}else if(r =="VACIO"){
+		mostrarMensaje("#dialog", "VACIO",
+				"¡Debe seleccionar el cliente!", "#FFF8A7","btn-warning");
+	}else{
  		mostrarMensaje("#dialog", "MONTO RESTANTE", 
  				"Este documento tiene un monto restante a pagar de: "+r, "#d7f9ec", "btn-info");
  	}
  }
+/////////////////////////////////////Iniciar dataTables y cargar los plugins//////////////////////////////////////
+function AllTables() {
+	//cargar PDF Y EXCEL
+	$.getScript('plugins/datatables/nuevo/jszip.min.js', function(){
+		$.getScript('plugins/datatables/nuevo/pdfmake.min.js',function(){
+			$.getScript('plugins/datatables/nuevo/vfs_fonts.js',function(){
+				console.log("PDF Y EXCEL cargado");
+				iniciarTabla();
+				LoadSelect2Script(MakeSelect2);
+			});
+		});
+	});
+}
+///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
+function iniciarTabla(){
+	var tablaRecibo = $('#dt_ReciboCaja').DataTable( {
+		responsive: true,
+		ajax: {
+			"method":"GET",
+			"url":"./SL_ReciboCaja",
+			"data": {
+		        "idserie": 4, "cliente_ID":0
+		    },
+			"dataSrc":"aaData"
+		},
+		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+    	"bJQueryUI": true,
+		"language":idioma_esp,
+		drawCallback: function(settings){
+            var api = this.api();
+            $('td', api.table().container()).find("button").tooltip({container : 'body'});
+            $("a.btn").tooltip({container: 'body'});
+        },
+		"columns": [
+			{ "data": null,
+                render: function ( data, type, row ) {
+                	var nombreCompleto = $("#nombreClienteCompleto").val();
+                	return nombreCompleto;
+                	document.getElementsByName("seleccion")[0].value;
+            }},
+            { "data": "serie.descripcion" },
+            { "data": null,
+                render: function ( data, type, row ) {
+                	var documento = data.numDocumento;
+                	var concepto;
+                	if(data.serie.serie_ID == 1)
+                		concepto = "factura";
+                	else if(data.serie.serie_ID == 2)
+                		concepto = "contrato";
+                	else
+                		concepto = "reconexion";
+                	$("#"+concepto+" option").each(function(){
+                		if(documento ==  $(this).attr('value'))
+                			documento = $(this).text();
+                	});
+                	return documento;
+            }},
+            { "data": "monto" },
+            {"defaultContent":"<button type='button' class='editarDetalle btn btn-primary' title='Editar detalle'>"+
+				"<i class='fa fa-pencil-square-o'></i> </button>  "+
+				"<button type='button' class='eliminarDetalle btn btn-danger' title='Eliminar detalle'>"+
+				"<i class='fa fa-trash-o'></i> </button> "}
+            ],
+            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
+				 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
+				 +"<rt>"
+				 +"<'row'<'form-inline'"
+				 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
+            "buttons":[{
+				"text": "<i class='fa fa-plus-square'></i>",
+				"titleAttr": "Imprimr",
+				"className": "btn btn-success",
+				"action": function() {
+					console.log("Imprimir");
+				}
+			},
+			{
+                extend:    'excelHtml5',
+                text:      '<i class="fa fa-file-excel-o"></i>',
+                titleAttr: 'excel'
+            },
+            {
+                extend:    'csvHtml5',
+                text:      '<i class="fa fa-file-text-o"></i>',
+                titleAttr: 'csv'
+            },
+            {
+                extend:    'pdfHtml5',
+                text:      '<i class="fa fa-file-pdf-o"></i>',
+                titleAttr: 'pdf'
+            }]
+	});
+}
 ///////////////////funsión que crea un dataTable para traer en cliente y el contrato mediante un dialogo////////////
 function filtrarTabla(){
 	    $('#datatable-filter thead th label input').each( function () {
@@ -289,23 +408,17 @@ function cambiarCliente(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		console.log(datos);
 		$("#nombreClienteCompleto").val(datos.nombre1 + " " + datos.nombre2 + " " + datos.apellido1 + " " + datos.apellido2);
 		$("#cliente_ID").val(datos.cliente_ID);
-		
 		var idCliente = $("#cliente_ID").val();
 		
-		if (idCliente != 0 || idCliente == ""){
+		if (idCliente != 0 || idCliente != ""){
 			activarSelect("#concepto");
-			$('#abrir_modal').attr("disabled", true);
-		}else{
-			if (idCliente == 0 || idCliente == ""){
-				desactivarSelect("#concepto");
-				$('#abrir_modal').attr("disabled", false);
-			}
-			
-		}	
+		}else if (idCliente == 0 || idCliente == ""){
+			desactivarSelect("#concepto");
+		}		
 		CloseModalBox();
 	});
 }
-
+////////////////////////funsiones que cargan los select de factura, contrato y reconexion////////////////////////////
 function cargarSelectFactura(select) {//parametro id select
 	var datos;
 	//var cliente_ID_view;
@@ -316,23 +429,20 @@ function cargarSelectFactura(select) {//parametro id select
          url: "./SL_ReciboCaja",
          dataType: "json",
          data: {"cliente_ID": cliente_ID_form, "idserie" : 1},
-         success: function(response)
-         {	
+         success: function(response){	
          	$(response.aaData).each(function(i, v) {
-             		datos = response.aaData;
-                 	$(select).empty();
-                 	$(select).append("<option value=''>--Seleccione la factura--</option>");
-                 	$(response.aaData).each(function(i, v) {
-                 			$(select).append('<option value="' + v.numFact + '"> Número de factura: ' + v.numFact +'</option>');
-                 			
-         			});
-                activarChangeFactura("#factura", response.aaData);             	
-      			console.log("id cliente form: " + cliente_ID_form );
+             	datos = response.aaData;
+                $(select).empty();
+                $(select).append("<option value=''>--Seleccione la factura--</option>");
+                $(response.aaData).each(function(i, v) {
+                		$(select).append('<option value="' + v.numFact + '"> Número de factura: ' 
+                				+ v.numFact +'</option>');	
+         		});
+                activarChangeFactura("#factura", response.aaData);
  			});  	        	
          }
  	});
 }
-
 function cargarSelectReconexion(select) {//parametro id select
 	var datos;
 	//var cliente_ID_view;
@@ -359,7 +469,6 @@ function cargarSelectReconexion(select) {//parametro id select
          }
  	});
 }
-
 function cargarSelectContrato(select) {//parametro id select
 	var datos;
 	var cliente_ID_view;
@@ -385,158 +494,184 @@ function cargarSelectContrato(select) {//parametro id select
  	});
 }
 
-$(function () {
+$(function () {//funsion para cargar un DatePicker
     $.datepicker.setDefaults($.datepicker.regional["es"]);
     $("#input_date").datepicker({
         dateFormat: 'yy/mm/dd',
         firstDay: 1
     }).datepicker("setDate", new Date());
  });
-
+ 
+ //////////////////////////////funsion que activa el evento click del boton de agregar//////////////////////////////
+var activarBotonAgregar = function() {
+	$("#btnAgregar").on("click", function() {
+		var idCliente = $("#cliente_ID").val();
+		if (idCliente != 0 || idCliente != ""){
+			$("#opcion").val("agregar");
+			$("#serieDescripcion").val($("#concepto option:selected").html());
+			$("#abrir_modal").prop('disabled', true);
+			$("#abrir_modal").attr('title', 'No puede editar el cliente');
+			var frm = $("#formReciboCaja").serialize();
+			console.log(frm);
+			$.ajax({//enviar datos por ajax
+	 			type:"POST",
+	 			url:"./SL_ReciboCaja",
+	 			data: frm//datos a enviar
+	 		}).done(function(info) {//informacion que el servlet le reenvia al jsp
+	 			console.log(info);
+				verResultado(info);//se envia a verificar que mensaje respondio el servlet
+	 		});
+		}else if (idCliente == 0 || idCliente == ""){
+			verResultado("VACIO");
+		}
+	});
+}
+//////////////////////////////funsiones que detectan cuando un select cambia su valor///////////////////////////////
 function activarChangeFactura(select, aaData) {
-	$(select).change(function(){
+	$(select).change(function() {
 		var factura = $("#factura").val();
 		var montoTotal, factura_maestra_ID;
 		$(aaData).each(function(i, v) {
- 			if(factura == v.numFact){
- 				montoTotal = v.totalPago;
- 				factura_maestra_ID = v.factura_Maestra_ID;
- 			}
+			if (factura == v.numFact) {
+				montoTotal = v.totalPago;
+				factura_maestra_ID = v.factura_Maestra_ID;
+			}
 		});
 		$.ajax({
-	         type: "GET",
-	         url: "./SL_Factura_Maestra",
-	         dataType: "json",
-	         data: {"factura_Maestra_ID": factura_maestra_ID, "carga" : 5, "montoTotal" : montoTotal},
-	         success: function(response){
-	        	 if(response == "ERROR")
-	        		 verResultado(response);
-	        	 else{
-	        		 $("#montoTotal").val(response);
-	        		 verResultado(response);
-	        	 }
-	         }
-	 	});
+			type : "GET",
+			url : "./SL_Factura_Maestra",
+			dataType : "json",
+			data : {
+				"factura_Maestra_ID" : factura_maestra_ID,
+				"carga" : 5,
+				"montoTotal" : montoTotal
+			},
+			success : function(response) {
+				if (response == "ERROR")
+					verResultado(response);
+				else {
+					$("#montoTotal").val(response);
+					verResultado(response);
+				}
+			}
+		});
 	});
 }
-
 function activarChangeContrato(select, aaData) {
-	$(select).change(function(){
-		var contrato_ID = $(select).val();
-		var montoContrato, cuotas;
-		$(aaData).each(function(i, v) {
- 			if(contrato_ID == v.contrato_ID){
- 				montoContrato = v.montoContrato;
- 				cuotas = v.cuotas;
- 			}
+	$(select).change( function() {
+			var contrato_ID = $(select).val();
+			var montoContrato, cuotas;
+			$(aaData).each(function(i, v) {
+				if (contrato_ID == v.contrato_ID) {
+					montoContrato = v.montoContrato;
+					cuotas = v.cuotas;
+				}
+			});
+			console.log("montoContrato: " + montoContrato + ", cuotas: " + cuotas);
+			$.ajax({
+				type : "POST",
+				url : "./SL_Contrato",
+				dataType : "json",
+				data : {
+					"contrato_ID" : contrato_ID,
+					"opcion" : "calcular",
+					"montoContrato" : montoContrato
+				},
+				success : function(response) {
+					if (response == "ERROR")
+						verResultado(response);
+					else {
+						$("#montoTotal").val(response.montoContrato);
+						mostrarMensaje("#dialog", "MONTO RESTANTE",
+							"Este documento tiene un monto restante a pagar de: " + response.montoContrato
+							+ " </br>Cuota No. " + response.cuotas, "#d7f9ec", "btn-info");
+					}
+				}
+			});
 		});
-		console.log("montoContrato: "+montoContrato+", cuotas: "+cuotas);
-		$.ajax({
-	         type: "POST",
-	         url: "./SL_Contrato",
-	         dataType: "json",
-	         data: {"contrato_ID": contrato_ID, 
-	        	 "opcion" : "calcular",
-	        	 "montoContrato" : montoContrato
-	         },
-	         success: function(response){
-	        	 if(response == "ERROR")
-	        		 verResultado(response);
-	        	 else{
-	        		 $("#montoTotal").val(response.montoContrato);
-	        		 mostrarMensaje("#dialog", "MONTO RESTANTE", 
-	        	 				"Este documento tiene un monto restante a pagar de: "+
-	        	 				response.montoContrato+" </br>Cuota No. "+response.cuotas, "#d7f9ec", "btn-info");
-	        	 }
-	         }
-	 	});
-	});
 }
-
-////////////////////////////función que activa el evento change del select de concepto///////////////////
+///////////////////////////////función que activa el evento change del select de concepto////////////////////////////
 function activarChange(select) {
-	$(select).change(function(){//cuando se elija otra opcion del select
+	$(select).change(function() {//cuando se elija otra opcion del select
 		var concepto = $(select).val();
 		console.log("id del concepto: " + concepto)
-	 	if(concepto == 1){
+		if (concepto == 1) {
 			cargarSelectFactura("#factura");
 			desactivarSelect("#contrato");
 			desactivarSelect("#reconexion");
 			activarSelect("#factura");
-	 	}else if(concepto == 2){
+		} else if (concepto == 2) {
 			cargarSelectContrato('#contrato');
 			desactivarSelect("#factura");
 			desactivarSelect("#reconexion");
-			activarSelect('#contrato');		
-		}else if(concepto == 3){
+			activarSelect('#contrato');
+		} else if (concepto == 3) {
 			cargarSelectReconexion('#reconexion');
 			desactivarSelect("#factura");
 			desactivarSelect("#contrato");
 			activarSelect("#reconexion");
-		}else if(concepto == null || concepto == 0){
+		} else if (concepto == null || concepto == 0) {
 			desactivarSelect("#factura");
 			desactivarSelect("#contrato");
 			desactivarSelect("#reconexion");
 		}
 	});
 }
-
+///////////////////////////////////////////FUNSIÓN PRINCIPAL////////////////////////////////////////////////////////
 $(document).ready(function() {
-	// Add slider for change test input length
-	FormLayoutExampleInputLength($( ".slider-style" ));
-	// Initialize datepicker
-	//$('#input_date').datepicker({setDate: new Date()});
-	// Load Timepicker plugin
-	LoadTimePickerScript(DemoTimePicker);
-	// Add tooltip to form-controls
-	$('.form-control').tooltip();
-	LoadSelect2Script(DemoSelect2);
-	// Load example of form validation
-	LoadBootstrapValidatorScript(DemoFormValidator);
-	// Add drag-n-drop feature to boxes
-	WinMove();
-	activarChange("#concepto");
-	
-	//cargar scripts dataTables
-	LoadDataTablesScripts2();
-	
-	desactivarSelect("#contrato");
-	desactivarSelect("#reconexion");
-	desactivarSelect("#factura");
-	desactivarSelect("#concepto");
-	
-	
-	//MODAL para mostrar una tabla con el cliente y en contrato
-	$('#abrir_modal').on('click',function(e) {
-		OpenModalBox(
-		"<div><h3>Buscar Cliente</h3></div>",
-		"<div class='table-responsive'>"
-		+ "<table class='table table-bordered table-striped table-hover table-heading table-datatable'"+
-		"id='datatable-filter'>"
-		+ "<thead>"
-		+ "<tr>"
-		+ "<th><label><input type='text' name='Nombre1'/></label></th>"
-		+ "<th><label><input type='text' name='Nombre2'/></label></th>"
-		+ "<th><label><input type='text' name='Apellido1'/></label></th>"
-		+ "<th><label><input type='text' name='Apellido2'/></label></th>"
-		+ "<th><label><input type='text' name='Cédula'/></label></th>"
-		+ "<th></th>"
-		+ "</tr>"														
-		+ "</thead>"														
-		+ "<tfoot>"														
-		+ "<tr> <th Style='color: #5d96c3;'>Nombre1</th>"
-		+ "<th Style='color: #5d96c3;'>Nombre2</th>"
-		+ "<th Style='color: #5d96c3;'>Apellido1</th>"
-		+ "<th Style='color: #5d96c3;'>Apellido2</th>"
-		+"<th Style='color: #5d96c3;'>Número de cédula</th>"
-		+"<th></th> </tr>"													
-		+ "</tfoot>"														
-		+ "</table>"														
-		+ "</div>",
-		"<div Style='text-align: center; margin-bottom: -5px;'><button type='button' class='btn-default btn-label-left btn-lg' "
-		+"onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span>Cancelar</button></div>");
+		// Add slider for change test input length
+		FormLayoutExampleInputLength($(".slider-style"));
 		
-		filtrarTabla();		
+		// Add tooltip to form-controls
+		$('.form-control').tooltip();
+		
+		//cargar scripts dataTables
+		LoadDataTablesScripts2(AllTables);
+		
+		LoadSelect2Script(DemoSelect2);
+		
+		// Add drag-n-drop feature to boxes
+		WinMove();
+		
+		activarChange("#concepto");
+		activarBotonAgregar();
+
+		desactivarSelect("#contrato");
+		desactivarSelect("#reconexion");
+		desactivarSelect("#factura");
+		desactivarSelect("#concepto");
+
+		//MODAL para mostrar una tabla con el cliente y en contrato
+		$('#abrir_modal').on('click',function(e) {
+			OpenModalBox(
+				"<div><h3>Buscar Cliente</h3></div>",
+				"<div class='table-responsive'>"
+				+ "<table class='table table-bordered table-striped table-hover table-heading table-datatable'"+
+				"id='datatable-filter'>"
+				+ "<thead>"
+				+ "<tr>"
+				+ "<th><label><input type='text' name='Nombre1'/></label></th>"
+				+ "<th><label><input type='text' name='Nombre2'/></label></th>"
+				+ "<th><label><input type='text' name='Apellido1'/></label></th>"
+				+ "<th><label><input type='text' name='Apellido2'/></label></th>"
+				+ "<th><label><input type='text' name='Cédula'/></label></th>"
+				+ "<th></th>"
+				+ "</tr>"
+				+ "</thead>"
+				+ "<tfoot>"
+				+ "<tr> <th Style='color: #5d96c3;'>Nombre1</th>"
+				+ "<th Style='color: #5d96c3;'>Nombre2</th>"
+				+ "<th Style='color: #5d96c3;'>Apellido1</th>"
+				+ "<th Style='color: #5d96c3;'>Apellido2</th>"
+				+ "<th Style='color: #5d96c3;'>Número de cédula</th>"
+				+ "<th></th> </tr>"
+				+ "</tfoot>"
+				+ "</table>"
+				+ "</div>",
+				"<div Style='text-align: center; margin-bottom: -5px;'><button type='button' class='btn-default btn-label-left btn-lg' "
+				+ "onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span>Cancelar</button></div>");
+
+			filtrarTabla();
+		});
 	});
-})
 </script>

@@ -193,7 +193,7 @@
 			<div id="sidebar-left" class="col-xs-2 col-sm-2">
 				<ul class="nav main-menu">
 					<li><a href="ajax/dashboard.html" class="active ajax-link">
-							<i title="Inicio" data-placement="bottom" class="fa fa-dashboard"></i> <span class="hidden-xs">Inicio</span>
+						<i title="Inicio" data-placement="bottom" class="fa fa-home"></i> <span class="hidden-xs">Inicio</span>
 					</a></li>
 					<li><a href="ajax/Cliente.jsp" class="ajax-link">
 							<i title="Gestión Cliente" class="fa fa-group"></i> <span class="hidden-xs">Gestión de clientes</span>

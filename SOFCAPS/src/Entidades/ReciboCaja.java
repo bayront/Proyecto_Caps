@@ -2,14 +2,16 @@ package Entidades;
 
 
 import java.util.Date;
+import java.util.List;
 
-public class ReciboCaja_Maestro
+public class ReciboCaja
 {
    private String descripcion;
    private Boolean estado;
    private String numReciboCaja;
    private Date fecha;
    private Float montoTotal;
+   private int numDocumento;
    private Integer usuaCrea;
    private Integer usuaMod;
    private Integer usuaElim;
@@ -18,8 +20,9 @@ public class ReciboCaja_Maestro
    private Date fechaElim;
    private Integer reciboCaja_Maestro_ID;
    private Cliente cliente;
+   private Serie serie;
 
-   public ReciboCaja_Maestro() 
+   public ReciboCaja() 
    {
    }
 
@@ -101,5 +104,16 @@ public class ReciboCaja_Maestro
 	public void setReciboCaja_Maestro_ID(Integer reciboCaja_Maestro_ID) {
 		this.reciboCaja_Maestro_ID = reciboCaja_Maestro_ID;
 	}
-	
+	public int getNumDocumento() {
+		return numDocumento;
+	}
+	public void setNumDocumento(int numDocumento) {
+		this.numDocumento = numDocumento;
+	}
+	public Serie getSerie() {
+		return serie;
+	}
+	public void setSerie(Serie serie) {
+		this.serie = serie;
+	}
 }

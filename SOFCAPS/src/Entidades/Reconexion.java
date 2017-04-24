@@ -11,7 +11,7 @@ public class Reconexion
    private Integer reconexion_ID;
    private Factura_Maestra factura_Maestra;
    private Cliente cliente;
-   private ReciboCaja_Maestro reciboCaja;
+   private ReciboCaja reciboCaja;
    public Reconexion() 
    {
    }
@@ -52,10 +52,10 @@ public class Reconexion
 	public void setReconexion_ID(Integer reconexion_ID) {
 		this.reconexion_ID = reconexion_ID;
 	}
-	public ReciboCaja_Maestro getReciboCaja() {
+	public ReciboCaja getReciboCaja() {
 		return reciboCaja;
 	}
-	public void setReciboCaja(ReciboCaja_Maestro reciboCaja) {
+	public void setReciboCaja(ReciboCaja reciboCaja) {
 		this.reciboCaja = reciboCaja;
 	}
     

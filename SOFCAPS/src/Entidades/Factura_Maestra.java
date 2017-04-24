@@ -22,7 +22,7 @@ public class Factura_Maestra
    private Contrato contrato;
    private Cliente cliente;
    private Consumo consumo;
-   private List<ReciboCaja_Maestro> recibosCaja;
+   private List<ReciboCaja> recibosCaja;
    private List<Factura_Detalle> facturas_Detalle;
    private float totalPago;
   
@@ -120,10 +120,10 @@ public class Factura_Maestra
 	public void setFactura_Maestra_ID(Integer factura_Maestra_ID) {
 		this.factura_Maestra_ID = factura_Maestra_ID;
 	}
-	public List<ReciboCaja_Maestro> getRecibosCaja() {
+	public List<ReciboCaja> getRecibosCaja() {
 		return recibosCaja;
 	}
-	public void setRecibosCaja(List<ReciboCaja_Maestro> recibosCaja) {
+	public void setRecibosCaja(List<ReciboCaja> recibosCaja) {
 		this.recibosCaja = recibosCaja;
 	}
 	public List<Factura_Detalle> getFacturas_Detalle() {

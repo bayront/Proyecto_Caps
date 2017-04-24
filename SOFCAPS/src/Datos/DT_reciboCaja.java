@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import Entidades.Serie;
 import Entidades.Factura_Detalle;
 import Entidades.Factura_Maestra;
+import Entidades.ReciboCaja;
 import Entidades.Contrato;
 import Entidades.Reconexion;
 import Entidades.Cliente;
@@ -61,6 +62,16 @@ public class DT_reciboCaja {
 			System.err.println("DATOS: ERROR " +e.getMessage());
 		}
 		return listaFacturas;
+	}
+
+	public boolean guardarRecibo(ReciboCaja r) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public ResultSet cargarRecibos() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

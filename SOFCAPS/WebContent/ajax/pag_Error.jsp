@@ -99,17 +99,24 @@ response.setDateHeader("Expires", -1);
 							</div>
 							<div class="panel-body">
 								<div class="col-xs-12 col-md-12 col-lg-12">
-								
-									<section class="error-wrapper" ALIGN="center">
-							            <h1><img alt="" src="img/denied.png"></h1>
-							            <h2>Estimado usuario <%=nombre_usuario %></h2>
-							            <h2>Lo sentimos</h2>
-							            <h3>el rol <%=rs.getString("nomRol")%> no cuenta con los permisos suficientes para acceder a esta opción</h3>
-							            <a class="back-btn" href="index.jsp"> Regresar a Inicio</a>
+									<section class="error-wrapper text-center">
+										<h1><b>Comité de Agua Potable y Saneamiento de Poneloya</b></h1>
+							            <h1>
+							            	<img class="img-responsive" width="450px" height="330px" 
+							            	alt="" src="img/gota_prohibida.png" style="margin: 0 auto;">
+							            </h1>
+							            <h2>Estimado usuario <b color:blue;><%=nombre_usuario %></b></h2>
+							            <h2>Lo sentimos, </h2>
+							            <h3>el rol <b><%=rs.getString("nomRol")%></b> no cuenta con los permisos suficientes para acceder a esta opción</h3>
+							            <br>
+							            <br>
+							           <div style="background-color: #d7f9ec; width: 300px; margin: 0 auto; border-radius: 15px;
+							           border-color: #4c8676; border-width: 2px; border-style: groove;" class="img-responsive"> 
+							           		<a style="font-size: 26px;" class="back-btn" href="index.jsp">
+							           			<h4 class="fa fa-home"> Regresar a Inicio</h4>
+							           		</a>
+							          	</div>
 							        </section>
-        
-									
-									
 								</div>
 							</div>
 						</div>

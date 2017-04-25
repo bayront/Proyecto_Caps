@@ -10,6 +10,7 @@ public class Contrato
    private Date fechaContrato;
    private Integer numContrato;
    private String numMedidor;
+   private String direccionCliente;
    private Integer usuCrea;
    private Integer usuMod;
    private Integer usuElim;
@@ -17,6 +18,7 @@ public class Contrato
    private Date fechaMod;
    private Date fechaElim;
    private Integer cuotas;
+   private Integer cantidadPersonas;
    private Float montoContrato;
    private Integer contrato_ID;
    private Cliente cliente;
@@ -151,6 +153,22 @@ public class Contrato
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public Integer getCantidadPersonas() {
+		return cantidadPersonas;
+	}
+
+	public void setCantidadPersonas(Integer cantidadPersonas) {
+		this.cantidadPersonas = cantidadPersonas;
+	}
+
+	public String getDireccionCliente() {
+		return direccionCliente;
+	}
+
+	public void setDireccionCliente(String direccionCliente) {
+		this.direccionCliente = direccionCliente;
 	}   
     
 }

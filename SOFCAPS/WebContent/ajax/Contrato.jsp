@@ -150,6 +150,23 @@ response.setDateHeader("Expires", -1);
 						</div>
 					</div>
 					
+					<div class="form-group has-warning has-feedback">
+						<label class="col-sm-5 control-label">Direccion</label>
+						<div class="col-sm-4">
+						<input id = "direccionCliente" type="text" class="form-control" 
+							placeholder="Escriba la direccion del cliente" name="direccionCliente"
+							data-toggle="tooltip" data-placement="bottom" title="Direccion cliente">	
+						</div>
+					</div>
+					
+					<div class="form-group has-warning has-feedback">
+						<label class="col-sm-5 control-label">Numero de personas</label>
+						<div class="col-sm-4">
+							<input id= "cantidadPersonas" name="cantidadPersonas" class="form-control" data-placement="top"
+								placeholder="Cantidad Personas" data-toggle="tooltip" title="Cantidad de personas">
+						</div>	
+					</div>
+					
 					<%
 						DTContrato dt = DTContrato.getInstance();
 						ArrayList<RegimenPropiedad> listaR = new ArrayList<RegimenPropiedad>();
@@ -237,7 +254,7 @@ response.setDateHeader("Expires", -1);
 						<label for="cuotas" class="col-sm-5 control-label">Cuotas</label>
 						<div class="col-sm-4">
 							<input id= "cuotas" name="cuotas" class="form-control" data-placement="top"
-								placeholder="Spinner" data-toggle="tooltip" title="Número de cuotas">
+								placeholder="Numero de cuotas" data-toggle="tooltip" title="Número de cuotas">
 						</div>
 					</div>
 					
@@ -368,6 +385,8 @@ var limpiar_texto = function() {/////////////////////////limpiar texto del formu
 	$("#contrato_ID").val("");
 	$("#nombreCliente").val("").change();
 	$("#nombreClienteCompleto").val("");
+	$("#direccionCliente").val("");
+	$("#cantidadPersonas").val("");
 	$("#numMedidor").val("");
 	$("#montoContrato").val("");
 	$("#cuotas").val("").change();
@@ -423,7 +442,7 @@ var obtener_id_eliminar = function(tbody, table) {//parametro(id_tabla, objeto d
 var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 	$(tbody).on("click", "button.editarContrato", function() {
 		var datos = table.row($(this).parents("tr")).index();
-		var contrato_ID, numMedidor, cuotas, montoContrato, cliente, nombreCliente, regimenPropiedad, sector, categoria;
+		var contrato_ID, numMedidor, cuotas, montoContrato, cliente, nombreCliente, regimenPropiedad, sector, categoria, cantidadPersonas, direccionCliente;
 		table.rows().every(function(index, loop, rowloop) {
 			if(index == datos){
 				contrato_ID = table.row(index).data().contrato_ID;
@@ -435,6 +454,8 @@ var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto 
 				regimenPropiedad = table.row(index).data().regimenPropiedad.regimenPropiedad_ID;
 				sector = table.row(index).data().sector.sector_ID;
 				categoria = table.row(index).data().categoria.categoria_ID;
+				cantidadPersonas = table.row(index).data().cantidadPersonas;
+				direccionCliente = table.row(index).data().direccionCliente;
 				$("#contrato_ID").val(contrato_ID);
 				$("#nombreCliente").val(cliente).change();
 				$("#nombreClienteCompleto").val(nombreCompleto);
@@ -444,6 +465,8 @@ var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto 
 				$("#regimenPropiedad").val(regimenPropiedad).change();
 				$("#sector").val(sector).change();
 				$("#categoria").val(categoria).change();
+				$("#cantidadPersonas").val(cantidadPersonas).change();
+				$("#direccionCliente").val(direccionCliente).change();
 				$("#opcion").val("actualizar");
 				numMed = numMedidor;
 			}
@@ -593,6 +616,7 @@ function cambiarCliente(tbody, table) {//parametro(id_tabla, objeto dataTable)
 $(document).ready(function() {
 	
 	$("#cuotas").spinner();
+	$("#cantidadPersonas").spinner();
 	
 	// Add slider for change test input length
 	FormLayoutExampleInputLength($( ".slider-style" ));

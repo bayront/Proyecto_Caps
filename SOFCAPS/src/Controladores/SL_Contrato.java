@@ -86,7 +86,9 @@ public class SL_Contrato extends HttpServlet {
 			co.setFechaContrato(parseador.parse(f));
 			co.setNumContrato(rs.getInt("numContrato"));
 			co.setNumMedidor(rs.getString("numMedidor"));
+			co.setDireccionCliente(rs.getString("direccionCliente"));
 			co.setCuotas(rs.getInt("cuotas"));
+			co.setCantidadPersonas(rs.getInt("cantidadPersonas"));
 			co.setMontoContrato(rs.getFloat("montoContrato"));
 			cl.setCliente_ID(rs.getInt("Cliente_ID"));
 			cl.setNombreCompleto(rs.getString("nombre1") + " " + rs.getString("nombre2") + " " + rs.getString("apellido1") + " " + rs.getString("apellido2"));
@@ -118,9 +120,9 @@ public class SL_Contrato extends HttpServlet {
 	 */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String numMedidor, opcion;
+		String numMedidor, opcion, direccionCliente;
 		Date fechaContrato = null;
-		int contrato_ID, cuotas, cliente, regimenPropiedad, sector, categoria;
+		int contrato_ID, cuotas, cantidadPersonas, cliente, regimenPropiedad, sector, categoria;
 		int numContrato = 1; 
 		float montoContrato, montoRound;
 		
@@ -132,14 +134,16 @@ public class SL_Contrato extends HttpServlet {
 			System.out.println("opcion a realizar: " + request.getParameter("opcion"));
 			contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
 			numMedidor = request.getParameter("numMedidor").trim();
+			direccionCliente = request.getParameter("direccionCliente").trim();
 			cuotas = Integer.parseInt(request.getParameter("cuotas"));
+			cantidadPersonas = Integer.parseInt(request.getParameter("cantidadPersonas"));
 			montoContrato = Float.parseFloat(request.getParameter("montoContrato"));
 			montoRound = (float) (Math.round(montoContrato * 100.0) / 100.0);
 			cliente = Integer.parseInt(request.getParameter("nombreCliente"));
 			regimenPropiedad = Integer.parseInt(request.getParameter("regimenPropiedad"));
 			sector = Integer.parseInt(request.getParameter("sector"));
 			categoria = Integer.parseInt(request.getParameter("categoria"));
-			actualizar(contrato_ID, numMedidor, cuotas, montoRound, cliente, regimenPropiedad, sector, categoria, response);
+			actualizar(contrato_ID, numMedidor, direccionCliente, cuotas, cantidadPersonas, montoRound, cliente, regimenPropiedad, sector, categoria, response);
 			break;
 		case "eliminar":
 			contrato_ID= Integer.parseInt(request.getParameter("contrato_ID"));
@@ -147,6 +151,7 @@ public class SL_Contrato extends HttpServlet {
 			break;
 		case "guardar":
 			numMedidor = request.getParameter("numMedidor").trim();
+			direccionCliente = request.getParameter("direccionCliente").trim();
 			System.out.println("opcion a realizar: " + request.getParameter("opcion"));
 			try {
 				System.out.println("la fecha es: " + request.getParameter("fechaContrato"));
@@ -157,13 +162,14 @@ public class SL_Contrato extends HttpServlet {
 				e.printStackTrace();
 			}
 			cuotas = Integer.parseInt(request.getParameter("cuotas"));
+			cantidadPersonas = Integer.parseInt(request.getParameter("cantidadPersonas"));
 			montoContrato = Float.parseFloat(request.getParameter("montoContrato"));
 			montoRound = (float) (Math.round(montoContrato * 100.0) / 100.0);
 			cliente = Integer.parseInt(request.getParameter("nombreCliente"));
 			regimenPropiedad = Integer.parseInt(request.getParameter("regimenPropiedad"));
 			sector = Integer.parseInt(request.getParameter("sector"));
 			categoria = Integer.parseInt(request.getParameter("categoria"));
-			guardar(numMedidor, fechaContrato, numContrato, cuotas, montoRound, cliente, regimenPropiedad, sector, categoria, response);
+			guardar(numMedidor,direccionCliente, fechaContrato, numContrato, cuotas, cantidadPersonas, montoRound, cliente, regimenPropiedad, sector, categoria, response);
 			break;
 		case "calcular":
 			contrato_ID= Integer.parseInt(request.getParameter("contrato_ID"));
@@ -211,7 +217,7 @@ public class SL_Contrato extends HttpServlet {
 		
 	}
     
-    protected void guardar(String numMedidor, Date fechaContrato, int numContrato, int cuotas, float montoContrato, int clienteId, int regimenPropiedadId, int sectorId, int categoriaId, HttpServletResponse response) {
+    protected void guardar(String numMedidor, String direccionCliente,  Date fechaContrato, int numContrato, int cuotas, int cantidadPersonas, float montoContrato, int clienteId, int regimenPropiedadId, int sectorId, int categoriaId, HttpServletResponse response) {
 		Contrato c = new Contrato();
 		Cliente cl = new Cliente();
 		RegimenPropiedad r = new RegimenPropiedad();
@@ -221,9 +227,11 @@ public class SL_Contrato extends HttpServlet {
 		{
 			c.setEstado(true);
 			c.setNumMedidor(numMedidor);
+			c.setDireccionCliente(direccionCliente);
 			c.setFechaContrato(fechaContrato);
 			c.setNumContrato(numContrato);
 			c.setCuotas(cuotas);
+			c.setCantidadPersonas(cantidadPersonas);
 			c.setMontoContrato(montoContrato);
 			c.setFechaCrea(fechaContrato);
 			cl.setCliente_ID(clienteId);
@@ -241,7 +249,7 @@ public class SL_Contrato extends HttpServlet {
 			System.err.println("ERROR EN EL SERVLET CONTRATO: "+e.getMessage());
 		}
 	}
-	protected void actualizar(int contrato_ID, String numMedidor, int cuotas, float montoContrato, int clienteId, int regimenPropiedadId, int sectorId, int categoriaId, HttpServletResponse response) {
+	protected void actualizar(int contrato_ID, String numMedidor, String direccionCliente, int cuotas, int cantidadPersonas, float montoContrato, int clienteId, int regimenPropiedadId, int sectorId, int categoriaId, HttpServletResponse response) {
 		Contrato c = new Contrato();
 		Cliente cl = new Cliente();
 		RegimenPropiedad r = new RegimenPropiedad();
@@ -252,7 +260,9 @@ public class SL_Contrato extends HttpServlet {
 		{
 			c.setContrato_ID(contrato_ID);
 			c.setNumMedidor(numMedidor);
+			c.setDireccionCliente(direccionCliente);
 			c.setCuotas(cuotas);
+			c.setCantidadPersonas(cantidadPersonas);
 			c.setMontoContrato(montoContrato);
 			cl.setCliente_ID(clienteId);
 			r.setRegimenPropiedad_ID(regimenPropiedadId);

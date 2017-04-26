@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,7 +74,11 @@ public class SL_ReciboCaja extends HttpServlet {
 				e.printStackTrace();
 			}
 		}else if(Integer.parseInt(request.getParameter("idserie")) == 3) {
-			traerReconexiones(idCliente , response);
+			try {
+				traerReconexiones(idCliente , response);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}else if(Integer.parseInt(request.getParameter("idserie")) == 4) {
 			try {
 				cargarRecibosDetalles();
@@ -89,10 +94,16 @@ public class SL_ReciboCaja extends HttpServlet {
 		while(rs.next()){
 			ReciboCaja reciboCaja = new ReciboCaja();
 			Cliente cliente = new Cliente();
+			Serie serie = new Serie();
+			serie.setSerie_ID(rs.getInt("Serie_ID"));
+			serie.setDescripcion(rs.getString("descripcionSerie"));
 			cliente.setNombreCompleto(rs.getString("nombreCompleto"));
 			cliente.setCliente_ID(rs.getInt("Cliente_ID"));
 			reciboCaja.setCliente(cliente);
-			reciboCaja.setDescripcion(rs.getString("descripcion"));
+			reciboCaja.setSerie(serie);
+			reciboCaja.setDescripcion(rs.getString("descripcionRecibo"));
+			reciboCaja.setNumDocumento(rs.getInt("numDocumento"));
+			reciboCaja.setMontoTotal(rs.getFloat("montoTotal"));
 			listaRecibo.add(reciboCaja);
 		}
 		
@@ -106,12 +117,14 @@ public class SL_ReciboCaja extends HttpServlet {
 		out.print(json);
 	}
 
-	private void traerReconexiones(int idCliente, HttpServletResponse response) {
+	private void traerReconexiones(int idCliente, HttpServletResponse response) throws ParseException {
 		System.out.println("traer reconexiones del cliente");
 		List<Reconexion> reconexiones = dtReconexion.listaReconexiones(idCliente);
 		DataTableObject dataTableObject = new DataTableObject();
 		dataTableObject.aaData = new ArrayList<>();
 		for (Reconexion r : reconexiones) {
+			String f = parseador2.format(r.getFecha_reconexion());
+			r.setFecha_reconexion(parseador2.parse(f));
 			dataTableObject.aaData.add(r);
 		}
 		String json = gson.toJson(dataTableObject);
@@ -174,6 +187,7 @@ public class SL_ReciboCaja extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String opcion = request.getParameter("opcion");
+		String fechaForm;
 		float monto;
 		int serie_ID, numDocumento, cliente_ID;
 		Date fechaRecibo;
@@ -181,14 +195,23 @@ public class SL_ReciboCaja extends HttpServlet {
 		case "guardar":
 			monto = Float.parseFloat(request.getParameter("monto"));
 			cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
-			serie_ID = Integer.parseInt(request.getParameter("serie"));
-			if(serie_ID == 1)
-				numDocumento = Integer.parseInt(request.getParameter("factura"));
-			else if(serie_ID == 2)
-				numDocumento = Integer.parseInt(request.getParameter("contrato"));
-			else
-				numDocumento = Integer.parseInt(request.getParameter("reconexion"));
-			guardar(serie_ID, numDocumento, monto, response);
+			try {
+				fechaForm = request.getParameter("fechaRecibo");
+				fechaRecibo = fecha.parse(fechaForm);
+				System.out.println(fechaRecibo);
+				
+				serie_ID = Integer.parseInt(request.getParameter("serie"));
+				if(serie_ID == 1)
+					numDocumento = Integer.parseInt(request.getParameter("factura"));
+				else if(serie_ID == 2)
+					numDocumento = Integer.parseInt(request.getParameter("contrato"));
+				else
+					numDocumento = Integer.parseInt(request.getParameter("reconexion"));
+				System.out.println("cliente: "+cliente_ID+", monto: "+monto+", serie: "+serie_ID);
+				//guardar(serie_ID, numDocumento, monto, fechaRecibo, cliente_ID, response);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			break;
 			case "eliminar":
 				System.out.println("eliminado");
@@ -207,13 +230,17 @@ public class SL_ReciboCaja extends HttpServlet {
 		}
 	}
 
-	private void guardar(int serie_ID, int numDocumento, float monto, HttpServletResponse response) throws IOException {
+	private void guardar(int serie_ID, int numDocumento, float monto, Date fechaRecibo, int cliente_ID, HttpServletResponse response) throws IOException {
 		Serie serie = new Serie();
 		serie.setSerie_ID(serie_ID);
+		Cliente cliente = new Cliente();
+		cliente.setCliente_ID(cliente_ID);
 		ReciboCaja r = new ReciboCaja();
 		r.setNumDocumento(numDocumento);
 		r.setMontoTotal(monto);
 		r.setSerie(serie);
+		r.setFecha(fechaRecibo);
+		r.setCliente(cliente);
 		verificar_resultado(dt_reciboCaja.guardarRecibo(r), response);
 	}
 

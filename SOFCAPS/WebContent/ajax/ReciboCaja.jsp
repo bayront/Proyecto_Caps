@@ -68,6 +68,7 @@ response.setDateHeader("Expires", -1);
 <div id="dialog" class= "col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
 </div> 
+<!--///////////////////////Directorios donde estan los jsp /////////////////////////////// -->
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -76,16 +77,52 @@ response.setDateHeader("Expires", -1);
 		</ol>
 	</div>
 </div>
+<!--///////////////////////DataTable de los recibos de caja/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-th"></i> <span>Lista de Recibos de caja</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> 
+						<i class="fa fa-expand"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="dt_ReciboCaja" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Nombre del cliente</th>
+							<th>Concepto</th>
+							<th>Documento</th>
+							<th>Monto</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!--///////////////////////Formulario principal de los recibos de caja/////////////////////////////// -->
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-edit"></i> <span>Recibo de caja</span>
+					<i class="fa fa-edit"></i> <span>Formulario de Recibos de caja</span>
 				</div>
 				<div class="box-icons">
-					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
-					</a> <a class="expand-link"> <i class="fa fa-expand"></i>
+					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i> </a> 
+					<a id="expandir1" onclick="validar(expand1);" class="expand-link"> 
+						<i class="fa fa-expand"></i>
 					</a>
 				</div>
 				<div class="no-move"></div>
@@ -116,7 +153,6 @@ response.setDateHeader("Expires", -1);
 						</div>
 					</div>
 					
-					<input type="hidden" id="serieDescripcion" name="serieDescripcion">
 					<div class="form-group">
 					<%
 						DT_reciboCaja rc =DT_reciboCaja.getInstance();
@@ -177,18 +213,13 @@ response.setDateHeader("Expires", -1);
 					
 					<div class="clearfix"></div>
 					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-3">
-							<button id="btnAgregar" type="button" class="btn btn-warning btn-label-left">
-								<span><i class="fa fa-location-arrow txt-danger"></i></span> Agregar a la lista
-							</button>
-						</div>
-						<div class="col-sm-3">
-							<button type="submit" class="btn btn-primary btn-label-left">
+						<div class="col-sm-offset-3 col-sm-4">
+							<button id="btnAgregar" type="button" class="btn btn-primary btn-label-left">
 								<span><i class="fa fa-save"></i></span> Guardar Recibo
 							</button>
 						</div>
 						<div class="col-sm-3">
-							<button type="button" class="btn btn-default btn-label-left" >
+							<button type="button" class="btn btn-default btn-label-left" onclick="cancelar();">
 								<span><i class="fa fa-mail-reply txt-danger"></i></span> Cancelar acción
 							</button>
 						</div>
@@ -198,42 +229,58 @@ response.setDateHeader("Expires", -1);
 		</div>
 	</div>
 </div>
-<!--///////////////////////DataTable de los recibos de caja/////////////////////////////// -->
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-th"></i> <span>Detalles del Recibo</span>
+<!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
+<div>
+	<form id="frmEliminarRecibo" action="" method="DELETE">
+		<input type="hidden" id="reciboCaja_ID" name="reciboCaja_ID" value="">
+		<input type="hidden" id="opcion" name="opcion" value="eliminar">
+
+		<!-- 	Modal 	-->
+		<div id="modalbox">
+			<div class="devoops-modal">
+				<div class="devoops-modal-header">
+					<div class="modal-header-name">
+						<span>Basic table</span>
+					</div>
+					<div class="box-icons">
+						<a class="close-link"> <i class="fa fa-times"></i>
+						</a>
+					</div>
 				</div>
-				<div class="box-icons">
-					<a id="colapsar_desplegar2" class="collapse-link"> 
-						<i class="fa fa-chevron-up"></i></a> 
-					<a id="expandir2" class="expand-link"> 
-						<i class="fa fa-expand"></i></a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding table-responsive">
-				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="dt_ReciboCaja" style="width:100%;">
-					<thead>
-						<tr>
-							<th>Nombre del cliente</th>
-							<th>Concepto</th>
-							<th>Documento</th>
-							<th>Monto</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-				</table>
+				<div class="devoops-modal-inner"></div>
+				<div class="devoops-modal-bottom"></div>
 			</div>
 		</div>
-	</div>
+	</form>
 </div>
 
 <script type="text/javascript">
-// Run Select2 plugin on elements
+////////////////////////////////variables para el WEBSOCKET//////////////////////////////////////////////////
+var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
+var websocket = new WebSocket(wsUri);
+
+//evento que notifica que la conexion esta abierta
+websocket.onopen = function(evt) { //manejamos los eventos...
+    console.log("Conectado..."); //... y aparecerá en la pantalla
+};
+
+//evento onmessage para resibir mensaje del serverendpoint
+websocket.onmessage = function(evt) { // cuando se recibe un mensaje
+	console.log("Mensaje recibido de webSocket: " + evt.data);
+	verResultado(evt.data);
+};
+
+//evento si hay algun error en la comunicacion con el web_socket
+websocket.onerror = function(evt) {
+    console.log("oho!.. error:" + evt.data);
+};
+
+var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
+var colap1 =  new Colap1();
+var expand2 = new Expand2();
+var colap2 =  new Colap2();
+
+// Correr plugin Select2
 function DemoSelect2(){
 	$('#concepto').select2();
 	$('#contrato').select2();
@@ -254,12 +301,17 @@ var verResultado = function(r) {//parametro(resultado-String)
 		mostrarMensaje("#dialog", "CORRECTO", 
 			"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
  		$('#dt_ReciboCaja').DataTable().ajax.reload();
+ 		websocket.send("ACTUALIZADO");
  	}else if(r == "ERROR"){
  		mostrarMensaje("#dialog", "ERROR", 
  				"¡Ha ocurrido un error, no se pudo realizar la acción!", "#E97D7D", "btn-danger");
  	}else if(r =="VACIO"){
 		mostrarMensaje("#dialog", "VACIO",
 				"¡Debe seleccionar el cliente!", "#FFF8A7","btn-warning");
+	}else if(r =="ACTUALIZADO"){
+		mostrarMensaje("#dialog", "ACTUALIZADO", 
+				"¡Otro usuario a realizado un cambio, se actualizaron los datos!", "#86b6dd", "btn-primary");
+		$('#dt_ReciboCaja').DataTable().ajax.reload();
 	}else{
  		mostrarMensaje("#dialog", "MONTO RESTANTE", 
  				"Este documento tiene un monto restante a pagar de: "+r, "#d7f9ec", "btn-info");
@@ -278,8 +330,48 @@ function AllTables() {
 		});
 	});
 }
+
+var agregar_nuevo_recibo = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
+	limpiar_texto();
+	validarExpand(expand1, "#expandir1");
+	if(colap1.valor==false)
+		validarColap(colap1, "#colapsar_desplegar1");
+	
+	validarColap(colap2, "#colapsar_desplegar2");
+	if(expand2.valor == true)
+		validarExpand(expand2, "#expandir2");
+	
+	$("button#abrir_modal").focus();
+}
+
+var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
+	limpiar_texto();
+	if(expand1.valor == true)
+		validarExpand(expand1, "#expandir1");
+	
+	if(expand2.valor == true)
+		validarExpand(expand2, "#expandir2");
+	
+	validarColap(colap1, "#colapsar_desplegar1");
+	if (colap2.valor ==true){}else{
+		validarColap(colap2, "#colapsar_desplegar2");
+	}
+}
+
+var limpiar_texto = function() {////////////////////////limpiar texto del formulario
+	$("#opcion").val("guardar");
+	$("#cliente_ID").val("");
+	$("#nombreClienteCompleto").val("");
+	$("#concepto").val("");
+	$("#factura").val("");
+	$("#contrato").val("");
+	$("#reconexion").val("");
+	$("#montoTotal").val("");
+}
+
 ///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
 function iniciarTabla(){
+	validarColap(colap1, "#colapsar_desplegar1");
 	var tablaRecibo = $('#dt_ReciboCaja').DataTable( {
 		responsive: true,
 		ajax: {
@@ -299,30 +391,25 @@ function iniciarTabla(){
             $("a.btn").tooltip({container: 'body'});
         },
 		"columns": [
-			{ "data": null,
-                render: function ( data, type, row ) {
-                	var nombreCompleto = $("#nombreClienteCompleto").val();
-                	return nombreCompleto;
-                	document.getElementsByName("seleccion")[0].value;
-            }},
+			{ "data": "cliente.nombreCompleto"},
             { "data": "serie.descripcion" },
-            { "data": null,
-                render: function ( data, type, row ) {
-                	var documento = data.numDocumento;
-                	var concepto;
-                	if(data.serie.serie_ID == 1)
-                		concepto = "factura";
-                	else if(data.serie.serie_ID == 2)
-                		concepto = "contrato";
-                	else
-                		concepto = "reconexion";
-                	$("#"+concepto+" option").each(function(){
-                		if(documento ==  $(this).attr('value'))
-                			documento = $(this).text();
-                	});
-                	return documento;
-            }},
-            { "data": "monto" },
+            { "data": "numDocumento"
+//                 render: function ( data, type, row ) {
+//                 	var documento = data.numDocumento;
+//                 	var concepto;
+//                 	if(data.serie.serie_ID == 1)
+//                 		concepto = "factura";
+//                 	else if(data.serie.serie_ID == 2)
+//                 		concepto = "contrato";
+//                 	else
+//                 		concepto = "reconexion";
+//                 	$("#"+concepto+" option").each(function(){
+//                 		if(documento ==  $(this).attr('value'))
+//                 			documento = $(this).text();
+//                 	});
+//                 	return documento;
+            },
+            { "data": "montoTotal"},
             {"defaultContent":"<button type='button' class='editarDetalle btn btn-primary' title='Editar detalle'>"+
 				"<i class='fa fa-pencil-square-o'></i> </button>  "+
 				"<button type='button' class='eliminarDetalle btn btn-danger' title='Eliminar detalle'>"+
@@ -335,10 +422,10 @@ function iniciarTabla(){
 				 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
             "buttons":[{
 				"text": "<i class='fa fa-plus-square'></i>",
-				"titleAttr": "Imprimr",
+				"titleAttr": "Agregar Recibo de caja",
 				"className": "btn btn-success",
 				"action": function() {
-					console.log("Imprimir");
+					agregar_nuevo_recibo();
 				}
 			},
 			{
@@ -460,8 +547,10 @@ function cargarSelectReconexion(select) {//parametro id select
                  	$(select).empty();
                  	$(select).append("<option value=''>--Seleccione la orden de reconexion--</option>");
                  	$(response.aaData).each(function(i, v) {
-                 			$(select).append('<option value="' + v.reconexion_ID+ '"> Fecha de la reconexion' 
-                 					+ v.fecha_reconexion +'</option>');
+                 		var f = new Date(v.fecha_reconexion);
+	        			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+                 		$(select).append('<option value="' + v.reconexion_ID+ '"> Fecha de la reconexion: ' 
+                 			+ fecha +'</option>');
                  			
          			});            	
       			console.log("id cliente form: " + cliente_ID_form );
@@ -507,20 +596,16 @@ var activarBotonAgregar = function() {
 	$("#btnAgregar").on("click", function() {
 		var idCliente = $("#cliente_ID").val();
 		if (idCliente != 0 || idCliente != ""){
-			$("#opcion").val("agregar");
-			$("#serieDescripcion").val($("#concepto option:selected").html());
-			$("#abrir_modal").prop('disabled', true);
-			$("#abrir_modal").attr('title', 'No puede editar el cliente');
 			var frm = $("#formReciboCaja").serialize();
 			console.log(frm);
-			$.ajax({//enviar datos por ajax
-	 			type:"POST",
-	 			url:"./SL_ReciboCaja",
-	 			data: frm//datos a enviar
-	 		}).done(function(info) {//informacion que el servlet le reenvia al jsp
-	 			console.log(info);
-				verResultado(info);//se envia a verificar que mensaje respondio el servlet
-	 		});
+// 			$.ajax({//enviar datos por ajax
+// 	 			type:"POST",
+// 	 			url:"./SL_ReciboCaja",
+// 	 			data: frm//datos a enviar
+// 	 		}).done(function(info) {//informacion que el servlet le reenvia al jsp
+// 	 			console.log(info);
+// 				verResultado(info);//se envia a verificar que mensaje respondio el servlet
+// 	 		});
 		}else if (idCliente == 0 || idCliente == ""){
 			verResultado("VACIO");
 		}
@@ -550,6 +635,7 @@ function activarChangeFactura(select, aaData) {
 				if (response == "ERROR")
 					verResultado(response);
 				else {
+					console.log(response);
 					$("#montoTotal").val(response);
 					verResultado(response);
 				}

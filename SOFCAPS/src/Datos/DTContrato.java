@@ -27,7 +27,6 @@ public class DTContrato {
 	
 	private int opcion;
 	
-	
 	public static DTContrato getInstance() 
 	 {
 	   return dtContrato;
@@ -339,8 +338,8 @@ public class DTContrato {
 	public float calcularMontoRestante(int contrato_ID) throws SQLException {
 		float montoRestante;
 		Statement s;
-		String sql = "select sum(round((r.monto),2)) as monto "+
-				"from recibocaja_detalle r where r.Serie_ID = 2 and r.numDocumento = "+contrato_ID+";";
+		String sql = "select sum(round((r.montoTotal),2)) as monto "+
+				"from recibocaja r where r.Serie_ID = 2 and r.numDocumento = "+contrato_ID+";";
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
@@ -366,7 +365,7 @@ public class DTContrato {
 		int cuotas;
 		Statement s;
 		String sql = "select count(*) as cuotas "+
-				"from recibocaja_detalle r where r.Serie_ID = 2 and r.numDocumento = "+contrato_ID+";";
+				"from recibocaja r where r.Serie_ID = 2 and r.numDocumento = "+contrato_ID+";";
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);

@@ -70,8 +70,20 @@ public class DT_reciboCaja {
 	}
 
 	public ResultSet cargarRecibos() {
-		// TODO Auto-generated method stub
-		return null;
+		Statement s;
+		String sql = ("SELECT * FROM recibocaja WHERE estado = 0;");
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("datos de los recibos de caja cargado");
+		}catch (Exception e){
+			e.printStackTrace();
+			System.out.println("Error en DT_reciboCaja, metodo cargarRecibos: "+e.getMessage());
+		}
+		if(rs == null)
+			System.out.println("Resultset de ReciboCaja vacio");
+		
+		return rs;
 	}
 	
 }

@@ -100,10 +100,11 @@ public class SL_Factura_Maestra extends HttpServlet{
     	System.out.println("factura_maestra_ID: "+ factura_Maestra_ID+", monto: "+montoTotal);
     	try {
 			montoTotal = montoTotal - dtFactura.calcularMontoRestante(factura_Maestra_ID);
+			System.out.println("monto factura: "+montoTotal);
 			response.setContentType("text/plain");
 			PrintWriter out = response.getWriter();
 			out.print(montoTotal);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			response.setContentType("text/plain");
 			PrintWriter out = response.getWriter();

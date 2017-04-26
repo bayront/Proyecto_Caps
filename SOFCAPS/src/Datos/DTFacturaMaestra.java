@@ -171,7 +171,7 @@ public class DTFacturaMaestra {
 	public ResultSet cargarNumeroDeFactura(int cliente_ID)
 	{
 		Statement s;
-		String sql = "select fa.totalPago, fa.deslizamiento, fa.numFact, fm.Factura_Maestra_ID from factura_actual fa "
+		String sql = "select fa.totalPago, fa.deslizamiento, fa.numFact, fm.Factura_Maestra_ID from facturas_historial fa "
 		+"inner join factura_maestra fm on fa.numFact = fm.numFact where fm.anulado = 0 "
 		+ "&& fm.estadoFac = 0 &&  fm.Cliente_ID = " + cliente_ID + ";";
 		try
@@ -187,29 +187,34 @@ public class DTFacturaMaestra {
 		return rs;
 	}
 
-	public float calcularMontoRestante(int factura_Maestra_ID) throws SQLException {
+	public float calcularMontoRestante(int factura_Maestra_ID) {
 		float montoRestante;
 		Statement s;
-		String sql = "select sum(round((r.monto),2)) as monto "+
-				"from recibocaja_detalle r where r.Serie_ID = 1 and r.numDocumento = "+factura_Maestra_ID+";";
+		String sql = "select sum(round((r.montoTotal),2)) as monto "+
+				"from recibocaja r where r.Serie_ID = 1 and r.numDocumento = "+factura_Maestra_ID+";";
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
 			System.out.println("montoRestante cargado");
-		}catch (Exception e){
+		}catch (SQLException e){
 			e.printStackTrace();
 			System.out.println("Error en DTFacturaMaestra, metodo calcularMontoRestante: "+e.getMessage());
 		}finally {
 			if(rs == null) {
 				System.out.println("Resultset de monto de factura vacio");
 				montoRestante = 0.0f;
-			}else
-				if(rs.first())
-					montoRestante = rs.getFloat("monto");
-				else
+			} else {
+				try {
+					if(rs.first())
+						montoRestante = rs.getFloat("monto");
+					else
+						montoRestante = 0.0f;
+				} catch (SQLException e) {
 					montoRestante = 0.0f;
+					e.printStackTrace();
+				}
+			}
 		}
-		
 		return montoRestante;
 	}
 	

@@ -364,7 +364,7 @@ function botones() {
 	+ "<i class='fa fa-trash-o'></i>"
 	+ "</button>";
 	}else if(boton ==2){
-	return "<button type='button' style='margin-left:15px;' class='activar btn btn-primary' title='activar cliente'>"
+	return "<button type='button' style='margin-left:15px;' class='activarUsu btn btn-primary' title='activar cliente'>"
 		+ "<i class='fa fa-upload'></i>"
 		+ "</button>";
 	}

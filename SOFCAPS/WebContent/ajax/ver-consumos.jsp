@@ -285,7 +285,7 @@ response.setDateHeader("Expires", -1);
 </div>
 
 <script type="text/javascript">
-//objetos websockets
+////////////////////////////////variables para el WEBSOCKET//////////////////////////////////////////////////
 var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
 var websocket = new WebSocket(wsUri);
 

@@ -92,6 +92,7 @@ public class SL_ReciboCaja extends HttpServlet {
 			cliente.setNombreCompleto(rs.getString("nombreCompleto"));
 			cliente.setCliente_ID(rs.getInt("Cliente_ID"));
 			reciboCaja.setCliente(cliente);
+			reciboCaja.setDescripcion(rs.getString("descripcion"));
 			listaRecibo.add(reciboCaja);
 		}
 		

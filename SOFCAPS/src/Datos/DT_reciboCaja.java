@@ -3,6 +3,8 @@ package Datos;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import Entidades.Serie;
 import Entidades.Factura_Detalle;
@@ -14,16 +16,17 @@ import Entidades.Cliente;
 
 
 public class DT_reciboCaja {
-	private static DT_reciboCaja tdReciboCaja = new DT_reciboCaja();
+	private static DT_reciboCaja dtReciboCaja = new DT_reciboCaja();
 	private static ResultSet rs;
 	PoolConexion pc = PoolConexion.getInstance(); 
 	Connection con = PoolConexion.getConnection();
+	DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
 	
 	private DT_reciboCaja () { 
 	 }
 	
 	public static DT_reciboCaja getInstance() {
-		   return tdReciboCaja;
+		   return dtReciboCaja;
 		 }
 	
 	public ArrayList<Serie> listaSeries(){
@@ -65,8 +68,24 @@ public class DT_reciboCaja {
 	}
 
 	public boolean guardarRecibo(ReciboCaja r) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean guardado = false;
+		try {
+			dtReciboCaja.cargarRecibos();
+			rs.moveToInsertRow();
+			rs.updateString("fecha", fecha.format(r.getFecha()));
+			rs.updateString("descripcion", r.getDescripcion());
+			rs.updateFloat("montoTotal", r.getMontoTotal());
+			rs.updateBoolean("eliminado", false);
+		//	rs.updateInt("Unidad_de_Medida_ID", t.getUnidad_de_Medida().getUnidad_de_Medida_ID());
+			//rs.updateInt("Categoria_Ing_Egreg_ID", o.getCategoria_Ing_Egreg().getCategoria_Ing_Egreg_ID());
+			rs.insertRow();
+			rs.moveToCurrentRow();
+			guardado = true;
+		}catch (Exception e) {
+			System.err.println("ERROR GUARDAR " + e.getMessage());
+			e.printStackTrace();
+		}
+		return guardado;
 	}
 
 	public ResultSet cargarRecibos() {

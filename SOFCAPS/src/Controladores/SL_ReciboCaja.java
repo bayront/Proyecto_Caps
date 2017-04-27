@@ -208,7 +208,7 @@ public class SL_ReciboCaja extends HttpServlet {
 				else
 					numDocumento = Integer.parseInt(request.getParameter("reconexion"));
 				System.out.println("cliente: "+cliente_ID+", monto: "+monto+", serie: "+serie_ID);
-				//guardar(serie_ID, numDocumento, monto, fechaRecibo, cliente_ID, response);
+				guardar(serie_ID, numDocumento, monto, fechaRecibo, cliente_ID, response);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -241,7 +241,7 @@ public class SL_ReciboCaja extends HttpServlet {
 		r.setSerie(serie);
 		r.setFecha(fechaRecibo);
 		r.setCliente(cliente);
-		verificar_resultado(dt_reciboCaja.guardarRecibo(r), response);
+		//verificar_resultado(dt_reciboCaja.guardarRecibo(r), response);
 	}
 
 	protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {

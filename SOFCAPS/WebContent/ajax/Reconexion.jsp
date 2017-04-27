@@ -101,7 +101,7 @@ response.setDateHeader("Expires", -1);
 						<tr>
 							<th>Nombre del Cliente</th>
 							<th>Fecha Reconexión</th>
-							<th>Fecha Cancelado</th>
+							<th>Cancelado</th>
 							<th>Número de Factura</th>
 							<th>Acción</th>
 						</tr>
@@ -115,7 +115,7 @@ response.setDateHeader("Expires", -1);
 <!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
 <div>
 	<form id="frmEliminarReconexion" action="" method="POST">
-		<input type="hidden" id=reconexion_ID name="reconexion_ID" value="">
+		<input type="hidden" id="reconexion_ID" name="reconexion_ID" value="">
 		<input type="hidden" id="opcion" name="opcion" value="eliminar">
 
 		<div id="modalbox">
@@ -186,18 +186,15 @@ var verResultado = function(r) {//parametro(resultado-String)
 //////////////////////////////////eliminar los datos seteados en el formulario/////////////////////////////////////
 var eliminar = function() {
 	$("#eliminar_reconexion").on("click", function() {
-		frmElim = $("#frmEliminarReconexion").serialize();
-		console.log("datos a eliminar: " + frmElim);
-		$.ajax({
-			method:"POST",
-			url:"./SL_Reconexion",
-			data: frmElim
-		}).done(function(info) {
- 			 verResultado(info);
-		});
+		var reconexionID = "";
+		reconexion_ID = $('#frmEliminarReconexion #reconexion_ID').val();
+		console.log(reconexion_ID);
+		window.open("SL_Reconexion?reconexion_ID="+reconexion_ID + "&opcion=imprimir",'_blank');
+		console.log("la reconexion_ID del jsp"+"  "+reconexion_ID);
 		CloseModalBox();
 	});
 }
+
 
 
 
@@ -225,7 +222,8 @@ var listar = function() {
 		ajax: {
 			"method":"GET",
 			"url":"./SL_Reconexion",
-			"dataSrc":"aaData"
+			"dataSrc":"aaData",
+			"data":{"opcion":"cargar"}
 		},
 		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
     	"bJQueryUI": true,
@@ -243,12 +241,7 @@ var listar = function() {
         			var fecha1 = f1.getDate()+"/"+(f1.getMonth()+1)+"/"+f1.getFullYear();
                 	return fecha1;
                 }},
-            { "data": null,
-                 render: function ( data, type, row ) {
-                   	var f2 = new Date(data.f_cancel);
-            		var fecha2 = f2.getDate()+"/"+(f2.getMonth()+1)+"/"+f2.getFullYear();
-                    return fecha2;
-                   }},
+	        { "data":"cancelado"},
             { "data": "factura_Maestra.numFact"},
             {"defaultContent":
 				"<button type='button' class='eliminar btn btn-danger' data-toggle='tooltip' "+

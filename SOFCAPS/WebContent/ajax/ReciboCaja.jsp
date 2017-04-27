@@ -598,14 +598,14 @@ var activarBotonAgregar = function() {
 		if (idCliente != 0 || idCliente != ""){
 			var frm = $("#formReciboCaja").serialize();
 			console.log(frm);
-// 			$.ajax({//enviar datos por ajax
-// 	 			type:"POST",
-// 	 			url:"./SL_ReciboCaja",
-// 	 			data: frm//datos a enviar
-// 	 		}).done(function(info) {//informacion que el servlet le reenvia al jsp
-// 	 			console.log(info);
-// 				verResultado(info);//se envia a verificar que mensaje respondio el servlet
-// 	 		});
+			$.ajax({//enviar datos por ajax
+	 			type:"POST",
+	 			url:"./SL_ReciboCaja",
+	 			data: frm//datos a enviar
+	 		}).done(function(info) {//informacion que el servlet le reenvia al jsp
+	 			console.log(info);
+				//verResultado(info);//se envia a verificar que mensaje respondio el servlet
+	 		});
 		}else if (idCliente == 0 || idCliente == ""){
 			verResultado("VACIO");
 		}

@@ -41,7 +41,7 @@ public class DTReconexion {
 		try {
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
-			System.out.println("datos de clientes cargados");
+			System.out.println("datos de reconexion cargados");
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -53,6 +53,24 @@ public class DTReconexion {
 		return rs;
 	}
 	
+	public ResultSet cargarAvisoCorte()
+	{
+		Statement s;
+		String sql = ("SELECT * FROM aviso_corte;");
+		try {
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("datos de avisoCorte cargados");
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error en DTReconexion, metodo cargarReconexion: "+e.getMessage());
+		}
+		if(rs == null)
+			System.out.println("Resultset de Reconexion vacio");
+		
+		return rs;
+	}
 	public List<Reconexion> listaReconexiones(int cliente_ID){
 		List<Reconexion> listaReconexiones = new ArrayList<Reconexion>();
 		String sql = ("SELECT * FROM reconexion rx where rx.cancelado = 0 and rx.Cliente_ID = "+cliente_ID+";");

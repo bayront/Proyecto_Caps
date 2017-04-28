@@ -24,6 +24,31 @@ public class DTCliente {
 		return dtUsu;
 	}
 	
+	public ResultSet cliente(){
+		Statement s;
+		
+		String sql = ("SELECT DISTINCT (CONCAT(`cliente`.`nombre1`,' ',`cliente`.`nombre2`,' ',`cliente`.`apellido1`,' ',`cliente`.`apellido2`)FROM cliente where eliminado=0;");
+		try 
+		{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	
+			;
+			rs = s.executeQuery(sql);
+			System.out.println("MESES OTROS ING EGREG CARGADOS");
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			System.out.println("Error en DTOtros_Ing_Egreg, metodo MES: "+e.getMessage());
+		}
+		if(rs == null)
+			System.out.println("Resultset de MES vacio");
+		
+		return rs;
+	}
+
+	
+	
 	public ResultSet cargarClientes()
 	{
 		Statement s;

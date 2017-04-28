@@ -139,6 +139,11 @@ public class DTReconexion {
 		}
 		return eliminado;
 	}
+
+	public boolean cancelarReconexion(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 
 }

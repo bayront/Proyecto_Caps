@@ -67,20 +67,29 @@ public class DT_reciboCaja {
 		return listaFacturas;
 	}
 
-	public boolean guardarRecibo(ReciboCaja r) {
+	public boolean guardarRecibo(ReciboCaja r, float totalPagar) {
 		boolean guardado = false;
 		try {
-			dtReciboCaja.cargarRecibos();
+			dtReciboCaja.cargarnumRecibo();
+			rs.next();
+			System.out.println("numRecibo: "+rs.getInt("numRecibo"));
+			int numReciboCaja = rs.getInt("numRecibo") + 1;
+			String numRecibo = String.valueOf(numReciboCaja);
+			
+			dtReciboCaja.cargarRecibosTabla();
 			rs.moveToInsertRow();
 			rs.updateString("fecha", fecha.format(r.getFecha()));
 			rs.updateString("descripcion", r.getDescripcion());
+			rs.updateString("numReciboCaja", numRecibo);
 			rs.updateFloat("montoTotal", r.getMontoTotal());
-			rs.updateBoolean("eliminado", false);
-		//	rs.updateInt("Unidad_de_Medida_ID", t.getUnidad_de_Medida().getUnidad_de_Medida_ID());
-			//rs.updateInt("Categoria_Ing_Egreg_ID", o.getCategoria_Ing_Egreg().getCategoria_Ing_Egreg_ID());
+			rs.updateInt("Serie_ID", r.getSerie().getSerie_ID());
+			rs.updateInt("numDocumento", r.getNumDocumento());
+			rs.updateBoolean("estado", false);
+			rs.updateInt("Cliente_ID", r.getCliente().getCliente_ID());
 			rs.insertRow();
 			rs.moveToCurrentRow();
 			guardado = true;
+			System.out.println("guardado: "+guardado);
 		}catch (Exception e) {
 			System.err.println("ERROR GUARDAR " + e.getMessage());
 			e.printStackTrace();
@@ -90,7 +99,12 @@ public class DT_reciboCaja {
 
 	public ResultSet cargarRecibos() {
 		Statement s;
-		String sql = ("SELECT * FROM recibocaja WHERE estado = 0;");
+//		String sql1 = "select r.descripcion AS descripcionRecibo, r.estado, r.numReciboCaja, "+
+//        "r.numDocumento, r.montoTotal, concat(c.nombre1,' ',c.nombre2,' ',c.apellido1,' ',c.apellido2) AS nombreCompleto, "+
+//		"c.Cliente_ID,  s.descripcion AS descripcionSerie, s.Serie_ID"+
+//        "from ((recibocaja r join cliente c ON ((r.Cliente_ID = c.Cliente_ID)))"+
+//        "join serie s ON ((r.Serie_ID = s.Serie_ID))) where r.estado = 0";
+		String sql = "SELECT * FROM sofcaps.recibocajahistorial;";
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
@@ -98,6 +112,40 @@ public class DT_reciboCaja {
 		}catch (Exception e){
 			e.printStackTrace();
 			System.out.println("Error en DT_reciboCaja, metodo cargarRecibos: "+e.getMessage());
+		}
+		if(rs == null)
+			System.out.println("Resultset de ReciboCaja vacio");
+		
+		return rs;
+	}
+	
+	public ResultSet cargarRecibosTabla() {
+		Statement s;
+		String sql = "SELECT * FROM sofcaps.recibocaja;";
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("datos de los recibos de caja cargados");
+		}catch (Exception e){
+			e.printStackTrace();
+			System.out.println("Error en DT_reciboCaja, metodo cargarRecibosTabla: "+e.getMessage());
+		}
+		if(rs == null)
+			System.out.println("Resultset de ReciboCaja vacio");
+		
+		return rs;
+	}
+	
+	public ResultSet cargarnumRecibo() {
+		Statement s;
+		String sql = "SELECT count(*) as numRecibo FROM recibocaja;";
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("datos del numero de recibo cargado");
+		}catch (Exception e){
+			e.printStackTrace();
+			System.out.println("Error en DT_reciboCaja, metodo cargarnumRecibo: "+e.getMessage());
 		}
 		if(rs == null)
 			System.out.println("Resultset de ReciboCaja vacio");

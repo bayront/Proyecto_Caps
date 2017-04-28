@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2017-04-26T15:03:12 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Facturas" pageWidth="297" pageHeight="255" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="257" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2b2e0f50-5987-431a-8457-fb256c71f793">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Mysql Connection"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<parameter name="numFact" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from imprimir_Facturas where numFact =  $P{numFact} ]]>
+	</queryString>
+	<field name="nombre_completo" class="java.lang.String"/>
+	<field name="numMedidor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consumoActual" class="java.lang.Float"/>
+	<field name="fecha_fin" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numFact" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="totalPago" class="java.lang.Double"/>
+	<field name="anulado" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="estadoFac" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lecturaAnterior" class="java.lang.Double"/>
+	<field name="lectura_Actual" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<pageHeader>
+		<band height="25">
+			<staticText>
+				<reportElement x="50" y="-15" width="177" height="40" isPrintInFirstWholeBand="true" uuid="905ea9ed-0c6a-4724-91d9-0ee4286be6d0"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[Comite De Agua Potable
+Y Saneamiento-Poneloya
+(Caps-Poneloya)]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="178" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="20" width="100" height="20" uuid="b77f17e8-5ad2-4149-b2ba-fbcbe09f9c0c"/>
+				<text><![CDATA[Nombre de Usuario]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="20" width="100" height="20" uuid="2bbd5815-2444-4db9-af88-30a31613a220"/>
+				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="41" width="80" height="18" uuid="6a08d2aa-fa88-45de-aa3d-5ed966b7c00b"/>
+				<text><![CDATA[Medidor Nº]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="44" width="100" height="15" uuid="ca3dd134-c2d9-439f-845c-942d59a50682"/>
+				<textFieldExpression><![CDATA[$F{numMedidor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="62" width="80" height="20" uuid="dc1b86ce-cde9-4c4c-9f26-4d984285b77a"/>
+				<text><![CDATA[Lectua Anterior]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="66" width="100" height="13" uuid="2eb141c0-7532-4476-a933-e1fc86c26a8c"/>
+				<textFieldExpression><![CDATA[$F{lecturaAnterior}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="85" width="80" height="20" uuid="37a48326-f985-4652-911b-ab79ef647007"/>
+				<text><![CDATA[Lectua Actual]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="88" width="100" height="15" uuid="f6cb2e05-61ff-44a1-b523-7b36c7b1097a"/>
+				<textFieldExpression><![CDATA[$F{lectura_Actual}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="108" width="80" height="20" uuid="6368d058-082d-43cd-8e6c-e6ea2f3adf6c"/>
+				<text><![CDATA[Consumo Actual]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="108" width="100" height="21" uuid="94b3ac3b-bbc8-4ad8-a85d-3933911af19a"/>
+				<textFieldExpression><![CDATA[$F{consumoActual}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="132" width="80" height="20" uuid="3f59b1ff-c6e7-42cc-a264-41441979512f"/>
+				<text><![CDATA[Costo Actual]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="135" width="100" height="15" uuid="e76c3ec4-7d4e-4266-973b-e5ffe359f986"/>
+				<textFieldExpression><![CDATA[$F{totalPago}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="90" y="1" width="60" height="20" uuid="b34f31e0-53ad-43bf-81a8-a0e664eaf629"/>
+				<text><![CDATA[Recibo Nº]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="0" width="83" height="21" uuid="68182151-dbb8-473a-b9d7-f400d202c2d7"/>
+				<textFieldExpression><![CDATA[$F{numFact}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="152" width="80" height="20" uuid="d9561503-f056-423c-8535-bb88610113ca"/>
+				<text><![CDATA[Total a Pagar: C$]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="155" width="100" height="15" uuid="41bfa57d-84b5-413c-ab18-8a3252d9b62d"/>
+				<textFieldExpression><![CDATA[$F{totalPago}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,16 +1,20 @@
 package Controladores;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import Datos.Conexion;
 import Datos.DTConsumo;
 import Datos.DTFacturaMaestra;
 import Datos.DT_consumo_bomba;
@@ -28,6 +33,12 @@ import Entidades.Cliente;
 import Entidades.Consumo;
 import Entidades.Contrato;
 import Entidades.Factura_Maestra;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.Exporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 @WebServlet("/SL_Factura_Maestra")
 public class SL_Factura_Maestra extends HttpServlet{
 
@@ -53,7 +64,7 @@ public class SL_Factura_Maestra extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	response.setContentType("application/json");
 		out = response.getWriter();
-		String numMedidor;
+		String numMedidor, numFact;
 		if(Integer.parseInt(request.getParameter("carga")) == 1) {
 			try {
 				try {
@@ -93,6 +104,28 @@ public class SL_Factura_Maestra extends HttpServlet{
 			Float montoTotal = Float.parseFloat(request.getParameter("montoTotal"));
 			int factura_Maestra_ID = Integer.parseInt(request.getParameter("factura_Maestra_ID"));
 			traerMontoRestante(montoTotal, factura_Maestra_ID, response);
+		}else if(Integer.parseInt(request.getParameter("carga")) == 6) {
+			numFact = request.getParameter("numFact");
+			System.out.println("numero de factura: "+numFact);
+			try {
+				imprimirFactura(numFact, response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else if(Integer.parseInt(request.getParameter("carga")) == 7) {
+			try {
+				imprimirFacturaMasivo(response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
     
@@ -134,6 +167,16 @@ public class SL_Factura_Maestra extends HttpServlet{
 			String numFact = req.getParameter("numFact");
 			anularFactura(numFact, resp);
 			break;
+		case "cancelar":
+			int id = Integer.parseInt(req.getParameter("id"));
+			boolean cancelado = dtFactura.cancelarFactura(id, true);
+			if(cancelado == true) {
+				resp.setContentType("text/plain");
+				PrintWriter out;
+				out = resp.getWriter();
+				out.print("CANCELADO");
+			}
+			break;
 		default:
 			resp.setContentType("text/plain");
 			PrintWriter out;
@@ -142,6 +185,75 @@ public class SL_Factura_Maestra extends HttpServlet{
 			break;
 		}
     }
+	
+	private void imprimirFactura (String numFact, HttpServletResponse resp) throws SQLException, ParseException {
+		try {
+			Connection con = null;
+			
+			con = Conexion.getConnection();			
+			
+			//Aquí se ponen los parámetros a como se llaman en el reporte
+			HashMap<String, Object>hm = new HashMap<>();
+			hm.put("numFact", numFact);
+			
+			System.out.println("segundo numero de factura: "+numFact);
+			System.out.println(hm);
+			resp.reset();
+			OutputStream otps = resp.getOutputStream();
+			ServletContext context = getServletContext();
+			String path = context.getRealPath("/");
+			String template = "reporte\\Facturas.jasper";
+			Exporter exporter = new JRPdfExporter();
+			System.out.println(path+template);
+			System.out.println(con);
+			JasperPrint jasperPrint = JasperFillManager.fillReport(path+template, hm, con);
+			resp.setContentType("application/pdf");
+			resp.setHeader("Content-Disposition", "inline; filename=\"Informe.pdf\"");
+			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(otps));
+			exporter.exportReport();
+			System.out.println("SL_Factura_Maestra numFact"+" "+numFact);
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 System.out.println("REPORTE: ERROR AL GENERAR REPORTE " + e.getMessage());
+		}
+	}
+	
+	private void imprimirFacturaMasivo (HttpServletResponse resp) throws SQLException, ParseException {
+		try 
+		{
+			 
+			Connection con = null;
+			
+			con = Conexion.getConnection();			
+			
+			//Aquí se ponen los parámetros a como se llaman en el reporte
+			HashMap<String, Object>hm = new HashMap<>();
+//			hm.put("numFact", numFact);
+			
+//			System.out.println(hm);
+			resp.reset();
+			OutputStream otps = resp.getOutputStream();
+			ServletContext context = getServletContext();
+			String path = context.getRealPath("/");
+			String template = "reporte\\FacturaMasiva.jasper";
+			Exporter exporter = new JRPdfExporter();
+			System.out.println(path+template);
+			System.out.println(con);
+			JasperPrint jasperPrint = JasperFillManager.fillReport(path+template, hm, con);
+			resp.setContentType("application/pdf");
+			resp.setHeader("Content-Disposition", "inline; filename=\"Informe.pdf\"");
+			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(otps));
+			exporter.exportReport();
+			
+		}
+		catch (Exception e) 
+		{
+		 e.printStackTrace();
+		 System.out.println("REPORTE: ERROR AL GENERAR REPORTE " + e.getMessage());
+		}
+	}
 	
 	private void generarFacturas(Date fechaCorte, Date fechaVence, HttpServletResponse resp) throws IOException, SQLException {
 		DTConsumo dtConsumo = DTConsumo.getInstance();

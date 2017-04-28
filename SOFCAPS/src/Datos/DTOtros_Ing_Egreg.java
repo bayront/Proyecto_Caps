@@ -30,14 +30,102 @@ public class DTOtros_Ing_Egreg {
 	}
 	
 	
+	public ResultSet cargarPro(String messs, String aniooo)
+	{
+		Otros_Ing_Egreg n = new Otros_Ing_Egreg();
+		try 
+		{	 
+			
+			CallableStatement p = con.prepareCall("{CALL p(?, ?)}");
+			p.setString("messs", messs);
+			p.setString("aniooo", aniooo);
+			
+			rs = p.executeQuery();
+//			if(rs.next())
+//			{
+//				n.setMmmes(messs);
+//				n.setAanio(aniooo);
+//				
+//			}
+		} 
+		catch (SQLException e) 
+		{
+			System.out.println("Error en Dortso ingresos metodo cargar pro " +e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return rs;
+	}
+	
+	public ResultSet cargarSI(String cci, String mss,String aoo)
+	{
+		Otros_Ing_Egreg n = new Otros_Ing_Egreg();
+		try 
+		{	 
+			
+			CallableStatement p = con.prepareCall("{CALL ci(?, ?,?)}");
+			p.setString("ci", cci);
+			p.setString("mi", mss);
+			p.setString("ai", aoo);
+			
+			rs = p.executeQuery();
+//			if(rs.next())
+//			{
+//				n.set
+//				n.setMmmes(messs);
+//				n.setAanio(aniooo);
+//				
+//			}
+		} 
+		catch (SQLException e) 
+		{
+			System.out.println("Error en Dortso ingresos metodo cargar pro " +e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return rs;
+	}
+	
+	
+	public ResultSet cargarSE( String cce,String msse,String aooe)
+	{
+		Otros_Ing_Egreg n = new Otros_Ing_Egreg();
+		try 
+		{	 
+			
+			CallableStatement p = con.prepareCall("{CALL cee(?, ?,?)}");
+			p.setString("ce", cce);
+			p.setString("me", msse);
+			p.setString("ae", aooe);
+			
+			rs = p.executeQuery();
+//			if(rs.next())
+//			{
+//				n.set
+//				n.setMmmes(messs);
+//				n.setAanio(aniooo);
+//				
+//			}
+		} 
+		catch (SQLException e) 
+		{
+			System.out.println("Error en Dortso ingresos metodo cargar pro " +e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return rs;
+	}
+	
+	
 	public ResultSet mes(){
 		Statement s;
-//		String sql1 = ("SET lc_time_names = 'es_VE';");
+		String sql1=("set lc_time_names = 'es_ES';");
 		String sql = ("SELECT DISTINCT DATE_FORMAT(fecha, '%M')FROM otros_ing_egreg where eliminado=0;");
 		try 
 		{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-		//	rs = s.executeQuery(sql1);
+	
+			rs = s.executeQuery(sql1);
 			rs = s.executeQuery(sql);
 			System.out.println("MESES OTROS ING EGREG CARGADOS");
 		} 
@@ -53,10 +141,12 @@ public class DTOtros_Ing_Egreg {
 	}
 	
 	
+	
+	
 	public ResultSet ing(){
 		Statement s;
 //		String sql1 = ("SET lc_time_names = 'es_VE';");
-		String sql = ("Select   c.TipoCategoria_ID=1 as Ingreso From otros_ing_egreg o Inner Join categoria_ing_egreg c On o.Categoria_Ing_Egreg_ID = c.Categoria_Ing_Egreg_ID  where o.eliminado = 0 and c.eliminado = 0;");
+		String sql = ("select distinct ELT(1, 'Ingresos') FROM otros_ing_egreg o Inner Join categoria_ing_egreg c  On o.Categoria_Ing_Egreg_ID = c.Categoria_Ing_Egreg_ID where TipoCategoria_ID=1 and o.eliminado = 0 and c.eliminado = 0 ; ");
 		try 
 		{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -71,6 +161,29 @@ public class DTOtros_Ing_Egreg {
 		}
 		if(rs == null)
 			System.out.println("Resultset de ING vacio");
+		
+		return rs;
+	}
+	
+	
+	public ResultSet egre(){
+		Statement s;
+//		String sql1 = ("SET lc_time_names = 'es_VE';");
+		String sql = ("select distinct ELT(1, 'Egresos') FROM otros_ing_egreg o Inner Join categoria_ing_egreg c  On o.Categoria_Ing_Egreg_ID = c.Categoria_Ing_Egreg_ID where TipoCategoria_ID=2 and o.eliminado = 0 and c.eliminado = 0 ; ");
+		try 
+		{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+		//	rs = s.executeQuery(sql1);
+			rs = s.executeQuery(sql);
+			System.out.println("egresos CARGADOS");
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			System.out.println("Error en DTOtros_Ing_Egreg, metodo egreg: "+e.getMessage());
+		}
+		if(rs == null)
+			System.out.println("Resultset de egreg vacio");
 		
 		return rs;
 	}

@@ -35,7 +35,7 @@ public class DTFacturaMaestra {
 	public ResultSet datosFacturaMaestra()
 	{
 		Statement s;
-		String sql = ("SELECT factura_maestra.Factura_Maestra_ID, factura_maestra.numFact, factura_maestra.anulado, factura_maestra.Consumo_ID FROM factura_maestra WHERE factura_maestra.estadoFac=False;");
+		String sql = ("SELECT factura_maestra.Factura_Maestra_ID, factura_maestra.numFact, factura_maestra.anulado, factura_maestra.Consumo_ID, factura_maestra.estadoFac FROM factura_maestra WHERE factura_maestra.anulado=False;");
 		try
 		{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -187,6 +187,23 @@ public class DTFacturaMaestra {
 		return rs;
 	}
 
+	public ResultSet cargarFacturaUnica(int factura_maestra_ID)
+	{
+		Statement s;
+		String sql = "SELECT numFact, Factura_Maestra_ID FROM factura_maestra WHERE Factura_Maestra_ID = " +factura_maestra_ID+ ";";
+		try
+		{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("Error en DT_FacturaMestra, metodo cargarFacturaUnica: "+e.getMessage());
+		}
+		return rs;
+	}
+	
 	public float calcularMontoRestante(int factura_Maestra_ID) {
 		float montoRestante;
 		Statement s;
@@ -216,6 +233,34 @@ public class DTFacturaMaestra {
 			}
 		}
 		return montoRestante;
+	}
+
+	public boolean cancelarFactura(int id, boolean cancel) {
+		boolean cancelado = false;
+		try 
+		{
+			dtFactura.datosFacturaMaestra();
+			rs.beforeFirst();
+			while(rs.next()){
+				if(rs.getInt("Factura_Maestra_ID") == id){
+					rs.updateInt(1, rs.getInt(1));
+					rs.updateString(2, rs.getString(2));
+					rs.updateBoolean(3, rs.getBoolean(3));
+					rs.updateInt(4, rs.getInt(4));
+					rs.updateBoolean(5, cancel);
+					rs.updateRow();
+					cancelado = true;
+					break;
+				}
+			}
+			rs.moveToCurrentRow();
+		}
+		catch (Exception e) 
+		{
+			System.err.println("ERROR AL cancelar factura " + e.getMessage());
+			e.printStackTrace();
+		}
+		return cancelado;
 	}
 	
 	

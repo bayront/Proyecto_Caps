@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-04-26T17:05:48 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reco" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="70914282-2a95-4245-8723-b482f364fc49">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sofcaps"/>
+	<parameter name="numContrato" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select * from  sofcaps.reportecontrato where numContrato =  $P{numContrato}]]>
+	</queryString>
+	<field name="nombreCompleto" class="java.lang.String"/>
+	<field name="numContrato" class="java.lang.Integer"/>
+	<field name="fechaContrato" class="java.sql.Date"/>
+	<field name="cedula" class="java.lang.String"/>
+	<field name="celular" class="java.lang.Integer"/>
+	<field name="direccionCliente" class="java.lang.String"/>
+	<field name="cantidadPersonas" class="java.lang.Integer"/>
+	<field name="cuotas" class="java.lang.Integer"/>
+	<field name="montoContrato" class="java.lang.Float"/>
+	<field name="regimenPro" class="java.lang.String"/>
+	<field name="nombreSector" class="java.lang.String"/>
+	<field name="comunidad" class="java.lang.String"/>
+	<field name="nomMuni" class="java.lang.String"/>
+	<field name="dep" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="66">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="80" backcolor="#006699" uuid="20ff2c6e-20d4-49c2-bbcd-7a6820a186de"/>
+				<staticText>
+					<reportElement x="20" y="10" width="540" height="43" forecolor="#FFFFFF" uuid="6dd8148d-ffc2-45ce-8eaa-a249f02b1b7d"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="30" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CONTRATO DE ACUEDUCTO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="20" y="53" width="540" height="20" forecolor="#FFFFFF" uuid="15832dfe-429f-4bb7-b09d-7e164dfd768a"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[COMITÉ DE AGUA POTABLE Y SANEAMIENTO]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="17"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="126">
+			<staticText>
+				<reportElement x="0" y="1" width="60" height="20" uuid="598148fd-28df-479c-b5b0-68ee815557ca"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[Solicitud N°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="1" width="30" height="20" uuid="8efd0f5e-a6eb-42c9-9570-8b2aefe16f05"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="1" width="60" height="20" uuid="c021232a-f771-4a5e-ba6e-24e9d7c84115"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[Comunidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="0" width="50" height="21" uuid="3f29a0d2-1b29-4034-8fdd-c0d732cf1c20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[Municipio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="21" width="70" height="20" uuid="cf74985d-0940-414a-ae1e-55503d3bb1ef"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[Departamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="21" width="40" height="20" uuid="a6b09719-f3f1-49b5-8d25-6f6bc2f99e69"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[Celular]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="21" width="130" height="20" uuid="92659bca-5305-4d5a-8e39-8f5ec26195dc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[N° habitantes en su vivienda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="41" width="160" height="20" uuid="a031bfdd-55bb-4f16-88b8-7bd74300e57b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[Nombre y Apellidos del solicitante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="61" width="90" height="39" uuid="c9f2ee27-79eb-4c23-bc1a-0239997d2504"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[Cédula de Identidad     Direccion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="100" width="110" height="20" uuid="cb1f3fe7-cea9-4e25-98c8-ccfc3f1e6a77"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Régimen de Propiedad]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="60" y="1" width="30" height="20" uuid="72b0ff0c-c324-45ec-ab72-d5d45192aadf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numContrato}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="41" width="180" height="20" uuid="57177d7a-2356-41e9-8232-7802f36d290d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombreCompleto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="1" width="76" height="20" uuid="00527728-3967-4d6a-a4d6-d3e5447d92fa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fechaContrato}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="1" width="70" height="20" uuid="9baa420e-82f5-4e79-a051-5c00fd2cfade"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombreSector}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="21" width="80" height="20" uuid="9eec90ff-e736-4fc0-af11-8f3cca2ed6c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{celular}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="470" y="21" width="38" height="20" uuid="3a959648-36a4-4876-95e9-4e68d8b3c29f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cantidadPersonas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="61" width="100" height="19" uuid="27b3892b-c444-4748-9268-23fd2ea2d2a5"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{cedula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="80" width="100" height="20" uuid="22688eaa-6fcc-4092-b871-109bcf87388e"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{direccionCliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="100" width="90" height="20" uuid="a9b00914-4a77-40ac-87e1-a83454e44351"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{regimenPro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="470" y="0" width="38" height="21" uuid="7d0a5057-5bde-4ab0-bafa-44edb0099b1b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[León]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="21" width="40" height="20" uuid="3a8f9c78-4c1d-4172-ab66-5dbd8908b171"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[León]]></text>
+			</staticText>
+			<line>
+				<reportElement x="170" y="61" width="180" height="1" uuid="f053f13f-b5d6-47e3-b0ad-a7a7cd7166b0"/>
+			</line>
+			<line>
+				<reportElement x="60" y="21" width="29" height="1" uuid="6cb6e4f4-4f93-4e86-a639-32f000653d20"/>
+			</line>
+			<line>
+				<reportElement x="150" y="21" width="77" height="1" uuid="7e290098-1352-4cdb-8314-0de4e61c94b1"/>
+			</line>
+			<line>
+				<reportElement x="310" y="21" width="69" height="1" uuid="d06b9076-767a-46ae-b864-0586cb196453"/>
+			</line>
+			<line>
+				<reportElement x="470" y="21" width="39" height="1" uuid="916a538a-5aa8-4e6a-8087-6244a9479a69"/>
+			</line>
+			<line>
+				<reportElement x="80" y="41" width="39" height="1" uuid="74d631c0-4b2f-409a-bf24-f0ef150fbaf4"/>
+			</line>
+			<line>
+				<reportElement x="220" y="41" width="89" height="1" uuid="fb99ec76-565f-41cb-914e-f739548cc947"/>
+			</line>
+			<line>
+				<reportElement x="470" y="41" width="39" height="1" uuid="aad214ef-7f08-4585-ba77-6ba82f2aa90b"/>
+			</line>
+			<line>
+				<reportElement x="100" y="80" width="99" height="1" uuid="425124db-2bd8-47c8-9b31-c492049522b4"/>
+			</line>
+			<line>
+				<reportElement x="100" y="100" width="290" height="1" uuid="3a94b091-6fa3-481e-9c96-ce6a298cf45f"/>
+			</line>
+			<line>
+				<reportElement x="119" y="120" width="91" height="1" uuid="d2caad1a-72e0-4a75-b9f1-48c34ead3b61"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="344">
+			<staticText>
+				<reportElement x="0" y="0" width="170" height="30" uuid="65854dc5-2901-489c-944d-8428430af078"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[Solicito pagar el derecho de conexión en correspondiente al mes de servicio.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="227" y="0" width="100" height="20" uuid="89e0bf45-61f4-4863-b162-a1e5950377ef"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[cuotas mensuales de C$]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="140" height="20" uuid="39b95dbe-8f8a-4b97-b8d6-fa74b08652e9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[los cuales son adicional al pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="560" height="20" uuid="db02ce08-4e73-4e45-a313-d6fe9edf7689"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[Me comprometo a instalar el servicio cuando se me conceda y a cumplir las disposiciones siguientes ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="170" y="0" width="50" height="20" uuid="6ed7d882-a4b7-484c-bbf5-4a912dfeb119"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cuotas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="327" y="0" width="63" height="20" uuid="42f3bbce-3819-487a-bd2c-a6cad4140222"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{montoContrato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="50" width="540" height="40" uuid="4425bf82-7d97-46e0-a9e0-b77e5518e9a3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[a)Exigir el estricto cumplimiento de todas las normas aplicables del sector de agua potable.				       b)Denunciar cualquier conducta irregular, conexiones ilegales que sean de mi conocimiento u omisión de los prestadores o agentes que pudiera afectar sus derechos o perjudiciar la calidad del servicio y el agua.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="90" width="540" height="40" uuid="84480824-affd-4821-98ba-e57c14ddf649"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[c)Recurrir de quejas cuando la resolucion del prestador del servicio fuere denegatoria o hubiera silencio administrativo.	          d)Pagar oportunamente los consumos y demás cargos tarifarios que le facturen. No existirá gratituidad para la prestación de los servicios a ninguna persona natural o jurídica pública o privada.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="130" width="540" height="40" uuid="563a98f2-ee6d-438a-ac10-a4bda75bd01e"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[e)Tener conocimiento en caso que tenga dos facturas de consumo, u otra deuda adicional pendientes de pago, luego de la respectiva notificación, el prestador de servicio que es este caso es el CAPS podrá suspender el servicio, hasta saldar la deuda y el costo por la reinstalacion.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="170" width="540" height="50" uuid="4075341a-f511-4fc6-968e-384c34b06cf3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[f)El precio que establezca el prestador, autorizado por el Ente Regulador podrá ser pagado al contado o a plazos fijados por el mismo prestador de servicio de acuerdo a criterios técnicos como el diámetro de la conexión entre otros. 				          g)Toda la tubería pasa a ser patrimonio CAPS aunque yo lo halla costeado por ella, por razones de mantenimiento.	 	          h)El servicio de agua es comunitario y para consumo humano, la tarifa es diferenciada de acuerdo el uso que se haga de ella.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="220" width="540" height="40" uuid="66ccf88e-3376-4c8e-bd2a-2fd9cbcc756c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[i)Como usuario no me es permitido hacer conexión del servicio a otra vivienda. 					          j)La tarifa es diferenciada para ganado, Semoviente, animales, negocios, construcciones, llenado de piscinas después de los 10 mts cúbicos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="260" width="400" height="50" uuid="a966c1da-c202-44ef-b4a9-025d31eb8e85"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Calibri" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Negocio....................................................................................C$ 15.00 cada metro cúbico Ganado,semoviente,animales......................................................20.00Construcciones.............................................................................20.00 		          Llenado de piscina........................................................................30.00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="310" width="540" height="30" uuid="bc468a38-90ac-4df7-b603-b172ad75491e"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[En caso de que hiciere alguna actividad antes mencionada debo dar previa notificación al encargado de fiscalizar el sistema del CAPS/Fiscal para que midan los metros cúbicos que voy a consumir y de acuerdo a la lectura del medidor pagar el consumo.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="171" y="20" width="49" height="1" uuid="a810381b-5697-4b3c-ab7f-6b77cd5b3736"/>
+			</line>
+			<line>
+				<reportElement x="327" y="20" width="63" height="1" uuid="40232e45-5ed0-48ef-b3e7-5d8477362aca"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="61">
+			<staticText>
+				<reportElement x="50" y="20" width="130" height="30" uuid="a9c29377-664b-4d20-81ba-f7682d3d0043"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Firma Representante Legal CAPS-PONELOYA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="20" width="130" height="30" uuid="1a578c2f-3b2d-4933-b1c9-b7e1dcefbd12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Firma del Beneficiario CAPS-PONELOYA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="40" y="20" width="150" height="1" uuid="5ccb0018-64a5-4d6a-9b8b-39a60ec2660c"/>
+			</line>
+			<line>
+				<reportElement x="390" y="20" width="150" height="1" uuid="93a8c904-ff11-4102-b136-f1d919829d5a"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

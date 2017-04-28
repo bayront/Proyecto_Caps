@@ -321,6 +321,7 @@ response.setDateHeader("Expires", -1);
 							<th>Fecha de corte</th>
 							<th>Vencimiento</th>
 							<th>Num_factura</th>
+							<th></th>
 						</tr>
 					</thead>
 				</table>
@@ -471,6 +472,21 @@ function anularFacturas(tbody, table) {//parametro(id_tabla, objeto dataTable)
 	});
 }
 
+function imprimirFactura (tbody, table){	
+	
+	$(tbody).on("click", "button.imprimirFactura", function() {
+		var datos = table.row($(this).parents("tr")).data();
+		var numFact = datos.numFact;
+		
+		window.open("SL_Factura_Maestra?numFact="+numFact +"&carga="+6, '_blank');
+		console.log("La fecha del jsp"+" "+numFact);
+		console.log("El paramtero del jsp"+" "+numFact);
+		console.log("El paramtero del jsp anio"+" "+numFact);
+		
+	});
+
+}
+
 // ///////////////////funsión que crea un dataTable para traer el historial de facturas de un cliente////////////
 	function historialFacturasCliente(numMedidor){
 		if($.fn.DataTable.isDataTable('#tabla_facturas_historial')){
@@ -612,7 +628,10 @@ function anularFacturas(tbody, table) {//parametro(id_tabla, objeto dataTable)
 			        		var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
 			               	return fecha;
 			       	}},
-		            { "data": "numFact" }
+		            { "data": "numFact" },
+		            {"defaultContent":"<button type='button' class='imprimirFactura btn btn-danger' data-toggle='tooltip' "+
+						"data-placement='top' title='Imprimir factura'>"+
+						"<i class='fa fa-trash-o'></i> </button>"}
 		     	]
 		    });
 		 
@@ -625,6 +644,8 @@ function anularFacturas(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		            }
 		        } );
 		    } );
+		    
+		    imprimirFactura('#tabla_historial_facturas tbody', table)
 	}
 
 ///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
@@ -685,6 +706,7 @@ function anularFacturas(tbody, table) {//parametro(id_tabla, objeto dataTable)
 					"titleAttr": "Imprimir facturas",
 					"className": "btn btn-success",
 					"action": function() {
+						window.open("SL_Factura_Maestra?carga="+7, '_blank');
 					}
 				},
 				{

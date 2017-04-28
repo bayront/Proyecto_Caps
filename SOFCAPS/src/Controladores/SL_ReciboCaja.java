@@ -104,6 +104,18 @@ public class SL_ReciboCaja extends HttpServlet {
 			reciboCaja.setDescripcion(rs.getString("descripcionRecibo"));
 			reciboCaja.setNumDocumento(rs.getInt("numDocumento"));
 			reciboCaja.setMontoTotal(rs.getFloat("montoTotal"));
+			if(serie.getSerie_ID() == 1) {
+				ResultSet resultSet = dtFacturaMaestra.cargarFacturaUnica(reciboCaja.getNumDocumento());
+				resultSet.next();
+				Factura_Maestra f = new Factura_Maestra();
+				f.setFactura_Maestra_ID(resultSet.getInt("Factura_Maestra_ID"));
+				f.setNumFact(resultSet.getString("numFact"));
+				reciboCaja.factura_Maestra = f;
+			}else if(serie.getSerie_ID() == 2) {
+				System.out.println("por ahora nada en contrato");
+			}else if(serie.getSerie_ID() == 3){
+				System.out.println("por ahora nada en reconexion");
+			}
 			listaRecibo.add(reciboCaja);
 		}
 		
@@ -143,7 +155,8 @@ public class SL_ReciboCaja extends HttpServlet {
 			contrato.setNumMedidor(rs.getString("numMedidor"));
 			contrato.setContrato_ID(rs.getInt("Contrato_ID"));
 			contrato.setNumContrato(rs.getInt("numContrato"));
-			contrato.setMontoContrato(rs.getFloat("montoContrato"));
+			float montoRound = (float) (Math.round(rs.getFloat("montoContrato") * 100.0) / 100.0);
+			contrato.setMontoContrato(montoRound);
 			contrato.setCuotas(rs.getInt("cuotas"));
 			contrato.setCliente(cliente);
 			listaC.add(contrato);
@@ -188,12 +201,14 @@ public class SL_ReciboCaja extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String opcion = request.getParameter("opcion");
 		String fechaForm;
-		float monto;
+		float monto, montoRound;
 		int serie_ID, numDocumento, cliente_ID;
 		Date fechaRecibo;
 		switch (opcion) {
 		case "guardar":
+			float totalPagar = Float.parseFloat(request.getParameter("totalPagar"));
 			monto = Float.parseFloat(request.getParameter("monto"));
+			montoRound = (float) (Math.round(monto * 100.0) / 100.0);
 			cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
 			try {
 				fechaForm = request.getParameter("fechaRecibo");
@@ -201,14 +216,9 @@ public class SL_ReciboCaja extends HttpServlet {
 				System.out.println(fechaRecibo);
 				
 				serie_ID = Integer.parseInt(request.getParameter("serie"));
-				if(serie_ID == 1)
-					numDocumento = Integer.parseInt(request.getParameter("factura"));
-				else if(serie_ID == 2)
-					numDocumento = Integer.parseInt(request.getParameter("contrato"));
-				else
-					numDocumento = Integer.parseInt(request.getParameter("reconexion"));
-				System.out.println("cliente: "+cliente_ID+", monto: "+monto+", serie: "+serie_ID);
-				guardar(serie_ID, numDocumento, monto, fechaRecibo, cliente_ID, response);
+				numDocumento = Integer.parseInt(request.getParameter("dato"));
+				System.out.println("cliente: "+cliente_ID+", monto: "+monto+", serie: "+serie_ID+", totalPagar: "+totalPagar);
+				guardar(serie_ID, numDocumento, montoRound, fechaRecibo, cliente_ID, totalPagar, response);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -230,7 +240,7 @@ public class SL_ReciboCaja extends HttpServlet {
 		}
 	}
 
-	private void guardar(int serie_ID, int numDocumento, float monto, Date fechaRecibo, int cliente_ID, HttpServletResponse response) throws IOException {
+	private void guardar(int serie_ID, int numDocumento, float monto, Date fechaRecibo, int cliente_ID, float totalPagar, HttpServletResponse response) throws IOException {
 		Serie serie = new Serie();
 		serie.setSerie_ID(serie_ID);
 		Cliente cliente = new Cliente();
@@ -240,8 +250,9 @@ public class SL_ReciboCaja extends HttpServlet {
 		r.setMontoTotal(monto);
 		r.setSerie(serie);
 		r.setFecha(fechaRecibo);
+		r.setDescripcion(null);
 		r.setCliente(cliente);
-		//verificar_resultado(dt_reciboCaja.guardarRecibo(r), response);
+		verificar_resultado(dt_reciboCaja.guardarRecibo(r, totalPagar), response);
 	}
 
 	protected void verificar_resultado(boolean r, HttpServletResponse response) throws IOException {

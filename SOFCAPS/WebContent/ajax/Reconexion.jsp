@@ -154,12 +154,12 @@ function AllTables() {
 
 function abrirDialogo() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
 	OpenModalBox(
-			"<div><h3>Borrar Registro</h3></div>",
-			"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro que desea eliminar este registro?</p>",
+			"<div><h3>Imprimir Aviso de Corte</h3></div>",
+			"<p Style='text-align:center; color:blue; font-size:x-large;'>¿Esta seguro que desea imprimir el aviso de corte para este cliente?</p>",
 			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
-			"<button type='button' id='eliminar_reconexion' class='btn btn-danger btn-label-left'"+
+			"<button type='button' id='eliminar_reconexion' class='btn btn-primary btn-label-left'"+
 			" style=' color: #ece1e1;' >"+
-			"<span><i class='fa fa-trash-o'></i></span> Borrar Registro</button>"+
+			"<span><i class='fa fa-print'></i></span> Imprimir</button>"+
 			"<div style='margin-top: 5px;'></div> </div>"+
 			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
 			"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
@@ -244,9 +244,9 @@ var listar = function() {
 	        { "data":"cancelado"},
             { "data": "factura_Maestra.numFact"},
             {"defaultContent":
-				"<button type='button' class='eliminar btn btn-danger' data-toggle='tooltip' "+
-				"data-placement='top' title='Eliminar Reconexión'>"+
-				"<i class='fa fa-trash-o'></i> </button>"}
+				"<button type='button' class='eliminar btn btn-basic' data-toggle='tooltip' "+
+				"data-placement='top' title='Imprimir Aviso de Corte'>"+
+				"<i class='fa fa-print'></i> </button>"}
             ],
             "dom" : "<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 				+ "<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"

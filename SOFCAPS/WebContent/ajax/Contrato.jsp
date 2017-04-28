@@ -301,6 +301,36 @@ response.setDateHeader("Expires", -1);
 	</form>
 </div>
 
+
+
+
+<!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
+<div>
+	<form id="frmImprimirContrato" action="" method="GET">
+		<input type="hidden" id="numContrato" name="numContrato" value="">
+		<input type="hidden" id="opcion" name="opcion" value="imprimir">
+
+		<div id="modalbox">
+			<div class="devoops-modal">
+				<div class="devoops-modal-header">
+					<div class="modal-header-name">
+						<span>Basic table</span>
+					</div>
+					<div class="box-icons">
+						<a class="close-link"> <i class="fa fa-times"></i>
+						</a>
+					</div>
+				</div>
+				<div class="devoops-modal-inner"></div>
+				<div class="devoops-modal-bottom"></div>
+			</div>
+		</div>
+	</form>
+</div>
+
+
+
+
 <script type="text/javascript">
 var numMed = "";////////////////////variable para saber si estoy editando un registro
 var expand1 = new Expand1();/////////////se crean los objetos que representan los botones de cada dialogo
@@ -325,6 +355,49 @@ function AllTables() {
 		});
 	});
 }
+
+
+function abrirDialogoC() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
+	OpenModalBox(
+			"<div><h3>Imprimir Contrato</h3></div>",
+			"<p Style='text-align:center; color:blue; font-size:x-large;'>¿Esta seguro que desea imprimir este contrato?</p>",
+			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
+			"<button type='button' id='imprimir_contrato' class='btn btn-primary btn-label-left'"+
+			" style=' color: #ece1e1;' >"+
+			"<span><i class='fa fa-print'></i></span> Imprimir Contrato</button>"+
+			"<div style='margin-top: 5px;'></div> </div>"+
+			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
+			"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
+			"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
+	imprimir();
+}
+
+var imprimir = function() {
+	$("#imprimir_contrato").on("click", function() {
+		var numContrato = "";
+		numContrato = $('#frmImprimirContrato #numContrato').val();
+		console.log(numContrato);
+		window.open("SL_ContratoReporte?numContrato="+numContrato + "&opcion=imprimir",'_blank');
+		console.log("el numContrato del jsp"+"  "+numContrato);
+		CloseModalBox();
+	});
+}
+
+/////////////////////////activar evento del boton eliminar que esta en la fila seleccionada del dataTable///////////
+var obtener_id_imprimir = function(tbody, table) {//parametros(id_tabla, objeto dataTable)
+	$(tbody).on("click","button.imprimir",function() {
+		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+		table.rows().every(function(index, loop, rowloop) {
+			if (index == datos) {
+				var numContrato = $("#frmImprimirContrato #numContrato").val(table.row(index).data().numContrato);
+			}
+		});
+		abrirDialogoC();
+	});
+}
+
+
+
 ///////////////////////////////Funsión para setear la fecha del contrato en el input fecha_contrato///////////////////
 var obtenerFechaActual = function() {
 	var f = new Date();
@@ -491,7 +564,8 @@ var listar = function() {
 		ajax: {
 			"method":"GET",
 			"url":"./SL_Contrato",
-			"dataSrc":"aaData"
+			"dataSrc":"aaData",
+			"data":{"opcion":"cargar"}
 		},
 		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
     	"bJQueryUI": true,
@@ -518,9 +592,15 @@ var listar = function() {
             {"defaultContent":"<button type='button' class='editarContrato btn btn-primary' data-toggle='tooltip' "+
 				"data-placement='top' title='Editar contrato'>"+
 				"<i class='fa fa-pencil-square-o'></i> </button>  "+
+				
 				"<button type='button' class='eliminarContrato btn btn-danger' data-toggle='tooltip' "+
 				"data-placement='top' title='Eliminar contrato'>"+
-				"<i class='fa fa-trash-o'></i> </button>"}
+				"<i class='fa fa-trash-o'></i> </button>"+
+				
+				"<button type='button' class='imprimir btn btn-basic' data-toggle='tooltip' "+
+				"data-placement='top' title='Imprimir contrato'>"+
+				"<i class='glyphicon glyphicon-print'></i> </button>"
+            }
             ],
             "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 				 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
@@ -555,6 +635,7 @@ var listar = function() {
 	tablaContrato.columns.adjust().draw();
 	obtener_datos_editar("#dt_Contrato tbody",tablaContrato);
 	obtener_id_eliminar('#dt_Contrato tbody',tablaContrato);
+	obtener_id_imprimir('#dt_Contrato tbody',tablaContrato);
 }
 ///////////////////funsión que crea un dataTable para traer en cliente mediante un dialogo////////////
 function filtrarTabla(){

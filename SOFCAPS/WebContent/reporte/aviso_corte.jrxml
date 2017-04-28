@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-26T18:30:47 -->
+<!-- 2017-04-27T15:17:57 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="aviso_corte" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7776bb96-fd02-4b0b-845d-bf7953cd78a4">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="avisoC"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="avisoC "/>
 	<parameter name="Reconexion_ID" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT * FROM sofcaps.aviso_corte where Reconexion_ID= $P{Reconexion_ID}]]>
@@ -24,14 +24,14 @@
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center">
-					<font fontName="Serif" size="18" isBold="true"/>
+					<font fontName="Serif" size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Comité agua potable y saneamiento CAPS-Poneloya]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="100" y="30" width="370" height="30" uuid="900191ee-4985-4543-90e1-694c5d2c36d6"/>
 				<textElement textAlignment="Center">
-					<font fontName="Serif" size="18" isBold="true"/>
+					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOTIFICACIÓN DE CORTE]]></text>
 			</staticText>
@@ -49,109 +49,127 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="166" splitType="Stretch">
+		<band height="295" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="110" height="20" uuid="d07f9654-b940-413a-844b-f59ab1fb1730"/>
+				<reportElement x="0" y="0" width="150" height="20" uuid="d07f9654-b940-413a-844b-f59ab1fb1730"/>
 				<textElement>
 					<font fontName="Serif" size="14"/>
 				</textElement>
 				<text><![CDATA[Estimado Usuario                           ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="20" width="40" height="20" uuid="f2df9842-9df4-49a7-b096-08b92ee477c5"/>
+				<reportElement x="0" y="20" width="70" height="20" uuid="f2df9842-9df4-49a7-b096-08b92ee477c5"/>
 				<textElement>
 					<font fontName="Serif" size="14"/>
 				</textElement>
 				<text><![CDATA[Sector]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="51" width="280" height="20" uuid="62a9ac7e-ab84-4afb-b73a-afea89076a22"/>
+				<reportElement x="0" y="51" width="290" height="20" uuid="62a9ac7e-ab84-4afb-b73a-afea89076a22"/>
 				<textElement>
-					<font fontName="Serif" size="14"/>
+					<font fontName="Serif" size="12"/>
 				</textElement>
 				<text><![CDATA[Por medio de este aviso se le notifica que usted tiene ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="51" width="255" height="20" uuid="b73133f2-a870-442e-bd5c-26f807c547ee"/>
+				<reportElement x="310" y="51" width="245" height="20" uuid="b73133f2-a870-442e-bd5c-26f807c547ee"/>
 				<textElement textAlignment="Right">
-					<font fontName="Serif" size="14"/>
+					<font fontName="Serif" size="12"/>
 				</textElement>
 				<text><![CDATA[facturas pendientes correspodiente al mes ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="71" width="20" height="20" uuid="3b9fa2a6-eedc-46d9-87bf-61d9c50fd86e"/>
 				<textElement>
-					<font fontName="Serif" size="14"/>
+					<font fontName="Serif" size="12"/>
 				</textElement>
 				<text><![CDATA[de]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="100" y="71" width="180" height="20" uuid="0c7460eb-4949-4603-b568-db7ccc1fe9b4"/>
 				<textElement>
-					<font fontName="Serif" size="14"/>
+					<font fontName="Serif" size="12"/>
 				</textElement>
-				<text><![CDATA[El cual suman un monto de C$]]></text>
+				<text><![CDATA[. El cual suman un monto de C$]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="71" width="175" height="20" uuid="5dd42146-20d2-4873-9b85-7e83148f40df"/>
-				<textElement textAlignment="Left">
-					<font fontName="Serif" size="14"/>
+				<reportElement x="350" y="71" width="205" height="20" uuid="5dd42146-20d2-4873-9b85-7e83148f40df"/>
+				<textElement textAlignment="Right">
+					<font fontName="Serif" size="12"/>
 				</textElement>
 				<text><![CDATA[. Es por eso que le extendemos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="91" width="555" height="40" uuid="7cefecb8-f38f-4e78-b330-71e784e1c199"/>
+				<reportElement x="0" y="91" width="555" height="19" uuid="7cefecb8-f38f-4e78-b330-71e784e1c199"/>
 				<textElement textAlignment="Justified">
-					<font fontName="Serif" size="14"/>
+					<font fontName="Serif" size="12"/>
 				</textElement>
-				<text><![CDATA[la presente para que se presente a nuestras oficinas a poner al día sus facturas pendientes, de lo contrario se lo cortara el servicio de agua potable.]]></text>
+				<text><![CDATA[la presente para que se presente a nuestras oficinas a poner al día sus facturas pendientes, de lo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="131" width="180" height="35" uuid="da0d2870-72a1-4281-8c99-ca27474c421c"/>
+				<reportElement x="0" y="140" width="555" height="40" uuid="da0d2870-72a1-4281-8c99-ca27474c421c"/>
 				<textElement>
 					<font fontName="Serif" size="14"/>
 				</textElement>
 				<text><![CDATA[Fecha de corte______________]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="FixRelativeToBottom" stretchType="ElementGroupHeight" x="130" y="0" width="425" height="20" uuid="532b2936-4d29-4a69-a1d7-c652b4ca3732"/>
+				<reportElement positionType="FixRelativeToBottom" stretchType="ElementGroupHeight" x="150" y="0" width="395" height="20" uuid="532b2936-4d29-4a69-a1d7-c652b4ca3732"/>
 				<textElement textAlignment="Left">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="280" y="51" width="20" height="20" uuid="ad8c1892-8a71-430e-ac23-a76da4c7ff51"/>
+				<reportElement x="290" y="51" width="20" height="20" uuid="ad8c1892-8a71-430e-ac23-a76da4c7ff51"/>
 				<textElement textAlignment="Center">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cantidad_facturas}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="280" y="71" width="100" height="20" uuid="df26aaf0-81bc-4ee1-a5dd-3c001976bdfb"/>
+				<reportElement x="280" y="71" width="70" height="20" uuid="df26aaf0-81bc-4ee1-a5dd-3c001976bdfb"/>
 				<textElement textAlignment="Center">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{monto_facturas}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="50" y="20" width="505" height="20" uuid="0e123c41-461c-45e3-a334-654e5be51d55"/>
+				<reportElement x="70" y="20" width="475" height="20" uuid="0e123c41-461c-45e3-a334-654e5be51d55"/>
 				<textElement textAlignment="Left">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sector}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MMMM">
-				<reportElement x="20" y="71" width="80" height="20" uuid="73754523-abff-4bc0-b3a1-79efcb021660"/>
+				<reportElement x="20" y="71" width="70" height="20" uuid="73754523-abff-4bc0-b3a1-79efcb021660"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha_factura}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="205" y="190" width="160" height="20" uuid="0aa0ed56-b90c-4750-8ac4-6a1c68a338c7"/>
+				<text><![CDATA[____________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="210" width="160" height="30" uuid="c1fb4f89-c910-4b95-83c6-ade51fe61469"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Firma de Recibido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="110" width="555" height="20" uuid="c1473598-09ea-41a4-a9a1-444ee4a3f5d7"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[contrario se le cortara el servicio de agua potable.]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="340" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch"/>

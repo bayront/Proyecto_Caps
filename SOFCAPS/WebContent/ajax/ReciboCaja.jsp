@@ -205,7 +205,7 @@ response.setDateHeader("Expires", -1);
 					<div class="form-group has-error has-feedback">
 						<label class="col-sm-4 control-label">Monto total: </label>
 						<div class="col-sm-3">
-							<input type="number" id="montoTotal" class="form-control"
+							<input type="number" id="monto" class="form-control"
 								name="monto" placeholder="C$ 0.00" > <span
 								class="fa fa-money txt-danger form-control-feedback"></span>
 						</div>
@@ -255,6 +255,10 @@ response.setDateHeader("Expires", -1);
 </div>
 
 <script type="text/javascript">
+var totalPagar = 0.0;
+var pagado = 0.0;
+var cuotasContrato = 0;
+var cuotaActual = 0;
 ////////////////////////////////variables para el WEBSOCKET//////////////////////////////////////////////////
 var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
 var websocket = new WebSocket(wsUri);
@@ -301,6 +305,7 @@ var verResultado = function(r) {//parametro(resultado-String)
 		mostrarMensaje("#dialog", "CORRECTO", 
 			"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
  		$('#dt_ReciboCaja').DataTable().ajax.reload();
+ 		limpiar_texto();
  		websocket.send("ACTUALIZADO");
  	}else if(r == "ERROR"){
  		mostrarMensaje("#dialog", "ERROR", 
@@ -312,6 +317,9 @@ var verResultado = function(r) {//parametro(resultado-String)
 		mostrarMensaje("#dialog", "ACTUALIZADO", 
 				"¡Otro usuario a realizado un cambio, se actualizaron los datos!", "#86b6dd", "btn-primary");
 		$('#dt_ReciboCaja').DataTable().ajax.reload();
+	}else if(r =="CANCELADO"){
+		mostrarMensaje("#dialog", "CANCELADO", 
+				"¡Se ha cancelado el documento correctamente, todo bien!", "#86b6dd", "btn-primary");
 	}else{
  		mostrarMensaje("#dialog", "MONTO RESTANTE", 
  				"Este documento tiene un monto restante a pagar de: "+r, "#d7f9ec", "btn-info");
@@ -366,7 +374,7 @@ var limpiar_texto = function() {////////////////////////limpiar texto del formul
 	$("#factura").val("");
 	$("#contrato").val("");
 	$("#reconexion").val("");
-	$("#montoTotal").val("");
+	$("#monto").val("");
 }
 
 ///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
@@ -393,22 +401,17 @@ function iniciarTabla(){
 		"columns": [
 			{ "data": "cliente.nombreCompleto"},
             { "data": "serie.descripcion" },
-            { "data": "numDocumento"
-//                 render: function ( data, type, row ) {
-//                 	var documento = data.numDocumento;
-//                 	var concepto;
-//                 	if(data.serie.serie_ID == 1)
-//                 		concepto = "factura";
-//                 	else if(data.serie.serie_ID == 2)
-//                 		concepto = "contrato";
-//                 	else
-//                 		concepto = "reconexion";
-//                 	$("#"+concepto+" option").each(function(){
-//                 		if(documento ==  $(this).attr('value'))
-//                 			documento = $(this).text();
-//                 	});
-//                 	return documento;
-            },
+            { "data": null,
+                render: function ( data, type, row ) {
+                	if(data.serie.serie_ID == 1)
+                		return "No. factura: "+data.factura_Maestra.numFact;
+                	else if(data.serie.serie_ID == 2)
+                		return "Medidor: "+data.contrato.numMedidor+", No. contrato: "+data.contrato.numContrato;
+                	else{
+                		var concepto = "reconexion";
+                		return concepto;
+                	}
+            }},
             { "data": "montoTotal"},
             {"defaultContent":"<button type='button' class='editarDetalle btn btn-primary' title='Editar detalle'>"+
 				"<i class='fa fa-pencil-square-o'></i> </button>  "+
@@ -522,8 +525,8 @@ function cargarSelectFactura(select) {//parametro id select
                 $(select).empty();
                 $(select).append("<option value=''>--Seleccione la factura--</option>");
                 $(response.aaData).each(function(i, v) {
-                		$(select).append('<option value="' + v.numFact + '"> Número de factura: ' 
-                				+ v.numFact +'</option>');	
+                		$(select).append('<option value="' + v.factura_Maestra_ID + '"> Número de factura: ' 
+                				+ v.numFact +'</option>');
          		});
                 activarChangeFactura("#factura", response.aaData);
  			});  	        	
@@ -591,21 +594,87 @@ $(function () {//funsion para cargar un DatePicker
     }).datepicker("setDate", new Date());
  });
  
+function pagarDocumento(dato, valor) {
+	$.ajax({//enviar datos por ajax
+			type:"POST",
+			url:"./SL_ReciboCaja",
+			data: {"cliente_ID": $("#formReciboCaja #cliente_ID").val(),//datos a enviar
+				"opcion": $("#formReciboCaja #opcion").val(),
+				"fechaRecibo": $("#formReciboCaja #input_date").val(),
+				"serie": $("#formReciboCaja #concepto").val(),
+				dato: valor,
+				"monto": $("#formReciboCaja #monto").val(),
+				"totalPagar": totalPagar}
+		}).done(function(info) {//informacion que el servlet le reenvia al jsp
+			if(expand1.valor == true)
+				validarExpand(expand1, "#expandir1");
+			
+			if(expand2.valor == true)
+				validarExpand(expand2, "#expandir2");
+							validarColap(colap1, "#colapsar_desplegar1");
+			if (colap2.valor ==true){}else{
+				validarColap(colap2, "#colapsar_desplegar2");
+			}
+			console.log(info);
+			verResultado(info);//se envia a verificar que mensaje respondio el servlet
+		});
+}
+function cancelarDocumento(servlet, id) {
+	$.ajax({//enviar datos por ajax
+		type:"POST",
+		url:servlet,
+		data: {"opcion": "cancelar",
+			"id":id
+		}
+	}).done(function(info) {//informacion que el servlet le reenvia al jsp
+		console.log(info);
+		verResultado(info);//se envia a verificar que mensaje respondio el servlet
+	});
+}
  //////////////////////////////funsion que activa el evento click del boton de agregar//////////////////////////////
 var activarBotonAgregar = function() {
 	$("#btnAgregar").on("click", function() {
 		var idCliente = $("#cliente_ID").val();
 		if (idCliente != 0 || idCliente != ""){
-			var frm = $("#formReciboCaja").serialize();
-			console.log(frm);
-			$.ajax({//enviar datos por ajax
-	 			type:"POST",
-	 			url:"./SL_ReciboCaja",
-	 			data: frm//datos a enviar
-	 		}).done(function(info) {//informacion que el servlet le reenvia al jsp
-	 			console.log(info);
-				//verResultado(info);//se envia a verificar que mensaje respondio el servlet
-	 		});
+			var dato ="", valor=0;
+			if($("#formReciboCaja #concepto").val() == 1){
+				dato="factura";
+				valor=$("#formReciboCaja #factura").val();
+				pagado = totalPagar - pagado;
+				console.log("pagado: "+pagado+", total a pagar: "+totalPagar+", monto escrito para factura: "
+						+$("#formReciboCaja #monto").val());
+				pagarDocumento(dato, valor);
+				if(totalPagar == (Math.round((parseFloat(pagado)+parseFloat($("#formReciboCaja #monto").val())) * 100) / 100)) {
+					console.log("Factura PAGADA");
+					cancelarDocumento("./SL_Factura_Maestra", valor);
+				}else
+					console.log("No se puede cancelar la factura pues no es igual el monto a pagar");
+			}else if($("#formReciboCaja #concepto").val() == 2){
+				dato="contrato";
+				valor=$("#formReciboCaja #contrato").val();
+				pagado = totalPagar - pagado;
+				console.log("pagado: "+pagado+", total a pagar: "+totalPagar+", monto escrito para contrato: "
+						+$("#formReciboCaja #monto").val());
+				console.log("Cuotas del contrato: "+cuotasContrato+", cuota a pagar: "+cuotaActual);
+				if(totalPagar == (pagado + $("#formReciboCaja #monto").val())) {
+					console.log("Contrato PAGADO");
+					pagarDocumento(dato, valor);
+					cancelarDocumento("./SL_Contrato", valor);
+				}else if(cuotasContrato == cuotaActual && totalPagar > (pagado + $("#formReciboCaja #monto").val())){
+					console.log("No se puede cancelar el contrato pues no es igual el monto a pagar y la cuota no es igual");
+				}else if(cuotasContrato < cuotaActual){
+					console.log("No se puede agregar mas cuotas de las permitidas");
+				}else{
+					pagarDocumento(dato, valor);
+					console.log("pagar contrato");
+				}
+			}else if($("#formReciboCaja #concepto").val() == 3){
+				dato="reconexion";
+				valor=$("#formReciboCaja #reconexion").val();
+				console.log("reconexion pagada");
+				pagarDocumento(dato, valor);
+				cancelarDocumento("./SL_Reconexion", valor);
+			}
 		}else if (idCliente == 0 || idCliente == ""){
 			verResultado("VACIO");
 		}
@@ -617,8 +686,9 @@ function activarChangeFactura(select, aaData) {
 		var factura = $("#factura").val();
 		var montoTotal, factura_maestra_ID;
 		$(aaData).each(function(i, v) {
-			if (factura == v.numFact) {
+			if (factura == v.factura_Maestra_ID) {
 				montoTotal = v.totalPago;
+				totalPagar = montoTotal;
 				factura_maestra_ID = v.factura_Maestra_ID;
 			}
 		});
@@ -636,7 +706,8 @@ function activarChangeFactura(select, aaData) {
 					verResultado(response);
 				else {
 					console.log(response);
-					$("#montoTotal").val(response);
+					$("#monto").val(response);
+					pagado = response;
 					verResultado(response);
 				}
 			}
@@ -651,9 +722,11 @@ function activarChangeContrato(select, aaData) {
 				if (contrato_ID == v.contrato_ID) {
 					montoContrato = v.montoContrato;
 					cuotas = v.cuotas;
+					cuotasContrato = cuotas;
 				}
 			});
 			console.log("montoContrato: " + montoContrato + ", cuotas: " + cuotas);
+			totalPagar = montoContrato;
 			$.ajax({
 				type : "POST",
 				url : "./SL_Contrato",
@@ -667,7 +740,9 @@ function activarChangeContrato(select, aaData) {
 					if (response == "ERROR")
 						verResultado(response);
 					else {
-						$("#montoTotal").val(response.montoContrato);
+						$("#monto").val(response.montoContrato);
+						pagado = response.montoContrato;
+						cuotaActual = response.cuotas;
 						mostrarMensaje("#dialog", "MONTO RESTANTE",
 							"Este documento tiene un monto restante a pagar de: " + response.montoContrato
 							+ " </br>Cuota No. " + response.cuotas, "#d7f9ec", "btn-info");

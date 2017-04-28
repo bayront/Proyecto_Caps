@@ -21,6 +21,9 @@ public class ReciboCaja
    private Integer reciboCaja_Maestro_ID;
    private Cliente cliente;
    private Serie serie;
+   public Reconexion reconexion;
+   public Factura_Maestra factura_Maestra;
+   public Contrato contrato;
 
    public ReciboCaja() 
    {

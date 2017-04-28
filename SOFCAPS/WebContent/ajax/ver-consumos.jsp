@@ -285,7 +285,7 @@ response.setDateHeader("Expires", -1);
 </div>
 
 <script type="text/javascript">
-////////////////////////////////variables para el WEBSOCKET//////////////////////////////////////////////////
+//objetos websockets
 var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
 var websocket = new WebSocket(wsUri);
 
@@ -580,6 +580,14 @@ websocket.onerror = function(evt) {
 					}
 				},
 				{
+	                
+	                text:      '<i class="fa fa-print fa-o"></i>',
+	                titleAttr: 'Imprimir reporte',
+	                action: function(){
+	                	imprimir();
+	                }
+	            },
+				{
 	                extend:    'excelHtml5',
 	                text:      '<i class="fa fa-file-excel-o"></i>',
 	                titleAttr: 'excel'
@@ -599,6 +607,21 @@ websocket.onerror = function(evt) {
 		seleccionarEliminarConsumo('#tabla_consumo tbody', tablaConsumo);
 		visualizarHistorial('#tabla_consumo tbody', tablaConsumo);
 	}
+	
+	function imprimir()
+	{
+		var consumo_ID ="";	
+		consumo_ID = $("#consumo_ID").val();
+		window.open("SL_ReporteConsumo?consumo_ID="+consumo_ID, '_blank');
+
+		console.log("Error en metodo imprimir");
+	}
+
+	
+	
+	
+	
+	
 	
 	var agregar_nuevo_consumo = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
 		limpiar_texto();

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 
 import Entidades.Bomba;
+import Entidades.Mes;
 import Entidades.TipoCategoria;
 import Entidades.Unidad_de_Medida;
 
@@ -213,6 +214,25 @@ public class DT_consumo_bomba {
 			System.err.println("DATOS: ERROR " +e.getMessage());
 		}
 		return listaUnidadMedida;
+	}
+
+	public ArrayList<Mes> listaMeses(){
+		ArrayList<Mes> listaMeses = new ArrayList<Mes>();
+		String sql = ("SELECT * FROM sofcaps.mes;");
+		Statement s;
+		try {
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			while(rs.next()){
+				Mes mes = new Mes();
+				mes.setNombre(rs.getString("nombre"));
+				
+				listaMeses.add(mes);
+			}
+		} catch (Exception e){
+			System.err.println("DATOS: ERROR " +e.getMessage());
+		}
+		return listaMeses;
 	}
 	
 }

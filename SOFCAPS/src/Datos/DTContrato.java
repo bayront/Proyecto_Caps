@@ -385,5 +385,10 @@ public class DTContrato {
 		}
 		return cuotas;
 	}
+
+	public boolean cancelarContrato(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

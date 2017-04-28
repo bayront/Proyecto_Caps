@@ -176,6 +176,16 @@ public class SL_Contrato extends HttpServlet {
 			montoContrato = Float.parseFloat(request.getParameter("montoContrato"));
 			traerMontoRestante(contrato_ID, montoContrato, response);
 			break;
+		case "cancelar":
+			int id = Integer.parseInt(request.getParameter("id"));
+			boolean cancelado = dtContrato.cancelarContrato(id);
+			if(cancelado == true) {
+				response.setContentType("text/plain");
+				PrintWriter out;
+				out = response.getWriter();
+				out.print("CANCELADO");
+			}
+			break;
 		default:
 			response.setContentType("text/plain");
 			PrintWriter out;

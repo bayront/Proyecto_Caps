@@ -6,7 +6,21 @@ import java.util.Date;
 public class Otros_Ing_Egreg 
 {
    private String descripcion;
-   private Date fecha;
+   private String mmmes;
+   private String aanio;
+   public String getMmmes() {
+	return mmmes;
+}
+
+
+public String getAanio() {
+	return aanio;
+}
+
+public void setAanio(String aanio) {
+	this.aanio = aanio;
+}
+private Date fecha;
    private Float monto;
    private Boolean eliminado;
    private Integer otros_Ing_Egreg_ID; 
@@ -51,5 +65,10 @@ public class Otros_Ing_Egreg
 	}
 	public void setEliminado(Boolean eliminado) {
 		this.eliminado = eliminado;
+	}
+
+	public void setMmmes(String messs) {
+		// TODO Auto-generated method stub
+		
 	} 
 }

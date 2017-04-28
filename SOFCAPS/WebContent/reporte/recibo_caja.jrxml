@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-04-26T02:06:15 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recibo_caja" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="68385d48-c117-419d-8c51-83f705fe2fad">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="recibo"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<staticText>
+				<reportElement x="90" y="0" width="387" height="40" uuid="b510d0eb-a9bc-4f3b-80a4-1aac92b35a89"/>
+				<textElement textAlignment="Center">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COMITE DE AGUA POTABLE Y SANEAMIENTO - PONELOYA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="67" y="60" width="420" height="30" uuid="91b5b12c-0a29-46c6-bc75-765d127c0e39"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA["Haciendo un buen uso del agua pagamos menos"]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="40" width="125" height="30" uuid="fd304fbb-6064-467e-b349-d67f61aec166"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(CAPS - Poneloya)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="105" y="0" width="344" height="40" uuid="e0f0f081-9a23-49ea-b6d0-069ab6ffc385"/>
+				<textElement textAlignment="Center">
+					<font size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RECIBO OFICIAL DE CAJA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="-10" y="0" width="145" height="30" uuid="70315892-ce9f-4c78-b7b3-0c57c3ac0691"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUC: J1330000184750]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="100" height="30" uuid="37f30599-0999-4982-81fe-cb216bb15ff1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. Recibo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="100" height="30" uuid="ed8ca9ed-0c05-4e72-b79e-80b70f3391b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha: ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="141" splitType="Stretch">
+			<staticText>
+				<reportElement x="40" y="0" width="120" height="30" uuid="737c5b95-ba2a-492a-bb18-e9ab6a6692f1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre del cliente: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="150" height="30" uuid="81f2c461-12cd-451f-890b-55e379722db6"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[En concepto de: Pago por]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="70" width="100" height="20" uuid="807d6481-8a47-45fd-9bb2-4fd4499916a5"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. Factura:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="70" width="100" height="20" uuid="2b31b0fe-377d-4a8a-80bd-79de495ec061"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. Contrato:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="60" width="110" height="40" uuid="99dd7ea0-0925-4856-89e8-c27afaad55a3"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Orden de Reconexión:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="111" width="100" height="30" uuid="674ac050-893a-40c4-8d6c-640e53805d18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total a pagar: C$ ]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

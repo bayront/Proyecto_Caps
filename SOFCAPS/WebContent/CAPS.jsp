@@ -51,7 +51,7 @@
             <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
 		      <ul class="nav navbar-nav">
 		        <li class="active"><a href="#intro">CAPS</a></li>
-				<li><a href="#service">Informacion</a></li>
+				<li><a href="#service">Información</a></li>
 				<li><a href="#about">Acerca de Nosotros</a></li>
 				<li><a href="#slider">Poneloya</a></li>
 				<li data-toggle="modal" data-target="#popUpWindow"><a href="#popUpWindow">Iniciar Sesión </a></li>
@@ -67,7 +67,7 @@
 	
 		<div class="slogan">
 			<h3 style="font-size:3.5em;">CAPS PONELOYA</h3>
-			<h4>COMITE DE AGUA POTABLE Y SANEAMIENTO DE PONELOYA</h4>
+			<h4>COMITÉ DE AGUA POTABLE Y SANEAMIENTO DE PONELOYA</h4>
 		</div>
 		<div class="page-scroll">
 			<a href="#service" class="btn btn-circle">
@@ -106,7 +106,7 @@
 					<div class="wow fadeInUp" data-wow-delay="0.2s">
 	                	<div class="service-box">
 							<div class="service-icon">
-								<img class="img-responsive img-rounded" style="width:100%;" src="plugins/home_page/img/delega.JPG" alt="" />
+								<img class="img-responsive img-rounded" style="width:100%;" src="img/casa_afuera.jpg" alt="" />
 							</div>
 	                	</div>
 					</div>
@@ -164,8 +164,8 @@
                 <div class="team boxed-grey">
                     <div class="inner">
 						<h5>Mario Peralta</h5>
-                        <p class="subtitle">Pixel Crafter</p>
-                        <div class="avatar"><img src="plugins/home_page/img/3.jpg" alt="" class="img-responsive img-circle" /></div>
+                        <p class="subtitle">Jefe del Proyecto</p>
+                        <div class="avatar" height="250px"><img src="img/mario_p.jpg" alt="" class="img-responsive img-circle" /></div>
                     </div>
                 </div>
 				</div>
@@ -176,32 +176,32 @@
                 <div class="team boxed-grey">
                     <div class="inner">
 						<h5>Mario Rodriguez</h5>
-                        <p class="subtitle">Pixel Crafter</p>
-                        <div class="avatar"><img src="plugins/home_page/img/3.jpg" alt="" class="img-responsive img-circle" /></div>
+                        <p class="subtitle">Jefe de Desarrollo</p>
+                        <div class="avatar" height="250px"><img src="img/mario_r.jpg" alt="" class="img-responsive img-circle" /></div>
                     </div>
                 </div>
 				</div>
             </div>
       
 			<div class="col-md-3">
-				<div class="wow bounceInUp" data-wow-delay="0.5s">
+				<div class="wow bounceInUp" data-wow-delay="0.2s">
                 <div class="team boxed-grey">
                     <div class="inner">
 						<h5>Ana Osorio</h5>
-                        <p class="subtitle">Ruby on Rails</p>
-                        <div class="avatar"><img src="plugins/home_page/img/2.jpg" alt="" class="img-responsive img-circle" /></div>
+                        <p class="subtitle">Analista de Ingeniería</p>
+                        <div class="avatar" height="250px"><img  src="img/ana.jpg" alt="" class="img-responsive img-circle" /></div>
 
                     </div>
                 </div>
 				</div>
             </div>
 			<div class="col-md-3">
-				<div class="wow bounceInUp" data-wow-delay="0.8s">
+				<div class="wow bounceInUp" data-wow-delay="0.2s">
                 <div class="team boxed-grey">
                     <div class="inner">
 						<h5>Roxana Rodriguez</h5>
-                        <p class="subtitle">jQuery Ninja</p>
-                        <div class="avatar"><img src="plugins/home_page/img/1.jpg" alt="" class="img-responsive img-circle" /></div>
+                        <p class="subtitle">Documentadora</p>
+                        <div class="avatar" height="250px"><img src="img/roxana.jpg" alt="" class="img-responsive img-circle" /></div>
 
                     </div>
                 </div>
@@ -209,12 +209,12 @@
             </div>
             <div class="clearfix" style="margin-bottom: 20px;"></div>
 			<div class=" col-md-offset-2 col-md-3">
-				<div class="wow bounceInUp" data-wow-delay="1s">
+				<div class="wow bounceInUp" data-wow-delay="2s">
                 <div class="team boxed-grey">
                     <div class="inner">
 						<h5>Bayron Toruño</h5>
-                        <p class="subtitle">Typographer</p>
-                        <div class="avatar"><img src="plugins/home_page/img/4.jpg" alt="" class="img-responsive img-circle" /></div>
+                        <p class="subtitle">Tester</p>
+                        <div class="avatar" height="250px"><img src="img/bayron_t.jpg" alt="" class="img-responsive img-circle" /></div>
 
                     			</div>
                 			</div>
@@ -222,12 +222,12 @@
             		</div>
             		
             <div class="col-md-3">
-				<div class="wow bounceInUp" data-wow-delay="1s">
+				<div class="wow bounceInUp" data-wow-delay="2s">
                 <div class="team boxed-grey">
                     <div class="inner">
 						<h5>Freddy Ibarra</h5>
-                        <p class="subtitle">Typographer</p>
-                        <div class="avatar"><img src="plugins/home_page/img/4.jpg" alt="" class="img-responsive img-circle" /></div>
+                        <p class="subtitle">Analista de Requerimientos</p>
+                        <div class="avatar" height="250px"><img src="img/freddy.jpg" alt="" class="img-responsive img-circle" /></div>
 
                     			</div>
                 			</div>
@@ -235,12 +235,12 @@
             		</div>
             
              <div class="col-md-3">
-				<div class="wow bounceInUp" data-wow-delay="1s">
+				<div class="wow bounceInUp" data-wow-delay="2s">
                 <div class="team boxed-grey">
                     <div class="inner">
 						<h5>Mijail Morales</h5>
-                        <p class="subtitle">Typographer</p>
-                        <div class="avatar"><img src="plugins/home_page/img/1.jpg" alt="" class="img-responsive img-circle" /></div>
+                        <p class="subtitle">Arquitecto de Desarrollo</p>
+                        <div class="avatar" height="250px"><img src="img/mijail.jpg" alt="" class="img-responsive img-circle" /></div>
 
                     			</div>
                 			</div>
@@ -275,7 +275,7 @@
 				<ul id="slider" class="slider-wrapper">
 				
            			<li class="slide-current">
-                		<img src="plugins/home_page/img/cho.jpg" alt="Slider Imagen 1">
+                		<img src="img/casa.jpg" alt="Slider Imagen 1">
                 			<div class="caption">
                     			<h3 class="caption-title">caps</h3>
                    				 <p>Caps Poneloya</p>
@@ -283,7 +283,7 @@
            			</li>
  
 	          		 <li>
-		                <img src="plugins/home_page/img/mm.jpg" alt="Slider Imagen 2">
+		                <img src="img/todos.jpg"  alt="Slider Imagen 2">
 		                <div class="caption">
 		                    <h3 class="caption-title">Caps</h3>
 		                    <p>Caps Poneloya</p>
@@ -291,9 +291,9 @@
 	            	</li>
  
             <li>
-                <img src="plugins/home_page/img/leon.jpg" alt="Slider Imagen 3">
+                <img src="img/caps.jpg"  alt="Slider Imagen 3">
                 <div class="caption">
-                    <h3 class="caption-title"></h3>
+                    <h3 class="caption-title">Caps</h3>
                     <p>Caps Poneloya</p>
                 </div>
             </li>
@@ -301,7 +301,7 @@
             <li>
                 <img src="plugins/home_page/img/roca.jpg" alt="Slider Imagen 4">
                 <div class="caption">
-                    <h3 class="caption-title"></h3>
+                    <h3 class="caption-title">Caps</h3>
                     <p>Caps Poneloya</p>
                 </div>
             </li>

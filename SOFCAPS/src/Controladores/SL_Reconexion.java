@@ -96,6 +96,7 @@ public class SL_Reconexion  extends HttpServlet  {
 			HashMap<String, Object>hm = new HashMap<>();
 			hm.put("Reconexion_ID", reconexion_ID);
 			System.out.println(hm);
+			System.out.println("imprimir aviso de corte");
 			OutputStream otps = response.getOutputStream();
 			ServletContext context = getServletContext();
 			String path = context.getRealPath("/");
@@ -178,37 +179,16 @@ public class SL_Reconexion  extends HttpServlet  {
 		opcion = request.getParameter("opcion").trim();
 		System.out.println("opcion a realizar: " + opcion);
 		switch (opcion) {
-//		case "eliminar":
-//			reconexion_ID= Integer.parseInt(request.getParameter("reconexion_ID"));
-//			System.out.println(reconexion_ID);
-//			HashMap<String, Object>hm = new HashMap<>();
-//			hm.put("Reconexion_ID", reconexion_ID);
-//			System.out.println(hm);
-//			OutputStream otps = response.getOutputStream();
-//			ServletContext context = getServletContext();
-//			String path = context.getRealPath("/");
-//			String template = "reporte\\aviso_corte.jasper";
-//			Exporter exporter = new JRPdfExporter();
-//			System.out.println(path+template);
-//			System.out.println(con);
-//			JasperPrint jasperPrint;
-//			try {
-//				jasperPrint = JasperFillManager.fillReport(path+template, hm, con);
-//				response.setContentType("application/pdf");
-//				response.setHeader("Content-Disposition", "inline; filename=\"Informe.pdf\"");
-//				exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-//				exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(otps));
-//			} catch (JRException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			try {
-//				exporter.exportReport();
-//			} catch (JRException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			break;
+		case "cancelar":
+			int id = Integer.parseInt(request.getParameter("id"));
+			boolean cancelado = dtReconexion.cancelarReconexion(id);
+			if(cancelado == true) {
+				response.setContentType("text/plain");
+				PrintWriter out;
+				out = response.getWriter();
+				out.print("CANCELADO");
+			}
+			break;
 		default:
 			response.setContentType("text/plain");
 			PrintWriter out;

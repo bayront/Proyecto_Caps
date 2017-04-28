@@ -198,9 +198,6 @@
 					<li><a href="ajax/Cliente.jsp" class="ajax-link">
 							<i title="Gestión Cliente" class="fa fa-group"></i> <span class="hidden-xs">Gestión de clientes</span>
 					</a></li>
-					<li><a href="ajax/Reconexion.jsp" class="ajax-link">
-							<i title="Gestion Reconexion" class="fa fa-group"></i> <span class="hidden-xs">Gestión Reconexion</span>
-					</a></li>
 					<li><a href="ajax/Contrato.jsp" class="ajax-link">
 							<i title="Gestión Contrato" class="fa fa-pencil-square-o"></i> <span class="hidden-xs">Gestión de contratos</span>
 					</a></li>
@@ -287,6 +284,28 @@
 								</li>
 							</ul>
 						</li>
+						
+						<li class="dropdown"><a href="#" class="dropdown-toggle">
+							<i title="Finanzas" class="fa fa-briefcase"></i> <span class="hidden-xs">Reportes</span></a>
+							<ul class="dropdown-menu">
+								<li><a class="ajax-link" href="ajax/ReporteOtroIE.jsp" style="padding: 9px 10px 9px 30px;">
+								<p style="height:auto; white-space:normal; margin-bottom:0px;">
+								Informe de ingresos y egresos </p></a></li>
+								<li><a class="ajax-link" href="ajax/reporte_bomba.jsp" style="padding: 9px 10px 9px 30px;">
+								<p style="height:auto; white-space:normal; margin-bottom:0px;">
+								Informe de la Bomba </p></a></li>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" 
+								style="min-width: auto; padding-left:30px;"><i title="Ingreso Egreso" class="fa fa-pencil-square-o"></i> 
+								<span class="hidden-xs">Acuerdo pago</span></a>
+									<ul class="dropdown-menu" style="min-width:auto;">
+										<li><a style="padding:10px; padding-left:30px" class="ajax-link" 
+										href="ajax/a.jsp">Categorías</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						
+						
 						
 			</ul></div>
 			<!--Start Content-->

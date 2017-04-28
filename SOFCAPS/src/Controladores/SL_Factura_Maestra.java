@@ -169,8 +169,10 @@ public class SL_Factura_Maestra extends HttpServlet{
 			break;
 		case "cancelar":
 			int id = Integer.parseInt(req.getParameter("id"));
-			boolean cancelado = dtFactura.cancelarFactura(id, true);
-			if(cancelado == true) {
+			boolean cancelado = Boolean.parseBoolean(req.getParameter("cancelado"));
+			System.out.println("factura cancelada: "+cancelado);
+			boolean pagado = dtFactura.cancelarFactura(id, cancelado);
+			if(pagado == true) {
 				resp.setContentType("text/plain");
 				PrintWriter out;
 				out = resp.getWriter();

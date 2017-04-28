@@ -18,7 +18,7 @@ public class ReciboCaja
    private Date fechaCrea;
    private Date fechaMod;
    private Date fechaElim;
-   private Integer reciboCaja_Maestro_ID;
+   private Integer reciboCaja_ID;
    private Cliente cliente;
    private Serie serie;
    public Reconexion reconexion;
@@ -101,11 +101,11 @@ public class ReciboCaja
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-	public Integer getReciboCaja_Maestro_ID() {
-		return reciboCaja_Maestro_ID;
+	public Integer getReciboCaja_ID() {
+		return reciboCaja_ID;
 	}
-	public void setReciboCaja_Maestro_ID(Integer reciboCaja_Maestro_ID) {
-		this.reciboCaja_Maestro_ID = reciboCaja_Maestro_ID;
+	public void setReciboCaja_ID(Integer reciboCaja_ID) {
+		this.reciboCaja_ID = reciboCaja_ID;
 	}
 	public int getNumDocumento() {
 		return numDocumento;

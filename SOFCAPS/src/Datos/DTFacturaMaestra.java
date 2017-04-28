@@ -187,17 +187,13 @@ public class DTFacturaMaestra {
 		return rs;
 	}
 
-	public ResultSet cargarFacturaUnica(int factura_maestra_ID)
-	{
+	public ResultSet cargarFacturaUnica(int factura_maestra_ID){
 		Statement s;
 		String sql = "SELECT numFact, Factura_Maestra_ID FROM factura_maestra WHERE Factura_Maestra_ID = " +factura_maestra_ID+ ";";
-		try
-		{
+		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
-		}
-		catch(Exception e)
-		{
+		}catch(Exception e){
 			e.printStackTrace();
 			System.out.println("Error en DT_FacturaMestra, metodo cargarFacturaUnica: "+e.getMessage());
 		}
@@ -237,8 +233,7 @@ public class DTFacturaMaestra {
 
 	public boolean cancelarFactura(int id, boolean cancel) {
 		boolean cancelado = false;
-		try 
-		{
+		try {
 			dtFactura.datosFacturaMaestra();
 			rs.beforeFirst();
 			while(rs.next()){
@@ -254,9 +249,7 @@ public class DTFacturaMaestra {
 				}
 			}
 			rs.moveToCurrentRow();
-		}
-		catch (Exception e) 
-		{
+		}catch (Exception e) {
 			System.err.println("ERROR AL cancelar factura " + e.getMessage());
 			e.printStackTrace();
 		}

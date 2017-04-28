@@ -52,6 +52,24 @@ public class DTReconexion {
 		
 		return rs;
 	}
+	public ResultSet cargarTodaReconexion()
+	{
+		Statement s;
+		String sql = ("SELECT f_cancel, cancelado, Reconexion_ID FROM reconexion");
+		try {
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("todos los datos de reconexion cargados");
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error en DTReconexion, metodo cargarReconexion: "+e.getMessage());
+		}
+		if(rs == null)
+			System.out.println("Resultset de Reconexion vacio");
+		
+		return rs;
+	}
 	
 	public ResultSet cargarAvisoCorte()
 	{
@@ -140,9 +158,46 @@ public class DTReconexion {
 		return eliminado;
 	}
 
-	public boolean cancelarReconexion(int id) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean cancelarReconexion(int id, boolean cancel) {
+		boolean cancelado = false;
+		try {
+			dtReconexion.cargarTodaReconexion();
+			rs.beforeFirst();
+			while(rs.next()){
+				if(rs.getInt("Reconexion_ID") == id){
+					Date fecha = new Date();
+					System.out.println("fecha actual para reconexion: "+(fecha.getYear()+1900)+"/"+(fecha.getMonth()+1)+"/"+fecha.getDate());
+					if(!cancel)
+						rs.updateNull(1);
+					else
+						rs.updateString(1, formato.format(fecha));	
+					rs.updateBoolean(2, cancel);
+					rs.updateInt(3, rs.getInt(3));
+					rs.updateRow();
+					cancelado = true;
+					break;
+				}
+			}
+			rs.moveToCurrentRow();
+		}catch (Exception e) {
+			System.err.println("ERROR al cancelar la reconexion " + e.getMessage());
+			e.printStackTrace();
+		}
+		return cancelado;
+	}
+
+	public ResultSet cargarReconexionUnica(int reconexion_ID) {
+		Statement s;
+		String sql = "SELECT fecha_reconexion, Reconexion_ID FROM reconexion WHERE Reconexion_ID = " +reconexion_ID+ ";";
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("reconexion unica cargada");
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("Error en DTeconexion, metodo cargarReconexionUnica: "+e.getMessage());
+		}
+		return rs;
 	}
 	
 

@@ -181,8 +181,10 @@ public class SL_Reconexion  extends HttpServlet  {
 		switch (opcion) {
 		case "cancelar":
 			int id = Integer.parseInt(request.getParameter("id"));
-			boolean cancelado = dtReconexion.cancelarReconexion(id);
-			if(cancelado == true) {
+			boolean cancelado = Boolean.parseBoolean(request.getParameter("cancelado"));
+			System.out.println("reconexion cancelada: "+cancelado);
+			boolean pagado = dtReconexion.cancelarReconexion(id, cancelado);
+			if(pagado == true) {
 				response.setContentType("text/plain");
 				PrintWriter out;
 				out = response.getWriter();

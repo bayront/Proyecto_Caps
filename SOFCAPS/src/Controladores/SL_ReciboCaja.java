@@ -101,9 +101,17 @@ public class SL_ReciboCaja extends HttpServlet {
 			cliente.setCliente_ID(rs.getInt("Cliente_ID"));
 			reciboCaja.setCliente(cliente);
 			reciboCaja.setSerie(serie);
+			reciboCaja.setReciboCaja_ID(rs.getInt("ReciboCaja_ID"));
 			reciboCaja.setDescripcion(rs.getString("descripcionRecibo"));
 			reciboCaja.setNumDocumento(rs.getInt("numDocumento"));
+			reciboCaja.setNumReciboCaja(rs.getString("numReciboCaja"));
 			reciboCaja.setMontoTotal(rs.getFloat("montoTotal"));
+			try {
+				String fecha1 = parseador2.format(rs.getDate("fecha"));
+				reciboCaja.setFecha(parseador2.parse(fecha1));
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
 			if(serie.getSerie_ID() == 1) {
 				ResultSet resultSet = dtFacturaMaestra.cargarFacturaUnica(reciboCaja.getNumDocumento());
 				resultSet.next();
@@ -112,9 +120,25 @@ public class SL_ReciboCaja extends HttpServlet {
 				f.setNumFact(resultSet.getString("numFact"));
 				reciboCaja.factura_Maestra = f;
 			}else if(serie.getSerie_ID() == 2) {
-				System.out.println("por ahora nada en contrato");
+				ResultSet resultSet = dTcontrato.cargarContratoUnico(reciboCaja.getNumDocumento());
+				resultSet.next();
+				Contrato c = new Contrato();
+				c.setContrato_ID(resultSet.getInt("Contrato_ID"));
+				c.setNumContrato(resultSet.getInt("numContrato"));
+				c.setNumMedidor(resultSet.getString("numMedidor"));
+				reciboCaja.contrato = c;
 			}else if(serie.getSerie_ID() == 3){
-				System.out.println("por ahora nada en reconexion");
+				ResultSet resultSet = dtReconexion.cargarReconexionUnica(reciboCaja.getNumDocumento());
+				resultSet.next();
+				Reconexion r = new Reconexion();
+				r.setReconexion_ID(resultSet.getInt("Reconexion_ID"));
+				try {
+					String fecha2 = parseador2.format(resultSet.getDate("fecha_reconexion"));
+					r.setFecha_reconexion(parseador2.parse(fecha2));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				reciboCaja.reconexion = r;
 			}
 			listaRecibo.add(reciboCaja);
 		}
@@ -149,18 +173,21 @@ public class SL_ReciboCaja extends HttpServlet {
 		ResultSet rs = dTcontrato.cargarVistaClienteContrato(cliente_ID);	
 		  
 		while(rs.next()){
-			Contrato contrato = new Contrato();
-			Cliente cliente = new Cliente();
-			cliente.setCliente_ID(rs.getInt("Cliente_ID"));
-			contrato.setNumMedidor(rs.getString("numMedidor"));
-			contrato.setContrato_ID(rs.getInt("Contrato_ID"));
-			contrato.setNumContrato(rs.getInt("numContrato"));
-			float montoRound = (float) (Math.round(rs.getFloat("montoContrato") * 100.0) / 100.0);
-			contrato.setMontoContrato(montoRound);
-			contrato.setCuotas(rs.getInt("cuotas"));
-			contrato.setCliente(cliente);
-			listaC.add(contrato);
-			
+			float montoPagado = dTcontrato.calcularMontoRestante(rs.getInt("Contrato_ID"));
+			System.out.println("monto pagado: "+montoPagado+", monto del contrato: "+rs.getFloat("montoContrato"));
+			if(rs.getFloat("montoContrato") > montoPagado){
+				Contrato contrato = new Contrato();
+				Cliente cliente = new Cliente();
+				cliente.setCliente_ID(rs.getInt("Cliente_ID"));
+				contrato.setNumMedidor(rs.getString("numMedidor"));
+				contrato.setContrato_ID(rs.getInt("Contrato_ID"));
+				contrato.setNumContrato(rs.getInt("numContrato"));
+				float montoRound = (float) (Math.round(rs.getFloat("montoContrato") * 100.0) / 100.0);
+				contrato.setMontoContrato(montoRound);
+				contrato.setCuotas(rs.getInt("cuotas"));
+				contrato.setCliente(cliente);
+				listaC.add(contrato);
+			}
 		}
 		
 		DataTableObject dataTableObject = new DataTableObject();
@@ -202,7 +229,7 @@ public class SL_ReciboCaja extends HttpServlet {
 		String opcion = request.getParameter("opcion");
 		String fechaForm;
 		float monto, montoRound;
-		int serie_ID, numDocumento, cliente_ID;
+		int serie_ID, numDocumento, cliente_ID, reciboCaja_ID;
 		Date fechaRecibo;
 		switch (opcion) {
 		case "guardar":
@@ -211,6 +238,7 @@ public class SL_ReciboCaja extends HttpServlet {
 			montoRound = (float) (Math.round(monto * 100.0) / 100.0);
 			cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
 			try {
+				System.out.println("fecha recibo: "+request.getParameter("fechaRecibo"));
 				fechaForm = request.getParameter("fechaRecibo");
 				fechaRecibo = fecha.parse(fechaForm);
 				System.out.println(fechaRecibo);
@@ -224,19 +252,25 @@ public class SL_ReciboCaja extends HttpServlet {
 			}
 			break;
 			case "eliminar":
-				System.out.println("eliminado");
-//				lectura = Float.parseFloat(request.getParameter("lectura"));
-//				float lecturaRound= (float) (Math.round(lectura * 100.0) / 100.0);
-//				cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
-//				contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
-//				fecha_fin = fecha.parse(request.getParameter("fecha"));
-//				guardar(fecha_fin, lecturaRound, cliente_ID, contrato_ID, response);
+				reciboCaja_ID = Integer.parseInt(request.getParameter("reciboCaja_ID"));
+				eliminar(reciboCaja_ID, response);
 				break;
 		default:
 			response.setContentType("text/plain");
 			out = response.getWriter();
 			out.print("VACIO");
 			break;
+		}
+	}
+
+	private void eliminar(int reciboCaja_ID, HttpServletResponse response) {
+		try {
+			ReciboCaja r = new ReciboCaja();
+			r.setReciboCaja_ID(reciboCaja_ID);
+			r.setEstado(false);
+			verificar_resultado(dt_reciboCaja.eliminarRecibo(r), response);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

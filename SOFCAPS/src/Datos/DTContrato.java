@@ -385,10 +385,40 @@ public class DTContrato {
 		}
 		return cuotas;
 	}
-
-	public boolean cancelarContrato(int id) {
-		// TODO Auto-generated method stub
-		return false;
+	
+	public ResultSet cargarContratoUnico(int contrato_ID){
+		Statement s;
+		String sql = "SELECT montoContrato, numMedidor, numContrato, Contrato_ID FROM contrato WHERE Contrato_ID = " +contrato_ID+ ";";
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+			System.out.println("contrato unico cargado");
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("Error en DTContrato, metodo cargarContratoUnico: "+e.getMessage());
+		}
+		return rs;
 	}
+
+//	public boolean cancelarContrato(int id, boolean cancel) {
+//		opcion = 1;
+//		boolean cancelado = false;
+//		try {
+//			dtContrato.cargarDatos();
+//			rs.beforeFirst();
+//			while(rs.next()){
+//				if(rs.getInt("Contrato_ID") == id){
+//					rs.updateBoolean(1, true);
+//					rs.updateRow();
+//					cancelado = true;
+//				}
+//			}
+//			rs.moveToCurrentRow();
+//		}catch (Exception e) {
+//			System.err.println("ERROR AL cancelar factura " + e.getMessage());
+//			e.printStackTrace();
+//		}
+//		return cancelado;
+//	}
 	
 }

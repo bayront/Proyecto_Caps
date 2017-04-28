@@ -68,6 +68,9 @@ response.setDateHeader("Expires", -1);
 <div id="dialog" class= "col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
 </div> 
+<div id="dialogCancel" class= "col-xm-offset-1 col-xm-10">
+	<div class="contenido" style="margin-left: 20px;"></div>
+</div> 
 <!--///////////////////////Directorios donde estan los jsp /////////////////////////////// -->
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
@@ -101,7 +104,9 @@ response.setDateHeader("Expires", -1);
 							<th>Nombre del cliente</th>
 							<th>Concepto</th>
 							<th>Documento</th>
+							<th>fecha</th>
 							<th>Monto</th>
+							<th>No. Recibo</th>
 							<th>Acción</th>
 						</tr>
 					</thead>
@@ -318,7 +323,7 @@ var verResultado = function(r) {//parametro(resultado-String)
 				"¡Otro usuario a realizado un cambio, se actualizaron los datos!", "#86b6dd", "btn-primary");
 		$('#dt_ReciboCaja').DataTable().ajax.reload();
 	}else if(r =="CANCELADO"){
-		mostrarMensaje("#dialog", "CANCELADO", 
+		mostrarMensaje("#dialogCancel", "CANCELADO", 
 				"¡Se ha cancelado el documento correctamente, todo bien!", "#86b6dd", "btn-primary");
 	}else{
  		mostrarMensaje("#dialog", "MONTO RESTANTE", 
@@ -370,11 +375,28 @@ var limpiar_texto = function() {////////////////////////limpiar texto del formul
 	$("#opcion").val("guardar");
 	$("#cliente_ID").val("");
 	$("#nombreClienteCompleto").val("");
-	$("#concepto").val("");
-	$("#factura").val("");
-	$("#contrato").val("");
-	$("#reconexion").val("");
 	$("#monto").val("");
+	$("#concepto").val("");
+	$("#concepto").change();
+	desactivarSelect("#concepto");
+	
+	$("#factura").empty();
+    $("#factura").append("<option value=''>--Seleccione la factura--</option>");
+	$("#factura").val("");
+	$("#factura").change();
+	desactivarSelect("#factura");
+	
+	$("#contrato").empty();
+ 	$("#contrato").append("<option value=''>--Seleccione el contrato--</option>");
+	$("#contrato").val("");
+	$("#contrato").change();
+	desactivarSelect("#contrato");
+	
+	$("#reconexion").empty();
+ 	$("#reconexion").append("<option value=''>--Seleccione la orden de reconexion--</option>");
+	$("#reconexion").val("");
+	$("#reconexion").change();
+	desactivarSelect("#reconexion");
 }
 
 ///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
@@ -408,14 +430,23 @@ function iniciarTabla(){
                 	else if(data.serie.serie_ID == 2)
                 		return "Medidor: "+data.contrato.numMedidor+", No. contrato: "+data.contrato.numContrato;
                 	else{
-                		var concepto = "reconexion";
-                		return concepto;
+                		var f = new Date(data.reconexion.fecha_reconexion);
+	                	var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+                		return "feche de reconexion: "+fecha;
                 	}
             }},
+            { "data": null,
+                render: function ( data, type, row ) {
+                	f = new Date(data.fecha);
+                	var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+                	return fecha;
+            }},
             { "data": "montoTotal"},
-            {"defaultContent":"<button type='button' class='editarDetalle btn btn-primary' title='Editar detalle'>"+
-				"<i class='fa fa-pencil-square-o'></i> </button>  "+
-				"<button type='button' class='eliminarDetalle btn btn-danger' title='Eliminar detalle'>"+
+            { "data": "numReciboCaja"},
+            {"defaultContent":"<button type='button' class='imprimirRecibo btn btn-basic' data-toggle='tooltip' "+
+				"data-placement='top' title='Imprimir Recibo de caja'>"+
+				"<i class='fa fa-print'></i> </button> "+
+				"<button type='button' class='eliminarRecibo btn btn-danger' title='Eliminar Recibo de caja'>"+
 				"<i class='fa fa-trash-o'></i> </button> "}
             ],
             "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
@@ -446,6 +477,93 @@ function iniciarTabla(){
                 text:      '<i class="fa fa-file-pdf-o"></i>',
                 titleAttr: 'pdf'
             }]
+	});
+	obtener_id_imprimir('#dt_ReciboCaja tbody',tablaRecibo);
+	obtener_id_eliminar('#dt_ReciboCaja tbody',tablaRecibo);
+}
+/////////////////////////activar evento del boton imprimir que esta en la fila seleccionada del dataTable/////////////////
+var obtener_id_imprimir = function(tbody, table) {//parametros(id_tabla, objeto dataTable)
+	$(tbody).on("click","button.imprimirRecibo",function() {
+		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+		table.rows().every(function(index, loop, rowloop) {
+			if (index == datos) {
+				var reciboCaja_ID = table.row(index).data().reciboCaja_ID;
+				console.log("recibo a imprimir"+reciboCaja_ID);
+			}
+		});
+		OpenModalBox(
+			"<div><h3>Imprimir Recibo de caja</h3></div>",
+			"<p Style='text-align:center; color:blue; font-size:x-large;'>¿Esta seguro que desea imprimir el Recibo de caja?</p>",
+			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
+			"<button type='button' id='imprimirR' class='btn btn-primary btn-label-left'"+
+			" style=' color: #ece1e1;' >"+
+			"<span><i class='fa fa-print'></i></span> Imprimir Recibo</button>"+
+			"<div style='margin-top: 5px;'></div> </div>"+
+			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
+			"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
+			"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
+		imprimir();
+	});
+}
+//////////////////////////////////funsion para imprimir al dar click al boton imprimirR/////////////////////////////////////
+var imprimir = function() {
+	$("#imprimirR").on("click", function() {
+		var reciboCaja_ID = $('#frmEliminarRecibo #reciboCaja_ID').val();
+		console.log(reciboCaja_ID);
+// 		window.open("SL_Reconexion?reconexion_ID="+reconexion_ID + "&opcion=imprimir",'_blank');
+// 		console.log("la reconexion_ID del jsp"+"  "+reconexion_ID);
+		CloseModalBox();
+	});
+}
+/////////////////////////activar evento del boton eliminar que esta en la fila seleccionada del dataTable/////////////////
+var obtener_id_eliminar = function(tbody, table) {//parametros(id_tabla, objeto dataTable)
+	$(tbody).on("click","button.eliminarRecibo",function() {
+		var id, concepto, servlet;
+		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+		table.rows().every(function(index, loop, rowloop) {
+			if (index == datos) {
+				var reciboCaja_ID = table.row(index).data().reciboCaja_ID;
+				concepto = table.row(index).data().serie.serie_ID;
+				if(concepto == 1){
+					id = table.row(index).data().factura_Maestra.factura_Maestra_ID;
+					servlet = "./SL_Factura_Maestra";
+				}else if(concepto == 3){
+					id = table.row(index).data().reconexion.reconexion_ID;
+					servlet = "./SL_Reconexion";
+				}
+				console.log("recibo a eliminar"+reciboCaja_ID+", servlet: "+servlet+", id: "+id);
+			}
+		});
+		OpenModalBox(
+			"<div><h3>Borrar Recibo de caja</h3></div>",
+			"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar este recibo de caja?</p>",
+			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
+			"<button type='button' id='eliminarR' class='btn btn-danger btn-label-left'"+
+			" style=' color: #ece1e1;' >"+
+			"<span><i class='fa fa-trash-o'></i></span> Borrar</button>"+
+			"<div style='margin-top: 5px;'></div> </div>"+
+			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
+			"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
+			"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
+		eliminar(servlet, id);
+	});
+}
+/////////////////////////////////funsión que envia los datos a eliminar al servlet por ajax//////////////////////
+var eliminar = function(servlet, id) {
+	$("#eliminarR").on("click", function() {
+		var frmElim = $("#frmEliminarRecibo").serialize();
+		console.log("datos a eliminar: " + frmElim);
+		$.ajax({
+			method:"POST",
+			url:"SL_ReciboCaja",
+			data: frmElim
+		}).done(function(info) {
+			console.log(info);
+			if(info == "BIEN")
+				cancelarDocumento(servlet, id, false);
+			verResultado(info);
+		});
+		CloseModalBox();
 	});
 }
 ///////////////////funsión que crea un dataTable para traer en cliente y el contrato mediante un dialogo////////////
@@ -589,7 +707,7 @@ function cargarSelectContrato(select) {//parametro id select
 $(function () {//funsion para cargar un DatePicker
     $.datepicker.setDefaults($.datepicker.regional["es"]);
     $("#input_date").datepicker({
-        dateFormat: 'yy/mm/dd',
+        dateFormat: 'dd/mm/yy',
         firstDay: 1
     }).datepicker("setDate", new Date());
  });
@@ -619,12 +737,13 @@ function pagarDocumento(dato, valor) {
 			verResultado(info);//se envia a verificar que mensaje respondio el servlet
 		});
 }
-function cancelarDocumento(servlet, id) {
+function cancelarDocumento(servlet, id, cancelado) {
 	$.ajax({//enviar datos por ajax
 		type:"POST",
 		url:servlet,
 		data: {"opcion": "cancelar",
-			"id":id
+			"id":id,
+			"cancelado":cancelado
 		}
 	}).done(function(info) {//informacion que el servlet le reenvia al jsp
 		console.log(info);
@@ -637,34 +756,36 @@ var activarBotonAgregar = function() {
 		var idCliente = $("#cliente_ID").val();
 		if (idCliente != 0 || idCliente != ""){
 			var dato ="", valor=0;
-			if($("#formReciboCaja #concepto").val() == 1){
+			if($("#formReciboCaja #concepto").val() == 1){//cuando el concepto es por facturas
 				dato="factura";
-				valor=$("#formReciboCaja #factura").val();
+				valor=$("#formReciboCaja #factura").val();//obtener el id de la factura
 				pagado = totalPagar - pagado;
 				console.log("pagado: "+pagado+", total a pagar: "+totalPagar+", monto escrito para factura: "
 						+$("#formReciboCaja #monto").val());
-				pagarDocumento(dato, valor);
+				pagarDocumento(dato, valor);//mandar a pagar el documento-factura
 				if(totalPagar == (Math.round((parseFloat(pagado)+parseFloat($("#formReciboCaja #monto").val())) * 100) / 100)) {
 					console.log("Factura PAGADA");
-					cancelarDocumento("./SL_Factura_Maestra", valor);
+					cancelarDocumento("./SL_Factura_Maestra", valor, true);//si el total a pagar es igual a lo pagado cancelar
 				}else
 					console.log("No se puede cancelar la factura pues no es igual el monto a pagar");
-			}else if($("#formReciboCaja #concepto").val() == 2){
+			}else if($("#formReciboCaja #concepto").val() == 2){//cuando el concepto es por contrato
 				dato="contrato";
 				valor=$("#formReciboCaja #contrato").val();
 				pagado = totalPagar - pagado;
 				console.log("pagado: "+pagado+", total a pagar: "+totalPagar+", monto escrito para contrato: "
 						+$("#formReciboCaja #monto").val());
 				console.log("Cuotas del contrato: "+cuotasContrato+", cuota a pagar: "+cuotaActual);
-				if(totalPagar == (pagado + $("#formReciboCaja #monto").val())) {
+				if(totalPagar == (Math.round((parseFloat(pagado)+parseFloat($("#formReciboCaja #monto").val())) * 100) / 100)) {
+					//solo se cancelara el contrato si el monto a pagar es igual a lo pagado
 					console.log("Contrato PAGADO");
 					pagarDocumento(dato, valor);
-					cancelarDocumento("./SL_Contrato", valor);
+					verResultado("CANCELADO");
+// 					cancelarDocumento("./SL_Contrato", valor, true);
 				}else if(cuotasContrato == cuotaActual && totalPagar > (pagado + $("#formReciboCaja #monto").val())){
 					console.log("No se puede cancelar el contrato pues no es igual el monto a pagar y la cuota no es igual");
 				}else if(cuotasContrato < cuotaActual){
 					console.log("No se puede agregar mas cuotas de las permitidas");
-				}else{
+				}else if(cuotasContrato > cuotaActual){
 					pagarDocumento(dato, valor);
 					console.log("pagar contrato");
 				}
@@ -673,7 +794,7 @@ var activarBotonAgregar = function() {
 				valor=$("#formReciboCaja #reconexion").val();
 				console.log("reconexion pagada");
 				pagarDocumento(dato, valor);
-				cancelarDocumento("./SL_Reconexion", valor);
+				cancelarDocumento("./SL_Reconexion", valor, true);
 			}
 		}else if (idCliente == 0 || idCliente == ""){
 			verResultado("VACIO");
@@ -683,39 +804,42 @@ var activarBotonAgregar = function() {
 //////////////////////////////funsiones que detectan cuando un select cambia su valor///////////////////////////////
 function activarChangeFactura(select, aaData) {
 	$(select).change(function() {
-		var factura = $("#factura").val();
-		var montoTotal, factura_maestra_ID;
-		$(aaData).each(function(i, v) {
-			if (factura == v.factura_Maestra_ID) {
-				montoTotal = v.totalPago;
-				totalPagar = montoTotal;
-				factura_maestra_ID = v.factura_Maestra_ID;
-			}
-		});
-		$.ajax({
-			type : "GET",
-			url : "./SL_Factura_Maestra",
-			dataType : "json",
-			data : {
-				"factura_Maestra_ID" : factura_maestra_ID,
-				"carga" : 5,
-				"montoTotal" : montoTotal
-			},
-			success : function(response) {
-				if (response == "ERROR")
-					verResultado(response);
-				else {
-					console.log(response);
-					$("#monto").val(response);
-					pagado = response;
-					verResultado(response);
+		if($(select).val() != ""){
+			var factura = $("#factura").val();
+			var montoTotal, factura_maestra_ID;
+			$(aaData).each(function(i, v) {
+				if (factura == v.factura_Maestra_ID) {
+					montoTotal = v.totalPago;
+					totalPagar = montoTotal;
+					factura_maestra_ID = v.factura_Maestra_ID;
 				}
-			}
-		});
+			});
+			$.ajax({
+				type : "GET",
+				url : "./SL_Factura_Maestra",
+				dataType : "json",
+				data : {
+					"factura_Maestra_ID" : factura_maestra_ID,
+					"carga" : 5,
+					"montoTotal" : montoTotal
+				},
+				success : function(response) {
+					if (response == "ERROR")
+						verResultado(response);
+					else {
+						console.log(response);
+						$("#monto").val(response);
+						pagado = response;
+						verResultado(response);
+					}
+				}
+			});
+		}
 	});
 }
 function activarChangeContrato(select, aaData) {
 	$(select).change( function() {
+		if($(select).val() != ""){
 			var contrato_ID = $(select).val();
 			var montoContrato, cuotas;
 			$(aaData).each(function(i, v) {
@@ -749,24 +873,25 @@ function activarChangeContrato(select, aaData) {
 					}
 				}
 			});
-		});
+		}	
+	});
 }
 ///////////////////////////////función que activa el evento change del select de concepto////////////////////////////
 function activarChange(select) {
 	$(select).change(function() {//cuando se elija otra opcion del select
 		var concepto = $(select).val();
 		console.log("id del concepto: " + concepto)
-		if (concepto == 1) {
+		if (concepto == 1 && $("#cliente_ID").val() != "") {
 			cargarSelectFactura("#factura");
 			desactivarSelect("#contrato");
 			desactivarSelect("#reconexion");
 			activarSelect("#factura");
-		} else if (concepto == 2) {
+		} else if (concepto == 2 && $("#cliente_ID").val() != "") {
 			cargarSelectContrato('#contrato');
 			desactivarSelect("#factura");
 			desactivarSelect("#reconexion");
 			activarSelect('#contrato');
-		} else if (concepto == 3) {
+		} else if (concepto == 3 && $("#cliente_ID").val() != "") {
 			cargarSelectReconexion('#reconexion');
 			desactivarSelect("#factura");
 			desactivarSelect("#contrato");

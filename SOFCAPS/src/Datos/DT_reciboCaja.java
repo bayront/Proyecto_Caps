@@ -152,5 +152,25 @@ public class DT_reciboCaja {
 		
 		return rs;
 	}
+
+	public boolean eliminarRecibo(ReciboCaja r) {
+		boolean eliminado = false;
+		try {
+			dtReciboCaja.cargarRecibosTabla();
+			rs.beforeFirst();
+			while (rs.next()){
+				if(rs.getInt("ReciboCaja_ID") == r.getReciboCaja_ID()){
+					rs.updateBoolean("estado", true);
+					rs.updateRow();
+					System.out.println("reciboCaja eliminado");
+					eliminado  = true;
+				}
+			}
+		}catch (Exception e) {
+			System.err.println("ERROR ELIMINAR en dtReciboCaja, metodo eliminarRecibo: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return eliminado;
+	}
 	
 }

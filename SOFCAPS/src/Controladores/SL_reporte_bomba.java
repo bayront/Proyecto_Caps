@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Connection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.*;
 import java.io.*;
@@ -34,6 +36,8 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 public class SL_reporte_bomba extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	DateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
+	DateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -55,24 +59,28 @@ public class SL_reporte_bomba extends HttpServlet {
 			
 			
 			String tipp="";
+			String d="";
 			
 			
 			
 //			Map<String,Object> parameters = (Map<String, Object>) new HashMap<String,Object>();
 //			((HashMap<String,Object>) parameters).put("parameter1",new String("Este es un String para pasar por parametro"));
 //			InputStream reportStream = new FileInputStream("If.jrxml");
-			tipp = request.getParameter("meses");
+			tipp = request.getParameter("FECHITA1");
+			d=request.getParameter("FECHITA2");
 			
+			Date fecha1 = parseador.parse(tipp);
+			String f1 = fecha.format(fecha1);
 			
+			Date fecha2 = parseador.parse(d);
+			String f2 = fecha.format(fecha2);
 			
-			//fecha = request.getParameter("parameter1");
-			//fecha = parameter1;
-			//System.out.println("SlReporte fecha"+fecha);
-			
-			
+			System.out.println("fecha1: "+f1+"fecha2: "+f2);
 			//Aquí se ponen los parámetros a como se llaman en el reporte
 			HashMap<String, Object>hm = new HashMap<>();
-			hm.put("Parameter1", tipp);
+			
+			hm.put("Parameter1", f1);
+			hm.put("Parameter2", f2);
 						
 			
 			
@@ -80,7 +88,7 @@ public class SL_reporte_bomba extends HttpServlet {
 			OutputStream otps = response.getOutputStream();
 			ServletContext context = getServletContext();
 			String path = context.getRealPath("/");
-			String template = "reporte\\b.jasper";
+			String template = "reporte\\bombaR.jasper";
 			Exporter exporter = new JRPdfExporter();
 			System.out.println(path+template);
 			System.out.println(con);

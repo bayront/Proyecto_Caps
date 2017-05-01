@@ -47,7 +47,23 @@ public class DTCliente {
 		return rs;
 	}
 
-	
+	public ResultSet cargarNombre()
+	{
+		Statement s;
+		String sql = ("select distinct nombre_completo, Cliente_ID  from facturas_sin_cancelar;");
+		try
+		{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("Error en DT_categoria_Ing_Engreg: "+e.getMessage());
+		}
+		return rs;
+	}
+
 	
 	public ResultSet cargarClientes()
 	{

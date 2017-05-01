@@ -10,13 +10,14 @@
 			<li><a href="#">Recibos de caja</a></li>
 		</ol>
 	</div>
-</div>
+</div>	
+
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i> <span>Informe de la Bomba</span>
+					<i class="fa fa-search"></i> <span>Recibo de caja</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -28,53 +29,44 @@
 			</div>
 			<div class="box-content">
 				<form class="form-horizontal" role="form" id ="formReporteBomba">
-					<input type="hidden" id="cliente_ID" name="cliente_ID">
-					
-					<div class="form-group">
-						<%
-							DT_consumo_bomba cb =DT_consumo_bomba.getInstance();
-						
-							ArrayList<Mes> listaMeses = new ArrayList<Mes>();
-							listaMeses = cb.listaMeses();
-							
-						%>
-					
-							<label class="col-sm-2 control-label">Elija el mes:</label>
-								<div class="col-sm-5">
-									<select id="meses" class="populate placeholder">
-									<option value="" >--Seleccione un mes del año--</option>
-									<%
-										for(int i = 0; i < listaMeses.size(); i++){
-										%>
-											<option value="<%=listaMeses.get(i).getNombre() %>"> <%=listaMeses.get(i).getNombre() %></option>
-										<%
-											}
-								%>	
-									</select>
-								</div>
-						</div>
-
-	
-					
-					<div class="clearfix"></div>
-					<div class="form-group">
+				<div class="form-group">
+					<!-- FORMA PARA CREAR PERIODOS DE TIEMPO CON JQUERY UI -->
+						<label class="col-sm-4 control-label">Periodo de fechas</label>
 						<div class="col-sm-4">
-							<button type="submit" class="btn btn-primary btn-label-left" onclick="imprimir();">
-								<span><i class="fa fa-save"></i></span> Generar reporte
-							</button>
+							<input type="text" class="form-control" id="FECHITA1"
+								placeholder="fecha de inicio">
 						</div>
-						<div class="col-sm-2">
-							<button type="button" class="btn btn-default btn-label-left" >
-								<span><i class="fa fa-mail-reply txt-danger"></i></span> Cancelar
-							</button>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="FECHITA2"
+								placeholder="fecha de fin">
 						</div>
 					</div>
+					
+					
+					<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-3">
+							<button type="submit"  id="imprimir3" class="fa fa-print fa-2x"
+							data-toggle='tooltip' "data-placement='bottom' onclick="imprimir();">
+								<span></span> Imprimir
+							</button>
+						</div>
+						
+					</div>
+						<div class= "clearfix"></div>
+							<div class= "clearfix"></div>
+								<div class= "clearfix"></div>
+		</div>
+				
 					
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
+
+
+
+
 
 <script type="text/javascript">
 
@@ -83,16 +75,19 @@ function imprimir()
 
 {	
 	var valor = "";
+	var v = "";
 	
 
 		
-	valor = $('#meses').val();
+	valor = $('#FECHITA1').val();
+	v = $('#FECHITA2').val();
 	
 
 	
-	window.open("SL_reporte_bomba?meses="+valor, '_blank');
+	window.open("SL_reporte_bomba?FECHITA1="+valor+"&FECHITA2="+v, '_blank');
 	
 	console.log("El mes jsp"+" "+valor);
+	console.log("El mes jsp"+" "+v);
 	
 }
 
@@ -108,6 +103,28 @@ function DemoSelect2(){
 
 
 $(document).ready(function() {
+	
+	$('#FECHITA1').datepicker({
+		setDate : new Date(),
+		dateFormat: 'dd/mm/yy',
+		changeMonth: true,
+  changeYear: true,
+		onSelect: function(dateText, inst) {
+			$("#insert").val(dateText);
+	}
+	});
+	
+	$('#FECHITA2').datepicker({
+		setDate : new Date(),
+		dateFormat: 'dd/mm/yy',
+		changeMonth: true,
+  changeYear: true,
+		onSelect: function(dateText, inst) {
+			$("#insert").val(dateText);
+	}
+	});
+
+	
 	// Add slider for change test input length
 	FormLayoutExampleInputLength($( ".slider-style" ));
 	// Initialize datepicker

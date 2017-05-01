@@ -54,7 +54,7 @@ public class SLAP extends HttpServlet {
 			Connection con = null;
 			
 			con = Conexion.getConnection();
-			String valor ="";
+			int valor = 0;
 			
 		
 			
@@ -64,7 +64,7 @@ public class SLAP extends HttpServlet {
 //			((HashMap<String,Object>) parameters).put("parameter1",new String("Este es un String para pasar por parametro"));
 //			InputStream reportStream = new FileInputStream("If.jrxml");
 			
-			valor= request.getParameter("cliente");
+			valor= Integer.parseInt(request.getParameter("tippe"));
 			
 			
 			

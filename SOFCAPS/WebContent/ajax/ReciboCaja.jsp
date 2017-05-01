@@ -523,6 +523,7 @@ var obtener_id_eliminar = function(tbody, table) {//parametros(id_tabla, objeto 
 		table.rows().every(function(index, loop, rowloop) {
 			if (index == datos) {
 				var reciboCaja_ID = table.row(index).data().reciboCaja_ID;
+				$("#frmEliminarRecibo #reciboCaja_ID").val(reciboCaja_ID);
 				concepto = table.row(index).data().serie.serie_ID;
 				if(concepto == 1){
 					id = table.row(index).data().factura_Maestra.factura_Maestra_ID;
@@ -531,7 +532,7 @@ var obtener_id_eliminar = function(tbody, table) {//parametros(id_tabla, objeto 
 					id = table.row(index).data().reconexion.reconexion_ID;
 					servlet = "./SL_Reconexion";
 				}
-				console.log("recibo a eliminar"+reciboCaja_ID+", servlet: "+servlet+", id: "+id);
+				console.log("recibo a eliminar: "+reciboCaja_ID+", servlet: "+servlet+", id: "+id+", concepto: "+concepto);
 			}
 		});
 		OpenModalBox(
@@ -545,11 +546,11 @@ var obtener_id_eliminar = function(tbody, table) {//parametros(id_tabla, objeto 
 			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
 			"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
 			"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
-		eliminar(servlet, id);
+		eliminar(concepto, servlet, id);
 	});
 }
 /////////////////////////////////funsión que envia los datos a eliminar al servlet por ajax//////////////////////
-var eliminar = function(servlet, id) {
+var eliminar = function(concepto, servlet, id) {
 	$("#eliminarR").on("click", function() {
 		var frmElim = $("#frmEliminarRecibo").serialize();
 		console.log("datos a eliminar: " + frmElim);
@@ -559,8 +560,12 @@ var eliminar = function(servlet, id) {
 			data: frmElim
 		}).done(function(info) {
 			console.log(info);
-			if(info == "BIEN")
-				cancelarDocumento(servlet, id, false);
+			if(info == "BIEN"){
+				if(concepto != 2){
+					console.log("actualizar cancelado");
+					cancelarDocumento(servlet, id, false);
+				}
+			}
 			verResultado(info);
 		});
 		CloseModalBox();

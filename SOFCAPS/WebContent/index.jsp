@@ -300,6 +300,8 @@
 									<ul class="dropdown-menu" style="min-width:auto;">
 										<li><a style="padding:10px; padding-left:30px" class="ajax-link" 
 										href="ajax/a.jsp">Categorías</a></li>
+										<li><a style="padding:10px; padding-left:30px" class="ajax-link" 
+										href="ajax/AcuerdoPago.jsp">Comprimiso Pago</a></li>
 									</ul>
 								</li>
 							</ul>

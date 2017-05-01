@@ -268,6 +268,7 @@ public class SL_ReciboCaja extends HttpServlet {
 			ReciboCaja r = new ReciboCaja();
 			r.setReciboCaja_ID(reciboCaja_ID);
 			r.setEstado(false);
+			System.out.println("reciboCaja a eliminar en el servlet: "+r.getReciboCaja_ID());
 			verificar_resultado(dt_reciboCaja.eliminarRecibo(r), response);
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -101,8 +101,8 @@ public class DTContrato {
 			rs.updateInt(15, contrato.getRegimenPropiedad().getRegimenPropiedad_ID());
 			rs.updateInt(16, contrato.getSector().getSector_ID());
 			rs.updateInt(17, contrato.getCategoria().getCategoria_ID());
-			rs.updateString(18, contrato.getDireccionCliente()); 
-			rs.updateInt(19, contrato.getCantidadPersonas());
+			rs.updateString("direccionCliente", contrato.getDireccionCliente()); 
+			rs.updateInt("cantidadPersonas", contrato.getCantidadPersonas());
 			
 			rs.insertRow();
 			rs.moveToCurrentRow();

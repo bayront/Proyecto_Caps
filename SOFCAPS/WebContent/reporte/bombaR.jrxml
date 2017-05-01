@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-04-28T13:12:03 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="bombaR" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1d9e93d8-80f3-4f17-ad22-2be58c9109b1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bomba"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="Parameter1" class="java.lang.String"/>
+	<parameter name="Parameter2" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select consumoActual, lecturaActual, DATE_FORMAT(fechaLecturaActual,'%d/%m/%Y') as fecha  from bomba  WHERE estado=0 and fechaLecturaActual between  $P{Parameter1}   and  $P{Parameter2}  ]]>
+	</queryString>
+	<field name="consumoActual" class="java.lang.Float"/>
+	<field name="lecturaActual" class="java.lang.Float"/>
+	<field name="fecha" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="95" splitType="Stretch">
+			<staticText>
+				<reportElement x="30" y="25" width="510" height="30" uuid="5aa6afc3-d34e-42a9-b4ea-90492be119d5"/>
+				<textElement>
+					<font size="20" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Comité agua Potable y Saneamiento (CAPS Poneloya)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="95" splitType="Stretch">
+			<staticText>
+				<reportElement x="5" y="65" width="100" height="30" uuid="b923e643-7e7e-44f9-812e-1ae4df93e9f1"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha inicio]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="61" width="100" height="30" uuid="fcaec5fa-e7cf-46bd-84ee-c73d961bb97b"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Parameter1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="220" y="61" width="100" height="30" uuid="08898194-f6c2-4d11-89eb-227c93df14be"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha inicio]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="320" y="60" width="100" height="30" uuid="c4090a14-9cde-421f-a682-3cef1466c9cf"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Parameter2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="170" y="20" width="210" height="30" uuid="7a8db29c-cb26-4ed6-aba4-ba2375eaa383"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Infome de la Bomba]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="40" y="0" width="140" height="30" uuid="bcaba21e-04cb-4fc1-9f1d-93d437481d83"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[consumo Actual]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="0" width="131" height="30" uuid="98e229b5-92a3-4013-bf4c-d8849bca8cf1"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[lectura Actual]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="0" width="100" height="30" uuid="b4886611-2e98-4705-97c5-ad7e626c9740"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[fecha]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="40" y="0" width="110" height="30" uuid="fd9ea82d-4abe-47ee-a377-255218a44034"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consumoActual}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="0" width="100" height="30" uuid="365dfb9f-e304-4695-84f0-0bc3e6a812cc"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lecturaActual}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="0" width="100" height="30" uuid="65a045b3-8c4b-485b-925e-6be8624614ea"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="62" splitType="Stretch">
+			<staticText>
+				<reportElement x="105" y="20" width="315" height="30" uuid="63f28ec3-2763-4375-aaee-ff0a2395f15d"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA["Hagamos buen uso del agua"]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

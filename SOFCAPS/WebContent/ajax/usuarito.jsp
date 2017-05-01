@@ -114,7 +114,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--/////////////////////////////// Formularios de Clientes/////////////////////////////// -->
-<div class="row" id="cerrar">
+<div class="row" id="formularioUsuario" style="display:none;">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 
@@ -123,11 +123,11 @@ response.setDateHeader("Expires", -1);
 					<i class="fa  fa-user"></i> <span>Formulario de usuarios</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar1" onclick="validar(colap1);"
-						class="collapse-link"> <i class="fa fa-chevron-up"></i>
-					</a> <a id="expandir1" onclick="validar(expand1);" class="expand-link">
+					<a id="expandir1" class="expand-link">
 						<i class="fa fa-expand"></i>
 					</a>
+					<a class="cerrar_formulario_cliente" onclick="cancelar();"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -311,6 +311,8 @@ response.setDateHeader("Expires", -1);
 	}
 ////////////////////////////////limpia el texto y valida los botones de control de dialogo/////////////////////////
 	var agregar_nuevo_usuario = function() {
+		document.getElementById('formularioUsuario').style.display = 'block';
+		$("#expandir1").prop('disabled', true);
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if (colap1.valor == false)
@@ -323,6 +325,7 @@ response.setDateHeader("Expires", -1);
 	}
 ///////////////////////////////cancelar la accion sobre el cliente/////////////////////////////////////////////777
 	var cancelar = function() {
+		document.getElementById('formularioUsuario').style.display = 'none';
 		limpiar_texto();
 		if (expand1.valor == true)
 			validarExpand(expand1, "#expandir1");

@@ -107,7 +107,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 	<!---------------------------- AQUI EMPIEZA FORMULARIO DE ROL USUARIO ---------------------------->
-<div class="row">
+<div class="row" id="formularioUsuarioRol" style="display:none;">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -115,10 +115,11 @@ response.setDateHeader("Expires", -1);
 					<i class="fa fa-search"></i> <span>Asignar Roles a Usuarios</span>
 				</div>
 				<div class="box-icons">
-					<a class="collapse-link" id="colapsar_desplegar1" onclick="validar(colap1);"> 
-						<i class="fa fa-chevron-up"></i></a>
-					 <a class="expand-link" id="expandir1" onclick="validar(expand1);"> 
-					 	<i class="fa fa-expand"></i></a>
+					<a id="expandir1" class="expand-link">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a class="cerrar_formulario_cliente" onclick="cancelar();"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -237,6 +238,7 @@ function DemoSelect2(){
 }
 
 var cancelar = function() {/////////////////////cancela la acción limpiando el texto y colapsando el formulario
+	document.getElementById('formularioUsuarioRol').style.display = 'none';
 	limpiar_texto();
 	if (expand1.valor == true)
 		validarExpand(expand1, "#expandir1");
@@ -339,6 +341,8 @@ function abrirDialogo() {////////////////////abre dialogo con muestra si desae e
 
 
 var agregar_nuevo_rolusuario = function() {///////////////////agregar nuevo registro limpiando texto y abriendo el form
+	document.getElementById('formularioUsuarioRol').style.display = 'block';
+	$("#expandir1").prop('disabled', true);
 	limpiar_texto();
 	validarExpand(expand1, "#expandir1");
 	if (colap1.valor == false)

@@ -107,7 +107,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--///////////////////////Formulario principal de las tarifas/////////////////////////////// -->
-<div class="row">
+<div class="row" id="formularioTarifa" style="display:none;">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -115,8 +115,11 @@ response.setDateHeader("Expires", -1);
 					<i class="fa fa-edit"></i> <span>Formulario de Tarifas</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
-					<a id="expandir1" onclick="validar(expand1);" class="expand-link"> <i class="fa fa-expand"></i></a>
+					<a id="expandir1" class="expand-link">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a class="cerrar_formulario_tarifa" onclick="cancelar();"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -320,6 +323,8 @@ response.setDateHeader("Expires", -1);
 	}
 	
 	var agregar_nuevo_tarifa = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
+		document.getElementById('formularioTarifa').style.display = 'block';
+		$("#expandir1").prop('disabled', true);
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
@@ -332,6 +337,7 @@ response.setDateHeader("Expires", -1);
 	}
 	
 	var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
+		document.getElementById('formularioTarifa').style.display = 'none';
 		limpiar_texto();
 		if(expand1.valor == true)
 			validarExpand(expand1, "#expandir1");

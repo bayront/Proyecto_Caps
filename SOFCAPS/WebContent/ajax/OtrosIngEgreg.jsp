@@ -109,7 +109,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--///////////////////////Formulario principal de otros ingresos y egresos/////////////////////////////// -->
-<div class="row">
+<div class="row" id="formularioOtrosIngresos" style="display:none;">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -117,10 +117,11 @@ response.setDateHeader("Expires", -1);
 					<i class="fa fa-edit"></i> <span>Formulario de Otros Ingresos y Egresos</span>
 				</div>
 				<div class="box-icons">
-					<a class="collapse-link"  id="colapsar_desplegar1" onclick="validar(colap1);" > 
-						<i class="fa fa-chevron-up"></i> </a> 
-					<a class="expand-link" id="expandir1" onclick="validar(expand1);"> 
-						<i class="fa fa-expand"></i></a>
+					<a id="expandir1" class="expand-link">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a class="cerrar_formulario_cliente" onclick="cancelar();"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -371,6 +372,8 @@ websocket.onerror = function(evt) {
 	}
 
 	var agregar_nuevo_OI = function() {/////funsión para limpiar el texto y expandir el dialogo del formulario
+		document.getElementById('formularioOtrosIngresos').style.display = 'block';
+		$("#expandir1").prop('disabled', true);
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
@@ -383,6 +386,7 @@ websocket.onerror = function(evt) {
 	}
 	
 	var cancelar = function() {///////funsión que limpia el texto y oculta el formulario
+		document.getElementById('formularioOtrosIngresos').style.display = 'none';
 		limpiar_texto();
 		if(expand1.valor == true)
 			validarExpand(expand1, "#expandir1");

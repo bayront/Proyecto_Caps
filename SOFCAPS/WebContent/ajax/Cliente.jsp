@@ -117,7 +117,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--/////////////////////////////// Formularios de Clientes/////////////////////////////// -->
-<div class="row" id="cerrar">
+<div class="row" id="formularioCliente" style="display:none;">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 
@@ -126,11 +126,11 @@ response.setDateHeader("Expires", -1);
 					<i class="fa  fa-user"></i> <span>Formulario de Clientes</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar1" onclick="validar(colap1);"
-						class="collapse-link"> <i class="fa fa-chevron-up"></i>
-					</a> <a id="expandir1" onclick="validar(expand1);" class="expand-link">
+					<a id="expandir1" class="expand-link">
 						<i class="fa fa-expand"></i>
 					</a>
+					<a class="cerrar_formulario_cliente" onclick="cancelar();"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -270,6 +270,7 @@ response.setDateHeader("Expires", -1);
 						+ "<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 		eliminar();//activar evento de eliminar
 	}
+	
 ///////////////////Modal para Reactivar el Cliente eliminado o dado de baja///////////////////////////////
 	function abrirDialogo2() {
 		OpenModalBox(
@@ -321,6 +322,8 @@ response.setDateHeader("Expires", -1);
 	}
 ////////////////////////////////limpia el texto y valida los botones de control de dialogo/////////////////////////
 	var agregar_nuevo_cliente = function() {
+		document.getElementById('formularioCliente').style.display = 'block';
+		$("#expandir1").prop('disabled', true);
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if (colap1.valor == false)
@@ -333,6 +336,7 @@ response.setDateHeader("Expires", -1);
 	}
 ///////////////////////////////cancelar la accion sobre el cliente////////////////////////////////////////////////
 	var cancelar = function() {
+		document.getElementById('formularioCliente').style.display = 'none';
 		limpiar_texto();
 		if (expand1.valor == true)
 			validarExpand(expand1, "#expandir1");
@@ -446,7 +450,8 @@ function botones() {
 						"text" : "<i class='fa fa-user-plus'></i>",
 						"titleAttr" : "Agregar Cliente",
 						"className" : "btn btn-success",
-						"action" : function() { agregar_nuevo_cliente(); }
+						"action" : function() {
+							agregar_nuevo_cliente(); }
 					},
 					{
 						extend : 'excelHtml5',

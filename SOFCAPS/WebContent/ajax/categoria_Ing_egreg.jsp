@@ -107,7 +107,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--///////////////////////Formulario principal de las categorias de ingresos y egresos/////////////////////////////// -->
-<div class="row">
+<div class="row" id="formularioCategoriaIE" style="display:none;">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -115,10 +115,11 @@ response.setDateHeader("Expires", -1);
 					<i class="fa fa-edit"></i> <span>Gestión de categorías</span>
 				</div>
 				<div class="box-icons">
-					<a class="collapse-link"  id="colapsar_desplegar1" onclick="validar(colap1);"> 
-						<i class="fa fa-chevron-up"></i> </a> 
-					<a class="expand-link" id="expandir1" onclick="validar(expand1);"> 
-						<i class="fa fa-expand"></i></a>
+					<a id="expandir1" class="expand-link">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a class="cerrar_formulario_cliente" onclick="cancelar();"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -257,6 +258,8 @@ var verResultado = function(r) {
 	}
 
 	var agregar_nuevo_categoria = function() {
+		document.getElementById('formularioCategoriaIE').style.display = 'block';
+		$("#expandir1").prop('disabled', true);
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
@@ -279,6 +282,7 @@ var verResultado = function(r) {
 	}
 	
 	var cancelar = function() {
+		document.getElementById('formularioCategoriaIE').style.display = 'none';
 		limpiar_texto();
 		if(expand1.valor == true)
 			validarExpand(expand1, "#expandir1");

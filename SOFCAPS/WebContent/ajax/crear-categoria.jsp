@@ -105,7 +105,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--///////////////////////Formulario principal de las categorías/////////////////////////////// -->
-<div class="row">
+<div class="row" id="formularioCategoria" style="display:none;">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -113,8 +113,11 @@ response.setDateHeader("Expires", -1);
 					<i class="fa fa-edit"></i> <span>Formulario de Categorías</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> <i class="fa fa-chevron-up"></i></a> 
-					<a id="expandir1" onclick="validar(expand1);" class="expand-link"> <i class="fa fa-expand"></i></a>
+					<a id="expandir1" class="expand-link">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a class="cerrar_formulario_categoria" onclick="cancelar();"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -267,6 +270,8 @@ var colap2 =  new Colap2();
 	}
 
 	var agregar_nuevo_categoria = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
+		document.getElementById('formularioCategoria').style.display = 'block';
+		$("#expandir1").prop('disabled', true);
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
@@ -279,6 +284,7 @@ var colap2 =  new Colap2();
 	}
 	
 	var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
+		document.getElementById('formularioCategoria').style.display = 'none';
 		limpiar_texto();
 		if(expand1.valor == true)
 			validarExpand(expand1, "#expandir1");

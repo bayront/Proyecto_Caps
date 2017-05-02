@@ -74,43 +74,8 @@ response.setDateHeader("Expires", -1);
 		</ol>
 	</div>
 </div>
-<!--///////////////////////DataTable de los consumos de los clientes/////////////////////////////// -->
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-th"></i> <span>Lista de consumos</span>
-				</div>
-				<div class="box-icons">
-					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
-						<i class="fa fa-chevron-up"></i> </a> 
-					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> 
-						<i class="fa fa-expand"></i> </a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding table-responsive">
-				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
-					id="tabla_consumo" style="width:100%;">
-					<thead>
-						<tr>
-							<th>Fecha de corte</th>
-							<th>Lectura</th>
-							<th>Consumo</th>
-							<th>Nombres_Cliente</th>
-							<th>Num_Contrato</th>
-							<th>Num_medidor</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
 <!--///////////////////////Formulario principal de consumos de los clientes/////////////////////////////// -->
-<div class="row">
+<div id="formulario" class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 
@@ -119,10 +84,12 @@ response.setDateHeader("Expires", -1);
 					<i class="fa fa-edit"></i> <span>Formulario de consumos de los clientes</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar1" class="collapse-link" onclick="validar(colap1);"> <i
-						class="fa fa-chevron-up"></i></a> 
-						<a id="expandir1" class="expand-link"  onclick="validar(expand1);"> 
+					<a id="colapsar_desplegar1" class="collapse-link" onclick="validar(colap1);"> 
+						<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir1" class="expand-link"  onclick="validar(expand1);"> 
 						<i class="fa fa-expand"></i></a>
+					<a class="cerrar" onclick="cancelar();"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -219,7 +186,50 @@ response.setDateHeader("Expires", -1);
 							</button>
 						</div>
 					</div>
-				</form>
+					
+					<div class="clearfix"></div>
+					<div class="text-center">
+						<p style="font-size:x-large; font-family:"Roboto"; font-weight:600;" class="mensaje"></p>
+					</div>
+					<div class="clearfix"></div>
+				</form>	
+			</div>
+		</div>
+	</div>
+</div>
+<!--///////////////////////DataTable de los consumos de los clientes/////////////////////////////// -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-th"></i> <span>Lista de consumos</span>
+				</div>
+				<div class="box-icons">
+					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i> </a> 
+					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> 
+						<i class="fa fa-expand"></i> </a>
+					<a class="cerrar" title="Inhabilitado"> 
+						<i class="fa fa-times"></i></a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content no-padding table-responsive">
+				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+					id="tabla_consumo" style="width:100%;">
+					<thead>
+						<tr>
+							<th>Fecha de corte</th>
+							<th>Lectura</th>
+							<th>Consumo</th>
+							<th>Nombres_Cliente</th>
+							<th>Num_Contrato</th>
+							<th>Num_medidor</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+				</table>
 			</div>
 		</div>
 	</div>
@@ -326,8 +336,12 @@ websocket.onerror = function(evt) {
 //////////////////////////funsión que muestra el resultado mediant un dialogo//////////////////////////////////////
 	var verResultado = function(r) {//parametro(resultado-String)
 		if(r == "BIEN"){
-			mostrarMensaje("#dialog", "CORRECTO", 
-					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
+			var texto ="¡Se realizó la acción correctamente, todo bien!", color="#29a3b1";
+			$(".mensaje").html(texto).css({"color":color});
+			$(".mensaje").fadeOut(7000, function() {//se muestra el mensaje por un tiempo y luego se oculta
+				$(this).fadeIn(4000);	
+				$(this).html("");
+			});
 			limpiar_texto();
 			$('#tabla_consumo').DataTable().ajax.reload();
 			websocket.send("ACTUALIZADO");
@@ -503,7 +517,7 @@ websocket.onerror = function(evt) {
 			$("#cliente_ID").val(datos.cliente.cliente_ID);
 			$("#contrato_ID").val(datos.contrato.contrato_ID);
 			
-			validarExpand(expand1, "#expandir1");
+			document.getElementById('formulario').style.display = 'block';
 			if(colap1.valor==false)
 				validarColap(colap1, "#colapsar_desplegar1");
 			validarColap(colap2, "#colapsar_desplegar2");
@@ -524,7 +538,6 @@ websocket.onerror = function(evt) {
 	}
 ///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
 	function iniciarTabla(){
-		validarColap(colap1, "#colapsar_desplegar1");
 		var tablaConsumo = $('#tabla_consumo').DataTable( {
 			responsive: true,
 			"destroy": true,
@@ -573,7 +586,7 @@ websocket.onerror = function(evt) {
 					 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
 	            "buttons":[{
 					"text": "<i class='fa fa-plus-square'></i>",
-					"titleAttr": "Agregar usuario",
+					"titleAttr": "Agregar consumo",
 					"className": "btn btn-success",
 					"action": function() {
 						agregar_nuevo_consumo();
@@ -608,24 +621,17 @@ websocket.onerror = function(evt) {
 		visualizarHistorial('#tabla_consumo tbody', tablaConsumo);
 	}
 	
-	function imprimir()
-	{
+	function imprimir(){
 		var consumo_ID ="";	
 		consumo_ID = $("#consumo_ID").val();
 		window.open("SL_ReporteConsumo?consumo_ID="+consumo_ID, '_blank');
 
 		console.log("Error en metodo imprimir");
 	}
-
-	
-	
-	
-	
-	
 	
 	var agregar_nuevo_consumo = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
 		limpiar_texto();
-		validarExpand(expand1, "#expandir1");
+		document.getElementById('formulario').style.display = 'block';
 		if(colap1.valor==false)
 			validarColap(colap1, "#colapsar_desplegar1");
 		
@@ -638,6 +644,7 @@ websocket.onerror = function(evt) {
 	
 	var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
 		limpiar_texto();
+		document.getElementById('formulario').style.display = 'none';
 		if(expand1.valor == true)
 			validarExpand(expand1, "#expandir1");
 		
@@ -686,7 +693,11 @@ websocket.onerror = function(evt) {
 				url:"./SL_consumo",
 				headers: {"consumo_ID": consumo_ID}
 			}).done(function(info) {
-				verResultado(info);
+				mostrarMensaje("#dialog", "CORRECTO", 
+						"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
+				limpiar_texto();
+				$('#tabla_consumo').DataTable().ajax.reload();
+				websocket.send("ACTUALIZADO");
 				CloseModalBox();
 			});
 		});
@@ -808,13 +819,10 @@ websocket.onerror = function(evt) {
 	 			data: frm//datos a enviar
 	 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
 	 			console.log(info);
-	 			if(expand1.valor == true)
-					validarExpand(expand1, "#expandir1");
 			
 				if(expand2.valor == true)
 					validarExpand(expand2, "#expandir2");
 				
-				validarColap(colap1, "#colapsar_desplegar1");
 				if (colap2.valor ==true){}else{
 					validarColap(colap2, "#colapsar_desplegar2");
 				}

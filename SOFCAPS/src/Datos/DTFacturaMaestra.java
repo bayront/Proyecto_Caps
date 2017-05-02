@@ -131,7 +131,11 @@ public class DTFacturaMaestra {
 //				System.out.println("Elimando factura numero:" + factura.getNumFact() + " contra factura numero: " + );
 				if(rs.getString(2).equals(factura.getNumFact())){
 					System.out.println("Eliminado 3");
+					rs.updateInt(1, rs.getInt(1));
+					rs.updateString(2, rs.getString(2));
 					rs.updateBoolean(3, true);
+					rs.updateInt(4, rs.getInt(4));
+					rs.updateBoolean(5, false);
 					rs.updateRow();
 					eliminado = true;
 					DTConsumo dtConsumo = new DTConsumo();

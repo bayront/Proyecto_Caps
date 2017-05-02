@@ -74,7 +74,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--///////////////////////Gestión de facturas/////////////////////////////// -->
-<div class="row">
+<div id="formulario" class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 
@@ -83,24 +83,30 @@ response.setDateHeader("Expires", -1);
 					<i class="fa fa-edit"></i> <span>Facturación</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar1" class="collapse-link"> <i
-						class="fa fa-chevron-up"></i></a> 
-						<a id="expandir1" class="expand-link"> 
+					<a id="colapsar_desplegar1" class="collapse-link"> 
+					<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir1" class="expand-link"> 
 						<i class="fa fa-expand"></i></a>
+					<a class="cerrar" onclick="cancelar();"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
 
 			<div class="box-content">
 				<div id="ow-server-footer" style="margin:-15px; margin-bottom:30px;">
-				<a href="#" id="historialFacturas" class="col-xs-6 col-sm-3 btn-info text-center" style="color:#2f2481; font-weight:600;"><i
-					class="fa fa-desktop"></i> <span>Historial de facturas</span></a>
-					<a href="#" class="col-xs-6 col-sm-3 btn-info text-center" style="color:#2f2481; font-weight:600;"><i
-					class="fa fa-plus-square"></i> <span>Crear recibo para factura</span></a> 
-					<a href="#" id="facturasSinCancelar" class="col-xs-6 col-sm-3 btn-info text-center" style="color:#2f2481; font-weight:600;"><i
-					class="fa fa-desktop"></i> <span>Ver facturas sin cancelar</span></a> 
-					<a href="#" class="col-xs-6 col-sm-3 btn-info text-center" style="color:#2f2481; font-weight:600;"><i
-					class="fa fa-info-circle"></i> <span>Ir a consumos de clientes</span></a>
+				<a href="#" id="historialFacturas" class="col-xs-6 col-sm-3 btn-info text-center" 
+				style="color:#2f2481; font-weight:600;">
+					<i class="fa fa-desktop"></i> <span>Historial de facturas</span></a>
+				<a href="#" class="col-xs-6 col-sm-3 btn-info text-center" id="irRecibos"
+				style="color:#2f2481; font-weight:600;" onclick="irReciboCaja();">
+					<i class="fa fa-plus-square"></i> <span>Crear recibo para factura</span></a> 
+				<a href="#" id="facturasSinCancelar" class="col-xs-6 col-sm-3 btn-info text-center" 
+				style="color:#2f2481; font-weight:600;">
+					<i class="fa fa-desktop"></i> <span>Ver facturas sin cancelar</span></a> 
+				<a href="#" class="col-xs-6 col-sm-3 btn-info text-center" id="irConsumos"
+				style="color:#2f2481; font-weight:600;" onclick="irConsumo();"> 
+					<i class="fa fa-info-circle"></i> <span>Ir a consumos de clientes</span></a>
 				</div>
 				<form class="form-horizontal" role="form" id="defaultForm"
 					method="POST" action="./SL_Factura">
@@ -146,6 +152,11 @@ response.setDateHeader("Expires", -1);
 							</button>
 						</div>
 					</div>
+					<div class="clearfix"></div>
+					<div class="text-center">
+						<p style="font-size:x-large; font-family:"Roboto"; font-weight:600;" class="mensaje"></p>
+					</div>
+					<div class="clearfix"></div>
 				</form>
 			</div>
 		</div>
@@ -164,6 +175,8 @@ response.setDateHeader("Expires", -1);
 						<i class="fa fa-chevron-up"></i> </a> 
 					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> 
 						<i class="fa fa-expand"></i> </a>
+					<a class="cerrar" title="Inhabilitado"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -332,6 +345,11 @@ response.setDateHeader("Expires", -1);
 
 
 <script type="text/javascript">
+var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
+var colap1 =  new Colap1();
+var expand2 = new Expand2();
+var colap2 =  new Colap2();
+
 // /////////////////////////////////////Iniciar dataTables y cargar los plugins//////////////////////////////////////
 	function AllTables() {
 		//cargar PDF Y EXCEL
@@ -349,10 +367,15 @@ response.setDateHeader("Expires", -1);
 //////////////////////////funsión que muestra el resultado mediante un dialogo//////////////////////////////////////
 	var verResultado = function(r) {//parametro(resultado-String)
 		if(r == "BIEN"){
-			mostrarMensaje("#dialog", "CORRECTO", 
-				"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
-	 		limpiar_texto();
-	 		$('#tabla_factura').DataTable().ajax.reload();
+	 		var texto ="¡Se realizó la acción correctamente, todo bien!", color="#29a3b1";
+			$(".mensaje").html(texto).css({"color":color});
+			$(".mensaje").fadeOut(7000, function() {//se muestra el mensaje por un tiempo y luego se oculta
+				$(this).fadeIn(4000);	
+				$(this).html("");
+			});
+			limpiar_texto();
+			$('#tabla_factura').DataTable().ajax.reload();
+			websocket.send("ACTUALIZADO");
 	 	}
 	 	if(r == "ERROR"){
 	 		mostrarMensaje("#dialog", "ERROR", 
@@ -372,6 +395,20 @@ response.setDateHeader("Expires", -1);
 	 		limpiar_texto();
 	 	}
 	 }
+	 
+	function irConsumo() {
+		var url = $("#irConsumos").attr('href');//guardar url seleccionada
+		url="ajax/ver-consumos.jsp";
+		window.location.hash = url;//ir al #hash seleccionado
+		LoadAjaxContent(url);//cargarlo
+	}
+	function irReciboCaja() {
+		var url = $("#irConsumos").attr('href');//guardar url seleccionada
+		url="ajax/ReciboCaja.jsp";
+		window.location.hash = url;//ir al #hash seleccionado
+		LoadAjaxContent(url);//cargarlo
+	}
+	 
 /////////////////////////////////funsión que abre un dialogo y mostrara un contenido//////////////////////////////////
 	function abrirDialogo() {//parametro(funsion_js[eliminar])
 		OpenModalBox(
@@ -398,7 +435,12 @@ response.setDateHeader("Expires", -1);
 				url:"./SL_Factura_Maestra",
 				data: frmElim
 			}).done(function(info) {
-				 	limpiar_texto();
+				if(info == "BIEN"){
+					mostrarMensaje("#dialog", "CORRECTO", 
+						"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
+			 		limpiar_texto();
+			 		$('#tabla_factura').DataTable().ajax.reload();
+				}else
 				 	verResultado(info);
 			});
 			CloseModalBox();
@@ -702,6 +744,13 @@ function imprimirFactura (tbody, table){
 					 +"<'row'<'form-inline'"
 					 +"<'col-sm-6 col-md-6 col-lg-6'i><'col-sm-6 col-md-6 col-lg-6'p>>>",
 	            "buttons":[{
+					"text": "<i class='fa fa-plus-square'></i>",
+					"titleAttr": "Agregar Facturas",
+					"className": "btn btn-success",
+					"action": function() {
+						agregar_nueva_factura();
+					}
+				},{
 					"text": "<i class='fa fa-archive'></i>",
 					"titleAttr": "Imprimir facturas",
 					"className": "btn btn-success",
@@ -729,9 +778,32 @@ function imprimirFactura (tbody, table){
 		visualizarHistorialCliente('#tabla_factura tbody', tablaFactura);
 	}
 	
+	var agregar_nueva_factura = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
+		limpiar_texto();
+		document.getElementById('formulario').style.display = 'block';
+		if(colap1.valor==false)
+			validarColap(colap1, "#colapsar_desplegar1");
+		
+		validarColap(colap2, "#colapsar_desplegar2");
+		if(expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
+		
+		$("button#abrir_modal").focus();
+	}
 	
 	var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
 		limpiar_texto();
+		document.getElementById('formulario').style.display = 'none';
+		if(expand1.valor == true)
+			validarExpand(expand1, "#expandir1");
+		
+		if(expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
+		
+		validarColap(colap1, "#colapsar_desplegar1");
+		if (colap2.valor ==true){}else{
+			validarColap(colap2, "#colapsar_desplegar2");
+		}
 	}
 	
 	var limpiar_texto = function() {////////////////////////limpiar texto del formulario

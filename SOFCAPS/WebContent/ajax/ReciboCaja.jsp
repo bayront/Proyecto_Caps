@@ -498,10 +498,11 @@ function iniciarTabla(){
 var obtener_id_imprimir = function(tbody, table) {//parametros(id_tabla, objeto dataTable)
 	$(tbody).on("click","button.imprimirRecibo",function() {
 		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+		var reciboCaja_ID;
 		table.rows().every(function(index, loop, rowloop) {
 			if (index == datos) {
-				var reciboCaja_ID = table.row(index).data().reciboCaja_ID;
-				console.log("recibo a imprimir"+reciboCaja_ID);
+				reciboCaja_ID = table.row(index).data().reciboCaja_ID;
+				console.log("recibo a imprimir "+reciboCaja_ID);
 			}
 		});
 		OpenModalBox(
@@ -515,15 +516,14 @@ var obtener_id_imprimir = function(tbody, table) {//parametros(id_tabla, objeto 
 			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
 			"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
 			"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
-		imprimir();
+		imprimir(reciboCaja_ID);
 	});
 }
 //////////////////////////////////funsion para imprimir al dar click al boton imprimirR/////////////////////////////////////
-var imprimir = function() {
+var imprimir = function(reciboCaja_ID) {
 	$("#imprimirR").on("click", function() {
-		var reciboCaja_ID = $('#frmEliminarRecibo #reciboCaja_ID').val();
-		console.log(reciboCaja_ID);
-// 		window.open("SL_Reconexion?reconexion_ID="+reconexion_ID + "&opcion=imprimir",'_blank');
+		console.log("imprimiendo recibo numero " + reciboCaja_ID);
+		window.open("SL_ReciboCaja?idRecibo="+reciboCaja_ID + "&idserie=5" +"&cliente_ID=0",'_blank');
 // 		console.log("la reconexion_ID del jsp"+"  "+reconexion_ID);
 		CloseModalBox();
 	});

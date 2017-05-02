@@ -129,31 +129,19 @@
 						<div class="col-xs-8 col-sm-4">
 							<a href="#" class="show-sidebar"> <i class="fa fa-bars"></i>
 							</a>
-							<div id="search">
-								<input type="text" placeholder="search" /> <i
-									class="fa fa-search"></i>
-							</div>
 						</div>
 						<div class="col-xs-4 col-sm-8 top-panel-right">
 							<ul class="nav navbar-nav pull-right panel-menu">
-								<li class="hidden-xs"><a href="index.html"
-									class="modal-link"> <i class="fa fa-bell"></i> <span
-										class="badge">7</span>
-								</a></li>
-								<li class="hidden-xs"><a class="ajax-link"
-									href="ajax/calendar.html"> <i class="fa fa-calendar"></i> <span
-										class="badge">7</span>
-								</a></li>
-								<li class="hidden-xs"><a href="ajax/page_messages.html"
-									class="ajax-link"> <i class="fa fa-envelope"></i> <span
-										class="badge">7</span>
-								</a></li>
+<!-- 								<li class="hidden-xs"><a class="ajax-link" -->
+<!-- 									href="ajax/calendar.html"> <i class="fa fa-calendar"></i> <span -->
+<!-- 										class="badge">7</span> -->
+<!-- 								</a></li> -->
 								<li class="dropdown"><a href="#"
 									class="dropdown-toggle account" data-toggle="dropdown">
 										<i class="fa fa-angle-down pull-right"></i>
 										<div class="user-mini pull-right">
-											<span class="welcome">Bienvenido!</span>
-											<span><%=nombre_usuario %></span>
+											<span class="welcome" style="font-size: 14px;">Bienvenid@ : </span>
+											<span style="font-size: 14px;" ><%=nombre_usuario %></span>
 										</div>
 								</a>
 									<ul class="dropdown-menu">
@@ -207,32 +195,32 @@
 					<li><a href="ajax/Reconexion.jsp" class="ajax-link">
 							<i title="Clientes morosos" class="fa fa-exclamation"></i> <span class="hidden-xs">Clientes morosos</span>
 					</a></li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle">
-							<i class="fa fa-list"></i> <span class="hidden-xs">Paginas</span>
-					</a>
-						<ul class="dropdown-menu">
-							<li><a href="ajax/page_login.html">Login</a></li>
-							<li><a href="ajax/page_register.html">Register</a></li>
-							<li><a id="locked-screen" class="submenu"
-								href="ajax/page_locked.html">Locked Screen</a></li>
-							<li><a class="ajax-link" href="ajax/page_contacts.html">Contacts</a></li>
-							<li><a class="ajax-link" href="ajax/page_feed.html">Feed</a></li>
-							<li><a class="ajax-link add-full"
-								href="ajax/page_messages.html">Messages</a></li>
-							<li><a class="ajax-link" href="ajax/page_pricing.html">Pricing</a></li>
-							<li><a class="ajax-link" href="ajax/page_invoice.html">Invoice</a></li>
-							<li><a class="ajax-link" href="ajax/page_search.html">Search
-									Results</a></li>
-							<li><a class="ajax-link" href="ajax/page_404.html">Error
-									404</a></li>
-							<li><a href="ajax/page_500.html">Error 500</a></li>
-						</ul></li>
-					<li><a class="ajax-link" href="ajax/typography.html"> <i
-							class="fa fa-font"></i> <span class="hidden-xs">Tipografia</span>
-					</a></li>
-					<li><a class="ajax-link" href="ajax/calendar.html"> <i
-							class="fa fa-calendar"></i> <span class="hidden-xs">Calendario</span>
-					</a></li>
+<!-- 					<li class="dropdown"><a href="#" class="dropdown-toggle"> -->
+<!-- 							<i class="fa fa-list"></i> <span class="hidden-xs">Paginas</span> -->
+<!-- 					</a> -->
+<!-- 						<ul class="dropdown-menu"> -->
+<!-- 							<li><a href="ajax/page_login.html">Login</a></li> -->
+<!-- 							<li><a href="ajax/page_register.html">Register</a></li> -->
+<!-- 							<li><a id="locked-screen" class="submenu" -->
+<!-- 								href="ajax/page_locked.html">Locked Screen</a></li> -->
+<!-- 							<li><a class="ajax-link" href="ajax/page_contacts.html">Contacts</a></li> -->
+<!-- 							<li><a class="ajax-link" href="ajax/page_feed.html">Feed</a></li> -->
+<!-- 							<li><a class="ajax-link add-full" -->
+<!-- 								href="ajax/page_messages.html">Messages</a></li> -->
+<!-- 							<li><a class="ajax-link" href="ajax/page_pricing.html">Pricing</a></li> -->
+<!-- 							<li><a class="ajax-link" href="ajax/page_invoice.html">Invoice</a></li> -->
+<!-- 							<li><a class="ajax-link" href="ajax/page_search.html">Search -->
+<!-- 									Results</a></li> -->
+<!-- 							<li><a class="ajax-link" href="ajax/page_404.html">Error -->
+<!-- 									404</a></li> -->
+<!-- 							<li><a href="ajax/page_500.html">Error 500</a></li> -->
+<!-- 						</ul></li> -->
+<!-- 					<li><a class="ajax-link" href="ajax/typography.html"> <i -->
+<!-- 							class="fa fa-font"></i> <span class="hidden-xs">Tipografia</span> -->
+<!-- 					</a></li> -->
+<!-- 					<li><a class="ajax-link" href="ajax/calendar.html"> <i -->
+<!-- 							class="fa fa-calendar"></i> <span class="hidden-xs">Calendario</span> -->
+<!-- 					</a></li> -->
 
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i title="Consumos" class="fa fa-tint"></i> <span class="hidden-xs">Consumos</span>
@@ -294,6 +282,10 @@
 								<li><a class="ajax-link" href="ajax/reporte_bomba.jsp" style="padding: 9px 10px 9px 30px;">
 								<p style="height:auto; white-space:normal; margin-bottom:0px;">
 								Informe de la Bomba </p></a></li>
+								<li><a class="ajax-link" href="ajax/ReporteConsumoCFecha.jsp" style="padding: 9px 10px 9px 30px;">
+								<p style="height:auto; white-space:normal; margin-bottom:0px;">
+								Consumo de clientes </p></a></li>
+							
 								<li class="dropdown"><a href="#" class="dropdown-toggle" 
 								style="min-width: auto; padding-left:30px;"><i title="Ingreso Egreso" class="fa fa-pencil-square-o"></i> 
 								<span class="hidden-xs">Acuerdo pago</span></a>

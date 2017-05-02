@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-26T17:05:48 -->
+<!-- 2017-05-01T20:22:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reco" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="70914282-2a95-4245-8723-b482f364fc49">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sofcaps"/>
@@ -26,24 +26,21 @@
 		<band/>
 	</background>
 	<title>
-		<band height="66">
-			<frame>
-				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="80" backcolor="#006699" uuid="20ff2c6e-20d4-49c2-bbcd-7a6820a186de"/>
-				<staticText>
-					<reportElement x="20" y="10" width="540" height="43" forecolor="#FFFFFF" uuid="6dd8148d-ffc2-45ce-8eaa-a249f02b1b7d"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="30" isBold="true"/>
-					</textElement>
-					<text><![CDATA[CONTRATO DE ACUEDUCTO]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="20" y="53" width="540" height="20" forecolor="#FFFFFF" uuid="15832dfe-429f-4bb7-b09d-7e164dfd768a"/>
-					<textElement textAlignment="Center" verticalAlignment="Bottom">
-						<font size="12" isBold="false"/>
-					</textElement>
-					<text><![CDATA[COMITÉ DE AGUA POTABLE Y SANEAMIENTO]]></text>
-				</staticText>
-			</frame>
+		<band height="73">
+			<staticText>
+				<reportElement mode="Opaque" x="10" y="0" width="540" height="43" forecolor="#030202" backcolor="rgba(2, 2, 3, 0.0)" uuid="0b4ce819-a700-4519-8317-561bfeb93a79"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="30" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTRATO DE ACUEDUCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="43" width="540" height="20" forecolor="#030202" uuid="9d1cef72-c983-4866-bd5e-236f3f3530f0"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[COMITÉ DE AGUA POTABLE Y SANEAMIENTO]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

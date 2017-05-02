@@ -294,6 +294,36 @@ response.setDateHeader("Expires", -1);
 	</form>
 </div>
 
+<!-- Imprimir  -->
+
+<div>
+	<form id="frmImprimirConsumo" action="" method="POST">
+		<input type="hidden" id="consumo_id" name="consumo_id" value="">
+		<input type="hidden" id="opcion" name="opcion" value="imprimir">
+
+		<div id="modalbox">
+			<div class="devoops-modal">
+				<div class="devoops-modal-header">
+					<div class="modal-header-name">
+						<span>Basic table</span>
+					</div>
+					<div class="box-icons">
+						<a class="close-link"> <i class="fa fa-times"></i>
+						</a>
+					</div>
+				</div>
+				<div class="devoops-modal-inner"></div>
+				<div class="devoops-modal-bottom"></div>
+			</div>
+		</div>
+	</form>
+</div>
+
+
+
+
+<!-- fin imprimir -->
+
 <script type="text/javascript">
 //objetos websockets
 var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
@@ -383,6 +413,51 @@ websocket.onerror = function(evt) {
 				"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 		callback();
 	}
+	
+	
+
+	function abrirDialog() {//parametro(funsion_js[eliminar])
+		OpenModalBox(
+				"<div><h3>Imprimir Aviso de Corte</h3></div>",
+				"<p Style='text-align:center; color:blue; font-size:x-large;'>¿Esta seguro que desea imprimir el consumo de este cliente?</p>",
+				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
+				"<button type='button' id='imprimir_consumo' class='btn btn-primary btn-label-left'"+
+				" style=' color: #ece1e1;' >"+
+				"<span><i class='fa fa-print'></i></span> Imprimir</button>"+
+				"<div style='margin-top: 5px;'></div> </div>"+
+				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
+				"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
+				"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
+		imp();
+	}
+
+	
+//////////////////////////////////eliminar los datos seteados en el formulario/////////////////////////////////////
+	var imp = function() {
+		$("#imprimir_consumo").on("click", function() {
+			var consumo_ID = "";
+			consumo_ID = $('#frmImprimirConsumo #consumo_id').val();
+			console.log(consumo_ID );
+			window.open("SL_ReporteConsumoCliente?consumo_id="+consumo_ID + "&opcion=imprimir",'_blank');
+			console.log("El consumo_ID del jsp"+"  "+consumo_ID);
+			CloseModalBox();
+		});
+	}
+
+
+	/////////////////////////activar evento del boton eliminar que esta en la fila seleccionada del dataTable///////////
+	
+	var obtener_id_imprimir = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
+		$(tbody).on("click", "button.imprimir", function() {
+			var datos = table.row($(this).parents("tr")).data();
+			$("form#frmImprimirConsumo #consumo_id").val(datos.consumo_ID);
+			abrirDialog();
+		});
+	}
+
+	
+	
+	
 ////////////////////////////////////////cerrar el modal del historial de consumos/////////////////////////////////
 	function cerrarHistorial() {
 		document.getElementById('historial').style.display = 'none';
@@ -577,7 +652,11 @@ websocket.onerror = function(evt) {
 					"<i class='fa fa-trash-o'></i> </button> "+
 					"<button type='button' class='verHistorial btn btn-warning' data-toggle='tooltip' "+
 					"data-placement='top' title='ver historial de consumos'>"+
-					"<i class='fa fa-sitemap'></i> </button>"}
+					"<i class='fa fa-sitemap'></i> </button>"+
+					"<button type='button' class='imprimir btn btn-basic' data-toggle='tooltip' "+
+					"data-placement='top' title='Imprimir Consumo'>"+
+					"<i class='fa fa-print'></i> </button>"}
+
 	            ],
 	            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 					 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
@@ -592,14 +671,14 @@ websocket.onerror = function(evt) {
 						agregar_nuevo_consumo();
 					}
 				},
-				{
+{
 	                
 	                text:      '<i class="fa fa-print fa-o"></i>',
 	                titleAttr: 'Imprimir reporte',
 	                action: function(){
 	                	imprimir();
 	                }
-	            },
+	            },,
 				{
 	                extend:    'excelHtml5',
 	                text:      '<i class="fa fa-file-excel-o"></i>',
@@ -619,15 +698,20 @@ websocket.onerror = function(evt) {
 		seleccionarEditarConsumo('#tabla_consumo tbody', tablaConsumo);
 		seleccionarEliminarConsumo('#tabla_consumo tbody', tablaConsumo);
 		visualizarHistorial('#tabla_consumo tbody', tablaConsumo);
+		obtener_id_imprimir('#tabla_consumo tbody', tablaConsumo);
+
 	}
 	
-	function imprimir(){
+	function imprimir()
+	{
 		var consumo_ID ="";	
 		consumo_ID = $("#consumo_ID").val();
-		window.open("SL_ReporteConsumo?consumo_ID="+consumo_ID, '_blank');
+		window.open("SL_ReporteConsumoCT?consumo_ID="+consumo_ID, '_blank');
 
 		console.log("Error en metodo imprimir");
 	}
+
+
 	
 	var agregar_nuevo_consumo = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
 		limpiar_texto();

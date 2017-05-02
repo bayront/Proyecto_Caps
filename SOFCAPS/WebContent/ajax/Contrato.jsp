@@ -305,7 +305,7 @@ response.setDateHeader("Expires", -1);
 
 
 
-<!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
+<!--///////////////////////Formulario y dialogo de impresion /////////////////////////////// -->
 <div>
 	<form id="frmImprimirContrato" action="" method="GET">
 		<input type="hidden" id="numContrato" name="numContrato" value="">
@@ -358,20 +358,22 @@ function AllTables() {
 }
 
 
+
 function abrirDialogoC() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
 	OpenModalBox(
 			"<div><h3>Imprimir Contrato</h3></div>",
-			"<p Style='text-align:center; color:blue; font-size:x-large;'>¿Esta seguro que desea imprimir este contrato?</p>",
+			"<p Style='text-align:center; color:blue; font-size:x-large;'>¿Esta seguro que desea imprimir el contrato para este cliente?</p>",
 			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
 			"<button type='button' id='imprimir_contrato' class='btn btn-primary btn-label-left'"+
 			" style=' color: #ece1e1;' >"+
-			"<span><i class='fa fa-print'></i></span> Imprimir Contrato</button>"+
+			"<span><i class='fa fa-print'></i></span> Imprimir</button>"+
 			"<div style='margin-top: 5px;'></div> </div>"+
 			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-3 text-center'>"+
 			"<button type='button' class='btn btn-default btn-label-left' onclick='CloseModalBox()'>"+
 			"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 	imprimir();
 }
+
 
 var imprimir = function() {
 	$("#imprimir_contrato").on("click", function() {
@@ -603,7 +605,7 @@ var listar = function() {
 				
 				"<button type='button' class='imprimir btn btn-basic' data-toggle='tooltip' "+
 				"data-placement='top' title='Imprimir contrato'>"+
-				"<i class='glyphicon glyphicon-print'></i> </button>"
+				"<i class='fa fa-print'></i> </button>"
             }
             ],
             "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"

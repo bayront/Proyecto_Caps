@@ -197,8 +197,7 @@ public class SL_Factura_Maestra extends HttpServlet{
 			//Aquí se ponen los parámetros a como se llaman en el reporte
 			HashMap<String, Object>hm = new HashMap<>();
 			hm.put("numFact", numFact);
-			
-			System.out.println("segundo numero de factura: "+numFact);
+						
 			System.out.println(hm);
 			resp.reset();
 			OutputStream otps = resp.getOutputStream();

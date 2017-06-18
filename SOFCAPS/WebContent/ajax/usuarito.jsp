@@ -84,11 +84,11 @@ response.setDateHeader("Expires", -1);
 				</div>
 				<div class="box-icons">
 					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
-						<i class="fa fa-chevron-up"></i>
-					</a> 
+						<i class="fa fa-chevron-up"></i></a> 
 					<a id="expandir2" onclick="validar(expand2);" class="expand-link">
-						<i class="fa fa-expand"></i>
-					</a>
+						<i class="fa fa-expand"></i></a>
+					<a class="cerrar" title="Inhabilitado"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -123,9 +123,10 @@ response.setDateHeader("Expires", -1);
 					<i class="fa  fa-user"></i> <span>Formulario de usuarios</span>
 				</div>
 				<div class="box-icons">
-					<a id="expandir1" class="expand-link">
-						<i class="fa fa-expand"></i>
-					</a>
+					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir1" class="expand-link" onclick="validar(expand1);">
+						<i class="fa fa-expand"></i></a>
 					<a class="cerrar_formulario_cliente" onclick="cancelar();"> 
 						<i class="fa fa-times"></i></a>
 				</div>
@@ -154,9 +155,16 @@ response.setDateHeader("Expires", -1);
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="pass" class="col-sm-4 control-label">Password</label>
+						<label for="pass" class="col-sm-4 control-label">Contraseña</label>
 						<div class="col-sm-5">
-							<input id="pass" name="pass" type="text"
+							<input id="pass" name="pass" type="password"
+								class="form-control" title="Requerido" required/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="confirmPass" class="col-sm-4 control-label">Repetir contraseña</label>
+						<div class="col-sm-5">
+							<input id="confirmPass" name="confirmPass" type="password"
 								class="form-control" title="Requerido" required/>
 						</div>
 					</div>
@@ -312,7 +320,7 @@ response.setDateHeader("Expires", -1);
 ////////////////////////////////limpia el texto y valida los botones de control de dialogo/////////////////////////
 	var agregar_nuevo_usuario = function() {
 		document.getElementById('formularioUsuario').style.display = 'block';
-		$("#expandir1").prop('disabled', true);
+		//$("#expandir1").prop('disabled', true);
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if (colap1.valor == false)
@@ -325,8 +333,8 @@ response.setDateHeader("Expires", -1);
 	}
 ///////////////////////////////cancelar la accion sobre el cliente/////////////////////////////////////////////777
 	var cancelar = function() {
+		limpiar_texto();	
 		document.getElementById('formularioUsuario').style.display = 'none';
-		limpiar_texto();
 		if (expand1.valor == true)
 			validarExpand(expand1, "#expandir1");
 
@@ -443,11 +451,11 @@ function botones() {
 		$("#mostrar_usuarios").change(function(){//evento que carga diferentes datos si el checkbox esta activo o no
 	        if($(this).is(':checked')){
 	        	boton= 2;
-				document.getElementById('cerrar').style.display = 'none';
+				document.getElementById('formularioUsuario').style.display = 'none';
 				cargar_usuarios();
 	        }else{
 	        	boton= 1;
-	        	document.getElementById('cerrar').style.display = 'block';
+	        	//document.getElementById('formularioUsuario').style.display = 'block';
 	        	$('#dt_usuario').DataTable().ajax.reload();
 	        }
 		});
@@ -483,6 +491,7 @@ function botones() {
 					var opcion = $("#opcion").val("actualizar");//settear datos en el formulario de edicion
 				}
 			});
+			document.getElementById('formularioUsuario').style.display = 'block';
 			validarExpand(expand1, "#expandir1");
 			if (colap1.valor == false)
 				validarColap(colap1, "#colapsar_desplegar1");
@@ -556,7 +565,22 @@ function formValidUsu() {
 				validators:{
 					notEmpty : {
 						message : "¡Este campo es requerido y no debe estar vacio!"
-					}
+					},
+					identical: {
+                        field: 'confirmPass',
+                        message: "¡La contreseña y su confirmación no son iguales!"
+                    }
+				}
+			},
+			confirmPass:{
+				validators:{
+					notEmpty : {
+						message : "¡Este campo es requerido y no debe estar vacio!"	
+					},
+					identical: {
+                        field: 'pass',
+                        message: "¡La contreseña y su confirmación no son iguales!"
+                    }
 				}
 			},
 			login : {

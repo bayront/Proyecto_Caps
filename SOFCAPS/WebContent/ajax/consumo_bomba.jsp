@@ -86,9 +86,12 @@ response.setDateHeader("Expires", -1);
 					<i class="fa fa-th"></i> <span>Lista de consumos de la bomba</span>
 				</div>
 				<div class="box-icons">
-					<a id="colapsar_desplegar2" class="collapse-link" onclick="validar(colap2);"> <i class="fa fa-chevron-up"></i>
-					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> <i class="fa fa-expand"></i>
-					</a>
+					<a id="colapsar_desplegar2" class="collapse-link" onclick="validar(colap2);"> 
+						<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir2" class="expand-link" onclick="validar(expand2);"> 
+						<i class="fa fa-expand"></i></a>
+					<a class="cerrar" title="Inhabilitado"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -100,8 +103,6 @@ response.setDateHeader("Expires", -1);
 							<th>Consumo actual</th>
 							<th>Fecha de registro</th>
 							<th>Lectura actual</th>
-							<th>Observaciones</th>
-							<th>Unidad de medida</th>
 							<th>Acción</th>
 						</tr>
 					</thead>
@@ -111,7 +112,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--///////////////////////Formulario principal de consumos de la bomba/////////////////////////////// -->
-<div class="row">
+<div class="row" id="formularioConsumoBomba" style="display:none;">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -119,9 +120,12 @@ response.setDateHeader("Expires", -1);
 					<i class="fa fa-edit"></i> <span>Formulario de Consumos de la Bomba</span>
 				</div>
 				<div class="box-icons">
-					<a class="collapse-link" id="colapsar_desplegar1" onclick="validar(colap1);"> <i class="fa fa-chevron-up"></i>
-					</a> <a class="expand-link"  id="expandir1" onclick="validar(expand1);"> <i class="fa fa-expand"></i>
-					</a>
+					<a class="collapse-link" id="colapsar_desplegar1" onclick="validar(colap1);"> 
+					<i class="fa fa-chevron-up"></i></a> 
+					<a class="expand-link"  id="expandir1" onclick="validar(expand1);"> 
+					<i class="fa fa-expand"></i></a>
+					<a class="cerrar_formulario_consumo_bomba" onclick="cancelar();"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -339,6 +343,7 @@ var eliminar = function() {
 }
 
 var agregar_nuevo_consumoB = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
+	document.getElementById('formularioConsumoBomba').style.display = 'block';
 	limpiar_texto();
 	validarExpand(expand1, "#expandir1");
 	if(colap1.valor==false)
@@ -352,16 +357,22 @@ var agregar_nuevo_consumoB = function() {//////////////agregar nuevo registro li
 	
 var limpiar_texto = function() {///////////limpiar texto del formulario
 	$("#opcion").val("guardar");
-	$("#lecturaActual").val("");
-	$("#fecha").val("");
-	$("#observaciones").val("");
-	$("#consumoActual").val("");
+	$("form#formConsB #info" ).remove();
+	$("#lecturaActual").val("").prop('readonly', false);
+	$("#fecha").val("").removeAttr('disabled');
+	$("#observaciones").val("").prop('readonly', false);
+	$("#consumoActual").val("").prop('readonly', false);
 	$("#bombaID").val("");
+	$("#unidadMedida").val("");
+	$("#unidadMedida").change().removeAttr('disabled');
+	$("#btnCalcular").removeAttr('disabled');
+	$("#btnEnviar").removeAttr('disabled');
 	$("#formConsB").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 }
 	
 var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
 	limpiar_texto();
+	document.getElementById('formularioConsumoBomba').style.display = 'none';
 	if(expand1.valor == true)
 		validarExpand(expand1, "#expandir1");
 	
@@ -396,22 +407,23 @@ function listarT() {
             $("a.btn").tooltip({container: 'body'});
         },
 		"columns": [
-            { "data": "consumoActual" , "width": "14%"},
+            { "data": "consumoActual"},
             { "data": null,
                 render: function ( data, type, row ) {
                 	var f = new Date(data.fechaLecturaActual);
                 	var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
                 	return fecha;
-                }, "width": "16%"},
-            { "data": "lecturaActual" , "width": "14%"},
-            { "data": "observaciones" },
-            { "data": "unidad_de_Medida.tipoMedida" , "width": "17%"},
-            {"defaultContent":"<button type='button' id='editarConsumoB' class='editarConsumoB btn btn-primary' data-toggle='tooltip' "+
+            }},
+            { "data": "lecturaActual"},
+            {"defaultContent":"<button type='button' class='visualizarConsumoB btn btn-info' data-toggle='tooltip' "+
+				"data-placement='top' title='Visualizar Registro'>"+
+				"<i class='fa fa-info-circle'></i> </button>  "+
+				"<button type='button' id='editarConsumoB' class='editarConsumoB btn btn-primary' data-toggle='tooltip' "+
 				"data-placement='top' title='Editar consumo de bomba'>"+
 				"<i class='fa fa-pencil-square-o'></i> </button>  "+
 				"<button type='button' id='eliminar_consumoB' class='eliminar_consumoB btn btn-danger' data-toggle='tooltip' "+
 				"data-placement='top' title='Eliminar consumo de bomba'>"+
-				"<i class='fa fa-trash-o'></i> </button>", "width": "11%"}
+				"<i class='fa fa-trash-o'></i> </button>"}
             ],
             "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 				 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
@@ -444,6 +456,7 @@ function listarT() {
             }]
 	});
 	obtener_datos_editar("#tbl_consumoB tbody",tablaConsumoB);
+	obtener_datos_visualizar("#tbl_consumoB tbody",tablaConsumoB);
 	obtener_id_eliminar('#tbl_consumoB tbody',tablaConsumoB);
 }
 /////////////////////////funsión que activa el evento click para eliminar un registro del dataTable///////////////////
@@ -467,6 +480,37 @@ var obtener_id_eliminar = function(tbody, table) {//parametro(id_tabla, objeto d
 		});
 		//solo se obtiene el id que es oculto
 		abrirDialogo();
+	});
+}
+///////////////////////////funsión que activa el evento click del boton visualizar del dataTable///////////////////////
+var obtener_datos_visualizar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
+	$(tbody).on("click", "button.visualizarConsumoB", function() {
+		var datos = table.row($(this).parents("tr")).index();
+		var fecha;
+		table.rows().every(function(index, loop, rowloop) {
+			if(index == datos){
+				$("form#formConsB").prepend("<h2 id='info' Style='color:#3276D7; text-align:center;'>Visualización del Registro</h2>");
+				var f = new Date(table.row(index).data().fechaLecturaActual);
+            	var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+				$("#lecturaActual").val(table.row(index).data().lecturaActual).prop('readonly', true);
+				$("#bombaID").val(table.row(index).data().bomba_ID);
+				$("#fecha").val(fecha).attr('disabled', 'disabled');
+				$("#consumoActual").val(table.row(index).data().consumoActual).prop('readonly', true);
+				$("#observaciones").val(table.row(index).data().observaciones).prop('readonly', true);
+				$("#unidadMedida").val(table.row(index).data().unidad_de_Medida.unidad_de_Medida_ID);
+				$("#unidadMedida").change().attr('disabled', 'disabled');
+				$("#opcion").val("visualizar");
+				$("#btnCalcular").attr('disabled', 'disabled');
+				$("#btnEnviar").attr('disabled', 'disabled');
+			}
+		});
+		document.getElementById('formularioConsumoBomba').style.display = 'block';
+		validarExpand(expand1, "#expandir1");
+		if(colap1.valor==false)
+			validarColap(colap1, "#colapsar_desplegar1");
+		validarColap(colap2, "#colapsar_desplegar2");
+		if(expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
 	});
 }
 ///////////////////////////funsión que activa el evento click del boton editar del dataTable///////////////////////
@@ -500,6 +544,7 @@ var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto 
 			else
 				actual = true;
 		});
+		document.getElementById('formularioConsumoBomba').style.display = 'block';
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
 			validarColap(colap1, "#colapsar_desplegar1");

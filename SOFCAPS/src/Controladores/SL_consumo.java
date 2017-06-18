@@ -94,28 +94,36 @@ public class SL_consumo extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String opcion = request.getParameter("opcion");
-		float lectura;
+		float lectura, lecturaAnterior, consumoTotal;
 		int contrato_ID, cliente_ID, consumo_ID;
 		Date fecha_fin;
 		try {
 			switch (opcion) {
 			case "guardar":
 				lectura = Float.parseFloat(request.getParameter("lectura"));
+				lecturaAnterior = Float.parseFloat(request.getParameter("lecturaAnterior"));
+				consumoTotal = Float.parseFloat(request.getParameter("consumoTotal"));
 				float lecturaRound= (float) (Math.round(lectura * 100.0) / 100.0);
+				float lecturaAntRound= (float) (Math.round(lecturaAnterior * 100.0) / 100.0);
+				float consumoRound= (float) (Math.round(consumoTotal * 100.0) / 100.0);
 				cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
 				contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
 				fecha_fin = fecha.parse(request.getParameter("fecha"));
-				guardar(fecha_fin, lecturaRound, cliente_ID, contrato_ID, response);
+				guardar(fecha_fin,consumoRound, lecturaAntRound, lecturaRound, cliente_ID, contrato_ID, response);
 				break;
 			case "actualizar":
 				consumo_ID = Integer.parseInt(request.getParameter("consumo_ID"));
 				contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
+				lecturaAnterior = Float.parseFloat(request.getParameter("lecturaAnterior"));
+				consumoTotal = Float.parseFloat(request.getParameter("consumoTotal"));
 				lectura = Float.parseFloat(request.getParameter("lectura"));
 				float lecturaRound2= (float) (Math.round(lectura * 100.0) / 100.0);
+				float lecturaAntRound2= (float) (Math.round(lecturaAnterior * 100.0) / 100.0);
+				float consumoRound2= (float) (Math.round(consumoTotal * 100.0) / 100.0);
 				fecha_fin = fecha.parse(request.getParameter("fecha"));
 				cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
 				contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
-				actualizar(consumo_ID, contrato_ID, fecha_fin, lecturaRound2, response);
+				actualizar(consumo_ID, contrato_ID, fecha_fin, consumoRound2, lecturaAntRound2, lecturaRound2, response);
 				break;
 			default:
 				response.setContentType("text/plain");
@@ -129,17 +137,18 @@ public class SL_consumo extends HttpServlet {
 		}
 	}
 	
-	private void guardar(Date fecha_fin, float lectura, int cliente_ID, int contrato_ID, HttpServletResponse response) throws IOException {
+	private void guardar(Date fecha_fin,float consumoTotal, float lecturaAnt, float lectura, int cliente_ID, int contrato_ID, HttpServletResponse response) throws IOException {
 		Contrato c = new Contrato();
 		Cliente cl = new Cliente();
 		Consumo consumo =  new Consumo();
-		boolean lecturaMenor = false, fechaMenor = false;
+//		boolean lecturaMenor = false;
+		boolean fechaMenor = false;
 		try {
 			ResultSet r = datosConsumo.cargarTodosConsumos();
 			while(r.next()) {
-				if(lectura <= r.getFloat("lectura_Actual") && contrato_ID == r.getInt("Contrato_ID")) {
-					lecturaMenor = true;
-				}
+//				if(lectura <= r.getFloat("lectura_Actual") && contrato_ID == r.getInt("Contrato_ID")) {
+//					lecturaMenor = true;
+//				}
 				if(fecha_fin.compareTo(r.getDate("fecha_fin")) <= 0 && contrato_ID == r.getInt("Contrato_ID")) {
 					fechaMenor = true;
 				}
@@ -147,17 +156,20 @@ public class SL_consumo extends HttpServlet {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		if(lecturaMenor) {
-			response.setContentType("text/plain");
-			out = response.getWriter();
-			out.print("LECTURAMENOR");
-		}else if(fechaMenor) {
+//		if(lecturaMenor) {
+//			response.setContentType("text/plain");
+//			out = response.getWriter();
+//			out.print("LECTURAMENOR");
+//		}else 
+		if(fechaMenor) {
 			response.setContentType("text/plain");
 			out = response.getWriter();
 			out.print("FECHAMENOR");
 		}else {
 			try {
 				consumo.setFecha_fin(fecha_fin);
+				consumo.setConsumoTotal(consumoTotal);
+				consumo.setLectura_Anterior(lecturaAnt);
 				consumo.setLectura_Actual(lectura);
 				consumo.setActual(true);
 				consumo.setEliminado(false);
@@ -172,43 +184,45 @@ public class SL_consumo extends HttpServlet {
 		}
 	}
 	
-	private void actualizar(int consumo_ID, int contrato_ID, Date fecha_fin, float lectura, HttpServletResponse response) throws IOException {
+	private void actualizar(int consumo_ID, int contrato_ID, Date fecha_fin, float consumoTotal, float lecturaAnt, float lectura, HttpServletResponse response) throws IOException {
 		Consumo consumo =  new Consumo();
-		boolean lecturaMenor = false, fechaMenor = false;
-		int primerRegistro = 0;
+//		boolean lecturaMenor = false;
+		boolean fechaMenor = false;
+//		int primerRegistro = 0;
 		try {
 			ResultSet r = datosConsumo.cargarTodosConsumos();
 			while(r.next()) {
-				if(r.getFloat("lectura_Actual") == 0) {
-					primerRegistro = r.getInt("Consumo_ID");
-				}
+//				if(r.getFloat("lectura_Actual") == 0) {
+//					primerRegistro = r.getInt("Consumo_ID");
+//				}
 				if(consumo_ID > r.getInt("Consumo_ID") && contrato_ID == r.getInt("Contrato_ID") && r.getFloat("lectura_Actual") > 0) {
-					if(lectura <= r.getFloat("lectura_Actual") && contrato_ID == r.getInt("Contrato_ID")) {
-						lecturaMenor = true;
-					}
+//					if(lectura <= r.getFloat("lectura_Actual") && contrato_ID == r.getInt("Contrato_ID")) {
+//						lecturaMenor = true;
+//					}
 					if(fecha_fin.compareTo(r.getDate("fecha_fin")) <= 0 && contrato_ID == r.getInt("Contrato_ID")) {
 						fechaMenor = true;
 					}
 				}
-				if(consumo_ID == r.getInt("Consumo_ID") && r.getFloat("consumoTotal") == r.getFloat("lectura_Actual")){
-					Consumo c = new Consumo();
-					c.setConsumo_ID(primerRegistro);
-					c.setFecha_fin(fecha_fin);
-					c.setActual(false);
-					c.setEliminado(false);
-					c.setConsumoTotal(0.0f);
-					c.setLectura_Actual(0.0f);
-					datosConsumo.actualizarConsumo(c);
-				}
+//				if(consumo_ID == r.getInt("Consumo_ID") && r.getFloat("consumoTotal") == r.getFloat("lectura_Actual")){
+//					Consumo c = new Consumo();
+//					c.setConsumo_ID(primerRegistro);
+//					c.setFecha_fin(fecha_fin);
+//					c.setActual(false);
+//					c.setEliminado(false);
+//					c.setConsumoTotal(0.0f);
+//					c.setLectura_Actual(0.0f);
+//					datosConsumo.actualizarConsumo(c);
+//				}
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		if(lecturaMenor) {
-			response.setContentType("text/plain");
-			out = response.getWriter();
-			out.print("LECTURAMENOR");
-		}else if(fechaMenor) {
+//		if(lecturaMenor) {
+//			response.setContentType("text/plain");
+//			out = response.getWriter();
+//			out.print("LECTURAMENOR");
+//		}else 
+		if(fechaMenor) {
 			response.setContentType("text/plain");
 			out = response.getWriter();
 			out.print("FECHAMENOR");
@@ -216,6 +230,8 @@ public class SL_consumo extends HttpServlet {
 			try {
 			consumo.setConsumo_ID(consumo_ID);
 			consumo.setFecha_fin(fecha_fin);
+			consumo.setConsumoTotal(consumoTotal);
+			consumo.setLectura_Anterior(lecturaAnt);
 			consumo.setLectura_Actual(lectura);
 			consumo.setActual(true);
 			consumo.setEliminado(false);
@@ -246,7 +262,7 @@ public class SL_consumo extends HttpServlet {
 			rs = datosConsumo.cargarHistorial(contrato_ID);
 		while (rs.next()) {
 			String f = parseador2.format(rs.getDate("fecha_fin"));
-			Consumo c = new Consumo(parseador2.parse(f), rs.getFloat("consumoTotal"), 
+			Consumo c = new Consumo(parseador2.parse(f), rs.getFloat("consumoTotal"), rs.getFloat("lectura_Anterior"), 
 					rs.getFloat("lectura_Actual"), rs.getInt("Consumo_ID"),
 					new Cliente(rs.getInt("Cliente_ID")), new Contrato(rs.getInt("Contrato_ID")));
 			consumos.add(c);

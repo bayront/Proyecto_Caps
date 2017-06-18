@@ -128,6 +128,8 @@ response.setDateHeader("Expires", -1);
 									<i class="fa fa-chevron-up"></i></a> 
 								<a id="expandir1" class="expand-link"> 
 									<i class="fa fa-expand"></i></a>
+								<a class="cerrar" title="Inhabilitado"> 
+									<i class="fa fa-times"></i></a>
 							</div>
 							<div class="no-move"></div>
 						</div>

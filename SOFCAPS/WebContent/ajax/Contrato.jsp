@@ -88,6 +88,8 @@ response.setDateHeader("Expires", -1);
 						<i class="fa fa-chevron-up"></i></a> 
 					<a id="expandir2" onclick="validar(expand2);" class="expand-link"> 
 						<i class="fa fa-expand"></i></a>
+					<a class="cerrar" title="Inhabilitado"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -97,11 +99,8 @@ response.setDateHeader("Expires", -1);
 					<thead>
 						<tr>
 							<th>Nombre del cliente</th>
-							<th>Fecha contrato</th>
-							<th>Número contrato</th>
-							<th>Número de Medidor</th>
-							<th>Monto contrato</th>
-							<th>Regimen propiedad</th>
+							<th>Número del contrato</th>
+							<th>Número del Medidor</th>
 							<th>Sector</th>
 							<th>Categoría</th>
 							<th></th>
@@ -121,9 +120,10 @@ response.setDateHeader("Expires", -1);
 					<i class="fa fa-edit"></i> <span>Formulario de contratos</span>
 				</div>
 				<div class="box-icons">
-					<a id="expandir1" class="expand-link">
-						<i class="fa fa-expand"></i>
-					</a>
+					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir1" class="expand-link" onclick="validar(expand1);">
+						<i class="fa fa-expand"></i></a>
 					<a class="cerrar_formulario_cliente" onclick="cancelar();"> 
 						<i class="fa fa-times"></i></a>
 				</div>
@@ -133,7 +133,6 @@ response.setDateHeader("Expires", -1);
 				<h4 class="page-header">Datos</h4>
 				<form class="form-horizontal formContrato" role="form">
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
-					<input type="hidden" id="fechaContrato" name="fechaContrato">
 					<input type = "hidden" id="contrato_ID" name ="contrato_ID" >
 					
 					<input type = "hidden" id="nombreCliente" name ="nombreCliente" >
@@ -152,11 +151,11 @@ response.setDateHeader("Expires", -1);
 					</div>
 					
 					<div class="form-group has-warning has-feedback">
-						<label class="col-sm-5 control-label">Direccion</label>
+						<label class="col-sm-5 control-label">Dirección</label>
 						<div class="col-sm-4">
-						<input id = "direccionCliente" type="text" class="form-control" 
-							placeholder="Escriba la direccion del cliente" name="direccionCliente"
-							data-toggle="tooltip" data-placement="bottom" title="Direccion cliente">	
+							<textarea maxlength="250" title="Requerido" id="direccionCliente" name="direccionCliente" 
+							class="form-control" style="max-width:100%; height:110px;"></textarea>
+							<div id="contadorText">250 caracteres permitidos</div>
 						</div>
 					</div>
 					
@@ -166,6 +165,14 @@ response.setDateHeader("Expires", -1);
 							<input id= "cantidadPersonas" name="cantidadPersonas" class="form-control" data-placement="top"
 								placeholder="Cantidad Personas" data-toggle="tooltip" title="Cantidad de personas">
 						</div>	
+					</div>
+					
+					<div class="form-group has-warning has-feedback">
+						<label class="col-sm-5 control-label">Fecha</label>
+						<div class="col-sm-4">
+							<input type="text" name="fechaContrato" id="fechaContrato" class="form-control" placeholder="Date"> 
+								<span class="fa fa-calendar txt-danger form-control-feedback"></span>
+						</div>
 					</div>
 					
 					<%
@@ -457,24 +464,29 @@ function abrirDialogo() {////////////////////abre dialogo con muestra si desae e
 }
 
 var limpiar_texto = function() {/////////////////////////limpiar texto del formulario
+	$( ".formContrato #info" ).remove();
+	$("#abrir_modal").prop('disabled', false).attr('title', '');
+	$("button#guardar").prop('disabled', false);
 	$("#opcion").val("guardar");
 	$("#contrato_ID").val("");
-	$("#nombreCliente").val("").change();
-	$("#nombreClienteCompleto").val("");
-	$("#direccionCliente").val("");
-	$("#cantidadPersonas").val("");
-	$("#numMedidor").val("");
-	$("#montoContrato").val("");
-	$("#cuotas").val("").change();
-	$("#regimenPropiedad").val("").change();
-	$("#sector").val("").change();
-	$("#categoria").val("").change();
+	$("#nombreCliente").val("").change().removeAttr('disabled');
+	$("#nombreClienteCompleto").val("").prop('readonly', false);
+	$("#direccionCliente").val("").prop('readonly', false);
+	$("#cantidadPersonas").val("").prop('readonly', false);
+	$("#numMedidor").val("").prop('readonly', false);
+	$("#montoContrato").val("").prop('readonly', false);
+	$("#cuotas").val("").prop('readonly', false);
+	$("#fechaContrato").removeAttr('disabled');
+	$("#regimenPropiedad").val("").change().removeAttr('disabled');
+	$("#sector").val("").change().removeAttr('disabled');
+	$("#categoria").val("").change().removeAttr('disabled');
+	obtenerFechaActual();
 	$("form.formContrato").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 }
 
 var agregar_nuevo_contrato = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
 	document.getElementById('formularioContrato').style.display = 'block';
-	$("#expandir1").prop('disabled', true);
+	//$("#expandir1").prop('disabled', true);
 	limpiar_texto();
 	validarExpand(expand1, "#expandir1");
 	if (colap1.valor == false)
@@ -487,8 +499,8 @@ var agregar_nuevo_contrato = function() {//////////////agregar nuevo registro li
 }
 
 var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
-	document.getElementById('formularioContrato').style.display = 'none';
 	limpiar_texto();
+	document.getElementById('formularioContrato').style.display = 'none';
 	if (expand1.valor == true)
 		validarExpand(expand1, "#expandir1");
 
@@ -517,13 +529,16 @@ var obtener_id_eliminar = function(tbody, table) {//parametro(id_tabla, objeto d
 		abrirDialogo();
 	});
 }
-///////////////////////////funsión que activa el evento click del boton editar del dataTable///////////////////////
+///////////////////////////funsión que activa el evento click del boton visualizar del dataTable///////////////////////
 var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 	$(tbody).on("click", "button.editarContrato", function() {
+		limpiar_texto();
 		var datos = table.row($(this).parents("tr")).index();
 		var contrato_ID, numMedidor, cuotas, montoContrato, cliente, nombreCliente, regimenPropiedad, sector, categoria, cantidadPersonas, direccionCliente;
 		table.rows().every(function(index, loop, rowloop) {
 			if(index == datos){
+				var f = new Date(table.row(index).data().fechaContrato);
+	        	var fecha2 = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
 				contrato_ID = table.row(index).data().contrato_ID;
 				numMedidor = table.row(index).data().numMedidor;
 				cuotas = table.row(index).data().cuotas;
@@ -547,9 +562,46 @@ var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto 
 				$("#cantidadPersonas").val(cantidadPersonas).change();
 				$("#direccionCliente").val(direccionCliente).change();
 				$("#opcion").val("actualizar");
+				$("#fechaContrato").val(fecha2).change();
 				numMed = numMedidor;
 			}
 		});
+		document.getElementById('formularioContrato').style.display = 'block';
+		validarExpand(expand1, "#expandir1");
+		if (colap1.valor == false)
+			validarColap(colap1, "#colapsar_desplegar1");
+		validarColap(colap2, "#colapsar_desplegar2");
+		if (expand2.valor == true)
+			validarExpand(expand2, "#expandir2");
+	});
+}
+///////////////////////////funsión que activa el evento click del boton editar del dataTable///////////////////////
+var obtener_datos_visualizar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
+	$(tbody).on("click", "button.visualizarContrato", function() {
+		$('.formContrato').prepend("<h2 id='info' Style='color:#3276D7; text-align:center;'>Visualización del Registro</h2>");
+		var datos = table.row($(this).parents("tr")).index();
+		table.rows().every(function(index, loop, rowloop) {
+			if(index == datos){
+				var f = new Date(table.row(index).data().fechaContrato);
+	        	var fecha2 = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+				$("#contrato_ID").val(table.row(index).data().contrato_ID);
+				$("#nombreCliente").val(table.row(index).data().cliente.cliente_ID).change().attr('disabled', 'disabled');
+				$("#nombreClienteCompleto").val(table.row(index).data().cliente.nombreCompleto).prop('readonly', true);
+				$("#numMedidor").val(table.row(index).data().numMedidor).prop('readonly', true);
+				$("#cuotas").val(table.row(index).data().cuotas).prop('readonly', true);
+				$("#montoContrato").val(table.row(index).data().montoContrato).prop('readonly', true);
+				$("#regimenPropiedad").val(table.row(index).data().regimenPropiedad.regimenPropiedad_ID).change().attr('disabled', 'disabled');
+				$("#sector").val(table.row(index).data().sector.sector_ID).change().attr('disabled', 'disabled');
+				$("#categoria").val(table.row(index).data().categoria.categoria_ID).change().attr('disabled', 'disabled');
+				$("#cantidadPersonas").val(table.row(index).data().cantidadPersonas).change().prop('readonly', true);
+				$("#direccionCliente").val(table.row(index).data().direccionCliente).change().prop('readonly', true);
+				$("#fechaContrato").val(fecha2).attr('disabled', 'disabled');
+				$("#opcion").val("visualizar");
+				$("button#guardar").attr('disabled', 'disabled');
+				$("#abrir_modal").prop('disabled', true).attr('title', 'No puede editar el cliente');
+			}
+		});
+		document.getElementById('formularioContrato').style.display = 'block';
 		validarExpand(expand1, "#expandir1");
 		if (colap1.valor == false)
 			validarColap(colap1, "#colapsar_desplegar1");
@@ -583,25 +635,20 @@ var listar = function() {
 		},
 		"columns": [
             { "data": "cliente.nombreCompleto"},
-            { "data": null,
-                render: function ( data, type, row ) {
-                	var f = new Date(data.fechaContrato);
-        			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
-                	return fecha;
-                }},
-            { "data": "numContrato",  "width": "6%"},
+            { "data": "numContrato",  "width": "12%"},
             { "data": "numMedidor" },
-            { "data": "montoContrato" },
-            { "data": "regimenPropiedad.regimenPro" },
             { "data": "sector.nombreSector" },
             { "data": "categoria.nomCategoria",  "width": "6%"},
-            {"defaultContent":"<button type='button' class='editarContrato btn btn-primary' data-toggle='tooltip' "+
+            {"defaultContent":"<button type='button' class='visualizarContrato btn btn-info' data-toggle='tooltip' "+
+				"data-placement='top' title='Visualizar Registro'>"+
+				"<i class='fa fa-info-circle'></i> </button>  "+
+				"<button type='button' class='editarContrato btn btn-primary' data-toggle='tooltip' "+
 				"data-placement='top' title='Editar contrato'>"+
-				"<i class='fa fa-pencil-square-o'></i> </button>  "+
+				"<i class='fa fa-pencil-square-o'></i> </button> "+
 				
 				"<button type='button' class='eliminarContrato btn btn-danger' data-toggle='tooltip' "+
 				"data-placement='top' title='Eliminar contrato'>"+
-				"<i class='fa fa-trash-o'></i> </button>"+
+				"<i class='fa fa-trash-o'></i> </button> "+
 				
 				"<button type='button' class='imprimir btn btn-basic' data-toggle='tooltip' "+
 				"data-placement='top' title='Imprimir contrato'>"+
@@ -639,6 +686,7 @@ var listar = function() {
 	});
 	tablaContrato.columns.adjust().draw();
 	obtener_datos_editar("#dt_Contrato tbody",tablaContrato);
+	obtener_datos_visualizar("#dt_Contrato tbody",tablaContrato);
 	obtener_id_eliminar('#dt_Contrato tbody',tablaContrato);
 	obtener_id_imprimir('#dt_Contrato tbody',tablaContrato);
 }
@@ -708,7 +756,15 @@ $(document).ready(function() {
 	FormLayoutExampleInputLength($( ".slider-style" ));
 	
 	// Inicializar datePicker
-	$('#input_date').datepicker({setDate: new Date()});
+	$('#fechaContrato').datepicker({
+		setDate : new Date(),
+		dateFormat: 'dd/mm/yy',
+		onSelect: function(dateText, inst) {
+			$("#fechaContrato").val(dateText.toString());
+			$("#fechaContrato").change();
+			$('#formContrato').bootstrapValidator('revalidateField', 'fechaContrato');
+		}
+	});
 	
 	//Añadir tootlip para form-controls
 	$('.form-control').tooltip();
@@ -726,6 +782,12 @@ $(document).ready(function() {
 	validarColap(colap1, "#colapsar_desplegar1");
 	
 	LoadDataTablesScripts2(AllTables);
+	
+	$('#direccionCliente').keyup(function() {//contador para el máximo de caracteres permitidos en la direccionCliente
+        var chars = $(this).val().length;
+        var diff = 250 - chars;
+        $('#contadorText').html(diff+" caracteres permitidos");   
+    });
 	
 	//MODAL para mostrar una tabla con el cliente
 	$('#abrir_modal').on('click',function(e) {
@@ -857,7 +919,21 @@ function formValidContrato() {
 						message: '¡El campo debe ser mayor o igual que 0!'
 					}
 		        }
-			}
+			},
+			direccionCliente:{
+				validators: {
+    				notEmpty:{
+		                message: "¡Este campo es requerido y no debe estar vacio!"
+		            }
+		        }
+			},
+			fechaContrato:{
+				validators:{
+                    notEmpty:{
+		                message: "¡Este campo es requerido y no debe estar vacio!"
+		            }
+				}
+			},
 		}
 	}).on('success.form.bv', function(e) {//evento que se activa cuando los datos son correctos
         // Prevenir el evento submit

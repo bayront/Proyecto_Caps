@@ -17,6 +17,7 @@ response.setDateHeader("Expires", -1);
 	Rol r = new Rol();
 	r = (Rol)session.getAttribute("Rol");
 	
+	
 	String url="";
 	url = request.getRequestURI();
 	//System.out.println("url: "+url);
@@ -88,6 +89,8 @@ response.setDateHeader("Expires", -1);
 						<i class="fa fa-chevron-up"></i>
 					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> 
 						<i class="fa fa-expand"></i></a>
+					<a class="cerrar" title="Inhabilitado"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -96,9 +99,8 @@ response.setDateHeader("Expires", -1);
 					id="tabla_OI" style="width:100%;">
 					<thead>
 						<tr>
-							<th>Descripción</th>
 							<th>Monto</th>
-							<th>Fecha de registro</th>
+							<th>Fecha del registro</th>
 							<th>Categoría</th>
 							<th>Acción</th>
 						</tr>
@@ -117,9 +119,10 @@ response.setDateHeader("Expires", -1);
 					<i class="fa fa-edit"></i> <span>Formulario de Otros Ingresos y Egresos</span>
 				</div>
 				<div class="box-icons">
-					<a id="expandir1" class="expand-link">
-						<i class="fa fa-expand"></i>
-					</a>
+					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir1" class="expand-link" onclick="validar(expand1);">
+						<i class="fa fa-expand"></i></a>
 					<a class="cerrar_formulario_cliente" onclick="cancelar();"> 
 						<i class="fa fa-times"></i></a>
 				</div>
@@ -263,12 +266,14 @@ websocket.onerror = function(evt) {
 
 	
 	var limpiar_texto = function() {//limpiar texto del formulario
+		$( "form #info" ).remove();
 		$("#opcion").val("guardar");
-		$("#descripcion").val("");
-		$("#monto").val("");
-		$("#fecha").val("");
+		$("#descripcion").val("").prop('readonly', false);
+		$("#monto").val("").prop('readonly', false);
+		$("#fecha").val("").removeAttr('disabled');
 		$("#categoria_Ing_Egreg_ID").val("");
-		$("#categoria_Ing_Egreg_ID").change();
+		$("#categoria_Ing_Egreg_ID").change().removeAttr('disabled');
+		$("button#btnEnviar").removeAttr('disabled');
 		$("#formOI").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 	}
 /////////////////////////////////funsión que muestra un dialogo con el resultado de la opreación/////////////////
@@ -319,7 +324,6 @@ websocket.onerror = function(evt) {
 	            $("a.btn").tooltip({container: 'body'});
 	        },
 			"columns": [
-	            { "data": "descripcion" },
 	            { "data": "monto" },
 	            { "data": null,
 	                render: function ( data, type, row ) {
@@ -328,7 +332,10 @@ websocket.onerror = function(evt) {
 	                	return fecha;
 	                }},
 	            { "data": "categoria_Ing_Egreg.nombreCategoria" },
-	            {"defaultContent":"<button type='button' class='editarOI btn btn-primary' data-toggle='tooltip' "+
+	            {"defaultContent":"<button type='button' class='visualizarOI btn btn-info' data-toggle='tooltip' "+
+					"data-placement='top' title='Visualizar Registro'>"+
+					"<i class='fa fa-info-circle'></i> </button>  "+
+					"<button type='button' class='editarOI btn btn-primary' data-toggle='tooltip' "+
 					"data-placement='top' title='Editar Otros ingresos o egresos'>"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
 					"<button type='button' class='eliminar btn btn-danger' title='Eliminar Otros ingresos o egresos'>"+
@@ -369,11 +376,11 @@ websocket.onerror = function(evt) {
 		});
 		obtener_datos_editar('#tabla_OI tbody', tablaO);
 		obtener_id_eliminar('#tabla_OI tbody', tablaO);
+		obtener_id_visualizar('#tabla_OI tbody', tablaO);
 	}
 
 	var agregar_nuevo_OI = function() {/////funsión para limpiar el texto y expandir el dialogo del formulario
 		document.getElementById('formularioOtrosIngresos').style.display = 'block';
-		$("#expandir1").prop('disabled', true);
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
@@ -386,8 +393,8 @@ websocket.onerror = function(evt) {
 	}
 	
 	var cancelar = function() {///////funsión que limpia el texto y oculta el formulario
-		document.getElementById('formularioOtrosIngresos').style.display = 'none';
 		limpiar_texto();
+		document.getElementById('formularioOtrosIngresos').style.display = 'none';
 		if(expand1.valor == true)
 			validarExpand(expand1, "#expandir1");
 		
@@ -398,6 +405,31 @@ websocket.onerror = function(evt) {
 		if (colap2.valor ==true){}else{
 			validarColap(colap2, "#colapsar_desplegar2");
 		}
+	}
+/////////////////////funsión que activa el click para el boton visualizar del DataTable, y obtiene los datos////////////
+	var obtener_id_visualizar = function(tbody, table) {
+		$(tbody).on("click", "button.visualizarOI", function() {
+			$("form#formOI").prepend("<h2 id='info' Style='color:#3276D7; text-align:center;'>Visualización del Registro</h2>");
+			var datos = table.row($(this).parents("tr")).data();
+			f = new Date(datos.fecha);
+        	var fecha2 = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+			$("#descripcion").val(datos.descripcion).prop('readonly', true);
+			$("#monto").val(datos.monto).prop('readonly', true);
+			$("#Otros_Ing_Egreg_ID").val(datos.otros_Ing_Egreg_ID);
+			$("#opcion").val("visualizar");
+			$("#fecha").val(fecha2).attr('disabled', 'disabled');
+			$("#categoria_Ing_Egreg_ID").val(datos.categoria_Ing_Egreg.categoria_Ing_Egreg_ID);
+			$("#categoria_Ing_Egreg_ID").change().attr('disabled', 'disabled');
+			//$('#selectid option:not(:selected)').attr('disabled',true);
+			$("button#btnEnviar").attr('disabled', 'disabled');
+			document.getElementById('formularioOtrosIngresos').style.display = 'block';
+			validarExpand(expand1, "#expandir1");
+			if(colap1.valor==false)
+				validarColap(colap1, "#colapsar_desplegar1");
+			validarColap(colap2, "#colapsar_desplegar2");
+			if(expand2.valor == true)
+				validarExpand(expand2, "#expandir2");
+		});
 	}
 /////////////////////funsión que activa el click para el boton editar del dataTable, y obtiene los datos////////////
 	var obtener_datos_editar = function(tbody, table) {
@@ -412,6 +444,7 @@ websocket.onerror = function(evt) {
 			$("#fecha").val(fecha2);
 			$("#categoria_Ing_Egreg_ID").val(datos.categoria_Ing_Egreg.categoria_Ing_Egreg_ID);
 			$("#categoria_Ing_Egreg_ID").change();
+			document.getElementById('formularioOtrosIngresos').style.display = 'block';
 			validarExpand(expand1, "#expandir1");
 			if(colap1.valor==false)
 				validarColap(colap1, "#colapsar_desplegar1");

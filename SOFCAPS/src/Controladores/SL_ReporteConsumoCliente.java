@@ -136,7 +136,7 @@ public class SL_ReporteConsumoCliente extends HttpServlet {
 		ResultSet rs = datosConsumo.cargarConsumos();
 		while (rs.next()) {
 			String f = parseador2.format(rs.getDate("fecha_fin"));
-			Consumo c = new Consumo(parseador2.parse(f), rs.getFloat("consumoTotal"), 
+			Consumo c = new Consumo(parseador2.parse(f), rs.getFloat("consumoTotal"), rs.getFloat("lectura_Anterior"),
 					rs.getFloat("lectura_Actual"), 
 					rs.getInt("Consumo_ID"),
 					new Cliente(rs.getInt("Cliente_ID")), new Contrato(rs.getInt("Contrato_ID")));

@@ -6,21 +6,9 @@ import java.util.Date;
 public class Otros_Ing_Egreg 
 {
    private String descripcion;
-   private String mmmes;
-   private String aanio;
-   public String getMmmes() {
-	return mmmes;
-}
-
-
-public String getAanio() {
-	return aanio;
-}
-
-public void setAanio(String aanio) {
-	this.aanio = aanio;
-}
-private Date fecha;
+   private String mes;
+   private String anio;
+   private Date fecha;
    private Float monto;
    private Boolean eliminado;
    private Integer otros_Ing_Egreg_ID; 
@@ -30,6 +18,15 @@ private Date fecha;
    {
    }
 
+   public String getMmmes() {
+		return mes;
+	}
+	public String getAanio() {
+		return anio;
+	}
+	public void setAanio(String aanio) {
+		this.anio = aanio;
+	}
     public String getDescripcion() {
         return descripcion;
     }

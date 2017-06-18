@@ -88,6 +88,8 @@ response.setDateHeader("Expires", -1);
 						<i class="fa fa-chevron-up"></i>
 					</a> <a id="expandir2" class="expand-link" onclick="validar(expand2);"> 
 						<i class="fa fa-expand"></i></a>
+					<a class="cerrar" title="Inhabilitado"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -115,9 +117,10 @@ response.setDateHeader("Expires", -1);
 					<i class="fa fa-edit"></i> <span>Gestión de categorías</span>
 				</div>
 				<div class="box-icons">
-					<a id="expandir1" class="expand-link">
-						<i class="fa fa-expand"></i>
-					</a>
+					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir1" class="expand-link" onclick="validar(expand1);">
+						<i class="fa fa-expand"></i></a>
 					<a class="cerrar_formulario_cliente" onclick="cancelar();"> 
 						<i class="fa fa-times"></i></a>
 				</div>
@@ -259,7 +262,7 @@ var verResultado = function(r) {
 
 	var agregar_nuevo_categoria = function() {
 		document.getElementById('formularioCategoriaIE').style.display = 'block';
-		$("#expandir1").prop('disabled', true);
+		//$("#expandir1").prop('disabled', true);
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
@@ -282,8 +285,8 @@ var verResultado = function(r) {
 	}
 	
 	var cancelar = function() {
-		document.getElementById('formularioCategoriaIE').style.display = 'none';
 		limpiar_texto();
+		document.getElementById('formularioCategoriaIE').style.display = 'none';
 		if(expand1.valor == true)
 			validarExpand(expand1, "#expandir1");
 		
@@ -391,6 +394,7 @@ var obtener_datos_editar = function(tbody, table) {
 				$("#opcion").val("actualizar");
 			}
 		});
+		document.getElementById('formularioCategoriaIE').style.display = 'block';
 		validarExpand(expand1, "#expandir1");
 		if(colap1.valor==false)
 			validarColap(colap1, "#colapsar_desplegar1");

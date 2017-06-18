@@ -141,13 +141,21 @@ response.setDateHeader("Expires", -1);
 						Style="text-align: center; font-size: xx-large;">Consumo</h4>
 						
 					<div class="form-group has-success has-feedback">
+						<label class="col-sm-4 control-label">Lectura Anterior</label>
+						<div class="col-sm-5">
+							<input data-bv-numeric="true" class="form-control" name="lecturaAnterior" data-bv-numeric-message="¡Este valor no es un número!"
+								id="lectura_Anterior" data-toggle="tooltip" data-placement="top" title="Requerido">
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				
+					<div class="form-group has-success has-feedback">
 						<label class="col-sm-4 control-label">Lectura Actual</label>
 						<div class="col-sm-5">
 							<input data-bv-numeric="true" class="form-control" name="lectura" data-bv-numeric-message="¡Este valor no es un número!"
 								id="lectura_Actual" data-toggle="tooltip" data-placement="top" title="Requerido">
 						</div>
 					</div>
-
 					<div class="clearfix"></div>
 
 					<div class="form-group has-success has-feedback">
@@ -158,23 +166,21 @@ response.setDateHeader("Expires", -1);
 								class="fa fa-calendar txt-success form-control-feedback"></span>
 						</div>
 					</div>
-
 					<div class="clearfix"></div>
 
 					<div class="form-group has-success">
 						<label class="col-sm-4 control-label">Consumo</label>
 						<div class="col-sm-5">
 							<!-- PARA DEJAR SIN USO A INPUT AGREGAR ATRIBUTO *disabled* -->
-							<input type="text" class="form-control"
-								placeholder="el consumo es un campo calculado"
-								readonly="readonly" id="consumoTotal">
+							<input type="text" class="form-control" name="consumoTotal"
+								placeholder="el consumo es un campo calculado" id="consumoTotal">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<div class="col-sm-offset-4 col-sm-3">
-							<button type="submit" class="btn btn-primary btn-label-left btn-lg"
-							data-toggle='tooltip' "data-placement='bottom' title='guardar consumo' >
+							<button type="submit" class="btn btn-primary btn-label-left btn-lg" id="btnConsumo"
+							data-toggle='tooltip' data-placement='bottom' title='guardar consumo' >
 								<span><i class="fa fa-save"></i></span> Guardar
 							</button>
 						</div>
@@ -220,12 +226,10 @@ response.setDateHeader("Expires", -1);
 					id="tabla_consumo" style="width:100%;">
 					<thead>
 						<tr>
-							<th>Fecha de corte</th>
-							<th>Lectura</th>
+							<th>Lectura Actual</th>
 							<th>Consumo</th>
-							<th>Nombres_Cliente</th>
-							<th>Num_Contrato</th>
-							<th>Num_medidor</th>
+							<th>Nombre del Cliente</th>
+							<th>Num medidor</th>
 							<th>Acción</th>
 						</tr>
 					</thead>
@@ -345,6 +349,11 @@ websocket.onerror = function(evt) {
     console.log("oho!.. error:" + evt.data);
 };
 
+websocket.onclose = function(){
+	//message('<p class="event">Socket Status: '+socket.readyState+' (Closed)');
+	console.log("Desconectado, status de conexión: " + websocket.readyState);
+}	
+
 	var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
 	var colap1 =  new Colap1();
 	var expand2 = new Expand2();
@@ -418,7 +427,7 @@ websocket.onerror = function(evt) {
 
 	function abrirDialog() {//parametro(funsion_js[eliminar])
 		OpenModalBox(
-				"<div><h3>Imprimir Aviso de Corte</h3></div>",
+				"<div><h3>Imprimir consumo del cliente</h3></div>",
 				"<p Style='text-align:center; color:blue; font-size:x-large;'>¿Esta seguro que desea imprimir el consumo de este cliente?</p>",
 				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
 				"<button type='button' id='imprimir_consumo' class='btn btn-primary btn-label-left'"+
@@ -444,8 +453,7 @@ websocket.onerror = function(evt) {
 		});
 	}
 
-
-	/////////////////////////activar evento del boton eliminar que esta en la fila seleccionada del dataTable///////////
+/////////////////////////activar evento del boton eliminar que esta en la fila seleccionada del dataTable///////////
 	
 	var obtener_id_imprimir = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		$(tbody).on("click", "button.imprimir", function() {
@@ -454,10 +462,6 @@ websocket.onerror = function(evt) {
 			abrirDialog();
 		});
 	}
-
-	
-	
-	
 ////////////////////////////////////////cerrar el modal del historial de consumos/////////////////////////////////
 	function cerrarHistorial() {
 		document.getElementById('historial').style.display = 'none';
@@ -543,7 +547,6 @@ websocket.onerror = function(evt) {
 					+ "<i class='fa fa-upload'></i> </button>"}
 		            ]
 		    });
-		 
 		    // Aplicar la busqueda por columna
 		    table.columns().every( function () {
 		        var that = this;
@@ -570,6 +573,38 @@ websocket.onerror = function(evt) {
 			CloseModalBox();
 		});
 	}
+///////////////////////////funsión que activa el evento click del boton visualizar del dataTable///////////////////////
+	var seleccionarvisualizarConsumo = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
+		$(tbody).on("click", "button.visualizarConsumo", function() {
+			$("form#defaultForm").prepend("<h2 id='info' Style='color:#3276D7; text-align:center;'>Visualización del Registro</h2>");
+			var datos = table.row($(this).parents("tr")).data();
+			var f = new Date(datos.fecha_fin);
+			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+			$("#lectura_Actual").val(datos.lectura_Actual).prop('readonly', true);
+			$("#lectura_Anterior").val(datos.lectura_Anterior).prop('readonly', true);
+			$("#fecha_fin").val(fecha).prop('disabled', true);
+			$("#consumoTotal").val(datos.consumoTotal).prop('readonly', true);
+			$("#nombreClienteCompleto").val(datos.cliente.nombreCompleto).prop('readonly', true);
+			$("#numContrato").val(datos.contrato.numContrato).prop('readonly', true);
+			$("#numMedidor").val(datos.contrato.numMedidor).prop('readonly', true);
+			$("#opcion").val("visualizar");
+			$("#consumo_ID").val(datos.consumo_ID);
+			$("#nombreClienteCompleto").prop('readonly', true);
+			$("#numContrato").prop('readonly', true);
+			$("#numMedidor").prop('readonly', true);
+			$("#abrir_modal").prop('disabled', true);
+			$("#abrir_modal").attr('title', 'Boton inhabilitado para esta opción');
+			$("#cliente_ID").val(datos.cliente.cliente_ID);
+			$("#contrato_ID").val(datos.contrato.contrato_ID);
+			$("button#btnConsumo").prop('disabled', true);
+			document.getElementById('formulario').style.display = 'block';
+			if(colap1.valor==false)
+				validarColap(colap1, "#colapsar_desplegar1");
+			validarColap(colap2, "#colapsar_desplegar2");
+			if(expand2.valor == true)
+				validarExpand(expand2, "#expandir2");
+		});
+	}
 ///////////////////////////funsión que activa el evento click del boton editar del dataTable///////////////////////
 	var seleccionarEditarConsumo = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		$(tbody).on("click", "button.editarConsumo", function() {
@@ -577,6 +612,7 @@ websocket.onerror = function(evt) {
 			var f = new Date(datos.fecha_fin);
 			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
 			$("#lectura_Actual").val(datos.lectura_Actual);
+			$("#lectura_Anterior").val(datos.lectura_Anterior);
 			$("#fecha_fin").val(fecha);
 			$("#consumoTotal").val(datos.consumoTotal);
 			$("#nombreClienteCompleto").val(datos.cliente.nombreCompleto);
@@ -635,24 +671,20 @@ websocket.onerror = function(evt) {
 	            $("a.btn").tooltip({container: 'body'});
 	        },
 			"columns": [
-	            { "data": null,
-	                render: function ( data, type, row ) {
-	                	var f = new Date(data.fecha_fin);
-	        			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
-	                	return fecha;
-	                }},
 	            { "data": "lectura_Actual" },
 	            { "data": "consumoTotal" },
 	            { "data": "cliente.nombreCompleto" },
-	            { "data": "contrato.numContrato" },
 	            { "data": "contrato.numMedidor" },
-	            {"defaultContent":"<button type='button' class='editarConsumo btn btn-primary' title='Editar consumo'>"+
+	            {"defaultContent":"<button type='button' class='visualizarConsumo btn btn-info' data-toggle='tooltip' "+
+					"data-placement='top' title='Visualizar Registro'>"+
+					"<i class='fa fa-info-circle'></i> </button>  "+
+					"<button type='button' class='editarConsumo btn btn-primary' title='Editar consumo'>"+
 					"<i class='fa fa-pencil-square-o'></i> </button>  "+
 					"<button type='button' class='eliminarConsumo btn btn-danger' title='Eliminar consumo'>"+
 					"<i class='fa fa-trash-o'></i> </button> "+
 					"<button type='button' class='verHistorial btn btn-warning' data-toggle='tooltip' "+
 					"data-placement='top' title='ver historial de consumos'>"+
-					"<i class='fa fa-sitemap'></i> </button>"+
+					"<i class='fa fa-sitemap'></i> </button> "+
 					"<button type='button' class='imprimir btn btn-basic' data-toggle='tooltip' "+
 					"data-placement='top' title='Imprimir Consumo'>"+
 					"<i class='fa fa-print'></i> </button>"}
@@ -671,14 +703,13 @@ websocket.onerror = function(evt) {
 						agregar_nuevo_consumo();
 					}
 				},
-{
-	                
-	                text:      '<i class="fa fa-print fa-o"></i>',
+				{
+	                text: '<i class="fa fa-print fa-o"></i>',
 	                titleAttr: 'Imprimir reporte',
 	                action: function(){
 	                	imprimir();
 	                }
-	            },,
+	            },
 				{
 	                extend:    'excelHtml5',
 	                text:      '<i class="fa fa-file-excel-o"></i>',
@@ -696,6 +727,7 @@ websocket.onerror = function(evt) {
 	            }]
 		});
 		seleccionarEditarConsumo('#tabla_consumo tbody', tablaConsumo);
+		seleccionarvisualizarConsumo('#tabla_consumo tbody', tablaConsumo);
 		seleccionarEliminarConsumo('#tabla_consumo tbody', tablaConsumo);
 		visualizarHistorial('#tabla_consumo tbody', tablaConsumo);
 		obtener_id_imprimir('#tabla_consumo tbody', tablaConsumo);
@@ -708,10 +740,8 @@ websocket.onerror = function(evt) {
 		consumo_ID = $("#consumo_ID").val();
 		window.open("SL_ReporteConsumoCT?consumo_ID="+consumo_ID, '_blank');
 
-		console.log("Error en metodo imprimir");
+		console.log("imprimir registro");
 	}
-
-
 	
 	var agregar_nuevo_consumo = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
 		limpiar_texto();
@@ -743,20 +773,23 @@ websocket.onerror = function(evt) {
 	
 	var limpiar_texto = function() {////////////////////////limpiar texto del formulario
 		$("#opcion").val("guardar");
+		$("form#defaultForm #info" ).remove();
 		$("#consumo_ID").val("");
 		$("#cliente_ID").val("");
 		$("#contrato_ID").val("");
-		$("#lectura_Actual").val("");
-		$("#fecha_fin").val("");
-		$("#consumoTotal").val("");
-		$("#nombreClienteCompleto").val("");
-		$("#numContrato").val("");
-		$("#numMedidor").val("");
+		$("#lectura_Actual").val("").prop('readonly', false);
+		$("#lectura_Anterior").val("").prop('readonly', false);
+		$("#fecha_fin").val("").prop('disabled', false);
+		$("#consumoTotal").val("").prop('readonly', false);
+		$("#nombreClienteCompleto").val("").prop('readonly', false);
+		$("#numContrato").val("").prop('readonly', false);
+		$("#numMedidor").val("").prop('readonly', false);
 		$("#nombreClienteCompleto").prop('readonly', false);
 		$("#numContrato").prop('readonly', false);
 		$("#numMedidor").prop('readonly', false);
 		$("#abrir_modal").prop('disabled', false);
 		$("#abrir_modal").attr('title', '');
+		$("#btnConsumo").prop('disabled', false);
 		$("form#defaultForm").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 	}
 /////////////////////////funsión que activa el evento click para eliminar un registro del dataTable////////////////
@@ -805,7 +838,6 @@ websocket.onerror = function(evt) {
 				$('form#defaultForm').bootstrapValidator('revalidateField', 'fecha');
 			}
 		});
-		
 	
 		// Añadir Tooltip para formularios
 		$('.form-control').tooltip();
@@ -846,13 +878,30 @@ websocket.onerror = function(evt) {
 		
 		//añadir tooltip
 		$('[data-toggle="tooltip"]').tooltip();
+		
+		$("input#lectura_Actual").change(function() {
+			$( "#consumoTotal" ).val($( "#lectura_Actual" ).val() - $( "#lectura_Anterior" ).val());
+		});
 	});
+	
 ///////////////////////////Funsión que valida el formulario de consumos de clientes////////////////////////////////
 	function FormValidConsumo() {
 		$('form#defaultForm').bootstrapValidator({
 			message: '¡Este valor no es valido!',
 			fields: {
 				lectura:{
+					validators: {
+						notEmpty:{
+			                message: "¡Este campo es requerido y no debe estar vacio!"
+			            },
+			            greaterThan: {
+	                        value: 0,
+	                        inclusive: false,
+	                        message: '¡El valor debe ser mayor o igual a 0!'
+	                    }
+			        }
+				},
+				lecturaAnterior:{
 					validators: {
 						notEmpty:{
 			                message: "¡Este campo es requerido y no debe estar vacio!"
@@ -881,7 +930,7 @@ websocket.onerror = function(evt) {
 			            }
 			        }
 				},
-				consumoActual:{
+				consumoTotal:{
 					validators: {
 						notEmpty:{
 			                message: "¡Este campo es requerido y no debe estar vacio!"
@@ -916,33 +965,3 @@ websocket.onerror = function(evt) {
 	}
 	
 </script>
-<!-- <div class="container"> -->
-<!-- 	<div class="table-responsive"> -->
-<!-- 		<table class="table" id="tablaNormal"> -->
-<!-- 			<thead> -->
-<!-- 				<tr> -->
-<!-- 					<th>Fecha_Corte</th> -->
-<!-- 					<th>Lectura</th> -->
-<!-- 					<th>Consumo</th> -->
-<!-- 				</tr> -->
-<!-- 			</thead> -->
-<!-- 			<tbody> -->
-<!-- 				<tr class="active"> -->
-<!-- 					<td>1</td> -->
-<!-- 					<td>Anna</td> -->
-<!-- 					<td>3939.3</td> -->
-<!-- 				</tr> -->
-<!-- 				<tr> -->
-<!-- 					<td>2</td> -->
-<!-- 					<td>Debbie</td> -->
-<!-- 					<td>32.34</td> -->
-<!-- 				</tr> -->
-<!-- 				<tr> -->
-<!-- 					<td>3</td> -->
-<!-- 					<td>como noo se</td> -->
-<!-- 					<td>2324.1</td> -->
-<!-- 				</tr> -->
-<!-- 			</tbody> -->
-<!-- 		</table> -->
-<!-- 	</div> -->
-<!-- </div> -->

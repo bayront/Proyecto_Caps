@@ -91,6 +91,8 @@ response.setDateHeader("Expires", -1);
 					<a id="expandir2" class="expand-link"> 
 <!-- 					onclick="validar(expand2);" -->
 						<i class="fa fa-expand"></i></a>
+					<a class="cerrar" title="Inhabilitado"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>

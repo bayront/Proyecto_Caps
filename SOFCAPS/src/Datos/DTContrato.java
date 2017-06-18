@@ -39,7 +39,7 @@ public class DTContrato {
 		if (opcion == 1){
 			sql = ("SELECT * FROM contrato WHERE estado = 0;");
 		} else {
-			sql = ("SELECT c.numContrato, c.numMedidor, c.cuotas, c.montoContrato, c.Contrato_ID, c.Cliente_ID, c.RegimenPropiedad_ID, c.Sector_ID, c.Categoria_ID, c.direccionCliente, c.cantidadPersonas FROM contrato c WHERE estado = 0;");
+			sql = ("SELECT c.numContrato, c.numMedidor, c.cuotas, c.montoContrato, c.Contrato_ID, c.Cliente_ID, c.RegimenPropiedad_ID, c.Sector_ID, c.Categoria_ID, c.direccionCliente, c.cantidadPersonas, c.fechaContrato FROM contrato c WHERE estado = 0;");
 		}
 			
 		try
@@ -154,6 +154,7 @@ public class DTContrato {
 					rs.updateInt("Categoria_ID", contrato.getCategoria().getCategoria_ID());
 					rs.updateString("direccionCliente", contrato.getDireccionCliente()); 
 					rs.updateInt("cantidadPersonas", contrato.getCantidadPersonas());
+					rs.updateString("fechaContrato", fecha.format(contrato.getFechaContrato()));
 					rs.updateRow();
 					actualizado = true;
 				}

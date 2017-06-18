@@ -132,6 +132,13 @@ public class SL_Contrato extends HttpServlet {
 		switch (opcion) {
 		case "actualizar":
 			System.out.println("opcion a realizar: " + request.getParameter("opcion"));
+			try {
+				System.out.println("la fecha es: " + request.getParameter("fechaContrato"));
+				fechaContrato = fecha.parse(request.getParameter("fechaContrato"));
+				System.out.println("la fecha es: " + fechaContrato);
+			} catch (java.text.ParseException e) {
+				e.printStackTrace();
+			}
 			contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
 			numMedidor = request.getParameter("numMedidor").trim();
 			direccionCliente = request.getParameter("direccionCliente").trim();
@@ -143,7 +150,7 @@ public class SL_Contrato extends HttpServlet {
 			regimenPropiedad = Integer.parseInt(request.getParameter("regimenPropiedad"));
 			sector = Integer.parseInt(request.getParameter("sector"));
 			categoria = Integer.parseInt(request.getParameter("categoria"));
-			actualizar(contrato_ID, numMedidor, direccionCliente, cuotas, cantidadPersonas, montoRound, cliente, regimenPropiedad, sector, categoria, response);
+			actualizar(contrato_ID, fechaContrato, numMedidor, direccionCliente, cuotas, cantidadPersonas, montoRound, cliente, regimenPropiedad, sector, categoria, response);
 			break;
 		case "eliminar":
 			contrato_ID= Integer.parseInt(request.getParameter("contrato_ID"));
@@ -158,7 +165,6 @@ public class SL_Contrato extends HttpServlet {
 				fechaContrato = fecha.parse(request.getParameter("fechaContrato"));
 				System.out.println("la fecha es: " + fechaContrato);
 			} catch (java.text.ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			cuotas = Integer.parseInt(request.getParameter("cuotas"));
@@ -261,7 +267,7 @@ public class SL_Contrato extends HttpServlet {
 			System.err.println("ERROR EN EL SERVLET CONTRATO: "+e.getMessage());
 		}
 	}
-	protected void actualizar(int contrato_ID, String numMedidor, String direccionCliente, int cuotas, int cantidadPersonas, float montoContrato, int clienteId, int regimenPropiedadId, int sectorId, int categoriaId, HttpServletResponse response) {
+	protected void actualizar(int contrato_ID, Date fechaContrato, String numMedidor, String direccionCliente, int cuotas, int cantidadPersonas, float montoContrato, int clienteId, int regimenPropiedadId, int sectorId, int categoriaId, HttpServletResponse response) {
 		Contrato c = new Contrato();
 		Cliente cl = new Cliente();
 		RegimenPropiedad r = new RegimenPropiedad();
@@ -271,6 +277,7 @@ public class SL_Contrato extends HttpServlet {
 		try 
 		{
 			c.setContrato_ID(contrato_ID);
+			c.setFechaContrato(fechaContrato);
 			c.setNumMedidor(numMedidor);
 			c.setDireccionCliente(direccionCliente);
 			c.setCuotas(cuotas);

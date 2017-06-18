@@ -115,8 +115,8 @@ public class SL_Usuario_Rol extends HttpServlet {
 					response.sendRedirect("index.jsp?msj=1");
 				} 
 				else{
-					System.out.println("ERROR AL AUTENTICAR, El Usuario y Rol no son correctos!");
-					String msg = "¡ERROR AL AUTENTICAR, El Usuario y Rol no son correctos!";
+					System.out.println("ERROR AL AUTENTICAR, El Usuario y/o Rol no son correctos!");
+					String msg = "¡ERROR AL AUTENTICAR, El Usuario y/o Rol no son correctos!";
 					request.setAttribute("msg", msg);
 					request.getRequestDispatcher("CAPS.jsp").forward(request, response);
 					

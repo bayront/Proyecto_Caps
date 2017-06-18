@@ -132,10 +132,6 @@
 						</div>
 						<div class="col-xs-4 col-sm-8 top-panel-right">
 							<ul class="nav navbar-nav pull-right panel-menu">
-<!-- 								<li class="hidden-xs"><a class="ajax-link" -->
-<!-- 									href="ajax/calendar.html"> <i class="fa fa-calendar"></i> <span -->
-<!-- 										class="badge">7</span> -->
-<!-- 								</a></li> -->
 								<li class="dropdown"><a href="#"
 									class="dropdown-toggle account" data-toggle="dropdown">
 										<i class="fa fa-angle-down pull-right"></i>

@@ -84,11 +84,11 @@ response.setDateHeader("Expires", -1);
 				</div>
 				<div class="box-icons">
 					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
-						<i class="fa fa-chevron-up"></i>
-					</a> 
+						<i class="fa fa-chevron-up"></i></a> 
 					<a id="expandir2" onclick="validar(expand2);" class="expand-link">
-						<i class="fa fa-expand"></i>
-					</a>
+						<i class="fa fa-expand"></i></a>
+					<a class="cerrar" title="Inhabilitado"> 
+						<i class="fa fa-times"></i></a>
 				</div>
 				<div class="no-move"></div>
 			</div>
@@ -102,12 +102,9 @@ response.setDateHeader("Expires", -1);
 					id="dt_cliente" style="width: 100%;">
 					<thead>
 						<tr>
-							<th>Nombre1</th>
-							<th>Nombre2</th>
-							<th>Apellido1</th>
-							<th>Apellido2</th>
+							<th>Primer Nombre</th>
+							<th>primer Apellido</th>
 							<th>Cédula</th>
-							<th>Celular</th>
 							<th>Acción</th>
 						</tr>
 					</thead>
@@ -126,9 +123,10 @@ response.setDateHeader("Expires", -1);
 					<i class="fa  fa-user"></i> <span>Formulario de Clientes</span>
 				</div>
 				<div class="box-icons">
-					<a id="expandir1" class="expand-link">
-						<i class="fa fa-expand"></i>
-					</a>
+					<a id="colapsar_desplegar1" onclick="validar(colap1);" class="collapse-link"> 
+						<i class="fa fa-chevron-up"></i></a> 
+					<a id="expandir1" class="expand-link" onclick="validar(expand1);">
+						<i class="fa fa-expand"></i></a>
 					<a class="cerrar_formulario_cliente" onclick="cancelar();"> 
 						<i class="fa fa-times"></i></a>
 				</div>
@@ -288,13 +286,15 @@ response.setDateHeader("Expires", -1);
 	}
 /////////////Metodo para limpiar el texto del formulario de clientes//////////////////////////////////77
 	var limpiar_texto = function() {//limpiar texto del formulario
+		$( "form #info" ).remove();
 		$("#opcion").val("guardar");
-		$("#nombre1").val("");
-		$("#nombre2").val("");
-		$("#apellido1").val("");
-		$("#apellido2").val("");
-		$("#cedula").val("");
-		$("#celular").val("");
+		$("#nombre1").val("").prop('readonly', false);
+		$("#nombre2").val("").prop('readonly', false);
+		$("#apellido1").val("").prop('readonly', false);
+		$("#apellido2").val("").prop('readonly', false);
+		$("#cedula").val("").prop('readonly', false);
+		$("#celular").val("").prop('readonly', false);
+		$("form button#guardar").removeAttr('disabled');
 		$("#defaultForm").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 	}
 
@@ -323,7 +323,7 @@ response.setDateHeader("Expires", -1);
 ////////////////////////////////limpia el texto y valida los botones de control de dialogo/////////////////////////
 	var agregar_nuevo_cliente = function() {
 		document.getElementById('formularioCliente').style.display = 'block';
-		$("#expandir1").prop('disabled', true);
+		//$("#expandir1").prop('disabled', true);
 		limpiar_texto();
 		validarExpand(expand1, "#expandir1");
 		if (colap1.valor == false)
@@ -336,8 +336,8 @@ response.setDateHeader("Expires", -1);
 	}
 ///////////////////////////////cancelar la accion sobre el cliente////////////////////////////////////////////////
 	var cancelar = function() {
-		document.getElementById('formularioCliente').style.display = 'none';
 		limpiar_texto();
+		document.getElementById('formularioCliente').style.display = 'none';
 		if (expand1.valor == true)
 			validarExpand(expand1, "#expandir1");
 
@@ -391,7 +391,10 @@ var boton= 1;//varaible para validar si el check de activar clientes esta checke
 /////////////////////////////////funsion que devuelve los botones dependiendo del check///////////////////////////
 function botones() {
 	if(boton ==1){
-		return "<button type='button' class='editar btn btn-primary' title='Editar Cliente'>" //poner botones en cada fila
+		return "<button type='button' class='visualizar btn btn-info' data-toggle='tooltip' "+
+		"data-placement='top' title='Visualizar Registro'>"
+		+"<i class='fa fa-info-circle'></i> </button>  "
+		+"<button type='button' class='editar btn btn-primary' title='Editar Cliente'>"
 		+"<i class='fa fa-pencil-square-o'></i>"
 		+ "</button>  "
 		+ "<button type='button' title='Eliminar Cliente' class='eliminar btn btn-danger' >"
@@ -430,11 +433,8 @@ function botones() {
 			'bJQueryUI' : true,
 			'aoColumns' : [
 				{'mData' : 'nombre1'},
-				{'mData' : 'nombre2'},
 				{'mData' : 'apellido1'},
-				{'mData' : 'apellido2'},
 				{'mData' : 'cedula'},
-				{'mData' : 'celular'},
 				{"mData" : null,
 					render: function ( data, type, row ) {
 	                	return botones;
@@ -471,6 +471,7 @@ function botones() {
 		});
 		obtener_datos_editar("#dt_cliente tbody", table);//despues de llenar se manda a activar el evento clickde obtener
 		obtener_id_eliminar("#dt_cliente tbody", table)//igual para el boton eliminar
+		obtener_datos_visualizar("#dt_cliente tbody", table)//igual para el boton visualizar
 		obtener_id_activar("#dt_cliente tbody", $('#dt_cliente').DataTable());//igual para el boton activar
 		$('.dataTables_filter').each(
 			function() {
@@ -479,11 +480,11 @@ function botones() {
 		$("#mostrar_clientes").change(function(){//evento que carga diferentes datos si el checkbox esta activo o no
 	        if($(this).is(':checked')){
 	        	boton= 2;
-				document.getElementById('cerrar').style.display = 'none';
+				document.getElementById('formularioCliente').style.display = 'none';
 				cargar_cliente();
 	        }else{
 	        	boton= 1;
-	        	document.getElementById('cerrar').style.display = 'block';
+	        	//document.getElementById('cerrar').style.display = 'block';
 	        	$('#dt_cliente').DataTable().ajax.reload();
 	        }
 		});
@@ -502,6 +503,34 @@ function botones() {
 	        success: function(response){
 	        	$('#dt_cliente').DataTable().rows.add(response.aaData).draw();
 	        }
+		});
+	}
+/////////////////////////activar el evento del boton visualizar que esta el las filas del dataTable/////////////////
+	var obtener_datos_visualizar = function(tbody, table) {defaultForm
+		$(tbody).on("click","button.visualizar",function() {//activar evento click en boton actualizar que esta en el dataTable
+			$("form#defaultForm").prepend("<h2 id='info' Style='color:#3276D7; text-align:center;'>Visualización del Registro</h2>");
+			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+			table.rows().every(function(index, loop, rowloop) {
+				if (index == datos) {
+					$("#nombre1").val(table.row(index).data().nombre1).prop('readonly', true);
+					$("#nombre2").val(table.row(index).data().nombre2).prop('readonly', true);
+					$("#apellido1").val(table.row(index).data().apellido1).prop('readonly', true);
+					$("#apellido2").val(table.row(index).data().apellido2).prop('readonly', true);
+					$("#cedula").val(table.row(index).data().cedula).prop('readonly', true);
+					$("#celular").val(table.row(index).data().celular).prop('readonly', true);
+					var estado = $("#estado").val(table.row(index).data().estado).prop('readonly', true);
+					$("#cliente_id").val(table.row(index).data().cliente_ID);
+					$("#opcion").val("visualizar");//settear datos en el formulario de visualización
+					$("form button#guardar").attr('disabled', 'disabled');
+				}
+			});
+			document.getElementById('formularioCliente').style.display = 'block';
+			validarExpand(expand1, "#expandir1");
+			if (colap1.valor == false)
+				validarColap(colap1, "#colapsar_desplegar1");
+			validarColap(colap2, "#colapsar_desplegar2");
+			if (expand2.valor == true)
+				validarExpand(expand2, "#expandir2");
 		});
 	}
 /////////////////////////activar el evento del boton actualizar que esta el las filas del dataTable/////////////////
@@ -523,13 +552,13 @@ function botones() {
 					var opcion = $("#opcion").val("actualizar");//settear datos en el formulario de edicion
 				}
 			});
+			document.getElementById('formularioCliente').style.display = 'block';
 			validarExpand(expand1, "#expandir1");
 			if (colap1.valor == false)
 				validarColap(colap1, "#colapsar_desplegar1");
 			validarColap(colap2, "#colapsar_desplegar2");
 			if (expand2.valor == true)
 				validarExpand(expand2, "#expandir2");
-
 		});
 	}
 /////////////////////////activar evento del boton eliminar que esta en la fila seleccionada del dataTable///////////

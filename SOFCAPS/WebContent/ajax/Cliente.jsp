@@ -114,7 +114,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--/////////////////////////////// Formularios de Clientes/////////////////////////////// -->
-<div class="row" id="formularioCliente" style="display:none;">
+<div class="row" id="formularioCliente" ><!-- style="display:none;" -->
 	<div class="col-xs-12 col-sm-12">
 		<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 
@@ -207,7 +207,7 @@ response.setDateHeader("Expires", -1);
 		</div>
 	</div>
 </div>
-<!--/////////////////////////////// Formalario y dialogo de eliminación/////////////////////////////// -->
+<!--/////////////////////////////// Formalario y dialogo de eliminaciÃ³n/////////////////////////////// -->
 <form id="frmEliminarCliente" action="" method="POST">
 	<input type="hidden" id="cliente_id" name="cliente_id" value="">
 	<input type="hidden" id="opcion" name="opcion" value="eliminar">
@@ -226,7 +226,7 @@ response.setDateHeader("Expires", -1);
 		</div>
 	</div>
 </form>
-<!--///////////////////////////// Formalario y dialogo de activación de clientes/////////////////////////////// -->
+<!--///////////////////////////// Formalario y dialogo de activaciÃ³n de clientes/////////////////////////////// -->
 <form id="frmActivarCliente" action="" method="POST">
 	<input type="hidden" id="cliente_id" name="cliente_id" value="">
 	<input type="hidden" id="opcion" name="opcion" value="activar">
@@ -257,7 +257,8 @@ response.setDateHeader("Expires", -1);
 	function abrirDialogo() {
 		OpenModalBox(//modal(tutilo, contenido, foot)
 				"<div><h3>Borrar Cliente</h3></div>",
-				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar este cliente?</p>",
+				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar este cliente? <br />"+
+						"Se borraran los contratos, consumos y facturas a nombre de este cliente</p>",
 				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-2 col-md-3'> "
 						+ "<button type='button' id='eliminar_cliente' class='btn btn-danger btn-label-left'"
 						+" style='color:#ece1e1;' >"
@@ -408,7 +409,6 @@ function botones() {
 }
 ////////////////////////////Ejecutar el metodo DataTable para llenar el dataTable con ajax///////////////////////////7
 	var listar = function() {
-		console.log("cargando dataTable");
 		boton= 1;
 		var table = $("#dt_cliente").DataTable({
 			"destroy" : true,//para que se puede destruir los datos y recargarlos
@@ -491,7 +491,7 @@ function botones() {
 	}
 //////////////////////////////////////metodo para llenar al dataTable con los clientes anulado////////////////////////
 	var cargar_cliente = function() {
-		console.log("Cargando DataTable para activación");
+		console.log("Cargando DataTable para activaciÃ³n");
 		$('#dt_cliente').DataTable().state.clear();
 		$('#dt_cliente').DataTable().clear().draw();
 		$.ajax({
@@ -508,6 +508,7 @@ function botones() {
 /////////////////////////activar el evento del boton visualizar que esta el las filas del dataTable/////////////////
 	var obtener_datos_visualizar = function(tbody, table) {defaultForm
 		$(tbody).on("click","button.visualizar",function() {//activar evento click en boton actualizar que esta en el dataTable
+			$( "form#defaultForm #info" ).remove();
 			$("form#defaultForm").prepend("<h2 id='info' Style='color:#3276D7; text-align:center;'>Visualización del Registro</h2>");
 			var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
 			table.rows().every(function(index, loop, rowloop) {
@@ -520,7 +521,7 @@ function botones() {
 					$("#celular").val(table.row(index).data().celular).prop('readonly', true);
 					var estado = $("#estado").val(table.row(index).data().estado).prop('readonly', true);
 					$("#cliente_id").val(table.row(index).data().cliente_ID);
-					$("#opcion").val("visualizar");//settear datos en el formulario de visualización
+					$("#opcion").val("visualizar");//settear datos en el formulario de visualizaciÃ³n
 					$("form button#guardar").attr('disabled', 'disabled');
 				}
 			});
@@ -597,7 +598,7 @@ function botones() {
 		});
 	}
 
-/////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////
+/////////////////////////////////////////FUNSIÃ“N PRINCIPAL/////////////////////////////////////////////
 	$(document).ready(function() {
 		/////////cargar plugin para validaciones de bootstrap
 		LoadBootstrapValidatorScript(formValidCli);
@@ -605,7 +606,7 @@ function botones() {
 		///////cargar plugin para DataTable
 		LoadDataTablesScripts2(AllTables);
 		
-		validarColap(colap1, "#colapsar_desplegar1");
+		//validarColap(colap1, "#colapsar_desplegar1");
 		
 		// Add drag-n-drop feature to boxes
 		WinMove();
@@ -743,3 +744,4 @@ function botones() {
 	}
 	
 </script>
+

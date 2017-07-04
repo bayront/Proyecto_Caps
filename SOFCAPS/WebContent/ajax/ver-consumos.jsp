@@ -576,6 +576,7 @@ websocket.onclose = function(){
 ///////////////////////////funsión que activa el evento click del boton visualizar del dataTable///////////////////////
 	var seleccionarvisualizarConsumo = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		$(tbody).on("click", "button.visualizarConsumo", function() {
+			$("form#defaultForm #info" ).remove();
 			$("form#defaultForm").prepend("<h2 id='info' Style='color:#3276D7; text-align:center;'>Visualización del Registro</h2>");
 			var datos = table.row($(this).parents("tr")).data();
 			var f = new Date(datos.fecha_fin);
@@ -601,6 +602,7 @@ websocket.onclose = function(){
 			if(colap1.valor==false)
 				validarColap(colap1, "#colapsar_desplegar1");
 			validarColap(colap2, "#colapsar_desplegar2");
+			validarExpand(expand1, "#expandir1");
 			if(expand2.valor == true)
 				validarExpand(expand2, "#expandir2");
 		});
@@ -880,7 +882,7 @@ websocket.onclose = function(){
 		$('[data-toggle="tooltip"]').tooltip();
 		
 		$("input#lectura_Actual").change(function() {
-			$( "#consumoTotal" ).val($( "#lectura_Actual" ).val() - $( "#lectura_Anterior" ).val());
+			$( "#consumoTotal" ).val($( "#lectura_Actual" ).val() - $( "#lectura_Anterior" ).val()).change();
 		});
 	});
 	

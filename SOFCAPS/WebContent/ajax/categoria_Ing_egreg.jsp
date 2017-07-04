@@ -109,7 +109,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--///////////////////////Formulario principal de las categorias de ingresos y egresos/////////////////////////////// -->
-<div class="row" id="formularioCategoriaIE" style="display:none;">
+<div class="row" id="formularioCategoriaIE">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -237,7 +237,7 @@ var verResultado = function(r) {
 				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-2 col-md-3'>"+
 				"<button style='margin-left:-10px; color:#ece1e1;' type='button' id='eliminar_categoria' "+
 				"class='btn btn-danger btn-label-left'>"+
-				"<span style='margin-right:-6px;'><i class='fa fa-trash-o'></i></span>Eliminar catIngEg</button>"+
+				"<span style='margin-right:-6px;'><i class='fa fa-trash-o'></i></span>Eliminar registro</button>"+
 				"<div style='margin-top: 5px;'></div> </div>"+
 				"<div class='col-sm-12 col-md-offset-1 col-md-4 text-center' Style='margin-bottom: -10px;'>"+
 				"<button type='button' class='btn btn-default btn-label-left' Style='margin-left:10px;' onclick='CloseModalBox()'>"+
@@ -272,6 +272,7 @@ var verResultado = function(r) {
 			validarExpand(expand2, "#expandir2");
 		
 		$("#nombreCategoria").focus();
+// 		table.search('').draw();
 	}
 	
 	
@@ -311,6 +312,7 @@ function listarT() {
 			"dataSrc":"aaData"
 		},
 		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+		"pageLength": 0,
     	"bJQueryUI": true,
 		"language":idioma_esp,
 		drawCallback: function(settings){
@@ -356,6 +358,25 @@ function listarT() {
                 text:      '<i class="fa fa-file-pdf-o"></i>',
                 titleAttr: 'pdf'
             }]
+	});
+	tablaCatIE.page.len(0).draw();
+	$('#tbl_CategoriaIE_length').each( function() {
+		$(this).find('label select').attr('disabled', 'disabled');
+	});	
+	$('#tbl_CategoriaIE_filter').each( function() {
+		$(this).find('label input[type=search]').on( 'keyup change', function () {
+	    	if($(this).val() == ""){
+	    		tablaCatIE.page.len(0).draw();
+	    		$('#tbl_CategoriaIE_length').each( function() {
+	    			$(this).find('label select').attr('disabled', 'disabled');
+	    		});
+	    	}else{
+	    		tablaCatIE.page.len(10).draw();
+	    		$('#tbl_CategoriaIE_length').each( function() {
+	    			$(this).find('label select').removeAttr('disabled');
+	    		});
+	    	}
+	    });	
 	});
 	obtener_datos_editar("#tbl_CategoriaIE tbody",tablaCatIE);
 	obtener_id_eliminar('#tbl_CategoriaIE tbody',tablaCatIE);
@@ -425,8 +446,6 @@ function AllTables() {
 		LoadSelect2Script(DemoSelect2);
 		// Load example of form validation
 		LoadBootstrapValidatorScript(formValidCat_Ing_Egreg);
-		
-		validarColap(colap1, "#colapsar_desplegar1");
 		
 		// Add drag-n-drop feature to boxes
 		WinMove();

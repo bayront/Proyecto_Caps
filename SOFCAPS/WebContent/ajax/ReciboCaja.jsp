@@ -330,7 +330,7 @@ var verResultado = function(r) {//parametro(resultado-String)
  				"¡Ha ocurrido un error, no se pudo realizar la acción!", "#E97D7D", "btn-danger");
  	}else if(r =="VACIO"){
 		mostrarMensaje("#dialog", "VACIO",
-				"¡Debe seleccionar el cliente!", "#FFF8A7","btn-warning");
+				"¡Debe seleccionar el cliente y el documento a pagar!", "#FFF8A7","btn-warning");
 	}else if(r =="ACTUALIZADO"){
 		mostrarMensaje("#dialog", "ACTUALIZADO", 
 				"¡Otro usuario a realizado un cambio, se actualizaron los datos!", "#86b6dd", "btn-primary");
@@ -660,17 +660,15 @@ function cargarSelectFactura(select) {//parametro id select
          url: "./SL_ReciboCaja",
          dataType: "json",
          data: {"cliente_ID": cliente_ID_form, "idserie" : 1},
-         success: function(response){	
-         	$(response.aaData).each(function(i, v) {
-             	datos = response.aaData;
-                $(select).empty();
-                $(select).append("<option value=''>--Seleccione la factura--</option>");
-                $(response.aaData).each(function(i, v) {
-                		$(select).append('<option value="' + v.factura_Maestra_ID + '"> Número de factura: ' 
-                				+ v.numFact +'</option>');
-         		});
-                activarChangeFactura("#factura", response.aaData);
- 			});  	        	
+         success: function(response){
+        	 datos = response.aaData;
+             $(select).empty();
+             $(select).append("<option value=''>--Seleccione la factura--</option>");
+             $(response.aaData).each(function(i, v) {
+             	$(select).append('<option value="' + v.factura_Maestra_ID + '"> Número de factura: ' 
+             		+ v.numFact +'</option>');
+      		});
+            activarChangeFactura("#factura", response.aaData);	        	
          }
  	});
 }
@@ -684,21 +682,17 @@ function cargarSelectReconexion(select) {//parametro id select
          url: "./SL_ReciboCaja",
          dataType: "json",
          data: {"cliente_ID": cliente_ID_form, "idserie" : 3},
-         success: function(response)
-         {	
-         	$(response.aaData).each(function(i, v) {
-             		datos = response.aaData;
-                 	$(select).empty();
-                 	$(select).append("<option value=''>--Seleccione la orden de reconexion--</option>");
-                 	$(response.aaData).each(function(i, v) {
-                 		var f = new Date(v.fecha_reconexion);
-	        			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
-                 		$(select).append('<option value="' + v.reconexion_ID+ '"> Fecha de la reconexion: ' 
-                 			+ fecha +'</option>');
-                 			
-         			});            	
-      			console.log("id cliente form: " + cliente_ID_form );
- 			});  	        	
+         success: function(response){	
+        	datos = response.aaData;
+            $(select).empty();
+           	$(select).append("<option value=''>--Seleccione la orden de reconexion--</option>");
+              $(response.aaData).each(function(i, v) {
+             	var f = new Date(v.fecha_reconexion);
+	        		var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
+              	$(select).append('<option value="' + v.reconexion_ID+ '"> Fecha de la reconexion: ' 
+              		+ fecha +'</option>');		
+      		});            	
+   			console.log("id cliente form: " + cliente_ID_form );	        	
          }
  	});
 }
@@ -711,18 +705,15 @@ function cargarSelectContrato(select) {//parametro id select
          url: "./SL_ReciboCaja",
          dataType: "json",
          data: {"cliente_ID": cliente_ID_form, "idserie" : 2},
-         success: function(response)
-         {	
-         	$(response.aaData).each(function(i, v) {
-             		datos = response.aaData;
-                 	$(select).empty();
-                 	$(select).append("<option value=''>--Seleccione el contrato--</option>");
-                 	$(response.aaData).each(function(i, v) {
-                 			$(select).append('<option value="' + v.contrato_ID + '">' +"No. Contrato: " + v.numContrato + " - " + "No. Medidor: " + v.numMedidor +'</option>');
-         			});
-                activarChangeContrato(select, response.aaData);
-      			console.log("id cliente form: " + cliente_ID_form );
- 			});  	        	
+         success: function(response){	
+        	 datos = response.aaData;
+             $(select).empty();
+             $(select).append("<option value=''>--Seleccione el contrato--</option>");
+             $(response.aaData).each(function(i, v) {
+             	$(select).append('<option value="' + v.contrato_ID + '">' +"No. Contrato: " + v.numContrato + " - " + "No. Medidor: " + v.numMedidor +'</option>');
+      		});
+             activarChangeContrato(select, response.aaData);
+   			console.log("id cliente form: " + cliente_ID_form );	        	
          }
  	});
 }
@@ -736,7 +727,9 @@ $(function () {//funsion para cargar un DatePicker
  });
  
 function pagarDocumento(dato, valor) {
-	$.ajax({//enviar datos por ajax
+	console.log("pagar: "+$("#formReciboCaja #monto").val());
+	if($("#formReciboCaja #monto").val()!=0 || $("#formReciboCaja #monto").val()!=""){
+		$.ajax({//enviar datos por ajax
 			type:"POST",
 			url:"./SL_ReciboCaja",
 			data: {"cliente_ID": $("#formReciboCaja #cliente_ID").val(),//datos a enviar
@@ -747,18 +740,13 @@ function pagarDocumento(dato, valor) {
 				"monto": $("#formReciboCaja #monto").val(),
 				"totalPagar": totalPagar}
 		}).done(function(info) {//informacion que el servlet le reenvia al jsp
-// 			if(expand1.valor == true)
-// 				validarExpand(expand1, "#expandir1");
-			
-// 			if(expand2.valor == true)
-// 				validarExpand(expand2, "#expandir2");
-// 							validarColap(colap1, "#colapsar_desplegar1");
-// 			if (colap2.valor ==true){}else{
-// 				validarColap(colap2, "#colapsar_desplegar2");
-// 			}
 			console.log(info);
 			verResultado(info);//se envia a verificar que mensaje respondio el servlet
 		});
+	}else{
+		mostrarMensaje("#dialog", "VACIO",
+				"¡Debe escribir el monto a pagar!", "#FFF8A7","btn-warning");
+	}
 }
 function cancelarDocumento(servlet, id, cancelado) {
 	$.ajax({//enviar datos por ajax
@@ -770,6 +758,7 @@ function cancelarDocumento(servlet, id, cancelado) {
 		}
 	}).done(function(info) {//informacion que el servlet le reenvia al jsp
 		console.log(info);
+		console.log("fin cancelar");
 		verResultado(info);//se envia a verificar que mensaje respondio el servlet
 	});
 }
@@ -785,7 +774,10 @@ var activarBotonAgregar = function() {
 				pagado = totalPagar - pagado;
 				console.log("pagado: "+pagado+", total a pagar: "+totalPagar+", monto escrito para factura: "
 						+$("#formReciboCaja #monto").val());
-				pagarDocumento(dato, valor);//mandar a pagar el documento-factura
+				if(valor!=0 || valor!="")
+					pagarDocumento(dato, valor);//mandar a pagar el documento-factura
+				else
+					verResultado("VACIO");
 				if(totalPagar == (Math.round((parseFloat(pagado)+parseFloat($("#formReciboCaja #monto").val())) * 100) / 100)) {
 					console.log("Factura PAGADA");
 					cancelarDocumento("./SL_Factura_Maestra", valor, true);//si el total a pagar es igual a lo pagado cancelar
@@ -801,7 +793,10 @@ var activarBotonAgregar = function() {
 				if(totalPagar == (Math.round((parseFloat(pagado)+parseFloat($("#formReciboCaja #monto").val())) * 100) / 100)) {
 					//solo se cancelara el contrato si el monto a pagar es igual a lo pagado
 					console.log("Contrato PAGADO");
-					pagarDocumento(dato, valor);
+					if(valor!=0 || valor!="")
+						pagarDocumento(dato, valor);//mandar a pagar el documento-factura
+					else
+						verResultado("VACIO");
 					verResultado("CANCELADO");
 // 					cancelarDocumento("./SL_Contrato", valor, true);
 				}else if(cuotasContrato == cuotaActual && totalPagar > (pagado + $("#formReciboCaja #monto").val())){
@@ -809,15 +804,23 @@ var activarBotonAgregar = function() {
 				}else if(cuotasContrato < cuotaActual){
 					console.log("No se puede agregar mas cuotas de las permitidas");
 				}else if(cuotasContrato > cuotaActual){
-					pagarDocumento(dato, valor);
+					if(valor!=0 || valor!="")
+						pagarDocumento(dato, valor);//mandar a pagar el documento-factura
+					else
+						verResultado("VACIO");
 					console.log("pagar contrato");
 				}
 			}else if($("#formReciboCaja #concepto").val() == 3){
 				dato="reconexion";
 				valor=$("#formReciboCaja #reconexion").val();
 				console.log("reconexion pagada");
-				pagarDocumento(dato, valor);
-				cancelarDocumento("./SL_Reconexion", valor, true);
+				if(valor!=0 || valor!=""){
+					console.log("pagar reconexion");
+					pagarDocumento(dato, valor);//mandar a pagar el documento-factura
+					cancelarDocumento("./SL_Reconexion", valor, true);
+				}
+				else
+					verResultado("VACIO");
 			}
 		}else if (idCliente == 0 || idCliente == ""){
 			verResultado("VACIO");

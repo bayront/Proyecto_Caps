@@ -246,10 +246,10 @@ var colap2 =  new Colap2();
 	            { "data": "descripcion" },
 	            {"defaultContent":"<button type='button' class='editarCat btn btn-primary' data-toggle='tooltip' "+
 					"data-placement='top' title='Editar Categoría'>"+
-					"<i class='fa fa-pencil-square-o'></i> </button>  "+
+					"<i class='fa fa-pencil-square-o'></i> </button>  "/*+
 					"<button type='button' class='eliminarCat btn btn-danger' title='Eliminar Categoría'>"+
 					"<i class='fa fa-trash-o'></i>"+
-					"</button>" , "width": "25%"}
+					"</button>" , "width": "25%"*/}
 	            ],
 	            "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 					 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"

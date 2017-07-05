@@ -60,7 +60,7 @@ public class DT_Usuario_Rol {
 	 
 	 public ResultSet cargarDatosTabla(){
 		Statement s;
-		String sql = ("SELECT ur.Usuario_ID, u.login, ur.Rol_ID, r.nomRol from usuario u right join usuario_rol ur ON u.Usuario_ID = ur.Usuario_ID inner join rol r on ur.Rol_ID = r.Rol_ID;");
+		String sql = ("SELECT ur.Usuario_ID, u.login, ur.Rol_ID, r.nomRol from usuario u right join usuario_rol ur ON u.Usuario_ID = ur.Usuario_ID inner join rol r on ur.Rol_ID = r.Rol_ID where u.eliminado = 0;");
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);

@@ -64,6 +64,7 @@ public class DT_categoria_Ing_Engre {
 			System.out.println("Error en DT_categoria_Ing_Engreg: "+e.getMessage());
 		}
 		return rs;
+		
 	}
 	
 	public boolean guardarcarIE(Categoria_Ing_Egreg catIE)

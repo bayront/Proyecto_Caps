@@ -1,3 +1,4 @@
+
 <%@page import="Entidades.Usuario, Entidades.Rol, Datos.DT_Vw_rol_opciones,Datos.DTOtros_Ing_Egreg, java.util.*, Entidades.Otros_Ing_Egreg , java.sql.ResultSet ;"%>
 <%@page language="java"%>
 <%@page contentType="text/html"%> 
@@ -10,7 +11,6 @@ response.setDateHeader("Expires", -1);
 %>
 <%
 	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
-
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
 	
@@ -111,7 +111,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--///////////////////////Formulario principal de otros ingresos y egresos/////////////////////////////// -->
-<div class="row" id="formularioOtrosIngresos" style="display:none;">
+<div class="row" id="formularioOtrosIngresos">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -213,23 +213,19 @@ response.setDateHeader("Expires", -1);
 ////////////////////////////////variables para el WEBSOCKET//////////////////////////////////////////////////
 var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
 var websocket = new WebSocket(wsUri);
-
 //evento que notifica que la conexion esta abierta
 websocket.onopen = function(evt) { //manejamos los eventos...
     console.log("Conectado..."); //... y aparecerá en la pantalla
 };
-
 //evento onmessage para resibir mensaje del serverendpoint
 websocket.onmessage = function(evt) { // cuando se recibe un mensaje
 	console.log("Mensaje recibido de webSocket: " + evt.data);
 	verResultado(evt.data);
 };
-
 //evento si hay algun error en la comunicacion con el web_socket
 websocket.onerror = function(evt) {
     console.log("oho!.. error:" + evt.data);
 };
-
 	var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
 	var colap1 =  new Colap1();
 	var expand2 = new Expand2();
@@ -259,11 +255,8 @@ websocket.onerror = function(evt) {
 	
 			
 		window.open("SL_ReporteOtros?descripcion="+descripcion+"&monto="+monto+"&fecha="+fecha, '_blank');
-
 		console.log("Error en metodo imprimir");
 	}
-
-
 	
 	var limpiar_texto = function() {//limpiar texto del formulario
 		$( "form #info" ).remove();
@@ -378,7 +371,6 @@ websocket.onerror = function(evt) {
 		obtener_id_eliminar('#tabla_OI tbody', tablaO);
 		obtener_id_visualizar('#tabla_OI tbody', tablaO);
 	}
-
 	var agregar_nuevo_OI = function() {/////funsión para limpiar el texto y expandir el dialogo del formulario
 		document.getElementById('formularioOtrosIngresos').style.display = 'block';
 		limpiar_texto();
@@ -510,8 +502,6 @@ websocket.onerror = function(evt) {
 		$('[data-toggle="tooltip"]').tooltip();
 		
 		WinMove();
-
-		validarColap(colap1, "#colapsar_desplegar1");
 		
 		LoadBootstrapValidatorScript(FormValidators);
 		
@@ -586,7 +576,6 @@ websocket.onerror = function(evt) {
 		}).on('success.form.bv', function(e) {//evento que se activa cuando los datos son correctos
             // Prevenir el evento submit
             e.preventDefault();
-
             //obtener datos del formulario
             var $form = $(e.target);
             var frm=$form.serialize();

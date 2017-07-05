@@ -2451,7 +2451,7 @@ function mostrarMensaje(dialogo, titulo, mensaje, colorHead, tipoBoton) {
 		show: { effect: "bounce", duration: 1000 },
 		hide: { effect: "bounce", duration: 800 },
 		open: function( event, ui ) {
-				$(".contenido").html("<h4>"+mensaje+"</h4>");
+				$(dialogo+" .contenido").html("<h4>"+mensaje+"</h4>");
 				$("button[class=ui-dialog-titlebar-close]").addClass("btn");
 				$("button.ui-dialog-titlebar-close").html("<i class='fa fa-times'></i>");
 				$(".ui-dialog-buttonset").css("float","inherit");

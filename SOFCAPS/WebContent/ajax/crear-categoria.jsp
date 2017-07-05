@@ -10,7 +10,6 @@ response.setDateHeader("Expires", -1);
 %>
 <%
 	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
-
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
 	
@@ -81,7 +80,7 @@ response.setDateHeader("Expires", -1);
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-th"></i> <span>Lista de Categorias</span>
+					<i class="fa fa-th"></i> <span>Lista de Categorías</span>
 				</div>
 				<div class="box-icons">
 					<a id="colapsar_desplegar2" onclick="validar(colap2);" class="collapse-link"> 
@@ -98,7 +97,7 @@ response.setDateHeader("Expires", -1);
 					id="tabla_categoria" style="width:100%;">
 					<thead>
 						<tr>
-							<th>Nombre Categoria</th>
+							<th>Nombre de la categoría</th>
 							<th>Descripción</th>
 							<th>Acción</th>
 						</tr>
@@ -109,7 +108,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--///////////////////////Formulario principal de las categorías/////////////////////////////// -->
-<div class="row" id="formularioCategoria" style="display:none;">
+<div class="row" id="formularioCategoria">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -273,7 +272,6 @@ var colap2 =  new Colap2();
 		obtener_datos_editar('#tabla_categoria tbody', tablaCat);
 		obtener_id_eliminar('#tabla_categoria tbody', tablaCat);
 	}
-
 	var agregar_nuevo_categoria = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
 		document.getElementById('formularioCategoria').style.display = 'block';
 		//$("#expandir1").prop('disabled', true);
@@ -339,8 +337,8 @@ var colap2 =  new Colap2();
 	
 	function abrirDialogo() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
 		OpenModalBox(
-				"<div><h3>Borrar Categoria</h3></div>",
-				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar esta categoria?</p>",
+				"<div><h3>Borrar Categoría</h3></div>",
+				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar esta categoría?</p>",
 				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
 				"<button type='button' id='eliminar_tarifa' class='btn btn-danger btn-label-left'"+
 				" style=' color: #ece1e1;' >"+
@@ -376,12 +374,10 @@ var colap2 =  new Colap2();
 		$('.form-control').tooltip();
 		//add tooltip
 		$('[data-toggle="tooltip"]').tooltip();
-
 		//Cargar ejemplo para validaciones
 		LoadBootstrapValidatorScript(formCategoria);	
 		
 		WinMove();
-		validarColap(colap1, "#colapsar_desplegar1");
 		
 		$('#descripcion').keyup(function() {//contador para el máximo de caracteres permitidos en la descripción
 	        var chars = $(this).val().length;
@@ -392,7 +388,7 @@ var colap2 =  new Colap2();
 ////////////////////////funsión que valida el formulario de categorías///////////////////////////////////////
 	function formCategoria() {
 		$('#formTarifa').bootstrapValidator({
-			message: '¡Este valor no es valido!',
+			message: '¡Este valor no es válido!',
 			fields: {
 				nomCategoria:{
 					validators: {

@@ -49,7 +49,7 @@ response.setDateHeader("Expires", -1);
 	}
 	else
 	{
-		System.out.println("Pagina caps");
+		System.out.println("Página caps");
 		response.sendRedirect("../CAPS.jsp");
 		return;
 	}
@@ -98,8 +98,8 @@ response.setDateHeader("Expires", -1);
 					id="tabla_tarifa" style="width:100%;">
 					<thead>
 						<tr>
-							<th>Limite Inferior</th>
-							<th>Limite Superior</th>
+							<th>Límite Inferior</th>
+							<th>Límite Superior</th>
 							<th>Monto</th>
 							<th>Categoría</th>
 							<th>Acción</th>
@@ -111,7 +111,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--///////////////////////Formulario principal de las tarifas/////////////////////////////// -->
-<div class="row" id="formularioTarifa" style="display:none;">
+<div class="row" id="formularioTarifa">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -133,14 +133,14 @@ response.setDateHeader("Expires", -1);
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
 					<input type="hidden" id="Tarifa_ID" name="Tarifa_ID">
 					<div class="form-group">
-						<label class="col-sm-4 control-label text-info">limite Inferior</label>
+						<label class="col-sm-4 control-label text-info">Límite Inferior</label>
 						<div class="col-sm-4">
 							<input id="lim_Inf" name="lim_Inf" title="Requerido"
 							class="form-control tarifa" autofocus>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-4 control-label text-info">Limite Superior</label>
+						<label class="col-sm-4 control-label text-info">Límite Superior</label>
 						<div class="col-sm-4">
 							<input id="lim_Sup" name="lim_Sup" title="No requerido, si no existe lim_Sup no digite nada"
 							class="form-control tarifa">
@@ -157,7 +157,7 @@ response.setDateHeader("Expires", -1);
 						<label class="col-sm-4 text-right control-label">Categoría</label>
 						<div class="col-sm-4">
 							<select class="populate placeholder tarifa" name="categoria_ID" id="categoria_ID">
-								<option value="">Categoria</option>
+								<option value="">Categoría</option>
 							</select>
 						</div>
 					</div>
@@ -186,7 +186,7 @@ response.setDateHeader("Expires", -1);
 		</div>
 	</div>
 </div>
-<!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
+<!--///////////////////////Formulario y dialogo de eliminciÃ³n /////////////////////////////// -->
 <div>
 	<form id="frmEliminarTarifa" action="" method="POST">
 		<input type="hidden" id="tarifa_ID" name="tarifa_ID" value="">
@@ -236,7 +236,7 @@ response.setDateHeader("Expires", -1);
 		$("#monto").val("");
 		$("form#formTarifa").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 	}
-//////////////////////////funsión que muestra el resultado mediant un dialogo//////////////////////////////////////
+//////////////////////////funsiÃ³n que muestra el resultado mediant un dialogo//////////////////////////////////////
 	var verResultado = function(r) {//parametro(resultado-String)
 		if(r == "BIEN"){
 			mostrarMensaje("#dialog", "CORRECTO", 
@@ -355,7 +355,7 @@ response.setDateHeader("Expires", -1);
 			validarColap(colap2, "#colapsar_desplegar2");
 		}
 	}
-///////////////////////////funsión que activa el evento click del boton editar del dataTable///////////////////////
+///////////////////////////funsiÃ³n que activa el evento click del boton editar del dataTable///////////////////////
 	var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		$(tbody).on("click", "button.editarTarifa", function() {
 			var datos = table.row($(this).parents("tr")).data();	
@@ -441,13 +441,12 @@ response.setDateHeader("Expires", -1);
 		
 		WinMove();
 		
-		validarColap(colap1, "#colapsar_desplegar1");
 		
 		//cargar selects
 		cargarSelect("#unidadMedida_ID", 3);//traer categorias
 		cargarSelect("#categoria_ID", 2)//traer unidadMedidas
 	});
-///////////////////////funsión que carga un select que recibe el id del select y la opcion de la carga///////////////////////
+///////////////////////funsiÃ³n que carga un select que recibe el id del select y la opcion de la carga///////////////////////
 	function cargarSelect(select, carga) {//parametro (id_select, metodo a cargar-INT)
 		var datos;
 		$.ajax({

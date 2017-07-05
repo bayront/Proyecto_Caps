@@ -11,7 +11,6 @@ response.setDateHeader("Expires", -1);
 %>
 <%
 	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
-
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
 	
@@ -111,8 +110,8 @@ response.setDateHeader("Expires", -1);
 		</div>
 	</div>
 </div>
-<!--///////////////////////Formulario principal de consumos de la bomba/////////////////////////////// -->
-<div class="row" id="formularioConsumoBomba" style="display:none;">
+    <!--///////////////////////Formulario principal de consumos de la bomba/////////////////////////////// -->
+<div class="row" id="formularioConsumoBomba">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -225,7 +224,7 @@ response.setDateHeader("Expires", -1);
 		</div>
 	</div>
 </div>
-<!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
+        <!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
 <div>
 	<form id="frmEliminarConsumoB" action="" method="POST">
 		<input type="hidden" id="bombaID" name="bombaID" value="">
@@ -252,24 +251,20 @@ response.setDateHeader("Expires", -1);
 <script type="text/javascript">
 var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
 var websocket = new WebSocket(wsUri);
-
 //evento que notifica que la conexion esta abierta
 websocket.onopen = function(evt) { //manejamos los eventos...
     console.log("Conectado..."); //... y aparecerá en la pantalla
 };
-
 //evento onmessage para resibir mensaje del serverendpoint
 websocket.onmessage = function(evt) { // cuando se recibe un mensaje
 	console.log("Mensaje recibido de webSocket: " + evt.data);
 	verResultado(evt.data);
 };
-
 //evento si hay algun error en la comunicacion con el web_socket
 websocket.onerror = function(evt) {
     console.log("oho!.. error:" + evt.data);
 };
 var actual = false;//variable para saber si el registro es el actual
-
 var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
 var colap1 =  new Colap1();
 var expand2 = new Expand2();
@@ -306,7 +301,6 @@ var verResultado = function(r) {//parametro(resultado-String)
 			"¡No se puede eliminar un registro anterior al actual!", "#E97D7D", "btn-danger");
 	}
 }
-
 function abrirDialogo() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
 	OpenModalBox(
 			"<div><h3>Borrar Consumo</h3></div>",
@@ -341,7 +335,6 @@ var eliminar = function() {
 		CloseModalBox();
 	});
 }
-
 var agregar_nuevo_consumoB = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
 	document.getElementById('formularioConsumoBomba').style.display = 'block';
 	limpiar_texto();
@@ -489,6 +482,7 @@ var obtener_datos_visualizar = function(tbody, table) {//parametro(id_tabla, obj
 		var fecha;
 		table.rows().every(function(index, loop, rowloop) {
 			if(index == datos){
+				$("form#formConsB #info" ).remove();
 				$("form#formConsB").prepend("<h2 id='info' Style='color:#3276D7; text-align:center;'>Visualización del Registro</h2>");
 				var f = new Date(table.row(index).data().fechaLecturaActual);
             	var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
@@ -570,8 +564,6 @@ function AllTables() {
 $(document).ready(function() {
 	LoadDataTablesScripts2(AllTables);
 	
-	validarColap(colap1, "#colapsar_desplegar1");
-	
 	LoadSelect2Script(DemoSelect2);	
 	$('#fecha').datepicker({
 		setDate : new Date(),
@@ -615,7 +607,7 @@ $(document).ready(function() {
         $('#contadorText').html(diff+" caracteres permitidos");   
     });
 });
-///////////////////////////////Funsión que valida el formulario de consumo de bomba///////////////////////////////
+    ///////////////////////////////Funsión que valida el formulario de consumo de bomba///////////////////////////////
 function formValidBomba() {
 	$('#formConsB').bootstrapValidator({
 		message: '¡Este valor no es valido!',

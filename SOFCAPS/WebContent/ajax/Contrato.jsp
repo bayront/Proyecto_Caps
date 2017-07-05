@@ -111,8 +111,8 @@ response.setDateHeader("Expires", -1);
 		</div>
 	</div>
 </div>
-<!--///////////////////////Formulario principal de contrato /////////////////////////////// -->
-<div class="row" id="formularioContrato" style="display:none;">
+    <!--///////////////////////Formulario principal de contrato /////////////////////////////// -->
+<div class="row" id="formularioContrato">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -285,7 +285,7 @@ response.setDateHeader("Expires", -1);
 		</div>
 	</div>
 </div>
-<!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
+                    <!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
 <div>
 	<form id="frmEliminarContrato" action="" method="POST">
 		<input type="hidden" id=contrato_ID name="contrato_ID" value="">
@@ -335,11 +335,7 @@ response.setDateHeader("Expires", -1);
 		</div>
 	</form>
 </div>
-
-
-
-
-<script type="text/javascript">
+                    <script type="text/javascript">
 var numMed = "";////////////////////variable para saber si estoy editando un registro
 var expand1 = new Expand1();/////////////se crean los objetos que representan los botones de cada dialogo
 var colap1 = new Colap1();
@@ -363,9 +359,6 @@ function AllTables() {
 		});
 	});
 }
-
-
-
 function abrirDialogoC() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
 	OpenModalBox(
 			"<div><h3>Imprimir Contrato</h3></div>",
@@ -380,8 +373,6 @@ function abrirDialogoC() {////////////////////abre dialogo con muestra si desae 
 			"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 	imprimir();
 }
-
-
 var imprimir = function() {
 	$("#imprimir_contrato").on("click", function() {
 		var numContrato = "";
@@ -392,7 +383,6 @@ var imprimir = function() {
 		CloseModalBox();
 	});
 }
-
 /////////////////////////activar evento del boton eliminar que esta en la fila seleccionada del dataTable///////////
 var obtener_id_imprimir = function(tbody, table) {//parametros(id_tabla, objeto dataTable)
 	$(tbody).on("click","button.imprimir",function() {
@@ -405,16 +395,12 @@ var obtener_id_imprimir = function(tbody, table) {//parametros(id_tabla, objeto 
 		abrirDialogoC();
 	});
 }
-
-
-
 ///////////////////////////////Funsión para setear la fecha del contrato en el input fecha_contrato///////////////////
 var obtenerFechaActual = function() {
 	var f = new Date();
 	console.log(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
 	$("#fechaContrato").val(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
 }
-
 var verResultado = function(r) {//parametro(resultado-String)
 	if(r == "BIEN"){
 		mostrarMensaje("#dialog", "CORRECTO",
@@ -447,7 +433,6 @@ var eliminar = function() {
 		CloseModalBox();
 	});
 }
-
 function abrirDialogo() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
 	OpenModalBox(
 			"<div><h3>Borrar Contrato</h3></div>",
@@ -462,7 +447,6 @@ function abrirDialogo() {////////////////////abre dialogo con muestra si desae e
 			"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 	eliminar();
 }
-
 var limpiar_texto = function() {/////////////////////////limpiar texto del formulario
 	$( ".formContrato #info" ).remove();
 	$("#abrir_modal").prop('disabled', false).attr('title', '');
@@ -483,7 +467,6 @@ var limpiar_texto = function() {/////////////////////////limpiar texto del formu
 	obtenerFechaActual();
 	$("form.formContrato").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 }
-
 var agregar_nuevo_contrato = function() {//////////////agregar nuevo registro limpiando texto y abriendo el form
 	document.getElementById('formularioContrato').style.display = 'block';
 	//$("#expandir1").prop('disabled', true);
@@ -497,16 +480,13 @@ var agregar_nuevo_contrato = function() {//////////////agregar nuevo registro li
 	
 	$("#nombreCliente").focus();
 }
-
 var cancelar = function() {////////////////cancela la acción limpiando el texto y colapsando el formulario
 	limpiar_texto();
 	document.getElementById('formularioContrato').style.display = 'none';
 	if (expand1.valor == true)
 		validarExpand(expand1, "#expandir1");
-
 	if (expand2.valor == true)
 		validarExpand(expand2, "#expandir2");
-
 	validarColap(colap1, "#colapsar_desplegar1");
 	if (colap2.valor == true) {
 	} else {
@@ -578,6 +558,7 @@ var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto 
 ///////////////////////////funsión que activa el evento click del boton editar del dataTable///////////////////////
 var obtener_datos_visualizar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 	$(tbody).on("click", "button.visualizarContrato", function() {
+		$( ".formContrato #info" ).remove();
 		$('.formContrato').prepend("<h2 id='info' Style='color:#3276D7; text-align:center;'>Visualización del Registro</h2>");
 		var datos = table.row($(this).parents("tr")).index();
 		table.rows().every(function(index, loop, rowloop) {
@@ -610,7 +591,6 @@ var obtener_datos_visualizar = function(tbody, table) {//parametro(id_tabla, obj
 			validarExpand(expand2, "#expandir2");
 	});
 }
-
 /////////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla/////////////////////////////////////////
 var listar = function() {
 	console.log("cargando dataTable");
@@ -746,7 +726,7 @@ function cambiarCliente(tbody, table) {//parametro(id_tabla, objeto dataTable)
 		CloseModalBox();
 	});
 }
-/////////////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////////
+                        /////////////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////////
 $(document).ready(function() {
 	
 	$("#cuotas").spinner();
@@ -779,8 +759,6 @@ $(document).ready(function() {
 	
 	obtenerFechaActual();
 	
-	validarColap(colap1, "#colapsar_desplegar1");
-	
 	LoadDataTablesScripts2(AllTables);
 	
 	$('#direccionCliente').keyup(function() {//contador para el máximo de caracteres permitidos en la direccionCliente
@@ -788,8 +766,7 @@ $(document).ready(function() {
         var diff = 250 - chars;
         $('#contadorText').html(diff+" caracteres permitidos");   
     });
-	
-	//MODAL para mostrar una tabla con el cliente
+    //MODAL para mostrar una tabla con el cliente
 	$('#abrir_modal').on('click',function(e) {
 		OpenModalBox(
 		"<div><h3>Buscar Cliente</h3></div>",
@@ -938,7 +915,6 @@ function formValidContrato() {
 	}).on('success.form.bv', function(e) {//evento que se activa cuando los datos son correctos
         // Prevenir el evento submit
         e.preventDefault();
-
         //obtener datos del formulario
         var $form = $(e.target);
         var frm=$form.serialize();
@@ -953,10 +929,8 @@ function formValidContrato() {
 			verResultado(info);
 			if (expand1.valor == true)
 				validarExpand(expand1, "#expandir1");
-
 			if (expand2.valor == true)
 				validarExpand(expand2, "#expandir2");
-
 			validarColap(colap1, "#colapsar_desplegar1");
 			if (colap2.valor == true) {
 			} else {
@@ -965,5 +939,4 @@ function formValidContrato() {
 		});
     });
 }
-
 </script>

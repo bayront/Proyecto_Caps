@@ -340,7 +340,7 @@ public class DTContrato {
 		float montoRestante;
 		Statement s;
 		String sql = "select sum(round((r.montoTotal),2)) as monto "+
-				"from recibocaja r where r.Serie_ID = 2 and r.numDocumento = "+contrato_ID+";";
+				"from recibocaja r where r.Serie_ID = 2 and r.numDocumento = "+contrato_ID+" and r.estado = 0;";
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);

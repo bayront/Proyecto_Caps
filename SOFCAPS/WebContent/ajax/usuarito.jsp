@@ -9,7 +9,6 @@ response.setDateHeader("Expires", -1);
 %>
 <%
 	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
-
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
 	
@@ -114,7 +113,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 <!--/////////////////////////////// Formularios de Clientes/////////////////////////////// -->
-<div class="row" id="formularioUsuario" style="display:none;">
+<div class="row" id="formularioUsuario">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 
@@ -234,7 +233,6 @@ response.setDateHeader("Expires", -1);
 	var colap1 = new Colap1();
 	var expand2 = new Expand2();
 	var colap2 = new Colap2();
-
 /////////////////////////////////Abrir dialogo para eliminar usuario////////////////////////////////////////////
 	function abrirDialogo() {
 		OpenModalBox(//modal(tutilo, contenido, foot)
@@ -271,9 +269,9 @@ response.setDateHeader("Expires", -1);
 		$("#opcion").val("guardar");
 		$("#login").val("");
 		$("#pass").val("");
+		$("#confirmPass").val("");
 		$("#defaultForm").data('bootstrapValidator').resetForm();////////////////resetear las validaciones
 	}
-
 /////////////Metdoo que activa evento para eliminar con el boton que esta oculto al usuario,/////////////////////// 
 //////////////////////este metodo se activa al abrir el dialogo con metodo abrirDialogo() para eliminar al cliente//////////////////////////////
 	var eliminar = function() {
@@ -331,16 +329,14 @@ response.setDateHeader("Expires", -1);
 		
 		$("#nombre_usuario").focus();
 	}
-///////////////////////////////cancelar la accion sobre el cliente/////////////////////////////////////////////777
+///////////////////////////////cancelar la accion sobre el cliente////////////////////////////////////////////////
 	var cancelar = function() {
 		limpiar_texto();	
 		document.getElementById('formularioUsuario').style.display = 'none';
 		if (expand1.valor == true)
 			validarExpand(expand1, "#expandir1");
-
 		if (expand2.valor == true)
 			validarExpand(expand2, "#expandir2");
-
 		validarColap(colap1, "#colapsar_desplegar1");
 		if (colap2.valor == true) {
 		} else {
@@ -486,6 +482,7 @@ function botones() {
 					var login = $("#login").val(table.row(index).data().login);
 					loginValid = table.row(index).data().login;
 					var pass = $("#pass").val(table.row(index).data().pass);
+					$("#confirmPass").val(table.row(index).data().pass);
 					var eliminado = $("#eliminado").val(table.row(index).data().eliminado);
 					var usuario_id = $("#usuario_id").val(table.row(index).data().usuario_ID);
 					var opcion = $("#opcion").val("actualizar");//settear datos en el formulario de edicion
@@ -498,10 +495,8 @@ function botones() {
 			validarColap(colap2, "#colapsar_desplegar2");
 			if (expand2.valor == true)
 				validarExpand(expand2, "#expandir2");
-
 		});
 	}
-
 /////////////////////////activar evento del boton eliminar que esta en la fila seleccionada del dataTable///////////
 	var obtener_id_eliminar = function(tbody, table) {
 		$(tbody).on("click","button.eliminarUsu",function() {
@@ -537,15 +532,12 @@ function botones() {
 			});
 		});
 	}
-
 ////////////////////////////llamar a la funcio listar para que llene el dataTable//////////////////////////////
 	$(document).ready(function() {
 		
 		LoadBootstrapValidatorScript(formValidUsu);
 		
 		LoadDataTablesScripts2(AllTables);
-		
-		validarColap(colap1, "#colapsar_desplegar1");
 		
 		$('.form-control').tooltip();
 	});

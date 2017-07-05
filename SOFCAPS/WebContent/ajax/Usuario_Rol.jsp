@@ -11,7 +11,6 @@ response.setDateHeader("Expires", -1);
 %>
 <%
 	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
-
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
 	
@@ -109,7 +108,7 @@ response.setDateHeader("Expires", -1);
 	</div>
 </div>
 	<!---------------------------- AQUI EMPIEZA FORMULARIO DE ROL USUARIO ---------------------------->
-<div class="row" id="formularioUsuarioRol" style="display:none;">
+<div class="row" id="formularioUsuarioRol">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -169,7 +168,7 @@ response.setDateHeader("Expires", -1);
 						
  					%> 
 					<div class="form-group has-warning has-feedback">
-						<label class="col-sm-4 control-label">Rol</label>
+						<label class="col-sm-4 control-label">Seleccione el rol</label>
 						<div class="col-sm-4">
 							<select id= "rol" name="rol" type = "simple"
 								class="populate placeholder">
@@ -239,77 +238,72 @@ function DemoSelect2(){
 	$('#login').select2({placeholder: "Seleccione Usuario..."});
 	$('#rol').select2({placeholder: "Seleccione Rol..."});
 }
-
 var cancelar = function() {/////////////////////cancela la acción limpiando el texto y colapsando el formulario
 	limpiar_texto();
 	document.getElementById('formularioUsuarioRol').style.display = 'none';
 	if (expand1.valor == true)
 		validarExpand(expand1, "#expandir1");
-
 	if (expand2.valor == true)
 		validarExpand(expand2, "#expandir2");
-
 	validarColap(colap1, "#colapsar_desplegar1");
 	if (colap2.valor == true) {
 	} else {
 		validarColap(colap2, "#colapsar_desplegar2");
 	}
 }
-
 function AllTables() {
 	listar();
 	LoadSelect2Script(MakeSelect2);
 }
-
 var limpiar_texto = function() {/////////////////////////limpiar texto del formulario
 	$("#opcion").val("guardar");
 	$("#login").val("").change();
 	$("#rol").val("").change();
 }
-
 var verResultado = function(r) {
 	if(r == "BIEN"){
 		mostrarMensaje("#dialog", "CORRECTO",
 				"¡Se realizó la operación correctamente, todo bien!","#d7f9ec", "btn-info");
 		limpiar_texto();
 		$('#dt_RolUsuario').DataTable().ajax.reload();
-	}
-	if(r == "ERROR"){
+	}else if(r == "ERROR"){
 		mostrarMensaje("#dialog", "ERROR",
 				"¡Ha ocurrido un error, no se pudo realizar la operación!","#E97D7D", "btn-danger");
-	}
-	if(r =="VACIO"){
+	}else if(r =="VACIO"){
 		mostrarMensaje("#dialog", "VACIO",
 				"¡No se especificó la operación a realizar!", "#FFF8A7","btn-warning");
+	}else if(r == "NADA"){
+		mostrarMensaje("#dialog", "SIN LLENAR",
+				"¡Debe seleccionar el rol y el usuario!", "#FFF8A7","btn-warning");
 	}
 }
-
-
 ///////////////////////////////////guardar los datos setados en el formulario///////////////////////////////////////
 var guardar = function() {
 	$("form").on("submit", function(e) {
 		e.preventDefault();//detiene el evento
-		var frm = $(this).serialize();//parsea los datos del formulario
-		console.log(frm);
-		$.ajax({//enviar datos por ajax
-			method:"GET",
-			url:"Autenticación",
-			data: frm//datos a enviar
-		}).done(function(info) {//informacion que el servlet le reenvia al jsp
-			verResultado(info);
-			if (expand1.valor == true)
-				validarExpand(expand1, "#expandir1");
-			if (expand2.valor == true)
-				validarExpand(expand2, "#expandir2");
-			validarColap(colap1, "#colapsar_desplegar1");
-			if (colap2.valor == true) {
-			} else {
-				validarColap(colap2, "#colapsar_desplegar2");
-			}
-		});
+		if($("#login").val()!="" && $("#rol").val()!=""){
+			var frm = $(this).serialize();//parsea los datos del formulario
+			console.log(frm);
+			$.ajax({//enviar datos por ajax
+				method:"GET",
+				url:"Autenticación",
+				data: frm//datos a enviar
+			}).done(function(info) {//informacion que el servlet le reenvia al jsp
+				verResultado(info);
+				if (expand1.valor == true)
+					validarExpand(expand1, "#expandir1");
+				if (expand2.valor == true)
+					validarExpand(expand2, "#expandir2");
+				validarColap(colap1, "#colapsar_desplegar1");
+				if (colap2.valor == true) {
+				} else {
+					validarColap(colap2, "#colapsar_desplegar2");
+				}
+			});
+		}else
+			verResultado("NADA");
 	});
 }
-
 //////////////////////////////////eliminar los datos seteados en el formulario/////////////////////////////////////
 var eliminar = function() {
 	$("#eliminar_rolusu").on("click", function() {
@@ -326,7 +320,6 @@ var eliminar = function() {
 		CloseModalBox();
 	});
 }
-
 function abrirDialogo() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
 	OpenModalBox(
 		"<div><h3>Borrar Rol para este Usuario</h3></div>",
@@ -334,15 +327,13 @@ function abrirDialogo() {////////////////////abre dialogo con muestra si desae e
 		"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-2 col-md-3'> "
 			+ "<button type='button' id='eliminar_rolusu' class='btn btn-danger btn-label-left'"
 			+" style='color:#ece1e1;' >"
-			+ "<span><i class='fa fa-trash-o'></i></span>Eliminar Rol </button>"
+			+ "<span><i class='fa fa-trash-o'></i></span>Eliminar registro </button>"
 			+ "<div style='margin-top: 5px;'></div>"
 			+ "</div> <div class='col-sm-12 col-md-offset-1 col-md-3 text-center' Style='margin-bottom: -10px;'>"
 			+ "<button type='button' class='btn btn-default btn-label-left' Style='margin-left: 10px;' onclick='CloseModalBox()'>"
 			+ "<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 	eliminar();
 }
-
-
 var agregar_nuevo_rolusuario = function() {///////////////////agregar nuevo registro limpiando texto y abriendo el form
 	document.getElementById('formularioUsuarioRol').style.display = 'block';
 	//$("#expandir1").prop('disabled', true);
@@ -355,7 +346,6 @@ var agregar_nuevo_rolusuario = function() {///////////////////agregar nuevo regi
 		validarExpand(expand2, "#expandir2");
 	$("select#login").focus();
 }
-
 var obtener_id_eliminar = function(tbody, table) {
 	$(tbody).on("click", "button.eliminarContrato", function() {
 		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
@@ -372,7 +362,6 @@ var obtener_id_eliminar = function(tbody, table) {
 		abrirDialogo();
 	});
 }
-
 var listar = function() {
 	var tablaContrato = $('#dt_RolUsuario').DataTable( {
 		responsive: true,
@@ -422,7 +411,6 @@ var listar = function() {
 	});
 	obtener_id_eliminar('#dt_RolUsuario tbody',tablaContrato);
 }
-
 $(document).ready(function() {
 	// Add slider for change test input length
 	FormLayoutExampleInputLength($( ".slider-style" ));
@@ -437,9 +425,7 @@ $(document).ready(function() {
 	//obtenerFechaActual();
 	
 	guardar();//activar evento de guardar
-	validarColap(colap1, "#colapsar_desplegar1");
 	
 	LoadDataTablesScripts2(AllTables);
 });
-
 </script>

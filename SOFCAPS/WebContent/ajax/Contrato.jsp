@@ -606,6 +606,7 @@ var listar = function() {
 			"data":{"opcion":"cargar"}
 		},
 		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+		"pageLength": 0,
     	"bJQueryUI": true,
 		"language":idioma_esp,
 		drawCallback : function(settings) {
@@ -663,6 +664,25 @@ var listar = function() {
                 text:      '<i class="fa fa-file-pdf-o"></i>',
                 titleAttr: 'pdf'
             }]
+	});
+	tablaContrato.page.len(0).draw();
+	$('#dt_Contrato_length').each( function() {
+		$(this).find('label select').attr('disabled', 'disabled');
+	});	
+	$('#dt_Contrato_filter').each( function() {
+		$(this).find('label input[type=search]').on( 'keyup change', function () {
+	    	if($(this).val() == ""){
+	    		tablaContrato.page.len(0).draw();
+	    		$('#dt_Contrato_length').each( function() {
+	    			$(this).find('label select').attr('disabled', 'disabled');
+	    		});
+	    	}else{
+	    		tablaContrato.page.len(10).draw();
+	    		$('#dt_Contrato_length').each( function() {
+	    			$(this).find('label select').removeAttr('disabled');
+	    		});
+	    	}
+	    });	
 	});
 	tablaContrato.columns.adjust().draw();
 	obtener_datos_editar("#dt_Contrato tbody",tablaContrato);

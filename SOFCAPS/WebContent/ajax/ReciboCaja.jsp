@@ -426,6 +426,7 @@ function iniciarTabla(){
 			"dataSrc":"aaData"
 		},
 		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+		"pageLength": 0,
     	"bJQueryUI": true,
 		"language":idioma_esp,
 		drawCallback: function(settings){
@@ -491,6 +492,26 @@ function iniciarTabla(){
                 titleAttr: 'pdf'
             }]
 	});
+	
+	tablaRecibo.page.len(0).draw();
+	$('#dt_ReciboCaja_length').each( function() {
+		$(this).find('label select').attr('disabled', 'disabled');
+	});	
+	$('#dt_ReciboCaja_filter').each( function() {
+		$(this).find('label input[type=search]').on( 'keyup change', function () {
+	    	if($(this).val() == ""){
+	    		tablaRecibo.page.len(0).draw();
+	    		$('#dt_ReciboCaja_length').each( function() {
+	    			$(this).find('label select').attr('disabled', 'disabled');
+	    		});
+	    	}else{
+	    		tablaRecibo.page.len(10).draw();
+	    		$('#dt_ReciboCaja_length').each( function() {
+	    			$(this).find('label select').removeAttr('disabled');
+	    		});
+	    	}
+	    });	
+	});s
 	obtener_id_imprimir('#dt_ReciboCaja tbody',tablaRecibo);
 	obtener_id_eliminar('#dt_ReciboCaja tbody',tablaRecibo);
 }

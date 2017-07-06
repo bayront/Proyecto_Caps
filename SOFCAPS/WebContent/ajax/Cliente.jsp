@@ -424,6 +424,7 @@ function botones() {
 				"dataSrc" : "aaData"
 			},
 			"lengthMenu" : [ [ 10, 25, 50, -1 ],[ 10, 25, 50, "Todo" ] ],
+			"pageLength": 0,
 			"language" : idioma_esp,
 			drawCallback : function(settings) {
 				var api = this.api();
@@ -468,6 +469,25 @@ function botones() {
 						text : '<i class="fa fa-file-pdf-o"></i>',
 						titleAttr : 'pdf'
 					} ]
+		});
+		table.page.len(0).draw();
+		$('#dt_cliente_length').each( function() {
+			$(this).find('label select').attr('disabled', 'disabled');
+		});	
+		$('#dt_cliente_filter').each( function() {
+			$(this).find('label input[type=search]').on( 'keyup change', function () {
+		    	if($(this).val() == ""){
+		    		table.page.len(0).draw();
+		    		$('#dt_cliente_length').each( function() {
+		    			$(this).find('label select').attr('disabled', 'disabled');
+		    		});
+		    	}else{
+		    		table.page.len(10).draw();
+		    		$('#dt_cliente_length').each( function() {
+		    			$(this).find('label select').removeAttr('disabled');
+		    		});
+		    	}
+		    });	
 		});
 		obtener_datos_editar("#dt_cliente tbody", table);//despues de llenar se manda a activar el evento clickde obtener
 		obtener_id_eliminar("#dt_cliente tbody", table)//igual para el boton eliminar

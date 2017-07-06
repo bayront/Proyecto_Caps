@@ -665,6 +665,7 @@ websocket.onclose = function(){
 				"dataSrc":"aaData"
 			},
 			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+			"pageLength": 0,
         	"bJQueryUI": true,
 			"language":idioma_esp,
 			drawCallback: function(settings){
@@ -727,6 +728,25 @@ websocket.onclose = function(){
 	                text:      '<i class="fa fa-file-pdf-o"></i>',
 	                titleAttr: 'pdf'
 	            }]
+		});
+		tablaConsumo.page.len(0).draw();
+		$('#tabla_consumo_length').each( function() {
+			$(this).find('label select').attr('disabled', 'disabled');
+		});	
+		$('#tabla_consumo_filter').each( function() {
+			$(this).find('label input[type=search]').on( 'keyup change', function () {
+		    	if($(this).val() == ""){
+		    		tablaConsumo.page.len(0).draw();
+		    		$('#tabla_consumo_length').each( function() {
+		    			$(this).find('label select').attr('disabled', 'disabled');
+		    		});
+		    	}else{
+		    		tablaConsumo.page.len(10).draw();
+		    		$('#tabla_consumo_length').each( function() {
+		    			$(this).find('label select').removeAttr('disabled');
+		    		});
+		    	}
+		    });	
 		});
 		seleccionarEditarConsumo('#tabla_consumo tbody', tablaConsumo);
 		seleccionarvisualizarConsumo('#tabla_consumo tbody', tablaConsumo);

@@ -60,6 +60,30 @@ public class DTConsumo {
 		return rs;
 	}
 	
+	public ResultSet sector(){
+		Statement s;
+		
+		String sql = ("SELECT distinct `sector`.`nombreSector` AS `sector` FROM (`consumo` JOIN `contrato` ON ((`consumo`.`Contrato_ID` = `contrato`.`Contrato_ID`))) JOIN `sector` ON ((`contrato`.`Sector_ID` = `sector`.`Sector_ID`)) where eliminado=0 and estado=0 ;");
+		try 
+		{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	
+		
+			rs = s.executeQuery(sql);
+			System.out.println("sector dt consumo cliente CARGADOS");
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			System.out.println("Error en DTConsumo cliente, metodo sector: "+e.getMessage());
+		}
+		if(rs == null)
+			System.out.println("Resultset de sector vacio");
+		
+		return rs;
+	}
+
+	
 	public ResultSet cargarClienteContrato()
 	{
 		Statement s;

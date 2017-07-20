@@ -55,6 +55,29 @@ public class DTContrato {
 		return rs;
 	}
 	
+	public ResultSet cargarDatosInactivos()
+	{
+		Statement s;
+		String sql;
+		if (opcion == 1){
+			sql = ("SELECT * FROM contrato WHERE estado = 1;");
+		} else {
+			sql = ("SELECT c.numContrato, c.numMedidor, c.cuotas, c.montoContrato, c.Contrato_ID, c.Cliente_ID, c.RegimenPropiedad_ID, c.Sector_ID, c.Categoria_ID, c.direccionCliente, c.cantidadPersonas, c.fechaContrato FROM contrato c WHERE estado = 0;");
+		}
+			
+		try
+		{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("Error en DTContrato_CargarDatosInactivos: "+e.getMessage());
+		}
+		return rs;
+	}
+	
 	
 	public ResultSet cargarDatosTabla()
 	{
@@ -69,6 +92,23 @@ public class DTContrato {
 		{
 			e.printStackTrace();
 			System.out.println("Error en DT_categoria_Ing_Engreg: "+e.getMessage());
+		}
+		return rs;
+	}
+	
+	public ResultSet cargarDatosTablaInactivos()
+	{
+		Statement s;
+		String sql = ("select c.fechaContrato, c.numContrato, c.numMedidor, c.cuotas, c.montoContrato, c.Contrato_ID, c.Cliente_ID, c.RegimenPropiedad_ID, c.Sector_ID, c.Categoria_ID, cl.nombre1, cl.nombre2, cl.apellido1, cl.apellido2, r.regimenPro, s.nombreSector, ca.nomCategoria, c.direccionCliente, c.cantidadPersonas from contrato c inner join cliente cl on c.Cliente_ID = cl.Cliente_ID inner join regimenpropiedad r on c.RegimenPropiedad_ID = r.RegimenPropiedad_ID inner join sector s on c.Sector_ID = s.Sector_ID inner join categoria ca on c.Categoria_ID = ca.Categoria_ID WHERE c.estado = 1;");
+		try
+		{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("Error en CargarDatosTablaInictivos: "+e.getMessage());
 		}
 		return rs;
 	}
@@ -190,6 +230,31 @@ public class DTContrato {
 		catch (Exception e) 
 		{
 			System.err.println("ERROR AL ELIMINAR " + e.getMessage());
+			e.printStackTrace();
+		}
+		return eliminado;
+	}
+	
+	public boolean activarContrato(Contrato contrato)
+	{
+		opcion = 1;
+		boolean eliminado = false;
+		try 
+		{
+			System.err.println("ERROR AL ELIMINAR CONTRATO NUMERO: " + contrato.getContrato_ID());
+			dtContrato.cargarDatosInactivos();
+			rs.beforeFirst();
+			while(rs.next()){
+				if(rs.getInt("Contrato_ID") == contrato.getContrato_ID()){
+					rs.updateBoolean(1, false);
+					rs.updateRow();
+					eliminado = true;
+				}
+			}
+		}
+		catch (Exception e) 
+		{
+			System.err.println("ERROR AL Activar " + e.getMessage());
 			e.printStackTrace();
 		}
 		return eliminado;

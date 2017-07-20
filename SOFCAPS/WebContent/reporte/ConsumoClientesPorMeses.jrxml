@@ -1,41 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-07-12T09:13:01 -->
+<!-- 2017-07-20T03:28:25 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConsumoClientesPorMeses" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8f8b29b7-836f-41fb-b160-8fd4d10d4162">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Otros"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="mesIniciojasper" class="java.lang.String"/>
 	<parameter name="mesFinjasper" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT 
-        CONCAT(`cliente`.`nombre1`,
-                ' ',
-                `cliente`.`nombre2`,
-                ' ',
-                `cliente`.`apellido1`,
-                ' ',
-                `cliente`.`apellido2`) AS `nombre_completo`,
-        `contrato`.`numMedidor` AS `numMedidor`,
-        `consumo`.`lectura_Actual` AS `lectura_mes`,
-        `consumo`.`consumoTotal` AS `consumo_mes`,
-         
-         `sector`.`nombreSector` AS `sector`,
-         `consumo`.`fecha_fin` AS `fecha_mes`
-         
-FROM
-		`consumo`
-        JOIN `contrato` ON (`consumo`.`Contrato_ID` = `contrato`.`Contrato_ID`)
-        JOIN `cliente` ON (`contrato`.`Cliente_ID` = `cliente`.`Cliente_ID`)
-        JOIN `sector` ON (`contrato`.`Sector_ID` = `sector`.`Sector_ID`)
-        
-Where
-	consumo.fecha_fin between   $P{mesIniciojasper} and  $P{mesFinjasper} 
-	and consumo.eliminado=0]]>
+		<![CDATA[call consumo_clientes( $P{mesIniciojasper} , $P{mesFinjasper} )]]>
 	</queryString>
 	<field name="nombre_completo" class="java.lang.String"/>
 	<field name="numMedidor" class="java.lang.String"/>
 	<field name="lectura_mes" class="java.lang.Float"/>
 	<field name="consumo_mes" class="java.lang.Float"/>
+	<field name="totalPago" class="java.lang.Double"/>
 	<field name="sector" class="java.lang.String"/>
 	<field name="fecha_mes" class="java.sql.Date"/>
 	<group name="Group1">
@@ -88,66 +66,52 @@ Saneamiento CAPS- Poneloya
 			</staticText>
 			<textField pattern="MMMMM dd, yyyy">
 				<reportElement x="458" y="32" width="97" height="30" uuid="10a00e62-365d-4b22-8c12-ef972f1248ad"/>
-				<textElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="3" y="71" width="107" height="30" uuid="3ad9ac0f-7132-4905-8324-c4c619f3d532"/>
+				<reportElement x="3" y="71" width="67" height="30" uuid="3ad9ac0f-7132-4905-8324-c4c619f3d532"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Desde]]></text>
 			</staticText>
-			<textField pattern="MMMM">
-				<reportElement x="110" y="71" width="183" height="30" uuid="8dde3bf4-86ee-433a-8e91-7940547da92b"/>
+			<textField pattern="d MMMM , yyyy">
+				<reportElement x="80" y="71" width="170" height="30" uuid="8dde3bf4-86ee-433a-8e91-7940547da92b"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14"/>
+					<font size="18"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{mesIniciojasper}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="293" y="71" width="70" height="30" uuid="81e06ac4-cc42-48de-930f-cc329f085d0e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[hasta]]></text>
 			</staticText>
-			<textField pattern="MMMM">
+			<textField pattern="d MMMM , yyyy">
 				<reportElement x="363" y="71" width="192" height="30" uuid="1c8cbbb6-24fa-4137-aed4-41fd1663940a"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Justified">
+					<font size="18"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{mesFinjasper}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="30" width="80" height="30" uuid="0a4ef5e0-469a-4a0e-b9d3-45e458b1623c"/>
-				<textElement verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Sector]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="80" y="29" width="177" height="30" uuid="5993bc7b-1b2a-4db5-8e43-2c2ef28f90c3"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{sector}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="20" splitType="Stretch">
-			<rectangle>
-				<reportElement x="0" y="0" width="555" height="20" uuid="1e58b493-f434-4457-b0a3-c796cee5e4ef"/>
-			</rectangle>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="6" width="555" height="1" uuid="c1367e33-364b-4101-85d3-75218e8083c6"/>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="120" splitType="Stretch">
+		<band height="148" splitType="Stretch">
 			<textField>
-				<reportElement x="250" y="61" width="305" height="30" uuid="2559e0d3-f8ba-4a60-addd-53c62b2b812f"/>
+				<reportElement x="432" y="61" width="123" height="39" uuid="2559e0d3-f8ba-4a60-addd-53c62b2b812f"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -160,7 +124,7 @@ Saneamiento CAPS- Poneloya
 				<textFieldExpression><![CDATA[$F{consumo_mes}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="110" y="32" width="140" height="29" uuid="bf2a2048-5d15-4b20-880e-726da7ac10f8"/>
+				<reportElement x="310" y="32" width="122" height="29" uuid="bf2a2048-5d15-4b20-880e-726da7ac10f8"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -173,7 +137,7 @@ Saneamiento CAPS- Poneloya
 				<text><![CDATA[Lectura de los meses]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="250" y="32" width="305" height="29" uuid="0ee44189-dd24-468a-9e3e-498e13ce9985"/>
+				<reportElement x="432" y="32" width="123" height="29" uuid="0ee44189-dd24-468a-9e3e-498e13ce9985"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -186,7 +150,7 @@ Saneamiento CAPS- Poneloya
 				<text><![CDATA[Consumo total]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="110" y="61" width="140" height="30" uuid="62f0d940-9acf-45d2-af28-cfdfc5ff6a13"/>
+				<reportElement x="310" y="61" width="122" height="39" uuid="62f0d940-9acf-45d2-af28-cfdfc5ff6a13"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -213,7 +177,7 @@ Saneamiento CAPS- Poneloya
 				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="d MMMM , yyyy">
-				<reportElement x="0" y="61" width="110" height="30" uuid="9d6acb7f-b187-4e53-aad4-c0b12cafbe90"/>
+				<reportElement x="0" y="61" width="160" height="39" uuid="9d6acb7f-b187-4e53-aad4-c0b12cafbe90"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -223,10 +187,10 @@ Saneamiento CAPS- Poneloya
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{fecha_mes}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sector}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="32" width="110" height="29" uuid="56452834-1f48-4dc0-8e3a-f3e6035bf6da"/>
+				<reportElement x="0" y="32" width="160" height="29" uuid="56452834-1f48-4dc0-8e3a-f3e6035bf6da"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -236,8 +200,51 @@ Saneamiento CAPS- Poneloya
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Fecha de fin]]></text>
+				<text><![CDATA[Sector]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="342" y="96" width="100" height="29" uuid="2a3788b2-9efa-443f-aa74-4b21e4665153"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total a pagar]]></text>
+			</staticText>
+			<line>
+				<reportElement x="432" y="121" width="123" height="1" uuid="ed15df5f-8354-41ba-ac4e-33133c434345"/>
+			</line>
+			<textField>
+				<reportElement x="430" y="98" width="123" height="30" uuid="c533c0cf-51de-4140-a33e-564529980a7c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalPago}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="160" y="32" width="150" height="29" uuid="1289f96b-a9c4-41f3-ab7d-b5ed79775d03"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Número de medidor]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="61" width="150" height="39" uuid="f6ce0ad2-91ae-414c-aa17-9e4947197300"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numMedidor}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>

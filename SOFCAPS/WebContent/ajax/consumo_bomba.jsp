@@ -95,6 +95,11 @@ response.setDateHeader("Expires", -1);
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content no-padding table-responsive">
+			<div style="text-align: center;">
+					<label Style='margin-top: 10px; margin-bottom: 10px;'> <input
+						type="checkbox" id="mostrar_consumoB" onclick="">MOSTRAR CONSUMO DE BOMBA INACTIVOS
+					</label>
+				</div>
 				<table class="table table-bordered table-striped table-hover table-heading table-datatable"
 					id="tbl_consumoB" style="width:100%;">
 					<thead>
@@ -224,7 +229,7 @@ response.setDateHeader("Expires", -1);
 		</div>
 	</div>
 </div>
-        <!--///////////////////////Formulario y dialogo de eliminción /////////////////////////////// -->
+        <!--///////////////////////Formulario y dialogo de eliminación /////////////////////////////// -->
 <div>
 	<form id="frmEliminarConsumoB" action="" method="POST">
 		<input type="hidden" id="bombaID" name="bombaID" value="">
@@ -247,6 +252,31 @@ response.setDateHeader("Expires", -1);
 		</div>
 	</form>
 </div>
+
+ <!--///////////////////////Formulario y dialogo de activación /////////////////////////////// -->
+<div>
+	<form id="frmActivarConsumoB" action="" method="POST">
+		<input type="hidden" id="bombaID" name="bombaID" value="">
+		<input type="hidden" id="opcion" name="opcion" value="activar">
+		
+		<div id="modalbox">
+			<div class="devoops-modal">
+				<div class="devoops-modal-header">
+					<div class="modal-header-name">
+						<span>Basic table</span>
+					</div>
+					<div class="box-icons">
+						<a class="close-link"> <i class="fa fa-times"></i>
+						</a>
+					</div>
+				</div>
+				<div class="devoops-modal-inner"></div>
+				<div class="devoops-modal-bottom"></div>
+			</div>
+		</div>
+	</form>
+</div>
+
 
 <script type="text/javascript">
 var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
@@ -280,7 +310,8 @@ var verResultado = function(r) {//parametro(resultado-String)
 		mostrarMensaje("#dialogBomb", "CORRECTO", 
 			"¡Se realizó la operación correctamente, todo bien!", "#d7f9ec", "btn-info");
 		limpiar_texto();
-		$('#tbl_consumoB').DataTable().ajax.reload();
+		cargar_consumoB();
+// 		$('#tbl_consumoB').DataTable().ajax.reload();
 		websocket.send("ACTUALIZADO");
 	}
 	if(r == "ERROR"){
@@ -315,6 +346,40 @@ function abrirDialogo() {////////////////////abre dialogo con muestra si desae e
 			+"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 	eliminar();
 }
+
+function abrirDialogo2() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
+	OpenModalBox(
+			"<div><h3>Reactivar Consumo</h3></div>",
+			"<p Style='text-align:center; color:blue; font-size:x-large;'>¿Esta seguro que desea activar este registro?</p>",
+			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-2 col-md-3'>"
+			+"<button type='button' id='activar_consumoB' class='btn btn-primary btn-label-left'"
+			+" style='color:#ece1e1;' >"
+			+"<span><i class='fa fa-user'></i></span>Activar Consumo </button>"
+			+"<div style='margin-top: 5px;'></div>"
+			+"</div> <div class='col-sm-12 col-md-offset-1 col-md-3 text-center' Style='margin-bottom: -10px;'>"
+			+"<button type='button' class='btn btn-default btn-label-left' Style='margin-left: 10px;' onclick='CloseModalBox()'>"
+			+"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
+	activar();
+}
+
+//////////////////////////////////activar los datos seteados en el formulario/////////////////////////////////////
+var activar = function() {
+	$("#activar_consumoB").on("click", function() {
+			frmElim = $("#frmActivarConsumoB").serialize();
+			console.log("datos a activar: " + frmElim);
+			$.ajax({
+			method:"POST",
+			url:"./SL_Consumo_bomba",
+			data: frmElim
+			}).done(function(info) {
+			 	verResultado(info);
+			});
+		
+		CloseModalBox();
+	});
+}
+
+
 //////////////////////////////////eliminar los datos seteados en el formulario/////////////////////////////////////
 var eliminar = function() {
 	$("#eliminar_consumoB").on("click", function() {
@@ -377,8 +442,29 @@ var cancelar = function() {////////////////cancela la acción limpiando el texto
 		validarColap(colap2, "#colapsar_desplegar2");
 	}
 }
+
+var boton= 1;//varaible para validar si el check de activar clientes esta checkeado
+/////////////////////////////////funsion que devuelve los botones dependiendo del check///////////////////////////
+function botones() {
+if(boton ==1){
+return "<button type='button' class='visualizarConsumoB btn btn-info' data-toggle='tooltip' "+
+"data-placement='top' title='Visualizar Registro'>"+
+"<i class='fa fa-info-circle'></i> </button>  "+
+"<button type='button' id='editarConsumoB' class='editarConsumoB btn btn-primary' data-toggle='tooltip' "+
+"data-placement='top' title='Editar consumo de bomba'>"+
+"<i class='fa fa-pencil-square-o'></i> </button>  "+
+"<button type='button' id='eliminar_consumoB' class='eliminar_consumoB btn btn-danger' data-toggle='tooltip' "+
+"data-placement='top' title='Eliminar consumo de bomba'>"+
+"<i class='fa fa-trash-o'></i> </button>"
+}else if(boton ==2){
+return "<button type='button' style='margin-left:15px;' class='activar btn btn-primary' title='activar Consumo de la Bomba'>"
++ "<i class='fa fa-upload'></i>"
++ "</button>";
+}
+}
 ///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
 function listarT() {
+	boton= 1;
 	console.log("listar bomba");
 	var tablaConsumoB = $('#tbl_consumoB').DataTable( {
 		responsive: true,
@@ -388,6 +474,9 @@ function listarT() {
 		"ajax": {
 			"method":"GET",
 			"url":"./SL_Consumo_bomba",
+			"data" : {
+				"carga" : boton//para decirle al servlet que cargue consumos + cliente + contrato
+			},
 			"dataSrc":"aaData"
 		},
 		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
@@ -408,16 +497,11 @@ function listarT() {
                 	return fecha;
             }},
             { "data": "lecturaActual"},
-            {"defaultContent":"<button type='button' class='visualizarConsumoB btn btn-info' data-toggle='tooltip' "+
-				"data-placement='top' title='Visualizar Registro'>"+
-				"<i class='fa fa-info-circle'></i> </button>  "+
-				"<button type='button' id='editarConsumoB' class='editarConsumoB btn btn-primary' data-toggle='tooltip' "+
-				"data-placement='top' title='Editar consumo de bomba'>"+
-				"<i class='fa fa-pencil-square-o'></i> </button>  "+
-				"<button type='button' id='eliminar_consumoB' class='eliminar_consumoB btn btn-danger' data-toggle='tooltip' "+
-				"data-placement='top' title='Eliminar consumo de bomba'>"+
-				"<i class='fa fa-trash-o'></i> </button>"}
-            ],
+            {"mData":null,
+				render: function ( data, type, row ) {
+                	return botones;
+				}
+			} ],
             "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 				 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
 				 +"<rt>"
@@ -451,7 +535,53 @@ function listarT() {
 	obtener_datos_editar("#tbl_consumoB tbody",tablaConsumoB);
 	obtener_datos_visualizar("#tbl_consumoB tbody",tablaConsumoB);
 	obtener_id_eliminar('#tbl_consumoB tbody',tablaConsumoB);
+	obtener_id_activar("#tbl_consumoB tbody", $('#tbl_consumoB').DataTable());//igual para el boton activar
+	
+	$("#mostrar_consumoB").change(function(){//evento que carga diferentes datos si el checkbox esta activo o no
+        if($(this).is(':checked')){
+        	boton= 2;
+			document.getElementById('formularioConsumoBomba').style.display = 'none';
+			cargar_consumoB();
+        }else{
+        	boton= 1;
+        	//document.getElementById('cerrar').style.display = 'block';
+        	$('#tbl_consumoB').DataTable().ajax.reload();
+        }
+	});
 }
+//////////////////////////////////////metodo para llenar al dataTable con los Contratos anulado////////////////////////
+var cargar_consumoB = function() {
+	console.log("Cargando DataTable para activación");
+	$('#tbl_consumoB').DataTable().state.clear();
+	$('#tbl_consumoB').DataTable().clear().draw();
+	$.ajax({
+        type: "GET",
+        url: "./SL_Consumo_bomba",
+        data: {
+	        "carga": boton//para decirle al servlet que cargue datos
+	    },
+        success: function(response){
+        	$('#tbl_consumoB').DataTable().rows.add(response.aaData).draw();
+        }
+	});
+}
+
+/////////////////////////funsión que activa el evento click para eliminar un registro del dataTable///////////////////
+var obtener_id_activar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
+	console.log("activar");
+	$(tbody).on("click", "button.activar", function() {
+		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+		var bomba_ID;
+		table.rows().every(function(index, loop, rowloop) {
+			if(index == datos){
+				bomba_ID = table.row(index).data().bomba_ID;
+				$("#frmActivarConsumoB #bombaID").val(bomba_ID);
+			}
+		});
+		abrirDialogo2();
+	});
+}
+
 /////////////////////////funsión que activa el evento click para eliminar un registro del dataTable///////////////////
 var obtener_id_eliminar = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
 	console.log("eliminar");

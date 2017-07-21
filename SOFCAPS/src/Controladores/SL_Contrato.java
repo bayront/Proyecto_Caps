@@ -59,6 +59,7 @@ public class SL_Contrato extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	response.setContentType("application/json");
 		out = response.getWriter();
+		if(Integer.parseInt(request.getParameter("carga")) == 1) {
 		try {
 			traerContrato(response);
 			
@@ -69,12 +70,68 @@ public class SL_Contrato extends HttpServlet {
 			e.printStackTrace();
 			System.out.println("error de parseo : "+e.getMessage());
 		}
+		}
+		else 	if(Integer.parseInt(request.getParameter("carga")) == 2) {
+			try {
+				traerContratoInactivos(response);
+				
+			}catch (SQLException e){
+				System.out.println("error sql: "+e.getMessage());
+				e.printStackTrace();
+			} catch (java.text.ParseException e) {
+				e.printStackTrace();
+				System.out.println("error de parseo : "+e.getMessage());
+			}
+			}
 	}
     
     
     private void traerContrato(HttpServletResponse response) throws SQLException, java.text.ParseException {
 		List<Contrato> listaC = new ArrayList<>();
 		ResultSet rs = dtContrato.cargarDatosTabla();
+		while(rs.next()){
+			Contrato co = new Contrato();
+			Cliente cl = new Cliente();
+			RegimenPropiedad rp =new RegimenPropiedad();
+			Sector se = new Sector();
+			Categoria ca = new Categoria();
+			co.setContrato_ID(rs.getInt("contrato_ID"));
+			String f = parseador.format(rs.getDate("fechaContrato"));
+			co.setFechaContrato(parseador.parse(f));
+			co.setNumContrato(rs.getInt("numContrato"));
+			co.setNumMedidor(rs.getString("numMedidor"));
+			co.setDireccionCliente(rs.getString("direccionCliente"));
+			co.setCuotas(rs.getInt("cuotas"));
+			co.setCantidadPersonas(rs.getInt("cantidadPersonas"));
+			co.setMontoContrato(rs.getFloat("montoContrato"));
+			cl.setCliente_ID(rs.getInt("Cliente_ID"));
+			cl.setNombreCompleto(rs.getString("nombre1") + " " + rs.getString("nombre2") + " " + rs.getString("apellido1") + " " + rs.getString("apellido2"));
+			rp.setRegimenPropiedad_ID(rs.getInt("RegimenPropiedad_ID"));
+			rp.setRegimenPro(rs.getString("regimenPro"));
+			se.setSector_ID(rs.getInt("Sector_ID"));
+			se.setNombreSector(rs.getString("nombreSector"));
+			ca.setCategoria_ID(rs.getInt("Categoria_ID"));
+			ca.setNomCategoria(rs.getString("nomCategoria"));
+			co.setCliente(cl);
+			co.setCategoria(ca);
+			co.setRegimenPropiedad(rp);
+			co.setSector(se);
+			
+			listaC.add(co);
+		}
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.aaData = new ArrayList<>();
+		for (Contrato contrato : listaC) {
+			dataTableObject.aaData.add(contrato);
+		}
+		String json = gson.toJson(dataTableObject);
+		System.out.println(json.toString());
+		out.print(json);
+	}
+    
+    private void traerContratoInactivos(HttpServletResponse response) throws SQLException, java.text.ParseException {
+		List<Contrato> listaC = new ArrayList<>();
+		ResultSet rs = dtContrato.cargarDatosTablaInactivos();
 		while(rs.next()){
 			Contrato co = new Contrato();
 			Cliente cl = new Cliente();
@@ -156,6 +213,10 @@ public class SL_Contrato extends HttpServlet {
 			contrato_ID= Integer.parseInt(request.getParameter("contrato_ID"));
 			eliminar(contrato_ID, response);
 			break;
+		case "activar":
+			contrato_ID= Integer.parseInt(request.getParameter("contrato_ID"));
+			activar(contrato_ID, response);
+			break;
 		case "guardar":
 			numMedidor = request.getParameter("numMedidor").trim();
 			direccionCliente = request.getParameter("direccionCliente").trim();
@@ -228,6 +289,18 @@ public class SL_Contrato extends HttpServlet {
 			Contrato contrato = new Contrato();
 			contrato.setContrato_ID(contrato_ID);
 			verificar_resultado(dtContrato.eliminarContratro(contrato), response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ERROR EN EL SERVLET CONTRATO: " + e.getMessage());
+		}
+		
+	}
+	
+	private void activar(int contrato_ID, HttpServletResponse response) {
+		try {
+			Contrato contrato = new Contrato();
+			contrato.setContrato_ID(contrato_ID);
+			verificar_resultado(dtContrato.activarContrato(contrato), response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("ERROR EN EL SERVLET CONTRATO: " + e.getMessage());

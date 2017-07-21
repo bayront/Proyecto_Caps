@@ -94,6 +94,11 @@ response.setDateHeader("Expires", -1);
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content no-padding table-responsive">
+			<div style="text-align: center;">
+					<label Style='margin-top: 10px; margin-bottom: 10px;'> <input
+						type="checkbox" id="mostrar_contratos" onclick="">MOSTRAR CONTRATOS INACTIVOS
+					</label>
+				</div>
 				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
 					id="dt_Contrato" style="width:100%;">
 					<thead>
@@ -103,7 +108,7 @@ response.setDateHeader("Expires", -1);
 							<th>Número del Medidor</th>
 							<th>Sector</th>
 							<th>Categoría</th>
-							<th></th>
+							<th>Acción</th>
 						</tr>
 					</thead>
 				</table>
@@ -309,6 +314,30 @@ response.setDateHeader("Expires", -1);
 	</form>
 </div>
 
+         <!--///////////////////////Formulario y dialogo de activación /////////////////////////////// -->
+<div>
+	<form id="frmActivarContrato" action="" method="POST">
+		<input type="hidden" id=contrato_ID name="contrato_ID" value="">
+		<input type="hidden" id="opcion" name="opcion" value="activar">
+
+		<div id="modalbox">
+			<div class="devoops-modal">
+				<div class="devoops-modal-header">
+					<div class="modal-header-name">
+						<span>Basic table</span>
+					</div>
+					<div class="box-icons">
+						<a class="close-link"> <i class="fa fa-times"></i>
+						</a>
+					</div>
+				</div>
+				<div class="devoops-modal-inner"></div>
+				<div class="devoops-modal-bottom"></div>
+			</div>
+		</div>
+	</form>
+</div>
+
 
 
 
@@ -359,6 +388,7 @@ function AllTables() {
 		});
 	});
 }
+
 function abrirDialogoC() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
 	OpenModalBox(
 			"<div><h3>Imprimir Contrato</h3></div>",
@@ -373,6 +403,7 @@ function abrirDialogoC() {////////////////////abre dialogo con muestra si desae 
 			"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 	imprimir();
 }
+
 var imprimir = function() {
 	$("#imprimir_contrato").on("click", function() {
 		var numContrato = "";
@@ -406,7 +437,7 @@ var verResultado = function(r) {//parametro(resultado-String)
 		mostrarMensaje("#dialog", "CORRECTO",
 				"¡Se realizó la operación correctamente, todo bien!","#d7f9ec", "btn-info");
 		limpiar_texto();
-		$('#dt_Contrato').DataTable().ajax.reload();
+		cargar_contrato();
 	}
 	if(r == "ERROR"){
 		mostrarMensaje("#dialog", "ERROR",
@@ -433,6 +464,8 @@ var eliminar = function() {
 		CloseModalBox();
 	});
 }
+
+
 function abrirDialogo() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
 	OpenModalBox(
 			"<div><h3>Borrar Contrato</h3></div>",
@@ -447,6 +480,39 @@ function abrirDialogo() {////////////////////abre dialogo con muestra si desae e
 			"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
 	eliminar();
 }
+
+function abrirDialogo2() {////////////////////abre dialogo con muestra si desae activar el registro del contrato
+	OpenModalBox(
+			"<div><h3>Reactivar Contrato</h3></div>",
+			"<p Style='text-align:center; color:blue; font-size:x-large;'>¿Esta seguro de volver a reactivar este contrato?</p>",
+			"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-2 col-md-3'>"
+			+"<button type='button' id='activar_contrato' class='btn btn-primary btn-label-left'"
+			+" style='color:#ece1e1;' >"
+			+"<span><i class='fa fa-user'></i></span>Activar contrato </button>"
+			+"<div style='margin-top: 5px;'></div>"
+			+"</div> <div class='col-sm-12 col-md-offset-1 col-md-3 text-center' Style='margin-bottom: -10px;'>"
+			+"<button type='button' class='btn btn-default btn-label-left' Style='margin-left: 10px;' onclick='CloseModalBox()'>"
+			+"<span><i class='fa fa-reply txt-danger'></i></span> Cancelar</button> </div>");
+	activar();
+}
+
+
+//////////////////////////////////activar los datos seteados en el formulario/////////////////////////////////////
+var activar = function() {
+	$("#activar_contrato").on("click", function() {
+		frmElim = $("#frmActivarContrato").serialize();
+		console.log("datos a activar: " + frmElim);
+		$.ajax({
+			method:"POST",
+			url:"./SL_Contrato",
+			data: frmElim
+		}).done(function(info) {
+			 	verResultado(info);
+		});
+		CloseModalBox();
+	});
+}
+
 var limpiar_texto = function() {/////////////////////////limpiar texto del formulario
 	$( ".formContrato #info" ).remove();
 	$("#abrir_modal").prop('disabled', false).attr('title', '');
@@ -591,8 +657,35 @@ var obtener_datos_visualizar = function(tbody, table) {//parametro(id_tabla, obj
 			validarExpand(expand2, "#expandir2");
 	});
 }
+
+var boton= 1;//varaible para validar si el check de activar clientes esta checkeado
+/////////////////////////////////funsion que devuelve los botones dependiendo del check///////////////////////////
+function botones() {
+if(boton ==1){
+return "<button type='button' class='visualizarContrato btn btn-info' data-toggle='tooltip' "+
+	"data-placement='top' title='Visualizar Registro'>"+
+	"<i class='fa fa-info-circle'></i> </button>  "+
+	"<button type='button' class='editarContrato btn btn-primary' data-toggle='tooltip' "+
+	"data-placement='top' title='Editar contrato'>"+
+	"<i class='fa fa-pencil-square-o'></i> </button> "+
+
+	"<button type='button' class='eliminarContrato btn btn-danger' data-toggle='tooltip' "+
+	"data-placement='top' title='Eliminar contrato'>"+
+	"<i class='fa fa-trash-o'></i> </button> "+
+
+	"<button type='button' class='imprimir btn btn-basic' data-toggle='tooltip' "+
+	"data-placement='top' title='Imprimir contrato'>"+
+	"<i class='fa fa-print'></i> </button>";
+}else if(boton ==2){
+return "<button type='button' style='margin-left:15px;' class='activar btn btn-primary' title='activar Contrato'>"
++ "<i class='fa fa-upload'></i>"
++ "</button>";
+ }
+}
+
 /////////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla/////////////////////////////////////////
 var listar = function() {
+	boton= 1;
 	console.log("cargando dataTable");
 	var tablaContrato = $('#dt_Contrato').DataTable( {
 		responsive: true,
@@ -602,8 +695,11 @@ var listar = function() {
 		ajax: {
 			"method":"GET",
 			"url":"./SL_Contrato",
-			"dataSrc":"aaData",
-			"data":{"opcion":"cargar"}
+			"data" : {
+				"carga" : boton//para decirle al servlet que cargue consumos + cliente + contrato
+			},
+			"dataSrc":"aaData"
+			
 		},
 		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
 		"pageLength": 0,
@@ -620,22 +716,11 @@ var listar = function() {
             { "data": "numMedidor" },
             { "data": "sector.nombreSector" },
             { "data": "categoria.nomCategoria",  "width": "6%"},
-            {"defaultContent":"<button type='button' class='visualizarContrato btn btn-info' data-toggle='tooltip' "+
-				"data-placement='top' title='Visualizar Registro'>"+
-				"<i class='fa fa-info-circle'></i> </button>  "+
-				"<button type='button' class='editarContrato btn btn-primary' data-toggle='tooltip' "+
-				"data-placement='top' title='Editar contrato'>"+
-				"<i class='fa fa-pencil-square-o'></i> </button> "+
-				
-				"<button type='button' class='eliminarContrato btn btn-danger' data-toggle='tooltip' "+
-				"data-placement='top' title='Eliminar contrato'>"+
-				"<i class='fa fa-trash-o'></i> </button> "+
-				
-				"<button type='button' class='imprimir btn btn-basic' data-toggle='tooltip' "+
-				"data-placement='top' title='Imprimir contrato'>"+
-				"<i class='fa fa-print'></i> </button>"
-            }
-            ],
+            {"mData" : null,
+				render: function ( data, type, row ) {
+                	return botones;
+                }
+            } ],
             "dom":"<rt><'row'<'form-inline' <'col-sm-12 text-center'B>>>"
 				 +"<'row' <'form-inline' <'col-sm-6'l><'col-sm-6'f>>>"
 				 +"<rt>"
@@ -689,7 +774,52 @@ var listar = function() {
 	obtener_datos_visualizar("#dt_Contrato tbody",tablaContrato);
 	obtener_id_eliminar('#dt_Contrato tbody',tablaContrato);
 	obtener_id_imprimir('#dt_Contrato tbody',tablaContrato);
+	obtener_id_activar("#dt_Contrato tbody", $('#dt_Contrato').DataTable());//igual para el boton activar
+	
+	$("#mostrar_contratos").change(function(){//evento que carga diferentes datos si el checkbox esta activo o no
+        if($(this).is(':checked')){
+        	boton= 2;
+			document.getElementById('formularioContrato').style.display = 'none';
+			cargar_contrato();
+        }else{
+        	boton= 1;
+        	//document.getElementById('cerrar').style.display = 'block';
+        	$('#dt_Contrato').DataTable().ajax.reload();
+        }
+	});
 }
+//////////////////////////////////////metodo para llenar al dataTable con los Contratos anulado////////////////////////
+var cargar_contrato = function() {
+	console.log("Cargando DataTable para activación");
+	$('#dt_Contrato').DataTable().state.clear();
+	$('#dt_Contrato').DataTable().clear().draw();
+	$.ajax({
+        type: "GET",
+        url: "./SL_Contrato",
+        data: {
+	        "carga": boton//para decirle al servlet que cargue datos
+	    },
+        success: function(response){
+        	$('#dt_Contrato').DataTable().rows.add(response.aaData).draw();
+        }
+	});
+}
+
+///////////////////////////////Activa el evento cuando de click al boton activar Contrato del dataTable////////////////7
+var obtener_id_activar = function(tbody, table) { //parametros(id_tabla, objeto dataTable)
+	$(tbody).on("click","button.activar",function() {
+		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
+		var contrato_ID;
+		table.rows().every(function(index, loop, rowloop) {
+			if (index == datos) {
+				contrato_ID = table.row(index).data().contrato_ID;
+				$("#frmActivarContrato #contrato_ID").val(contrato_ID);
+			}
+		});
+		abrirDialogo2();
+	});
+}
+
 ///////////////////funsión que crea un dataTable para traer en cliente mediante un dialogo////////////
 function filtrarTabla(){
 	console.log("buscarCliente");

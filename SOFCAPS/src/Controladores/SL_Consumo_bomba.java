@@ -64,6 +64,7 @@ public class SL_Consumo_bomba extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		out = response.getWriter();
+		if(Integer.parseInt(request.getParameter("carga")) == 1) {
 		try {
 			try {
 				traerConsumoBomba(response);
@@ -73,15 +74,67 @@ public class SL_Consumo_bomba extends HttpServlet {
 				System.out.println("ERROR: "+e.getMessage());
 			}
 			
-		}catch (SQLException e){
+			}catch (SQLException e){
 			e.printStackTrace();
+			}
 		}
+		
+		else if(Integer.parseInt(request.getParameter("carga")) == 2) {
+			try {
+				try {
+					traerConsumoBombaInactivos(response);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("ERROR: "+e.getMessage());
+				}
+				
+				}catch (SQLException e){
+				e.printStackTrace();
+				}
+			}
 
 	}
 	
 	private void traerConsumoBomba(HttpServletResponse response) throws SQLException, ParseException {
 		List<Bomba> listaB = new ArrayList<>();
 		ResultSet rs = dTconsB.cargarDatosTabla();
+		System.out.println("listar resgistros de bomba");
+		while(rs.next()){
+			Bomba bomba = new Bomba();
+			Unidad_de_Medida uniMed = new Unidad_de_Medida();
+			bomba.setBomba_ID(rs.getInt("Bomba_ID"));
+			bomba.setConsumoActual(rs.getFloat("consumoActual"));
+			bomba.setLecturaActual(rs.getFloat("lecturaActual"));
+			String f = parseador2.format(rs.getDate("fechaLecturaActual"));
+			bomba.setFechaLecturaActual(parseador2.parse(f));
+			String observacion = rs.getString("observaciones");
+			if(observacion == "" || observacion == null) {
+				bomba.setObservaciones("");
+			}else {
+				bomba.setObservaciones(rs.getString("observaciones"));
+			}
+			uniMed.setTipoMedida(rs.getNString("tipoMedida"));
+			uniMed.setUnidad_de_Medida_ID(rs.getInt("Unidad_de_Medida_ID"));
+			bomba.setUnidad_de_Medida(uniMed);
+			listaB.add(bomba);
+			
+		}
+		
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.aaData = new ArrayList<>();
+		for (Bomba bn : listaB) {
+			dataTableObject.aaData.add(bn);
+		}
+		String json = gson.toJson(dataTableObject);
+		System.out.println(json.toString());
+		out.print(json);
+		out.flush();	
+	}
+	
+	private void traerConsumoBombaInactivos(HttpServletResponse response) throws SQLException, ParseException {
+		List<Bomba> listaB = new ArrayList<>();
+		ResultSet rs = dTconsB.cargarDatosInactivos();
 		System.out.println("listar resgistros de bomba");
 		while(rs.next()){
 			Bomba bomba = new Bomba();
@@ -152,6 +205,11 @@ public class SL_Consumo_bomba extends HttpServlet {
 					System.out.println("bomba id: "+ bomba_ID);
 					eliminar(bomba_ID, response);
 					break;
+				case "activar":
+					bomba_ID= Integer.parseInt(request.getParameter("bombaID"));
+					System.out.println("bomba id: "+ bomba_ID);
+					activar(bomba_ID, response);
+					break;
 				case "guardar":
 					consumoActual = Float.parseFloat(request.getParameter("consumoActual").trim());
 					try {
@@ -209,6 +267,18 @@ public class SL_Consumo_bomba extends HttpServlet {
 		
 	}
 
+	private void activar(int bomba_ID, HttpServletResponse response) {
+		try {
+			Bomba bomb = new Bomba();
+			bomb.setBomba_ID(bomba_ID);
+			verificarResultado(dTconsB.activar(bomb), response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ERROR EN EL SERVLET CONSUMO_BOMBA: " + e.getMessage());
+		}
+		
+	}
+	
 	private void actualizar(int bomba_ID, Float consumoActual, java.util.Date fechaLecturaActual1, Float lecturaActual,
 			String observaciones, int uniMedID, HttpServletResponse response) {
 		try {

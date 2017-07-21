@@ -110,9 +110,35 @@ public class DT_consumo_bomba {
 		return rs;
 	}
 	
+	public ResultSet DatosInactivos(){
+		Statement s;
+		String sql = ("SELECT * FROM bomba WHERE estado = 1;");
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("Error en DT_consumo_bomba: "+e.getMessage());
+		}
+		return rs;
+	}
+	
 	public ResultSet cargarDatosTabla(){
 		Statement s;
 		String sql = ("SELECT b.Bomba_ID, b.consumoActual, b.fechaLecturaActual, b.lecturaActual, b.observaciones, um.tipoMedida, um.Unidad_de_Medida_ID FROM bomba b inner join unidad_de_medida um on b.Unidad_de_Medida_ID = um.Unidad_de_Medida_ID WHERE b.estado = 0;");
+		try{
+			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = s.executeQuery(sql);
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("Error en DT_consumo_bomba: "+e.getMessage());
+		}
+		return rs;
+	}
+	
+	public ResultSet cargarDatosInactivos(){
+		Statement s;
+		String sql = ("SELECT b.Bomba_ID, b.consumoActual, b.fechaLecturaActual, b.lecturaActual, b.observaciones, um.tipoMedida, um.Unidad_de_Medida_ID FROM bomba b inner join unidad_de_medida um on b.Unidad_de_Medida_ID = um.Unidad_de_Medida_ID WHERE b.estado = 1;");
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
@@ -186,6 +212,25 @@ public class DT_consumo_bomba {
 			while(rs.next()){
 				if(rs.getInt("Bomba_ID") == b.getBomba_ID()){
 					rs.updateBoolean("estado", true);
+					rs.updateRow();
+					eliminado = true;
+				}
+			}
+		}catch (Exception e) {
+			System.err.println("ERROR AL ELIMINAR " + e.getMessage());
+			e.printStackTrace();
+		}
+		return eliminado;
+	}
+	
+	public boolean activar(Bomba b){
+		boolean eliminado = false;
+		try {
+			dtconsB.DatosInactivos();
+			rs.beforeFirst();
+			while(rs.next()){
+				if(rs.getInt("Bomba_ID") == b.getBomba_ID()){
+					rs.updateBoolean("estado", false);
 					rs.updateRow();
 					eliminado = true;
 				}

@@ -10,7 +10,7 @@ public class Conexion
 	private static String url = "jdbc:mysql://localhost:3306/sofcaps";
     private static String user = "root";
 //    private static String password = "$1$t3m@$2014*";
-    private static String password = "1234";
+    private static String password = "My$qlS3rv3rAPS*";
    
     public Conexion()
     {  

@@ -17,6 +17,7 @@
 		<ol class="breadcrumb">
 			<!--<li><a href="index.html">Home</a></li>-->
 			<li><a href="index.jsp">Inicio</a></li>
+			<li><a href="#">Reportes</a></li>
 			<li><a href="#">Reporte Otros Ingresos y egresos</a></li>
 		</ol>
 	</div>

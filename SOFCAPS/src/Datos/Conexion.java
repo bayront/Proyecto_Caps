@@ -62,8 +62,7 @@ public class Conexion
            }
     }
    
-    /*public static void main(String args[])
-    {
+    /*public static void main(String args[]){
             new Conexion();
 			Conexion.getConnection();
     }*/

@@ -141,24 +141,6 @@
 										</div>
 								</a>
 									<ul class="dropdown-menu">
-<!-- 										<li><a href="#"> <i class="fa fa-user"></i> <span -->
-<!-- 												class="hidden-sm text">Profile</span> -->
-<!-- 										</a></li> -->
-<!-- 										<li><a href="ajax/page_messages.html" class="ajax-link"> -->
-<!-- 												<i class="fa fa-envelope"></i> <span class="hidden-sm text">Messages</span> -->
-<!-- 										</a></li> -->
-<!-- 										<li><a href="ajax/gallery_simple.html" class="ajax-link"> -->
-<!-- 												<i class="fa fa-picture-o"></i> <span class="hidden-sm text">Albums</span> -->
-<!-- 										</a></li> -->
-<!-- 										<li><a href="ajax/calendar.html" class="ajax-link"> <i -->
-<!-- 												class="fa fa-tasks"></i> <span class="hidden-sm text">Tasks</span> -->
-<!-- 										</a></li> -->
-<!-- 										<li><a href="#"> <i class="fa fa-cog"></i> <span -->
-<!-- 												class="hidden-sm text">Settings</span> -->
-<!-- 										</a></li> -->
-<!-- 										<li><a href="#"> <i class="fa fa-power-off"></i> <span -->
-<!-- 												class="hidden-sm text">Logout</span> -->
-<!-- 										</a></li> -->
 										<li><a href="CAPS.jsp"><i class="fa fa-power-off"></i>
 											<span>Cerrar Sesión</span>
 										</a></li>
@@ -179,56 +161,6 @@
 					<li><a href="ajax/dashboard.html" class="active ajax-link">
 						<i title="Inicio" data-placement="bottom" class="fa fa-home"></i> <span class="hidden-xs">Inicio</span>
 					</a></li>
-					<li><a href="ajax/Cliente.jsp" class="ajax-link">
-							<i title="Gestión Cliente" class="fa fa-group"></i> <span class="hidden-xs">Gestión de clientes</span>
-					</a></li>
-					<li><a href="ajax/Contrato.jsp" class="ajax-link">
-							<i title="Gestión Contrato" class="fa fa-pencil-square-o"></i> <span class="hidden-xs">Gestión de contratos</span>
-					</a></li>
-					<li><a href="ajax/ReciboCaja.jsp" class="ajax-link">
-							<i title="Recibo caja" class="fa fa-dashboard"></i> <span class="hidden-xs">Recibos de caja</span>
-					</a></li>
-					<li><a href="ajax/Reconexion.jsp" class="ajax-link">
-							<i title="Clientes morosos" class="fa fa-exclamation"></i> <span class="hidden-xs">Clientes morosos</span>
-					</a></li>
-<!-- 					<li class="dropdown"><a href="#" class="dropdown-toggle"> -->
-<!-- 							<i class="fa fa-list"></i> <span class="hidden-xs">Paginas</span> -->
-<!-- 					</a> -->
-<!-- 						<ul class="dropdown-menu"> -->
-<!-- 							<li><a href="ajax/page_login.html">Login</a></li> -->
-<!-- 							<li><a href="ajax/page_register.html">Register</a></li> -->
-<!-- 							<li><a id="locked-screen" class="submenu" -->
-<!-- 								href="ajax/page_locked.html">Locked Screen</a></li> -->
-<!-- 							<li><a class="ajax-link" href="ajax/page_contacts.html">Contacts</a></li> -->
-<!-- 							<li><a class="ajax-link" href="ajax/page_feed.html">Feed</a></li> -->
-<!-- 							<li><a class="ajax-link add-full" -->
-<!-- 								href="ajax/page_messages.html">Messages</a></li> -->
-<!-- 							<li><a class="ajax-link" href="ajax/page_pricing.html">Pricing</a></li> -->
-<!-- 							<li><a class="ajax-link" href="ajax/page_invoice.html">Invoice</a></li> -->
-<!-- 							<li><a class="ajax-link" href="ajax/page_search.html">Search -->
-<!-- 									Results</a></li> -->
-<!-- 							<li><a class="ajax-link" href="ajax/page_404.html">Error -->
-<!-- 									404</a></li> -->
-<!-- 							<li><a href="ajax/page_500.html">Error 500</a></li> -->
-<!-- 						</ul></li> -->
-<!-- 					<li><a class="ajax-link" href="ajax/typography.html"> <i -->
-<!-- 							class="fa fa-font"></i> <span class="hidden-xs">Tipografia</span> -->
-<!-- 					</a></li> -->
-<!-- 					<li><a class="ajax-link" href="ajax/calendar.html"> <i -->
-<!-- 							class="fa fa-calendar"></i> <span class="hidden-xs">Calendario</span> -->
-<!-- 					</a></li> -->
-
-					<li class="dropdown"><a href="#" class="dropdown-toggle">
-							<i title="Consumos" class="fa fa-tint"></i> <span class="hidden-xs">Consumos</span>
-					</a>
-						<ul class="dropdown-menu">
-							<li><a class="ajax-link" href="ajax/consumo_bomba.jsp"> Consumo de la bomba</a></li>
-							<li><a class="ajax-link" href="ajax/ver-consumos.jsp"> Consumo de los clientes</a></li>
-						</ul>
-					</li>
-					<li><a href="ajax/facturacion.jsp" class="ajax-link">
-							<i title="Factuación" class="fa fa-list-alt"></i> <span class="hidden-xs">Facturación</span>
-					</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 							<i title="Secretaría" class="fa fa-folder-open"></i><span class="hidden-xs"> Área secretaría</span>
 					</a>
@@ -241,6 +173,45 @@
 							</li>
 						</ul>
 					</li>
+					<li><a href="ajax/Cliente.jsp" class="ajax-link">
+							<i title="Gestión Cliente" class="fa fa-group"></i> <span class="hidden-xs">Gestión de clientes</span>
+					</a></li>
+					<li><a href="ajax/Contrato.jsp" class="ajax-link">
+							<i title="Gestión Contrato" class="fa fa-pencil-square-o"></i> <span class="hidden-xs">Gestión de contratos</span>
+					</a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle">
+							<i title="Consumos" class="fa fa-tint"></i> <span class="hidden-xs">Consumos</span>
+					</a>
+						<ul class="dropdown-menu">
+							<li><a class="ajax-link" href="ajax/consumo_bomba.jsp"> Consumo de la bomba</a></li>
+							<li><a class="ajax-link" href="ajax/ver-consumos.jsp"> Consumo de los clientes</a></li>
+						</ul>
+					</li>
+					<li><a href="ajax/facturacion.jsp" class="ajax-link">
+							<i title="Facturación" class="fa fa-list-alt"></i> <span class="hidden-xs">Área facturación</span>
+					</a></li>
+					<li><a href="ajax/ReciboCaja.jsp" class="ajax-link">
+							<i title="Recibo caja" class="fa fa-dashboard"></i> <span class="hidden-xs">Recibos de caja</span>
+					</a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle">
+						<i title="Finanzas" class="fa fa-briefcase"></i> <span class="hidden-xs">Área finanzas</span></a>
+						<ul class="dropdown-menu">
+							<li><a class="ajax-link" href="ajax/OtrosIngEgreg.jsp" style="padding: 9px 10px 9px 30px;">
+							<p style="height:auto; white-space:normal; margin-bottom:0px;">
+							Gestión de ingresos y egresos</p></a></li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" 
+							style="min-width: auto; padding-left:30px;"><i title="Ingreso Egreso" class="fa fa-pencil-square-o"></i> 
+							<span class="hidden-xs">Ingresos y Egresos</span></a>
+								<ul class="dropdown-menu" style="min-width:auto;">
+									<li><a style="padding:10px; padding-left:30px" class="ajax-link" 
+									href="ajax/categoria_Ing_egreg.jsp">Categorías</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li><a href="ajax/Reconexion.jsp" class="ajax-link">
+							<i title="Clientes morosos" class="fa fa-exclamation"></i> <span class="hidden-xs">Clientes morosos</span>
+					</a></li>
 					
 					<li class="dropdown"><a href="#" class="dropdown-toggle">
 					<i title="Usuarios" class="fa fa-user"></i> <span class="hidden-xs">Usuarios</span></a>
@@ -252,25 +223,9 @@
 					<li class="dropdown"><a href="ajax/Roles_Opciones.jsp" class="ajax-link">
 							<i title="Rol Opción" class="fa fa-unlock-alt"></i> <span class="hidden-xs">Roles y Opciones</span>
 					</a></li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle">
-							<i title="Finanzas" class="fa fa-briefcase"></i> <span class="hidden-xs">Finanzas</span></a>
-							<ul class="dropdown-menu">
-								<li><a class="ajax-link" href="ajax/OtrosIngEgreg.jsp" style="padding: 9px 10px 9px 30px;">
-								<p style="height:auto; white-space:normal; margin-bottom:0px;">
-								Gestión de ingresos y egresos</p></a></li>
-								<li class="dropdown"><a href="#" class="dropdown-toggle" 
-								style="min-width: auto; padding-left:30px;"><i title="Ingreso Egreso" class="fa fa-pencil-square-o"></i> 
-								<span class="hidden-xs">Ingresos y Egresos</span></a>
-									<ul class="dropdown-menu" style="min-width:auto;">
-										<li><a style="padding:10px; padding-left:30px" class="ajax-link" 
-										href="ajax/categoria_Ing_egreg.jsp">Categorías</a></li>
-									</ul>
-								</li>
-							</ul>
-						</li>
 						
 						<li class="dropdown"><a href="#" class="dropdown-toggle">
-							<i title="Finanzas" class="fa fa-briefcase"></i> <span class="hidden-xs">Reportes</span></a>
+							<i title="Reportes" class="fa fa-archive"></i> <span class="hidden-xs">Reportes</span></a>
 							<ul class="dropdown-menu">
 								<li><a class="ajax-link" href="ajax/ReporteOtroIE.jsp" style="padding: 9px 10px 9px 30px;">
 								<p style="height:auto; white-space:normal; margin-bottom:0px;">
@@ -283,11 +238,9 @@
 								Consumo de clientes </p></a></li>
 							
 								<li class="dropdown"><a href="#" class="dropdown-toggle" 
-								style="min-width: auto; padding-left:30px;"><i title="Ingreso Egreso" class="fa fa-pencil-square-o"></i> 
+								style="min-width: auto; padding-left:30px;"><i title="Acuerdos de pago" class="fa fa-pencil-square-o"></i> 
 								<span class="hidden-xs">Acuerdo pago</span></a>
 									<ul class="dropdown-menu" style="min-width:auto;">
-										<li><a style="padding:10px; padding-left:30px" class="ajax-link" 
-										href="ajax/a.jsp">Categorías</a></li>
 										<li><a style="padding:10px; padding-left:30px" class="ajax-link" 
 										href="ajax/AcuerdoPago.jsp">Comprimiso Pago</a></li>
 									</ul>
@@ -316,7 +269,6 @@
 	<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="plugins/bootstrap/bootstrap.min.js"></script>
-	<script src="plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
 	<script src="plugins/tinymce/tinymce.min.js"></script>
 	<script src="plugins/tinymce/jquery.tinymce.min.js"></script>
 	

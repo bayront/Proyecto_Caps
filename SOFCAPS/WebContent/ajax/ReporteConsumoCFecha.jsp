@@ -7,10 +7,11 @@
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
 			<li><a href="index.jsp">Inicio</a></li>
-			<li><a href="#">Consumo clientes</a></li>
+			<li><a href="#">Reportes</a></li>
+			<li><a href="#">Consumo de los clientes</a></li>
 		</ol>
 	</div>
-</div>	
+</div>
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
@@ -28,10 +29,10 @@
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content">
-				<form class="form-horizontal" role="form" id ="formReporteBomba">
-				<div class="form-group">
-					<!-- FORMA PARA CREAR PERIODOS DE TIEMPO CON JQUERY UI -->
-						<label class="col-sm-4 control-label">Periodo de fechas</label>
+				<form class="form-horizontal" role="form" id="formReporteBomba">
+					<div class="form-group">
+						<!-- FORMA PARA CREAR PERIODOS DE TIEMPO CON JQUERY UI -->
+						<label class="col-sm-3 control-label">Periodo de fechas</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" id="FECHITA1"
 								placeholder="fecha de inicio">
@@ -41,23 +42,19 @@
 								placeholder="fecha de fin">
 						</div>
 					</div>
-					
-					
+
+
 					<div class="form-group">
-						<div class="col-sm-offset-4 col-sm-3">
-							<button type="submit"  id="imprimir3" class="fa fa-print fa-2x"
-							data-toggle='tooltip' "data-placement='bottom' onclick="imprimir();">
-								<span></span> Imprimir
+						<div class="col-sm-offset-5 col-sm-3">
+							<button type='button' id="imprimir3" class='imprimir btn btn-basic' 
+							data-toggle='tooltip' data-placement='top' title='Imprimir' onclick="imprimir();">
+								<i class='fa fa-print'></i> Imprimir
 							</button>
 						</div>
-						
+
 					</div>
-						<div class= "clearfix"></div>
-							<div class= "clearfix"></div>
-								<div class= "clearfix"></div>
-		</div>
-				
-					
+					<div class="clearfix"></div>
+					<div class="clearfix"></div>
 				</form>
 			</div>
 		</div>
@@ -65,11 +62,7 @@
 </div>
 
 
-
-
-
 <script type="text/javascript">
-
 
 function imprimir()
 

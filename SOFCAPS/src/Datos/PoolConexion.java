@@ -16,7 +16,7 @@ public class PoolConexion
 	private static String db = "SOFCAPS";
 	private static String url = "jdbc:mysql://localhost:3306/"+db;
 	private static String user = "root";
-	private static String pass = "1234";
+	private static String pass = "My$qlS3rv3rAPS*";
 
     //Constructor
 	private PoolConexion()

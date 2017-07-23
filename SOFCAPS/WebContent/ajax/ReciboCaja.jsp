@@ -511,7 +511,7 @@ function iniciarTabla(){
 	    		});
 	    	}
 	    });	
-	});s
+	});
 	obtener_id_imprimir('#dt_ReciboCaja tbody',tablaRecibo);
 	obtener_id_eliminar('#dt_ReciboCaja tbody',tablaRecibo);
 }

@@ -104,7 +104,7 @@ response.setDateHeader("Expires", -1);
 									<div class="col-sm-offset-4 col-sm-3">
 										<button type='button' class='imprimir btn btn-basic' data-toggle='tooltip' 
 											data-placement='top' title='Imprimir' onclick="imprimir();" >
-											<i class='fa fa-print'></i> 
+											<i class='fa fa-print'></i> Imprimir
 										</button>
 									</div>
 								</div>
@@ -194,7 +194,7 @@ response.setDateHeader("Expires", -1);
 									<div class="col-sm-offset-4 col-sm-3">
 										<button type='button' class='imprimir btn btn-basic' data-toggle='tooltip' 
 											data-placement='top' title='Imprimir' onclick="imprimirFS();" >
-											<i class='fa fa-print'></i> 
+											<i class='fa fa-print'></i>Imprimir 
 										</button>
 									</div>
 								</div>
@@ -325,7 +325,7 @@ $(document).ready(function() {
 	}
 	});
 	// Load Timepicker plugin
-	LoadTimePickerScript(DemoTimePicker);
+	
 	// Add tooltip to form-controls
 	$('.form-control').tooltip();
 	LoadSelect2Script(DemoSelect2);

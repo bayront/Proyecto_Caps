@@ -233,7 +233,7 @@
 								<li><a class="ajax-link" href="ajax/reporte_bomba.jsp" style="padding: 9px 10px 9px 30px;">
 								<p style="height:auto; white-space:normal; margin-bottom:0px;">
 								Informe de la Bomba </p></a></li>
-								<li><a class="ajax-link" href="ajax/ReporteConsumoCFecha.jsp" style="padding: 9px 10px 9px 30px;">
+								<li><a class="ajax-link" href="ajax/ConsumoClientesFiltros.jsp" style="padding: 9px 10px 9px 30px;">
 								<p style="height:auto; white-space:normal; margin-bottom:0px;">
 								Consumo de clientes </p></a></li>
 							

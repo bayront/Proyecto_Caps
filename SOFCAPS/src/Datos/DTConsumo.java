@@ -116,7 +116,6 @@ public class DTConsumo {
 					rs.updateInt("Consumo_ID", rs.getInt("Consumo_ID"));
 					rs.updateInt("Contrato_ID", rs.getInt("Contrato_ID"));
 					rs.updateInt("Cliente_ID", rs.getInt("Cliente_ID"));
-					rs.updateFloat("lectura_Anterior", rs.getFloat("lectura_Anterior"));
 					rs.updateFloat("lectura_Actual", rs.getFloat("lectura_Actual"));
 					rs.updateFloat("consumoTotal", rs.getFloat("consumoTotal"));
 					rs.updateBoolean("eliminado", rs.getBoolean("eliminado"));
@@ -133,7 +132,6 @@ public class DTConsumo {
 			rs.updateInt("Cliente_ID", consumo.getCliente().getCliente_ID());
 			rs.updateInt("Contrato_ID", consumo.getContrato().getContrato_ID());
 			rs.updateString("fecha_fin", fecha.format(consumo.getFecha_fin()));
-			rs.updateFloat("lectura_Anterior", consumo.getLectura_Anterior()); 
 			rs.updateFloat("lectura_Actual", consumo.getLectura_Actual()); 
 			rs.updateFloat("consumoTotal", consumo.getConsumoTotal()); 
 			rs.updateBoolean("eliminado", consumo.getEliminado());
@@ -176,10 +174,9 @@ public class DTConsumo {
 			rs.beforeFirst();
 			while (rs.next()) {
 				if(rs.getInt("Consumo_ID") == consumo.getConsumo_ID()) {
-					float lecturaVieja = rs.getFloat("lectura_Actual") - rs.getFloat("consumoTotal");
-					consumo.setConsumoTotal(consumo.getLectura_Actual() - lecturaVieja);
-					rs.updateFloat("consumoTotal", consumo.getConsumoTotal()); 
-					rs.updateFloat("lectura_Anterior", consumo.getLectura_Anterior()); 
+					//float lecturaVieja = rs.getFloat("lectura_Actual") - rs.getFloat("consumoTotal");
+					//consumo.setConsumoTotal(consumo.getLectura_Actual() - lecturaVieja);
+					rs.updateFloat("consumoTotal", consumo.getConsumoTotal());
 					rs.updateFloat("lectura_Actual", consumo.getLectura_Actual()); 
 					rs.updateInt("Consumo_ID", consumo.getConsumo_ID());
 					rs.updateString("fecha_fin", fecha.format(consumo.getFecha_fin()));

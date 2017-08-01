@@ -419,7 +419,7 @@ var limpiar_texto = function() {///////////limpiar texto del formulario
 	$("#lecturaActual").val("").prop('readonly', false);
 	$("#fecha").val("").removeAttr('disabled');
 	$("#observaciones").val("").prop('readonly', false);
-	$("#consumoActual").val("").prop('readonly', false);
+	//$("#consumoActual").val("").prop('readonly', false);
 	$("#bombaID").val("");
 	$("#unidadMedida").val("");
 	$("#unidadMedida").change().removeAttr('disabled');
@@ -845,6 +845,13 @@ function formValidBomba() {
             					return true;
             				}
         				}
+		            }
+		        }
+			},
+			unidadMedida:{
+				validators: {
+					notEmpty:{
+		                message: "Este campo es requerido y no debe estar vacio"
 		            }
 		        }
 			}

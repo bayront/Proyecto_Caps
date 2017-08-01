@@ -379,6 +379,7 @@ public class SL_Factura_Maestra extends HttpServlet{
 			String f = parseador2.format(rs.getDate(6));
 			fA.setFechaVencimiento(parseador2.parse(f));
 			fA.setTotalPago(rs.getFloat(8));
+			fA.setEstadoFac(rs.getBoolean(10));
 			co.setConsumoTotal(rs.getFloat(3));
 			f = parseador2.format(rs.getDate(5));
 			co.setFecha_fin(parseador2.parse(f));

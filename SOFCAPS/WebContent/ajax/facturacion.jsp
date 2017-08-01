@@ -332,8 +332,9 @@ response.setDateHeader("Expires", -1);
 							<th>Total pago</th>
 							<th>Deslizamiento</th>
 							<th>Fecha de corte</th>
-							<th>Vencimiento</th>
+							<th>Vencimiento</th>	
 							<th>Num_factura</th>
+							<th>Pagado</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -663,17 +664,28 @@ function imprimirFactura (tbody, table){
 		                	var f = new Date(data.consumo.fecha_fin);
 		        			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
 		                	return fecha;
-		                }},
-		             { "data": null,
+		             }},
+		            { "data": null,
 			         	render: function ( data, type, row ) {
 			             	var f = new Date(data.fechaVencimiento);
 			        		var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
 			               	return fecha;
 			       	}},
 		            { "data": "numFact" },
-		            {"defaultContent":"<button type='button' class='imprimirFactura btn btn-danger' data-toggle='tooltip' "+
-						"data-placement='top' title='Imprimir factura'>"+
-						"<i class='fa fa-trash-o'></i> </button>"}
+		            { "data": null,
+			         	render: function ( data, type, row ) {
+			         		var pagado;
+			         		if(data.estadoFac == 1)
+			        			pagado = "<div class='checkbox'> <label> <input type='checkbox' checked>"+
+			        			"<i class='fa fa-square-o'></i> </label> </div>";
+			        		else
+			        			pagado = "<div class='checkbox'> <label> <input type='checkbox'>"+
+			        			"<i class='fa fa-square-o'></i> </label> </div>";
+			               	return pagado;
+			       	}},
+		            {"defaultContent":"<button type='button' class='imprimirFactura btn btn-basic' data-toggle='tooltip' "+
+						"data-placement='top' title='Imprimir Factura'>"+
+						"<i class='fa fa-print'></i> </button>"}
 		     	]
 		    });
 		 

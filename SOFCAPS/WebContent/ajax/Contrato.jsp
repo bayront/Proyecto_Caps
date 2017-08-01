@@ -892,7 +892,7 @@ $(document).ready(function() {
 		onSelect: function(dateText, inst) {
 			$("#fechaContrato").val(dateText.toString());
 			$("#fechaContrato").change();
-			$('#formContrato').bootstrapValidator('revalidateField', 'fechaContrato');
+			$('.formContrato').bootstrapValidator('revalidateField', 'fechaContrato');
 		}
 	});
 	

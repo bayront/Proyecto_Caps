@@ -139,16 +139,7 @@ response.setDateHeader("Expires", -1);
 					</div>
 					<h4 class="page-header"
 						Style="text-align: center; font-size: xx-large;">Consumo</h4>
-						
-					<div class="form-group has-success has-feedback">
-						<label class="col-sm-4 control-label">Lectura Anterior</label>
-						<div class="col-sm-5">
-							<input data-bv-numeric="true" class="form-control" name="lecturaAnterior" data-bv-numeric-message="¡Este valor no es un número!"
-								id="lectura_Anterior" data-toggle="tooltip" data-placement="top" title="Requerido">
-						</div>
-					</div>
-					<div class="clearfix"></div>
-				
+					
 					<div class="form-group has-success has-feedback">
 						<label class="col-sm-4 control-label">Lectura Actual</label>
 						<div class="col-sm-5">
@@ -582,7 +573,6 @@ websocket.onclose = function(){
 			var f = new Date(datos.fecha_fin);
 			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
 			$("#lectura_Actual").val(datos.lectura_Actual).prop('readonly', true);
-			$("#lectura_Anterior").val(datos.lectura_Anterior).prop('readonly', true);
 			$("#fecha_fin").val(fecha).prop('disabled', true);
 			$("#consumoTotal").val(datos.consumoTotal).prop('readonly', true);
 			$("#nombreClienteCompleto").val(datos.cliente.nombreCompleto).prop('readonly', true);
@@ -614,7 +604,6 @@ websocket.onclose = function(){
 			var f = new Date(datos.fecha_fin);
 			var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
 			$("#lectura_Actual").val(datos.lectura_Actual);
-			$("#lectura_Anterior").val(datos.lectura_Anterior);
 			$("#fecha_fin").val(fecha);
 			$("#consumoTotal").val(datos.consumoTotal);
 			$("#nombreClienteCompleto").val(datos.cliente.nombreCompleto);
@@ -800,7 +789,6 @@ websocket.onclose = function(){
 		$("#cliente_ID").val("");
 		$("#contrato_ID").val("");
 		$("#lectura_Actual").val("").prop('readonly', false);
-		$("#lectura_Anterior").val("").prop('readonly', false);
 		$("#fecha_fin").val("").prop('disabled', false);
 		$("#consumoTotal").val("").prop('readonly', false);
 		$("#nombreClienteCompleto").val("").prop('readonly', false);
@@ -901,8 +889,29 @@ websocket.onclose = function(){
 		//añadir tooltip
 		$('[data-toggle="tooltip"]').tooltip();
 		
-		$("input#lectura_Actual").change(function() {
-			$( "#consumoTotal" ).val($( "#lectura_Actual" ).val() - $( "#lectura_Anterior" ).val()).change();
+		$("input#lectura_Actual").keyup(function() {
+			if($("form#defaultForm #contrato_ID").val()!="" && $("form#defaultForm #cliente_ID").val()!=""){
+				var contrato_ID = $("form#defaultForm #contrato_ID").val();
+				$.ajax({//enviar datos por ajax
+		 			type:"GET",
+		 			url:"./SL_consumo",
+		 			data: {
+		 				"carga": 3,
+		 				"contrato_ID" : contrato_ID
+				    }
+		 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
+		 				if(info.aaData.length >0){
+			 				var consumo_id = info.aaData[info.aaData.length-1].consumo_ID;
+			 				var lectura_ant1 = info.aaData[info.aaData.length-1].lectura_Actual;
+			 				var lectura_ant2 = info.aaData[info.aaData.length-2].lectura_Actual;
+			 				if(consumo_id == $("form#defaultForm #consumo_ID").val())
+			 					$( "#consumoTotal" ).val($( "#lectura_Actual" ).val() - lectura_ant2).change();
+			 				else
+			 					$( "#consumoTotal" ).val($( "#lectura_Actual" ).val() - lectura_ant1).change();
+		 				}else
+		 					$( "#consumoTotal" ).val($( "#lectura_Actual" ).val() - 0).change();
+		 		});
+            }
 		});
 	});
 	
@@ -920,20 +929,8 @@ websocket.onclose = function(){
 	                        value: 0,
 	                        inclusive: false,
 	                        message: '¡El valor debe ser mayor o igual a 0!'
-	                    }
-			        }
-				},
-				lecturaAnterior:{
-					validators: {
-						notEmpty:{
-			                message: "¡Este campo es requerido y no debe estar vacio!"
-			            },
-			            greaterThan: {
-	                        value: 0,
-	                        inclusive: false,
-	                        message: '¡El valor debe ser mayor o igual a 0!'
 	                    },
-						callback: {
+	                    callback: {
            					message: '¡Seleccione un cliente antes de digitar la lectura!',
             				callback: function (value, validator, $field) {
             					if($("form#defaultForm #contrato_ID").val()=="" && $("form#defaultForm #cliente_ID").val()==""){

@@ -7,7 +7,6 @@ public class Consumo
 {
    private Date fecha_fin;
    private Float consumoTotal;
-   private Float lectura_Anterior;
    private Float lectura_Actual;
    private Boolean actual;
    private Boolean eliminado; 
@@ -19,12 +18,11 @@ public class Consumo
    {    
    }
 
-    public Consumo(Date fecha_fin, Float consumoTotal, Float lectura_Anterior, Float lectura_Actual,
+    public Consumo(Date fecha_fin, Float consumoTotal, Float lectura_Actual,
 		Integer consumo_ID, Cliente cliente, Contrato contrato) {
     	super();
     	this.fecha_fin = fecha_fin;
     	this.consumoTotal = consumoTotal;
-    	this.lectura_Anterior = lectura_Anterior;
     	this.lectura_Actual = lectura_Actual;
     	this.consumo_ID = consumo_ID;
     	this.cliente = cliente;
@@ -43,12 +41,6 @@ public class Consumo
     public void setConsumoTotal(Float consumoTotal) {
         this.consumoTotal = consumoTotal;
     }
-    public Float getLectura_Anterior() {
-		return lectura_Anterior;
-	}
-	public void setLectura_Anterior(Float lectura_Anterior) {
-		this.lectura_Anterior = lectura_Anterior;
-	}
 	public Float getLectura_Actual() {
         return lectura_Actual;
     }

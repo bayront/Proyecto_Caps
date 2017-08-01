@@ -94,36 +94,32 @@ public class SL_consumo extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String opcion = request.getParameter("opcion");
-		float lectura, lecturaAnterior, consumoTotal;
+		float lectura, consumoTotal;
 		int contrato_ID, cliente_ID, consumo_ID;
 		Date fecha_fin;
 		try {
 			switch (opcion) {
 			case "guardar":
 				lectura = Float.parseFloat(request.getParameter("lectura"));
-				lecturaAnterior = Float.parseFloat(request.getParameter("lecturaAnterior"));
 				consumoTotal = Float.parseFloat(request.getParameter("consumoTotal"));
 				float lecturaRound= (float) (Math.round(lectura * 100.0) / 100.0);
-				float lecturaAntRound= (float) (Math.round(lecturaAnterior * 100.0) / 100.0);
 				float consumoRound= (float) (Math.round(consumoTotal * 100.0) / 100.0);
 				cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
 				contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
 				fecha_fin = fecha.parse(request.getParameter("fecha"));
-				guardar(fecha_fin,consumoRound, lecturaAntRound, lecturaRound, cliente_ID, contrato_ID, response);
+				guardar(fecha_fin,consumoRound, lecturaRound, cliente_ID, contrato_ID, response);
 				break;
 			case "actualizar":
 				consumo_ID = Integer.parseInt(request.getParameter("consumo_ID"));
 				contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
-				lecturaAnterior = Float.parseFloat(request.getParameter("lecturaAnterior"));
 				consumoTotal = Float.parseFloat(request.getParameter("consumoTotal"));
 				lectura = Float.parseFloat(request.getParameter("lectura"));
 				float lecturaRound2= (float) (Math.round(lectura * 100.0) / 100.0);
-				float lecturaAntRound2= (float) (Math.round(lecturaAnterior * 100.0) / 100.0);
 				float consumoRound2= (float) (Math.round(consumoTotal * 100.0) / 100.0);
 				fecha_fin = fecha.parse(request.getParameter("fecha"));
 				cliente_ID = Integer.parseInt(request.getParameter("cliente_ID"));
 				contrato_ID = Integer.parseInt(request.getParameter("contrato_ID"));
-				actualizar(consumo_ID, contrato_ID, fecha_fin, consumoRound2, lecturaAntRound2, lecturaRound2, response);
+				actualizar(consumo_ID, contrato_ID, fecha_fin, consumoRound2, lecturaRound2, response);
 				break;
 			default:
 				response.setContentType("text/plain");
@@ -137,7 +133,7 @@ public class SL_consumo extends HttpServlet {
 		}
 	}
 	
-	private void guardar(Date fecha_fin,float consumoTotal, float lecturaAnt, float lectura, int cliente_ID, int contrato_ID, HttpServletResponse response) throws IOException {
+	private void guardar(Date fecha_fin,float consumoTotal, float lectura, int cliente_ID, int contrato_ID, HttpServletResponse response) throws IOException {
 		Contrato c = new Contrato();
 		Cliente cl = new Cliente();
 		Consumo consumo =  new Consumo();
@@ -169,7 +165,6 @@ public class SL_consumo extends HttpServlet {
 			try {
 				consumo.setFecha_fin(fecha_fin);
 				consumo.setConsumoTotal(consumoTotal);
-				consumo.setLectura_Anterior(lecturaAnt);
 				consumo.setLectura_Actual(lectura);
 				consumo.setActual(true);
 				consumo.setEliminado(false);
@@ -184,7 +179,7 @@ public class SL_consumo extends HttpServlet {
 		}
 	}
 	
-	private void actualizar(int consumo_ID, int contrato_ID, Date fecha_fin, float consumoTotal, float lecturaAnt, float lectura, HttpServletResponse response) throws IOException {
+	private void actualizar(int consumo_ID, int contrato_ID, Date fecha_fin, float consumoTotal, float lectura, HttpServletResponse response) throws IOException {
 		Consumo consumo =  new Consumo();
 //		boolean lecturaMenor = false;
 		boolean fechaMenor = false;
@@ -231,7 +226,6 @@ public class SL_consumo extends HttpServlet {
 			consumo.setConsumo_ID(consumo_ID);
 			consumo.setFecha_fin(fecha_fin);
 			consumo.setConsumoTotal(consumoTotal);
-			consumo.setLectura_Anterior(lecturaAnt);
 			consumo.setLectura_Actual(lectura);
 			consumo.setActual(true);
 			consumo.setEliminado(false);
@@ -262,7 +256,7 @@ public class SL_consumo extends HttpServlet {
 			rs = datosConsumo.cargarHistorial(contrato_ID);
 		while (rs.next()) {
 			String f = parseador2.format(rs.getDate("fecha_fin"));
-			Consumo c = new Consumo(parseador2.parse(f), rs.getFloat("consumoTotal"), rs.getFloat("lectura_Anterior"), 
+			Consumo c = new Consumo(parseador2.parse(f), rs.getFloat("consumoTotal"),
 					rs.getFloat("lectura_Actual"), rs.getInt("Consumo_ID"),
 					new Cliente(rs.getInt("Cliente_ID")), new Contrato(rs.getInt("Contrato_ID")));
 			consumos.add(c);

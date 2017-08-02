@@ -8,6 +8,10 @@ response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 response.setDateHeader("Expires", -1);
 %>
 <%
+	String nombre_usuario = "";
+	nombre_usuario = (String) session.getAttribute("nombre_usuario");
+	nombre_usuario = nombre_usuario==null?"":nombre_usuario;
+	
 	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
 
 	Usuario us = new Usuario();
@@ -77,6 +81,7 @@ response.setDateHeader("Expires", -1);
 </div>
 
 <!--///////////////////////DataTable de los contratos/////////////////////////////// -->
+<input type="hidden" id="userC" name="userC" value="<%=nombre_usuario %>">
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
@@ -189,9 +194,10 @@ var verResultado = function(r) {//parametro(resultado-String)
 var eliminar = function() {
 	$("#eliminar_reconexion").on("click", function() {
 		var reconexionID = "";
+		userC = $('#userC').val();
 		reconexion_ID = $('#frmEliminarReconexion #reconexion_ID').val();
 		console.log(reconexion_ID);
-		window.open("SL_Reconexion?reconexion_ID="+reconexion_ID + "&opcion=imprimir",'_blank');
+		window.open("SL_Reconexion?reconexion_ID="+reconexion_ID +"&userC="+userC +"&opcion=imprimir",'_blank');
 		console.log("la reconexion_ID del jsp"+"  "+reconexion_ID);
 		CloseModalBox();
 	});

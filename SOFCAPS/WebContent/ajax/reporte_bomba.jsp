@@ -1,8 +1,58 @@
 <%@page import="Entidades.Mes"%>
-<%@page import="Datos.DT_consumo_bomba, java.util.* ,java.sql.ResultSet;"%>
+<%@page import="Datos.DT_consumo_bomba, java.util.* ,java.sql.ResultSet"%>
 <%@page language="java"%>
-<%@page contentType="text/html"%> 
-<%@page pageEncoding="UTF-8"%> 
+<%@page contentType="text/html"%>
+<%@page pageEncoding="UTF-8" import="Entidades.Usuario, Entidades.Rol, Datos.DT_Vw_rol_opciones;"%> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<%
+response.setHeader("Pragma", "No-cache");
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.setDateHeader("Expires", -1);
+%>
+<%
+	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	Usuario us = new Usuario();
+	us = (Usuario)session.getAttribute("userVerificado");
+	
+	Rol r = new Rol();
+	r = (Rol)session.getAttribute("Rol");
+	
+	String direccion="";
+	direccion = request.getRequestURI();
+	//System.out.println("url: "+url);
+	int index = request.getRequestURI().lastIndexOf("/");
+	//System.out.println("index: "+index);
+	String miPagina = request.getRequestURI().substring(index);
+	//System.out.println("miPagina: "+miPagina);
+	boolean permiso = false;
+	String opcionActual = "";
+	
+	ResultSet resultset;
+	
+	if(us != null && r != null){
+		resultset=dtvro.obtenerOpc(r);
+		while(resultset.next()){
+			opcionActual = resultset.getString("opciones");
+			System.out.println("opcionActual: "+opcionActual);
+			if(opcionActual.equals(miPagina)){
+				permiso = true;
+				break;
+			}else{
+				permiso = false;
+			}
+		}
+	}else{
+		System.out.println("Pagina caps");
+		response.sendRedirect("../CAPS.jsp");
+		return;
+	}
+	
+	if(!permiso){	
+		System.out.println("Pagina de error");
+		response.sendRedirect("pag_Error.jsp");
+	}
+%>
+
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -18,7 +68,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i> <span>Recibo de caja</span>
+					<i class="fa fa-search"></i> <span>Reporte de consumos de agua de la bomba</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -42,8 +92,6 @@
 								placeholder="fecha de fin">
 						</div>
 					</div>
-
-
 					<div class="form-group">
 						<div class="col-sm-offset-5 col-sm-3">
 							<button type='button' id="imprimir3" class='imprimir btn btn-basic' 

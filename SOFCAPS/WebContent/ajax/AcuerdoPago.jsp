@@ -1,11 +1,57 @@
 <%@page import="Datos.DTCliente"%>
 <%@page import="java.sql.ResultSet"%>
-
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@page pageEncoding="UTF-8" import="Entidades.Usuario, Entidades.Rol, Datos.DT_Vw_rol_opciones;"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<%
+response.setHeader("Pragma", "No-cache");
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.setDateHeader("Expires", -1);
+%>
+<%
+	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	Usuario us = new Usuario();
+	us = (Usuario)session.getAttribute("userVerificado");
+	
+	Rol r = new Rol();
+	r = (Rol)session.getAttribute("Rol");
+	
+	String direccion="";
+	direccion = request.getRequestURI();
+	//System.out.println("url: "+url);
+	int index = request.getRequestURI().lastIndexOf("/");
+	//System.out.println("index: "+index);
+	String miPagina = request.getRequestURI().substring(index);
+	//System.out.println("miPagina: "+miPagina);
+	boolean permiso = false;
+	String opcionActual = "";
+	
+	ResultSet resultset;
+	
+	if(us != null && r != null){
+		resultset=dtvro.obtenerOpc(r);
+		while(resultset.next()){
+			opcionActual = resultset.getString("opciones");
+			System.out.println("opcionActual: "+opcionActual);
+			if(opcionActual.equals(miPagina)){
+				permiso = true;
+				break;
+			}else{
+				permiso = false;
+			}
+		}
+	}else{
+		System.out.println("Pagina caps");
+		response.sendRedirect("../CAPS.jsp");
+		return;
+	}
+	
+	if(!permiso){	
+		System.out.println("Pagina de error");
+		response.sendRedirect("pag_Error.jsp");
+	}
+%>
+
 <!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialog" class= "col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
@@ -30,15 +76,8 @@
 
 				<div class="box-header">
 					<div class="box-name">
-						<i class="fa fa-edit"></i> <span>Reporte</span>
+						<i class="fa fa-edit"></i> <span>Generación de Acuerdos de pago</span>
 					</div>
-					<!-- 				<div class="box-icons"> -->
-					<!-- 					<a id="colapsar_desplegar1" class="collapse-link" onclick="validar(colap1);"> <i -->
-					<!-- 						class="fa fa-chevron-up"></i></a>  -->
-					<!-- 						<a id="expandir1" class="expand-link"  onclick="validar(expand1);">  -->
-					<!-- 						<i class="fa fa-expand"></i></a> -->
-					<!-- 				</div> -->
-					<!-- 				<div class="no-move"></div> -->
 				</div>
 
 				<div class="box-content">

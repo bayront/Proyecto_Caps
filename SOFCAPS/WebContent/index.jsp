@@ -238,7 +238,7 @@
 								Consumo de clientes </p></a></li>
 								<li><a class="ajax-link" href="ajax/AguaPerdidaFB.jsp" style="padding: 9px 10px 9px 30px;">
 								<p style="height:auto; white-space:normal; margin-bottom:0px;">
-								Consumos CAPS </p></a></li>
+								informe de agua perdida</p></a></li>
 								
 								<li class="dropdown"><a href="#" class="dropdown-toggle" 
 								style="min-width: auto; padding-left:30px;"><i title="Acuerdos de pago" class="fa fa-pencil-square-o"></i> 

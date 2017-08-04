@@ -12,18 +12,56 @@ response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 response.setDateHeader("Expires", -1);
 %>
 <%
+	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	Usuario us = new Usuario();
+	us = (Usuario)session.getAttribute("userVerificado");
+	
+	Rol r = new Rol();
+	r = (Rol)session.getAttribute("Rol");
+	
+	String direccion="";
+	direccion = request.getRequestURI();
+	//System.out.println("url: "+url);
+	int index = request.getRequestURI().lastIndexOf("/");
+	//System.out.println("index: "+index);
+	String miPagina = request.getRequestURI().substring(index);
+	//System.out.println("miPagina: "+miPagina);
+	boolean permiso = false;
+	String opcionActual = "";
+	
+	ResultSet resultset;
+	
+	if(us != null && r != null){
+		resultset=dtvro.obtenerOpc(r);
+		while(resultset.next()){
+			opcionActual = resultset.getString("opciones");
+			System.out.println("opcionActual: "+opcionActual);
+			if(opcionActual.equals(miPagina)){
+				permiso = true;
+				break;
+			}else{
+				permiso = false;
+			}
+		}
+	}else{
+		System.out.println("Pagina caps");
+		response.sendRedirect("../CAPS.jsp");
+		return;
+	}
+	
+	if(!permiso){	
+		System.out.println("Pagina de error");
+		response.sendRedirect("pag_Error.jsp");
+	}
+%>
+<%
 	String nombre_usuario = "";
 	nombre_usuario = (String) session.getAttribute("nombre_usuario");
 	nombre_usuario = nombre_usuario==null?"":nombre_usuario;
 	
-
-	
 	String url="";	
 	ResultSet rs;
-	
-
 %>
-
 
 <!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialogCat" class= "col-xm-offset-1 col-xm-10">
@@ -73,7 +111,7 @@ response.setDateHeader("Expires", -1);
 			<li class="active"><a href="#" class="tab-link" id="IM">Imprimir por mes</a></li>
 			<li><a href="#" class="tab-link" id="II">Imprimir ingresos</a></li>
 			<li><a href="#" class="tab-link" id="IE">Imprimir Egresos</a></li>
-			<li><a href="#" class="tab-link" id="IF">Imprimir por fecha</a></li>
+			<li><a href="#" class="tab-link" id="IF">Imprimir por periodos</a></li>
 		</ul>
 	</div>
 	<div id="dashboard_tabs" class="col-xs-12 col-sm-10">
@@ -82,7 +120,7 @@ response.setDateHeader("Expires", -1);
 		<div id="dashboard-IM" class="row"
 		style="visibility: visible; position: relative;">
 			<div class="col-xs-12" style="margin-top: 20px;">
-				<h4 class="page-header">Reporte</h4>
+				<h4 class="page-header">Informe de otros ingresos y egresos por mes</h4>
 			</div>
 			<div class="row">
 				<div class="col-xs-12 col-sm-12  col-md-offset-1 col-md-10">
@@ -173,7 +211,7 @@ response.setDateHeader("Expires", -1);
 				<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 					<div class="box-header">
 						<div class="box-name">
-							<i class="fa fa-sitemap"></i> <span>Reporte ingresos</span>
+							<i class="fa fa-sitemap"></i> <span>Reporte de ingresos</span>
 						</div>
 						<div class="box-icons">
 							<a id="colapsar_desplegar2" class="collapse-link"> 
@@ -272,14 +310,14 @@ response.setDateHeader("Expires", -1);
 		<div id="dashboard-IE" class="row"
 		style="visibility: hidden; position: absolute;">
 			<div class="col-xs-12" style="margin-top: 20px;">
-				<h4 class="page-header">Informe por egresos</h4>
+				<h4 class="page-header">Informe de egresos</h4>
 			</div>
 			<div class="row">
 				<div class="col-xs-12 col-sm-12  col-md-offset-1 col-md-10">
 					<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 						<div class="box-header">
 							<div class="box-name">
-								<i class="fa fa-sitemap"></i> <span>Reporte egresos</span>
+								<i class="fa fa-sitemap"></i> <span>Reporte de egresos</span>
 							</div>
 							<div class="box-icons">
 								<a id="colapsar_desplegar2" class="collapse-link"> 
@@ -399,7 +437,7 @@ response.setDateHeader("Expires", -1);
 					<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 						<div class="box-header">
 							<div class="box-name">
-								<i class="fa fa-sitemap"></i> <span>Reporte por fecha</span>
+								<i class="fa fa-sitemap"></i> <span>Reporte por fechas</span>
 							</div>
 							<div class="box-icons">
 								<a id="colapsar_desplegar2" class="collapse-link"> 

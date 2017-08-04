@@ -10,16 +10,55 @@ response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 response.setDateHeader("Expires", -1);
 %>
 <%
+	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	Usuario us = new Usuario();
+	us = (Usuario)session.getAttribute("userVerificado");
+	
+	Rol r = new Rol();
+	r = (Rol)session.getAttribute("Rol");
+	
+	String direccion="";
+	direccion = request.getRequestURI();
+	//System.out.println("url: "+url);
+	int index = request.getRequestURI().lastIndexOf("/");
+	//System.out.println("index: "+index);
+	String miPagina = request.getRequestURI().substring(index);
+	//System.out.println("miPagina: "+miPagina);
+	boolean permiso = false;
+	String opcionActual = "";
+	
+	ResultSet resultset;
+	
+	if(us != null && r != null){
+		resultset=dtvro.obtenerOpc(r);
+		while(resultset.next()){
+			opcionActual = resultset.getString("opciones");
+			System.out.println("opcionActual: "+opcionActual);
+			if(opcionActual.equals(miPagina)){
+				permiso = true;
+				break;
+			}else{
+				permiso = false;
+			}
+		}
+	}else{
+		System.out.println("Pagina caps");
+		response.sendRedirect("../CAPS.jsp");
+		return;
+	}
+	
+	if(!permiso){	
+		System.out.println("Pagina de error");
+		response.sendRedirect("pag_Error.jsp");
+	}
+%>
+<%
 	String nombre_usuario = "";
 	nombre_usuario = (String) session.getAttribute("nombre_usuario");
 	nombre_usuario = nombre_usuario==null?"":nombre_usuario;
 	
-
-	
 	String url="";	
 	ResultSet rs;
-	
-
 %>
 
 <!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
@@ -32,6 +71,7 @@ response.setDateHeader("Expires", -1);
 		<ol class="breadcrumb">
 			<!--<li><a href="index.html">Home</a></li>-->
 			<li><a href="index.jsp">Inicio</a></li>
+			<li><a href="#">Reportes</a></li>
 			<li><a href="#">Reporte Consumo de clientes</a></li>
 		</ol>
 	</div>
@@ -57,7 +97,7 @@ response.setDateHeader("Expires", -1);
 <!--Start Dashboard 1-->
 <div id="dashboard-header" class="row">
 	<div class="col-sm-12 col-md-12 text-center">
-		<h3>Opciones para generar reporte consumo clientes</h3>
+		<h3>Opciones para generar reporte de consumos de los clientes</h3>
 	</div>
 </div>
 <!--End Dashboard 1-->
@@ -83,7 +123,7 @@ response.setDateHeader("Expires", -1);
 					<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 						<div class="box-header">
 							<div class="box-name">
-								<i class="fa fa-plus-square-o"></i> <span>Generar consumo meses</span>
+								<i class="fa fa-plus-square-o"></i> <span>Generar consumos por meses</span>
 							</div>
 							<div class="box-icons">
 								<a id="colapsar_desplegar1" class="collapse-link"> 
@@ -148,7 +188,7 @@ response.setDateHeader("Expires", -1);
 					<div class="box" style="top: 0px; left: 0px; opacity: 1;">
 						<div class="box-header">
 							<div class="box-name">
-								<i class="fa fa-sitemap"></i> <span>Reporte</span>
+								<i class="fa fa-sitemap"></i> <span>Informe para generar consumos por sector</span>
 							</div>
 							<div class="box-icons">
 								<a id="colapsar_desplegar2" class="collapse-link"> 

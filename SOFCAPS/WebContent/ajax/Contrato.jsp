@@ -828,6 +828,7 @@ function filtrarTabla(){
 	        $(this).attr("placeholder", title);
 	    } );
 	    var table = $('#datatable-filter').DataTable({
+	    	responsive: true,
 	    	"destroy": true,
 	    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
 	    	"bJQueryUI": true,

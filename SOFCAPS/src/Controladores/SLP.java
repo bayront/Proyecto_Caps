@@ -57,7 +57,7 @@ public class SLP extends HttpServlet {
 			String valor ="";
 			String v="";
 			String tipp="";
-			
+			String userC= request.getParameter("userC");
 			
 			
 //			Map<String,Object> parameters = (Map<String, Object>) new HashMap<String,Object>();
@@ -78,6 +78,7 @@ public class SLP extends HttpServlet {
 			HashMap<String, Object>hm = new HashMap<>();
 			hm.put("tipp", tipp);
 			hm.put("ms", valor);
+			hm.put("userC", userC);
 			
 			hm.put("ao",v);
 			

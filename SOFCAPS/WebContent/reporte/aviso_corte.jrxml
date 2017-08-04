@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-05-01T15:35:31 -->
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="aviso_corte" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7776bb96-fd02-4b0b-845d-bf7953cd78a4">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="avisoC "/>
 	<parameter name="Reconexion_ID" class="java.lang.String"/>
+	<parameter name="userC" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT * FROM sofcaps.aviso_corte where Reconexion_ID= $P{Reconexion_ID}]]>
 	</queryString>
@@ -17,7 +17,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="50" splitType="Stretch">
+		<band height="75" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="555" height="30" forecolor="#030303" uuid="5837b358-5b8a-4e37-ae4e-1b6e642edbec">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -35,21 +35,24 @@
 				</textElement>
 				<text><![CDATA[NOTIFICACIÓN DE CORTE]]></text>
 			</staticText>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="20" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="70" height="70" uuid="0df0fd5c-bfb8-4c91-b1a8-3efb0063b30e"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
 			<staticText>
-				<reportElement x="300" y="0" width="255" height="19" uuid="061b3e60-9da1-4c02-a29c-80df04b58378"/>
+				<reportElement x="300" y="51" width="255" height="19" uuid="061b3e60-9da1-4c02-a29c-80df04b58378"/>
 				<textElement textAlignment="Right">
 					<font fontName="Serif" size="14"/>
 				</textElement>
 				<text><![CDATA[Fecha de entrega__________________]]></text>
 			</staticText>
 		</band>
+	</title>
+	<pageHeader>
+		<band height="1" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="541" splitType="Stretch">
+		<band height="725" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="150" height="20" uuid="d07f9654-b940-413a-844b-f59ab1fb1730"/>
 				<textElement>
@@ -315,6 +318,24 @@
 				</textElement>
 				<text><![CDATA[Firma de Recibido]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="230" width="70" height="70" uuid="bf0a3ce7-fe8a-4a89-9b04-d4d34af5dd8e"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
+			<textField pattern="dd MMMMM , yyyy">
+				<reportElement x="442" y="693" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="ac2ab5d1-3c91-44b9-acba-232bf0837991"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="382" y="663" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="8af6c181-30c6-475b-bc97-f2c21c700e90"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>

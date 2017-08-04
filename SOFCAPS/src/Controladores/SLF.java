@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.*;
 import java.io.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,6 +39,8 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 
 public class SLF extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	DateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
+	DateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -56,6 +63,7 @@ public class SLF extends HttpServlet {
 			con = Conexion.getConnection();
 			String valor ="";
 			String tipp="";
+			String userC= request.getParameter("userC");
 		
 			
 			
@@ -68,6 +76,14 @@ public class SLF extends HttpServlet {
 			
 			
 			
+			Date fecha1 = parseador.parse(tipp);
+			String f1 = fecha.format(fecha1);
+			
+			Date fecha2 = parseador.parse(valor);
+			String f2 = fecha.format(fecha2);
+			
+			System.out.println("fecha1: "+f1+"fecha2: "+f2);
+
 			
 			//fecha = request.getParameter("parameter1");
 			//fecha = parameter1;
@@ -76,8 +92,9 @@ public class SLF extends HttpServlet {
 			
 			//Aquí se ponen los parámetros a como se llaman en el reporte
 			HashMap<String, Object>hm = new HashMap<>();
-			hm.put("f1", tipp);
-			hm.put("f2", valor);
+			hm.put("f1", f1);
+			hm.put("f2", f2);
+			hm.put("userC", userC);
 			
 	
 			
@@ -99,8 +116,8 @@ public class SLF extends HttpServlet {
 			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
 			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(otps));
 			exporter.exportReport();
-			System.out.println("SlP fecha 1  parametro"+" "+valor);
-			System.out.println("SlP fecha2  parametro"+" "+tipp);
+			System.out.println("SlF fecha 1  parametro"+" "+valor);
+			System.out.println("SlF fecha2  parametro"+" "+tipp);
 	
 			
 		}

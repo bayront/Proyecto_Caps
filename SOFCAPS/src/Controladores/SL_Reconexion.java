@@ -92,9 +92,11 @@ public class SL_Reconexion  extends HttpServlet  {
 			Connection con = null;
     		con = Conexion.getConnection();
     		int reconexion_ID= Integer.parseInt(request.getParameter("reconexion_ID"));
+    		String userC= request.getParameter("userC");
 			System.out.println(reconexion_ID);
 			HashMap<String, Object>hm = new HashMap<>();
 			hm.put("Reconexion_ID", reconexion_ID);
+			hm.put("userC", userC);
 			System.out.println(hm);
 			System.out.println("imprimir aviso de corte");
 			OutputStream otps = response.getOutputStream();

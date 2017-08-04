@@ -6,6 +6,24 @@
 <%@page contentType="text/html"%> 
 <%@page pageEncoding="UTF-8" import="Entidades.Usuario, Entidades.Rol, Datos.DT_Vw_rol_opciones,java.sql.ResultSet ;"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<%
+response.setHeader("Pragma", "No-cache");
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.setDateHeader("Expires", -1);
+%>
+<%
+	String nombre_usuario = "";
+	nombre_usuario = (String) session.getAttribute("nombre_usuario");
+	nombre_usuario = nombre_usuario==null?"":nombre_usuario;
+	
+
+	
+	String url="";	
+	ResultSet rs;
+	
+
+%>
+
 
 <!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
 <div id="dialogCat" class= "col-xm-offset-1 col-xm-10">
@@ -88,7 +106,7 @@
 						<label class="col-sm-offset-3 col-sm-1 control-label text-gpromedix">Mes:</label>
 						<%
 						DTOtros_Ing_Egreg dtn = DTOtros_Ing_Egreg.getInstance();
-						ResultSet rs = dtn.mes();
+						rs = dtn.mes();
 						%>
 						<div class="col-sm-5">
 							<select id="parameter1" name="parameter1" class="populate placeholder" required>
@@ -275,6 +293,7 @@
 						</div>
 						<div class="box-content">
 				<div class="form-group has-feedback">
+				<input type="hidden" id="userC" name="userC" value="<%=nombre_usuario %>">
 						<label class="col-sm-offset-2 col-sm-2 control-label text-right">Categoría:</label>
 						<%
 						rs = dtn.egre();
@@ -477,6 +496,7 @@ function imprimir()
 	var v = "";	
 	valor = $('#parameter1').val();
 	v =  $('#a').val();
+	userC = $('#userC').val();
 
 	if(valor == 0)
 	{
@@ -486,7 +506,7 @@ function imprimir()
 	}
 
 	
-	window.open("SL_ReporteOtros?parameter1="+valor+"&a="+v, '_blank');
+	window.open("SL_ReporteOtros?parameter1="+valor+"&a="+v+"&userC="+userC, '_blank');
 	System.out.println("La fecha del jsp"+" "+parameter1);
 	console.log("La fecha del jsp"+" "+parameter1);
 	console.log("El paramtero del jsp"+" "+valor);
@@ -501,12 +521,13 @@ function imprimir4()
 	
 	var valor = "";
 	var v = "";
+	userC = $('#userC').val();
 	
 	
 	cat = $('#FECHITA1').val();
 	valor = $('#FECHITA2').val();
 		
-	window.open("SLF?FECHITA1="+cat+"&FECHITA2="+valor, '_blank');
+	window.open("SLF?FECHITA1="+cat+"&FECHITA2="+valor+"&userC="+userC, '_blank');
 	console.log("El paramtero del jsp otro"+" "+valor);
 	console.log("El paramtero del jsp cat"+" "+cat);
 	
@@ -520,6 +541,7 @@ function imprimir2()
 	var valor = "";
 	var v = "";
 	var cat = "";
+	userC = $('#userC').val();
 	
 	cat = $('#tipp').val();
 	valor = $('#rox').val();
@@ -540,7 +562,7 @@ function imprimir2()
 	
 
 	
-	window.open("SLP?tipp="+cat+"&rox="+valor+"&anios="+v, '_blank');
+	window.open("SLP?tipp="+cat+"&rox="+valor+"&anios="+v+"&userC="+userC, '_blank');
 	console.log("El paramtero del jsp otro"+" "+valor);
 	console.log("El paramtero del jsp cat"+" "+cat);
 	console.log("El paramtero del jsp ansodias anio"+" "+v);
@@ -555,6 +577,7 @@ function imprimir3()
 	var valor = "";
 	var v = "";
 	var cat = "";
+	userC = $('#userC').val();
 	
 	cat = $('#tippe').val();
 	valor = $('#roxa').val();
@@ -575,7 +598,7 @@ function imprimir3()
 	
 
 	
-	window.open("SE?tippe="+cat+"&roxa="+valor+"&aniosd="+v, '_blank');
+	window.open("SE?tippe="+cat+"&roxa="+valor+"&aniosd="+v+"&userC="+userC, '_blank');
 	console.log("El paramtero del jsp otro"+" "+valor);
 	console.log("El paramtero del jsp cat"+" "+cat);
 	console.log("El paramtero del jsp ansodias anio"+" "+v);

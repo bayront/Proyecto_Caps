@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-07-20T03:28:42 -->
+<!-- 2017-08-03T21:54:59 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="c" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a966c623-dd8e-4e67-8757-0f197ed6a0fb">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Otros"/>
@@ -28,6 +28,7 @@ inner join contrato c on c.Contrato_ID=o.Contrato_ID where o.eliminado=0 and e.e
 		<field name="estado" class="java.lang.Boolean"/>
 		<field name="COLUMN_12" class="java.lang.Boolean"/>
 	</subDataset>
+	<parameter name="userC" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT 
         CONCAT(`cliente`.`nombre1`,
@@ -87,44 +88,32 @@ FROM
 		<band/>
 	</background>
 	<title>
-		<band height="60">
+		<band height="70">
 			<staticText>
-				<reportElement x="65" y="0" width="305" height="60" uuid="c25b0a03-7e3f-4719-910a-00c35b98f0a3">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Left">
-					<font fontName="Times New Roman" size="22" isBold="true"/>
+				<reportElement x="100" y="30" width="370" height="20" uuid="80a12218-9be3-492a-ba27-994fda40f309"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Comité Agua Potable y Saneamiento CAPS- Poneloya]]></text>
+				<text><![CDATA[INFORME CONSUMO CLIENTES]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="30" forecolor="#030303" uuid="1b719382-efd8-45db-a2ae-d1d5c699a846">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comité agua potable y saneamiento CAPS-Poneloya]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="70" height="70" uuid="c35423da-53dd-4759-838d-54131571e9cc"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="62">
-			<staticText>
-				<reportElement x="315" y="32" width="143" height="30" uuid="0249d6d3-64f3-4b0f-bfe9-1fa6bf44c23d"/>
-				<textElement>
-					<font size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fecha de impresión:]]></text>
-			</staticText>
-			<textField pattern="MMMMM dd, yyyy">
-				<reportElement x="458" y="32" width="97" height="30" uuid="4025949f-6c42-4eac-81c8-572caab54d3f"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="176" y="1" width="219" height="30" uuid="6f2f887c-0ba8-4cc1-a333-262e98053240"/>
-				<textElement>
-					<font size="18" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Consumo de Clientes
-]]></text>
-			</staticText>
-		</band>
+		<band height="62"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="7">
@@ -134,7 +123,7 @@ FROM
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="130">
+		<band height="220">
 			<staticText>
 				<reportElement x="0" y="2" width="160" height="30" uuid="2396722c-f55f-444b-8bbf-68f5304245dd"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -266,6 +255,20 @@ FROM
 			<line>
 				<reportElement x="432" y="121" width="123" height="1" uuid="6e713423-e8e0-4f75-b34d-4f5272f49962"/>
 			</line>
+			<textField>
+				<reportElement x="388" y="156" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="0199bb55-4904-40d4-88b5-7e70206dfa59"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM , yyyy">
+				<reportElement x="452" y="190" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="4630d4ba-6420-49c4-9c84-a499d1d22eab"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -274,16 +277,16 @@ FROM
 	<pageFooter>
 		<band height="17">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="0" width="515" height="17" backcolor="#E6E6E6" uuid="01d3c676-98a8-4de1-8a21-d6d0a7369a79"/>
+				<reportElement mode="Opaque" x="0" y="-2" width="515" height="16" backcolor="#F2FCFC" uuid="7038e84c-a105-423b-8126-636dafa06571"/>
 				<textElement textAlignment="Right">
-					<font size="12"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement mode="Opaque" x="515" y="0" width="40" height="17" backcolor="#E6E6E6" uuid="d5664fce-5eb6-4b23-809f-9ab2c4dcf1b0"/>
+				<reportElement mode="Opaque" x="513" y="-2" width="45" height="16" backcolor="#F7FCFC" uuid="14270ba6-b640-482c-b5cb-bcf27b972f27"/>
 				<textElement>
-					<font size="12"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>

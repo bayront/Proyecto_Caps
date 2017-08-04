@@ -32,7 +32,7 @@ response.setDateHeader("Expires", -1);
 		<ol class="breadcrumb">
 			<!--<li><a href="index.html">Home</a></li>-->
 			<li><a href="index.jsp">Inicio</a></li>
-			<li><a href="#">Reporte Consumo de clientes</a></li>
+			<li><a href="#">Reporte Consumos CAPS</a></li>
 		</ol>
 	</div>
 </div>
@@ -66,8 +66,8 @@ response.setDateHeader("Expires", -1);
 	<div id="dashboard_links" class="col-xs-12 col-sm-2 pull-right">
 		<ul class="nav nav-pills nav-stacked"
 		style="background: #4C9480 url(./img/devoops_pattern_b10.png) 0 0 repeat;">
-			<li class="active"><a href="#" class="tab-link" id="IMC">Imprimir por meses</a></li>
-			<li><a href="#" class="tab-link" id="IIC">Imprimir por sector</a></li>
+			<li class="active"><a href="#" class="tab-link" id="IMC">Imprimir por fechas</a></li>
+			
 		</ul>
 	</div>
 	<div id="dashboard_tabs" class="col-xs-12 col-sm-10">
@@ -137,93 +137,7 @@ response.setDateHeader("Expires", -1);
 		
 		<!--End Dashboard Tab 1-->
 		
-		<!--Start Dashboard Tab 2-->
-		<div id="dashboard-IIC" class="row"
-		style="visibility: hidden; position: absolute;">
-			<div class="col-xs-12" style="margin-top: 20px;">
-				<h4 class="page-header">Informe por Sector</h4>
-			</div>
-			<div class="row">
-				<div class="col-xs-12 col-sm-12  col-md-offset-1 col-md-10">
-					<div class="box" style="top: 0px; left: 0px; opacity: 1;">
-						<div class="box-header">
-							<div class="box-name">
-								<i class="fa fa-sitemap"></i> <span>Reporte</span>
-							</div>
-							<div class="box-icons">
-								<a id="colapsar_desplegar2" class="collapse-link"> 
-									<i class="fa fa-chevron-up"></i></a> 
-								<a id="expandir2" class="expand-link" onclick="validar(expand2);" >
-									<i class="fa fa-expand"></i></a>
-							</div>
-							<div class="no-move"></div>
-						</div>
-						<div class="box-content">
-								<div class="form-group">
-							
-									<label class="col-sm-2 control-label">Periodo de Fechas</label>
-									<div class="col-sm-4">
-										<input type="text" class="form-control" id="FECHITA"
-										placeholder="fecha de inicio">
-									</div>
-									
-									<div class="col-sm-4">
-										<input type="text" class="form-control" id="FECHITAA"
-										placeholder="fecha de fin">
-									</div>
-								</div>
-								
-								<div class="clearfix"></div>
-								<div class="clearfix"></div>
-								
-								<div class="form-group">
-										<label class="col-sm-2 text-gpromedix control-label">Sector:</label>
-											<%
-											DTConsumo dtn = DTConsumo.getInstance();
-											 rs = dtn.sector();
-											
-											%>
-										<div class="col-sm-5">
-										
-											<select id="sec" name="sec" class="populate placeholder" required>
-												<option value="0">SELECCIONE</option>
-													<%
-													while(rs.next())
-													{
-													%>
-													<option value="<%=rs.getString(1)%>"><%=rs.getString(1)%></option>
-													<%
-													} 
-													%>
-											</select>
-										
-										</div>
-								</div>
-						
-								<div class="clearfix"></div>
-								<div class="clearfix"></div>
-					
-								<div class="form-group">
-									<div class="col-sm-offset-4 col-sm-3">
-										<button type='button' class='imprimir btn btn-basic' data-toggle='tooltip' 
-											data-placement='top' title='Imprimir' onclick="imprimirFS();" >
-											<i class='fa fa-print'></i>Imprimir 
-										</button>
-									</div>
-								</div>
-								<div class= "clearfix"></div>
-								<div class= "clearfix"></div>
-								<div class= "clearfix"></div>
-								<div class="clearfix"></div>
-								<div class="clearfix"></div>
-		
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="clearfix"></div>
-			<div style="height: 15px;"></div>
-		</div>
+	
 		<!--End Dashboard Tab 2-->
 		
 	</div>
@@ -249,28 +163,9 @@ function imprimir()
 	cat = $('#FECHITAM').val();
 	valor = $('#FECHITAMM').val();
 		
-	window.open("SL_ConsumoClientesPorMeses?FECHITAM="+cat+"&FECHITAMM="+valor+"&userC="+userC, '_blank');
+	window.open("SL_AguaPerdidaFB?FECHITAM="+cat+"&FECHITAMM="+valor+"&userC="+userC, '_blank');
 	console.log("El paramtero del jsp otro FECHITAM"+" "+valor);
 	console.log("El paramtero del jspFECHITA MM "+" "+cat);
-	
-
-}
-function imprimirFS()
-
-{	
-	
-	var valor = "";
-	var v = "";
-	var s = "";
-	userC = $('#userC').val();
-	
-	cat = $('#FECHITA').val();
-	valor = $('#FECHITAA').val();
-	s = $('#sec').val();
-		
-	window.open("SL_CCMS?FECHITA="+cat+"&FECHITAA="+valor+"&sec="+s+"&userC="+userC, '_blank');
-	console.log("El paramtero del jsp otro"+" "+valor);
-	console.log("El paramtero del jsp cat"+" "+cat);
 	
 
 }

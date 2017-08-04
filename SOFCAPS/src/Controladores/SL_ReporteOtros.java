@@ -59,6 +59,7 @@ public class SL_ReporteOtros extends HttpServlet {
 			String descripcion ="";
 			
 			String monto ="";
+			String userC= request.getParameter("userC");
 			
 //			Map<String,Object> parameters = (Map<String, Object>) new HashMap<String,Object>();
 //			((HashMap<String,Object>) parameters).put("parameter1",new String("Este es un String para pasar por parametro"));
@@ -79,6 +80,7 @@ public class SL_ReporteOtros extends HttpServlet {
 			hm.put("anio",v);
 			hm.put("descripcion", descripcion);
 			hm.put("monto", monto);
+			hm.put("userC", userC);
 			//hm.put("fecha", fecha);
 			
 			

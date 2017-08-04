@@ -45,11 +45,13 @@ public class SL_ReporteConsumoCT extends HttpServlet {
 			Connection con = null;
 			
 			con = Conexion.getConnection();
+			String userC= request.getParameter("userC");
 			
 			
 
 			//Aquí se ponen los parámetros a como se llaman en el reporte
 			HashMap<String, Object>hm = new HashMap<>();
+			hm.put("userC", userC);
 			
 			System.out.println(hm);
 			OutputStream otps = response.getOutputStream();

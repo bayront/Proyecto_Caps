@@ -60,6 +60,7 @@ public class SL_ConsumoClientesPorMeses extends HttpServlet {
 			
 			String mf="";
 			
+			String userC= request.getParameter("userC");
 			valor= request.getParameter("FECHITAM");
 			mf=request.getParameter("FECHITAMM");
 			
@@ -86,6 +87,7 @@ public class SL_ConsumoClientesPorMeses extends HttpServlet {
 			// $P{mesIniciojasper} and  $P{mesFinjasper}
 			hm.put("mesIniciojasper", f1);
 			hm.put("mesFinjasper", f2);
+			hm.put("userC", userC);
 			
 			
 			

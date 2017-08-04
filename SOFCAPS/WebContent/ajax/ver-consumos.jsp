@@ -8,6 +8,11 @@ response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 response.setDateHeader("Expires", -1);
 %>
 <%
+	String nombre_usuario = "";
+	nombre_usuario = (String) session.getAttribute("nombre_usuario");
+	nombre_usuario = nombre_usuario==null?"":nombre_usuario;
+
+
 	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
 
 	Usuario us = new Usuario();
@@ -98,6 +103,7 @@ response.setDateHeader("Expires", -1);
 				<form class="form-horizontal" role="form" id="defaultForm"
 					method="POST" action="./SL_consumo">
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
+					<input type="hidden" id="userC" name="userC" value="<%=nombre_usuario %>">
 					<input type="hidden" id="consumo_ID" name="consumo_ID"> 
 					<input type="hidden" id="cliente_ID" name="cliente_ID"> 
 					<input type="hidden" id="contrato_ID" name="contrato_ID">
@@ -748,8 +754,9 @@ websocket.onclose = function(){
 	function imprimir()
 	{
 		var consumo_ID ="";	
+		userC = $('#userC').val();
 		consumo_ID = $("#consumo_ID").val();
-		window.open("SL_ReporteConsumoCT?consumo_ID="+consumo_ID, '_blank');
+		window.open("SL_ReporteConsumoCT?consumo_ID="+consumo_ID+"&userC="+userC, '_blank');
 
 		console.log("imprimir registro");
 	}

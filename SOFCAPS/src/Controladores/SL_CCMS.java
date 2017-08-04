@@ -61,6 +61,7 @@ public class SL_CCMS extends HttpServlet {
 			String valor ="";
 			String v="";
 			String sectorC="";
+			String userC= request.getParameter("userC");
 			
 			
 			valor= request.getParameter("FECHITA");
@@ -83,6 +84,7 @@ public class SL_CCMS extends HttpServlet {
 			hm.put("mini", f1);
 			hm.put("aini",f2);
 			hm.put("nomini",sectorC);
+			hm.put("userC", userC);
 			
 			
 			//$P{mesConsumoClienteSectorjasper}, $P{anioConsumoClienteSectorjasper},  $P{nombreSectorConsumoClientejasper}

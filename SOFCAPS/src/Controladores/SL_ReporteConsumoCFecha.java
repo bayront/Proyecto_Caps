@@ -62,7 +62,7 @@ public class SL_ReporteConsumoCFecha extends HttpServlet {
 			String d="";
 			
 			
-			
+			String userC= request.getParameter("userC");
 //			Map<String,Object> parameters = (Map<String, Object>) new HashMap<String,Object>();
 //			((HashMap<String,Object>) parameters).put("parameter1",new String("Este es un String para pasar por parametro"));
 //			InputStream reportStream = new FileInputStream("If.jrxml");
@@ -78,7 +78,7 @@ public class SL_ReporteConsumoCFecha extends HttpServlet {
 			System.out.println("fecha1: "+f1+"fecha2: "+f2);
 			//Aquí se ponen los parámetros a como se llaman en el reporte
 			HashMap<String, Object>hm = new HashMap<>();
-			
+			hm.put("userC", userC);
 			hm.put("Parameter1", f1);
 			hm.put("Parameter2", f2);
 						

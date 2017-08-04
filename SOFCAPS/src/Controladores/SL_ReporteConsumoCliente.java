@@ -92,10 +92,13 @@ public class SL_ReporteConsumoCliente extends HttpServlet {
 			System.out.println("imprimir");
 			Connection con = null;
     		con = Conexion.getConnection();
+    		String userC= request.getParameter("userC");
+			
     		int consumo= Integer.parseInt(request.getParameter("consumo_id"));
 			System.out.println(consumo);
 			HashMap<String, Object>hm = new HashMap<>();
 			hm.put("Parameter1", consumo);
+			hm.put("userC", userC);
 			System.out.println(hm);
 			OutputStream otps = response.getOutputStream();
 			ServletContext context = getServletContext();

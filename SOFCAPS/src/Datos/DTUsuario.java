@@ -152,26 +152,22 @@ public class DTUsuario {
 		return guardado;
 	}
 	
-	public Usuario verificarUser(Usuario us)
-	{
-		
-		Statement s;
-		String sql = ("SELECT * From usuario where login="+"'"+us.getLogin()+"'"+" and pass="+"'"+us.getPass()+"' and eliminado=0;");
-		try
-		{
-			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			rs = s.executeQuery(sql);
-			if(rs.next())
-			{
+	public Usuario verificarUser(Usuario us){
+		PreparedStatement s;
+		String sql = ("SELECT * From usuario where login = ? and pass = ? and eliminado = 0;");
+		try{
+			s = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			s.setString(1, us.getLogin());
+			s.setString(2, us.getPass());
+			rs = s.executeQuery();
+			if(rs.next()){
 				us.setUsuario_ID(rs.getInt("Usuario_ID"));
 				us.setLogin(rs.getString("login"));
 				us.setPass(rs.getString("pass"));
 				us.setNombre_usuario(rs.getString("nombre_usuario"));
 			}
 			
-		}
-		catch(Exception e)
-		{
+		}catch(Exception e){
 			e.printStackTrace();
 			System.out.println("Error en Dt_Usuario: "+e.getMessage());
 		}

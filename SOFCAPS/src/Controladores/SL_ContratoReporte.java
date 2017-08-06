@@ -92,10 +92,10 @@ public class SL_ContratoReporte extends HttpServlet {
 			System.out.println("imprimir");
 			Connection con = null;
     		con = Conexion.getConnection();
-    		int numContrato= Integer.parseInt(request.getParameter("numContrato"));
-			System.out.println(numContrato);
+    		int Contrato_ID= Integer.parseInt(request.getParameter("Contrato_ID"));
+			System.out.println(Contrato_ID);
 			HashMap<String, Object>hm = new HashMap<>();
-			hm.put("numContrato", numContrato);
+			hm.put("Contrato_ID", Contrato_ID);
 			System.out.println(hm);
 			OutputStream otps = response.getOutputStream();
 			ServletContext context = getServletContext();

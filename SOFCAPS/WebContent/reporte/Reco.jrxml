@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-05-20T15:35:14 -->
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reco" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="70914282-2a95-4245-8723-b482f364fc49">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sofcaps"/>
-	<parameter name="numContrato" class="java.lang.Integer"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="480"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="506"/>
+	<parameter name="Contrato_ID" class="java.lang.Integer">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
 	<queryString language="SQL">
-		<![CDATA[select * from  sofcaps.reportecontrato where numContrato =  $P{numContrato}]]>
+		<![CDATA[select * from  sofcaps.reportecontrato where Contrato_ID =  $P{Contrato_ID}]]>
 	</queryString>
 	<field name="nombreCompleto" class="java.lang.String"/>
 	<field name="numContrato" class="java.lang.Integer"/>
@@ -22,25 +28,35 @@
 	<field name="comunidad" class="java.lang.String"/>
 	<field name="nomMuni" class="java.lang.String"/>
 	<field name="dep" class="java.lang.String"/>
+	<field name="Contrato_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<background>
 		<band/>
 	</background>
 	<title>
 		<band height="73">
 			<staticText>
-				<reportElement mode="Opaque" x="10" y="0" width="540" height="43" forecolor="#030302" backcolor="#FCFCFC" uuid="0b4ce819-a700-4519-8317-561bfeb93a79"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Opaque" x="60" y="10" width="440" height="33" forecolor="#030302" backcolor="#FCFCFC" uuid="0b4ce819-a700-4519-8317-561bfeb93a79">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="30" isBold="true"/>
+					<font size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[CONTRATO DE ACUEDUCTO]]></text>
+				<text><![CDATA[Comité agua potable y saneamiento CAPS-Poneloya]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="43" width="540" height="20" forecolor="#030303" backcolor="rgba(250, 252, 250, 0.0)" uuid="9d1cef72-c983-4866-bd5e-236f3f3530f0"/>
+				<reportElement x="30" y="43" width="500" height="30" forecolor="#030303" backcolor="rgba(250, 252, 250, 0.0)" uuid="9d1cef72-c983-4866-bd5e-236f3f3530f0"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font size="12" isBold="false"/>
+					<font size="20" isBold="true"/>
 				</textElement>
-				<text><![CDATA[COMITÉ DE AGUA POTABLE Y SANEAMIENTO]]></text>
+				<text><![CDATA[CONTRATO]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="1" width="70" height="70" uuid="f9e86d2d-1b66-4aa0-bd76-6c800c197e17"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

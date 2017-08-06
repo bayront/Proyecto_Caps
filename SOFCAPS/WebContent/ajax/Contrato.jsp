@@ -344,7 +344,7 @@ response.setDateHeader("Expires", -1);
 <!--///////////////////////Formulario y dialogo de impresion /////////////////////////////// -->
 <div>
 	<form id="frmImprimirContrato" action="" method="GET">
-		<input type="hidden" id="numContrato" name="numContrato" value="">
+		<input type="hidden" id="CONID" name="CONID" value="">
 		<input type="hidden" id="opcion" name="opcion" value="imprimir">
 
 		<div id="modalbox">
@@ -407,9 +407,9 @@ function abrirDialogoC() {////////////////////abre dialogo con muestra si desae 
 var imprimir = function() {
 	$("#imprimir_contrato").on("click", function() {
 		var numContrato = "";
-		numContrato = $('#frmImprimirContrato #numContrato').val();
+		numContrato = $('#frmImprimirContrato #CONID').val();
 		console.log(numContrato);
-		window.open("SL_ContratoReporte?numContrato="+numContrato + "&opcion=imprimir",'_blank');
+		window.open("SL_ContratoReporte?Contrato_ID="+numContrato + "&opcion=imprimir",'_blank');
 		console.log("el numContrato del jsp"+"  "+numContrato);
 		CloseModalBox();
 	});
@@ -420,7 +420,7 @@ var obtener_id_imprimir = function(tbody, table) {//parametros(id_tabla, objeto 
 		var datos = table.row($(this).parents("tr")).index();//obtener la fila tr que es padre del boton que se toco y oobtener datos
 		table.rows().every(function(index, loop, rowloop) {
 			if (index == datos) {
-				var numContrato = $("#frmImprimirContrato #numContrato").val(table.row(index).data().numContrato);
+				var numContrato = $("#frmImprimirContrato #CONID").val(table.row(index).data().contrato_ID);
 			}
 		});
 		abrirDialogoC();

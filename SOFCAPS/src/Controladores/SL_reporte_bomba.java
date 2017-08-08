@@ -60,7 +60,7 @@ public class SL_reporte_bomba extends HttpServlet {
 			
 			String tipp="";
 			String d="";
-			
+			String userC= request.getParameter("userC");
 			
 			
 //			Map<String,Object> parameters = (Map<String, Object>) new HashMap<String,Object>();
@@ -81,6 +81,7 @@ public class SL_reporte_bomba extends HttpServlet {
 			
 			hm.put("Parameter1", f1);
 			hm.put("Parameter2", f2);
+			hm.put("userC", userC);
 						
 			
 			

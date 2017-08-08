@@ -52,6 +52,15 @@ response.setDateHeader("Expires", -1);
 		response.sendRedirect("pag_Error.jsp");
 	}
 %>
+<%
+	String nombre_usuario = "";
+	nombre_usuario = (String) session.getAttribute("nombre_usuario");
+	nombre_usuario = nombre_usuario==null?"":nombre_usuario;
+	
+	String url="";	
+	ResultSet rs;
+%>
+
 
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
@@ -84,6 +93,7 @@ response.setDateHeader("Expires", -1);
 					<div class="form-group">
 						<label	class="col-sm-3 control-label">Periodo de fechas</label>
 						<div class="col-sm-4">
+						<input type="hidden" id="userC" name="userC" value="<%=nombre_usuario %>">
 							<input type="text" class="form-control" id="FECHITA1"
 								placeholder="fecha de inicio">
 						</div>
@@ -116,7 +126,7 @@ function imprimir()
 {	
 	var valor = "";
 	var v = "";
-	
+	userC = $('#userC').val();
 
 		
 	valor = $('#FECHITA1').val();
@@ -124,7 +134,7 @@ function imprimir()
 	
 
 	
-	window.open("SL_reporte_bomba?FECHITA1="+valor+"&FECHITA2="+v, '_blank');
+	window.open("SL_reporte_bomba?FECHITA1="+valor+"&FECHITA2="+v+"&userC="+userC, '_blank');
 	
 	console.log("El mes jsp"+" "+valor);
 	console.log("El mes jsp"+" "+v);

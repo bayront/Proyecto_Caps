@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-08-03T22:45:35 -->
+<!-- 2017-08-09T00:26:38 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AguaPerdidaFB" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9bb6b3d7-9d6b-4257-b063-48e23f34259a">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="informes"/>
@@ -45,8 +45,7 @@
 	where fechaLecturaActual between '2017-02-01' and '2017-04-30') - 
 (SELECT SUM(ROUND(consumoTotal,2)) FROM consumo_reporte 
 	where fecha_fin between '2017-04-01' and '2017-04-30')) AS agua_perdida
-FROM listabomba JOIN consumo_reporte GROUP BY consumo_bomba;
-]]>
+FROM listabomba JOIN consumo_reporte GROUP BY consumo_bomba;]]>
 		</queryString>
 		<field name="consumo_bomba" class="java.lang.Double"/>
 		<field name="consumo_clientes" class="java.lang.Double"/>
@@ -66,8 +65,7 @@ FROM listabomba JOIN consumo_reporte GROUP BY consumo_bomba;
 	where fechaLecturaActual between  $P{f1}  and  $P{f2} ) - 
 (SELECT SUM(ROUND(consumoTotal,2)) FROM consumo_reporte 
 	where fecha_fin between  $P{f1}  and  $P{f2} )) AS agua_perdida
-FROM listabomba JOIN consumo_reporte GROUP BY consumo_bomba;
-]]>
+FROM listabomba JOIN consumo_reporte GROUP BY consumo_bomba;]]>
 	</queryString>
 	<field name="consumo_bomba" class="java.lang.Double"/>
 	<field name="consumo_clientes" class="java.lang.Double"/>
@@ -108,7 +106,7 @@ FROM listabomba JOIN consumo_reporte GROUP BY consumo_bomba;
 				<textElement textAlignment="Center">
 					<font fontName="Serif" size="18"/>
 				</textElement>
-				<text><![CDATA[Poneloya desde:]]></text>
+				<text><![CDATA[Fechas desde:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="370" y="10" width="70" height="30" uuid="3f57f359-2e12-4a65-8626-e0f62228c757"/>
@@ -190,7 +188,7 @@ FROM listabomba JOIN consumo_reporte GROUP BY consumo_bomba;
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Serif" size="14"/>
 								</textElement>
-								<textFieldExpression><![CDATA["C$"+" "+$F{agua_perdida}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{agua_perdida}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -202,7 +200,7 @@ FROM listabomba JOIN consumo_reporte GROUP BY consumo_bomba;
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Serif" size="14"/>
 								</textElement>
-								<textFieldExpression><![CDATA["C$"+" "+$F{consumo_bomba}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{consumo_bomba}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -214,7 +212,7 @@ FROM listabomba JOIN consumo_reporte GROUP BY consumo_bomba;
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Serif" size="14"/>
 								</textElement>
-								<textFieldExpression><![CDATA["C$"+" "+$F{consumo_clientes}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{consumo_clientes}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

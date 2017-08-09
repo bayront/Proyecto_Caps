@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-08-03T21:52:38 -->
+<!-- 2017-08-09T00:23:48 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConsumoClienteIndividual" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="80a404d6-f4d5-4f43-b046-b26e849266ae">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="informes"/>
@@ -15,26 +15,33 @@
                 `cliente`.`apellido1`,
                 ' ',
                 `cliente`.`apellido2`) AS `nombre_completo`,
+                consumo.Consumo_ID,
         `contrato`.`numMedidor` AS `numMedidor`,
         `consumo`.`lectura_Actual` AS `lectura_mes`,
         `consumo`.`consumoTotal` AS `consumo_mes`,
-         
+          SUM(`factura_detalle`.`consumo` * `factura_detalle`.`monto`) AS `totalPago`,
          `sector`.`nombreSector` AS `sector`,
          `consumo`.`fecha_fin` AS `fecha_mes`
          
 FROM
 		(`consumo`
-        JOIN `contrato` ON (`consumo`.`Contrato_ID` = `contrato`.`Contrato_ID`)
-        JOIN `cliente` ON (`contrato`.`Cliente_ID` = `cliente`.`Cliente_ID`)
-        JOIN `sector` ON (`contrato`.`Sector_ID` = `sector`.`Sector_ID`))
+        Left JOIN `contrato` ON (`consumo`.`Contrato_ID` = `contrato`.`Contrato_ID`)
+        Left JOIN `cliente` ON (`contrato`.`Cliente_ID` = `cliente`.`Cliente_ID`)
+        Left JOIN `sector` ON (`contrato`.`Sector_ID` = `sector`.`Sector_ID`)
+        Left JOIN `factura_maestra` ON (`consumo`.`Consumo_ID` = `factura_maestra`.`Consumo_ID`)
+        Left JOIN `factura_detalle` ON (`factura_maestra`.`Factura_Maestra_ID` = `factura_detalle`.`Factura_Maestra_ID`))
         
 Where
-		 consumo.Consumo_ID= $P{Parameter1}   and consumo.eliminado=0]]>
+	consumo.Consumo_ID= $P{Parameter1} 
+
+	GROUP BY ((((((`cliente`.`nombre1` + ' ') + `cliente`.`nombre2`) + ' ') + `cliente`.`apellido1`) + ' ') + `cliente`.`apellido2`) , `contrato`.`numMedidor`, `consumo`.`lectura_Actual`,  `consumo`.`consumoTotal`, `sector`.`nombreSector` , `consumo`.`fecha_fin`;]]>
 	</queryString>
 	<field name="nombre_completo" class="java.lang.String"/>
+	<field name="Consumo_ID" class="java.lang.Integer"/>
 	<field name="numMedidor" class="java.lang.String"/>
 	<field name="lectura_mes" class="java.lang.Float"/>
 	<field name="consumo_mes" class="java.lang.Float"/>
+	<field name="totalPago" class="java.lang.Double"/>
 	<field name="sector" class="java.lang.String"/>
 	<field name="fecha_mes" class="java.sql.Date"/>
 	<variable name="Variable_1" class="java.lang.String"/>
@@ -48,13 +55,6 @@ Where
 				<imageExpression><![CDATA["logo.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="100" y="30" width="370" height="20" uuid="197b6031-befa-4164-b077-d7ed7fe0a4ec"/>
-				<textElement textAlignment="Center">
-					<font fontName="Serif" size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[INFORME CONSUMO CLIENTES]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="0" y="0" width="555" height="30" forecolor="#030303" uuid="7c10e0e5-26fd-43bc-81b0-a0ee3ad87121">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -63,6 +63,13 @@ Where
 					<font fontName="Serif" size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Comité agua potable y saneamiento CAPS-Poneloya]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="30" width="370" height="20" uuid="4318a897-9efc-4490-815c-f55a0764c950"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INFORME DE CONSUMOS DE LOS CLIENTES]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -99,7 +106,7 @@ Where
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="264" splitType="Stretch">
+		<band height="152" splitType="Stretch">
 			<staticText>
 				<reportElement x="19" y="0" width="95" height="31" uuid="58547a34-bab4-420c-aca7-3777ed61ab7c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -196,37 +203,54 @@ Where
 				</textElement>
 				<text><![CDATA[Fecha de fin]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="340" y="120" width="100" height="29" uuid="549ba5b3-1678-4f3e-b0d4-e62ce9e393e0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total a pagar]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="390" y="200" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="01f8b53a-7e85-48c0-acc8-3b83ea6e4359"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="12" isBold="true"/>
+				<reportElement x="428" y="122" width="123" height="30" uuid="8b7799fd-bd6a-453b-909f-4d10dc96793f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{totalPago}==null?"0.0":$F{totalPago}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd MMMMM , yyyy">
-				<reportElement x="454" y="234" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="e4a820ad-1496-4d53-99af-4da92b53f0d8"/>
-				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
+			<line>
+				<reportElement x="432" y="149" width="123" height="1" uuid="d06cd6fb-e425-4af7-bdf3-c505bd8104e1"/>
+			</line>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="20" splitType="Stretch">
+		<band height="86" splitType="Stretch">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="-2" width="515" height="16" backcolor="#F2FCFC" uuid="24c86705-51d4-407f-b5a6-29b940f333f7"/>
+				<reportElement mode="Opaque" x="0" y="70" width="515" height="16" backcolor="#F2FCFC" uuid="24c86705-51d4-407f-b5a6-29b940f333f7"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement mode="Opaque" x="513" y="-2" width="45" height="16" backcolor="#F7FCFC" uuid="65a59c0f-7908-4f1f-9e2c-1d719a19418f"/>
+				<reportElement mode="Opaque" x="513" y="70" width="45" height="16" backcolor="#F7FCFC" uuid="65a59c0f-7908-4f1f-9e2c-1d719a19418f"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="0" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="01f8b53a-7e85-48c0-acc8-3b83ea6e4359"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM , yyyy">
+				<reportElement x="454" y="34" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="e4a820ad-1496-4d53-99af-4da92b53f0d8"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

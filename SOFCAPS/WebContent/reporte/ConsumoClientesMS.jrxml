@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-08-03T21:53:51 -->
+<!-- 2017-08-09T00:03:36 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConsumoClientesMesesSecOF" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9f901109-d46c-4d88-bab5-f770d9958f8a">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Otros"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="informes"/>
 	<parameter name="mini" class="java.lang.String"/>
 	<parameter name="aini" class="java.lang.String"/>
 	<parameter name="nomini" class="java.lang.String"/>
@@ -34,7 +34,8 @@ FROM
         
 Where
 	consumo.fecha_fin between  $P{mini} and  $P{aini} 
-	and sector.nombreSector= $P{nomini}]]>
+	and sector.nombreSector= $P{nomini}
+	GROUP BY ((((((`cliente`.`nombre1` + ' ') + `cliente`.`nombre2`) + ' ') + `cliente`.`apellido1`) + ' ') + `cliente`.`apellido2`) , `contrato`.`numMedidor`, `consumo`.`lectura_Actual`,  `consumo`.`consumoTotal`, `sector`.`nombreSector` , `consumo`.`fecha_fin`;]]>
 	</queryString>
 	<field name="nombre_completo" class="java.lang.String"/>
 	<field name="numMedidor" class="java.lang.String"/>
@@ -53,7 +54,7 @@ Where
 				<textElement textAlignment="Center">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[INFORME CONSUMO CLIENTES]]></text>
+				<text><![CDATA[INFORME DE CONSUMOS DE LOS CLIENTES]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="0" width="555" height="30" forecolor="#030303" uuid="6521e89e-4d80-41f2-8e95-8d26a38a511f">
@@ -95,14 +96,14 @@ Where
 				<text><![CDATA[hasta]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="71" width="107" height="30" uuid="5250df75-4f99-4ac6-b381-1ea0b6da2a05"/>
+				<reportElement x="3" y="71" width="157" height="30" uuid="5250df75-4f99-4ac6-b381-1ea0b6da2a05"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="18" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Desde]]></text>
+				<text><![CDATA[Fechas desde:]]></text>
 			</staticText>
 			<textField pattern="d MMMM , yyyy">
-				<reportElement x="110" y="71" width="190" height="30" uuid="4d510cf7-c16c-47dd-bfb0-2408b904edec"/>
+				<reportElement x="160" y="71" width="140" height="30" uuid="4d510cf7-c16c-47dd-bfb0-2408b904edec"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="18"/>
 				</textElement>
@@ -121,7 +122,7 @@ Where
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="250" splitType="Stretch">
+		<band height="201" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="2" width="160" height="30" uuid="d0da65e4-3f5d-49cd-9f40-2fef98d92488"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -226,42 +227,42 @@ Where
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{totalPago}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{totalPago}==null?"0.0":$F{totalPago}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="432" y="121" width="123" height="1" uuid="190d0308-1fdb-4209-9ec5-6134a6dc0f97"/>
 			</line>
-			<textField>
-				<reportElement x="392" y="186" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="1cceaa47-3590-4866-bb94-24dedca1bd82"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd MMMMM , yyyy">
-				<reportElement x="456" y="220" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="d01deb6f-090f-494e-baa7-4c4cc4dd7689"/>
-				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="20" splitType="Stretch">
+		<band height="96" splitType="Stretch">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="4" width="515" height="16" backcolor="#F2FCFC" uuid="9257e9fc-38a1-4bec-9add-61c1cf4e7822"/>
+				<reportElement mode="Opaque" x="0" y="80" width="515" height="16" backcolor="#F2FCFC" uuid="9257e9fc-38a1-4bec-9add-61c1cf4e7822"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement mode="Opaque" x="515" y="4" width="45" height="16" backcolor="#F7FCFC" uuid="7fc33e04-8519-444c-8186-73822de2c5aa"/>
+				<reportElement mode="Opaque" x="515" y="80" width="45" height="16" backcolor="#F7FCFC" uuid="7fc33e04-8519-444c-8186-73822de2c5aa"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="387" y="16" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="d5cc0294-48c9-42ad-a131-bf768c123991"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM , yyyy">
+				<reportElement x="451" y="50" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="fc52c0e5-c287-4789-b3f6-092cdd2760f4"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

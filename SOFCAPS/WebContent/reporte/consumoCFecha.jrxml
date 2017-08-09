@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-08-03T21:53:00 -->
+<!-- 2017-08-08T23:57:29 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="c" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a966c623-dd8e-4e67-8757-0f197ed6a0fb">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="informes"/>
 	<subDataset name="Dataset1" uuid="f1ffb307-adb7-405f-a856-8bacc5119a5d">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Otros"/>
@@ -32,21 +32,40 @@ inner join contrato c on c.Contrato_ID=o.Contrato_ID where o.eliminado=0 and e.e
 	<parameter name="Parameter2" class="java.lang.String"/>
 	<parameter name="userC" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[select o.fecha_fin, o.consumoTotal, o.lectura_Actual, o.Consumo_ID, 
-e.Cliente_ID, concat(e.nombre1,' ', e.nombre2,' ', e.apellido1, ' ',e.apellido2) as nombreCompleto, c.Contrato_ID, c. numContrato, c.numMedidor
-from consumo o 
-inner join cliente e on o.Cliente_ID=e.Cliente_ID
-inner join contrato c on c.Contrato_ID=o.Contrato_ID where o.eliminado=0 and e.estado=0 and c.estado=0 and o.fecha_fin  between  $P{Parameter1}   and  $P{Parameter2}]]>
+		<![CDATA[
+SELECT 
+        CONCAT(`cliente`.`nombre1`,
+                ' ',
+                `cliente`.`nombre2`,
+                ' ',
+                `cliente`.`apellido1`,
+                ' ',
+                `cliente`.`apellido2`) AS `nombreCompleto`,
+        `contrato`.`numMedidor` AS `numMedidor`,
+        `consumo`.`lectura_Actual` ,
+        `consumo`.`consumoTotal`,
+          SUM(round(`factura_detalle`.`consumo` * `factura_detalle`.`monto`,2)) AS `totalPago`,
+         `sector`.`nombreSector` AS `sector`,
+         `consumo`.`fecha_fin` 
+         
+FROM
+		(`consumo`
+        Left JOIN `contrato` ON (`consumo`.`Contrato_ID` = `contrato`.`Contrato_ID`)
+        Left JOIN `cliente` ON (`contrato`.`Cliente_ID` = `cliente`.`Cliente_ID`)
+        Left JOIN `sector` ON (`contrato`.`Sector_ID` = `sector`.`Sector_ID`)
+        Left JOIN `factura_maestra` ON (`consumo`.`Consumo_ID` = `factura_maestra`.`Consumo_ID`)
+        Left JOIN `factura_detalle` ON (`factura_maestra`.`Factura_Maestra_ID` = `factura_detalle`.`Factura_Maestra_ID`))
+        
+where consumo.eliminado=0 and cliente.estado=0 and contrato.estado=0 and consumo.fecha_fin  between  $P{Parameter1}   and  $P{Parameter2}
+GROUP BY ((((((`cliente`.`nombre1` + ' ') + `cliente`.`nombre2`) + ' ') + `cliente`.`apellido1`) + ' ') + `cliente`.`apellido2`) , `contrato`.`numMedidor`, `consumo`.`lectura_Actual`,  `consumo`.`consumoTotal`, `sector`.`nombreSector` , `consumo`.`fecha_fin`;]]>
 	</queryString>
-	<field name="fecha_fin" class="java.sql.Date"/>
-	<field name="consumoTotal" class="java.lang.Float"/>
-	<field name="lectura_Actual" class="java.lang.Float"/>
-	<field name="Consumo_ID" class="java.lang.Integer"/>
-	<field name="Cliente_ID" class="java.lang.Integer"/>
 	<field name="nombreCompleto" class="java.lang.String"/>
-	<field name="Contrato_ID" class="java.lang.Integer"/>
-	<field name="numContrato" class="java.lang.Integer"/>
 	<field name="numMedidor" class="java.lang.String"/>
+	<field name="lectura_Actual" class="java.lang.Float"/>
+	<field name="consumoTotal" class="java.lang.Float"/>
+	<field name="totalPago" class="java.lang.Double"/>
+	<field name="sector" class="java.lang.String"/>
+	<field name="fecha_fin" class="java.sql.Date"/>
 	<group name="Group1">
 		<groupFooter>
 			<band/>
@@ -90,7 +109,7 @@ inner join contrato c on c.Contrato_ID=o.Contrato_ID where o.eliminado=0 and e.e
 				<textElement textAlignment="Center">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[INFORME CONSUMO CLIENTES]]></text>
+				<text><![CDATA[INFORME DE CONSUMOS DE LOS CLIENTES]]></text>
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="70" height="70" uuid="415db748-1fad-4005-b609-9cca7f7e8c11"/>
@@ -99,130 +118,168 @@ inner join contrato c on c.Contrato_ID=o.Contrato_ID where o.eliminado=0 and e.e
 		</band>
 	</title>
 	<pageHeader>
-		<band height="40"/>
+		<band height="69"/>
 	</pageHeader>
-	<columnHeader>
-		<band height="30">
-			<line>
-				<reportElement x="-20" y="0" width="595" height="1" forecolor="#666666" uuid="31fa2d67-8446-4756-ba0b-dbe0d8ae30a2"/>
-			</line>
+	<detail>
+		<band height="233">
 			<staticText>
-				<reportElement x="10" y="0" width="100" height="25" uuid="1e906ac9-9f66-4211-a168-43372bd02cf0"/>
-				<textElement>
-					<font size="11" isBold="true"/>
+				<reportElement x="0" y="0" width="170" height="30" uuid="1e906ac9-9f66-4211-a168-43372bd02cf0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nombre Completo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="110" y="0" width="70" height="20" uuid="a67e9600-a22f-4b01-980c-5dc2385c98a3"/>
-				<textElement>
-					<font size="11" isBold="true"/>
+				<reportElement x="166" y="0" width="116" height="30" uuid="a67e9600-a22f-4b01-980c-5dc2385c98a3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha de fin]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="180" y="0" width="100" height="30" uuid="81a957a1-d245-4fe3-8e49-57c14423c599"/>
-				<textElement>
-					<font size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Número contrato]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="280" y="0" width="110" height="30" uuid="55d3d62d-8121-44d4-9078-230369f6c7de"/>
-				<textElement>
-					<font size="11" isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Número del medidor]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="390" y="0" width="84" height="30" uuid="d25658e1-e1eb-4bab-818a-591a6791b2a8"/>
-				<textElement>
-					<font size="11" isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Lectura Actual]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="475" y="0" width="91" height="30" uuid="eff2e838-5193-4204-9c21-8b5a27b20198"/>
-				<textElement>
-					<font size="11" isBold="true"/>
+				<reportElement x="475" y="0" width="76" height="30" uuid="eff2e838-5193-4204-9c21-8b5a27b20198"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Consumo total]]></text>
 			</staticText>
-		</band>
-	</columnHeader>
-	<detail>
-		<band height="184">
-			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="555" height="60" uuid="14225bbf-d74c-48f6-9f3b-170cccb1f7ab"/>
-				<graphicElement>
-					<pen lineColor="#FFFFFF"/>
-				</graphicElement>
-			</line>
-			<textField>
-				<reportElement x="0" y="0" width="110" height="30" uuid="3d761c4c-171f-4480-8631-ba38aa13fd20"/>
-				<textFieldExpression><![CDATA[$F{nombreCompleto}]]></textFieldExpression>
-			</textField>
-			<textField pattern="d MMMM , yyyy">
-				<reportElement x="100" y="0" width="80" height="30" uuid="38683494-e649-47b6-a8e6-2e4207306ba8"/>
-				<textFieldExpression><![CDATA[$F{fecha_fin}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="180" y="0" width="90" height="30" uuid="38eafc51-f12a-4061-a71c-664f82eded6e"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{numContrato}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="270" y="0" width="110" height="30" uuid="1a1090c2-ab3b-48a6-a8dc-dd214a39b456"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{numMedidor}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="380" y="0" width="84" height="30" uuid="e1b9bc38-7a99-48e2-bc73-16c80a56d34a"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{lectura_Actual}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="465" y="0" width="91" height="30" uuid="a655e54e-631c-47e8-9feb-9f8b37710f6a"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{consumoTotal}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="390" y="120" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="fbf4a7f2-a14d-418f-8188-c72038223274"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd MMMMM , yyyy">
-				<reportElement x="454" y="154" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="0339064b-7ab4-440a-a2b9-cdeffbeed6f6"/>
-				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 	<columnFooter>
 		<band/>
 	</columnFooter>
 	<pageFooter>
-		<band height="17">
+		<band height="80">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="-2" width="515" height="16" backcolor="#F2FCFC" uuid="94e35b9c-e055-4fd6-aa57-392be4b5bd92"/>
+				<reportElement x="386" y="-4" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="fbf4a7f2-a14d-418f-8188-c72038223274"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM , yyyy">
+				<reportElement x="450" y="30" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="0339064b-7ab4-440a-a2b9-cdeffbeed6f6"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="-200" width="170" height="30" uuid="3d761c4c-171f-4480-8631-ba38aa13fd20"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreCompleto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="d MMMM , yyyy">
+				<reportElement x="173" y="-200" width="110" height="30" uuid="38683494-e649-47b6-a8e6-2e4207306ba8"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_fin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="283" y="-200" width="110" height="30" uuid="1a1090c2-ab3b-48a6-a8dc-dd214a39b456"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numMedidor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="393" y="-200" width="74" height="30" uuid="e1b9bc38-7a99-48e2-bc73-16c80a56d34a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lectura_Actual}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="468" y="-200" width="91" height="30" uuid="a655e54e-631c-47e8-9feb-9f8b37710f6a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consumoTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="343" y="-92" width="100" height="29" uuid="de3bfbbc-997a-469c-9f46-910ff807cad4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total a pagar]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="431" y="-90" width="123" height="30" uuid="7d733e0a-f854-4e71-8652-a08d8bb450f5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalPago}==null?"0.0":$F{totalPago}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="435" y="-63" width="123" height="1" uuid="8a120aa1-6f28-405f-bb98-a40d9d51b624"/>
+			</line>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="14">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="-2" width="515" height="16" backcolor="#F2FCFC" uuid="5afc0201-627d-4d5d-9280-0911efa3ddf8"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement mode="Opaque" x="513" y="-2" width="45" height="16" backcolor="#F7FCFC" uuid="c0c2cf50-040c-478e-9860-c026ade515f4"/>
+				<reportElement mode="Opaque" x="513" y="-2" width="45" height="16" backcolor="#F7FCFC" uuid="90ddb6d6-fb51-44da-a40c-3265ec6c7ae0"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
-	</pageFooter>
+	</lastPageFooter>
 	<summary>
 		<band/>
 	</summary>

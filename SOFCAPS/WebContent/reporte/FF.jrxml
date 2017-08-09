@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-08-03T21:46:15 -->
+<!-- 2017-08-09T00:46:58 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FFCOPIA" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a495d4a6-3572-4ff2-81ef-165d941d43ea">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="informes"/>
@@ -89,45 +89,31 @@ group by c.nombreCategoria]]>
 		<parameter name="f2" class="java.lang.String"/>
 		<parameter name="userC" class="java.lang.String"/>
 		<queryString language="SQL">
-			<![CDATA[SELECT o.Otros_Ing_Egreg_ID,o.fecha,  
-    DATE_FORMAT(fecha, '%M') as Meses, DATE_FORMAT(fecha, '%Y') as Anio, 
-    o.descripcion, o.monto,  c.Categoria_Ing_Egreg_ID, c.nombreCategoria ,  SUM(ROUND(monto,2)) as total , 
-	c.TipoCategoria_ID , d.descripcion as des,
+			<![CDATA[SELECT 
      SUM(`o`.`monto`) AS `total`,
         `c`.`TipoCategoria_ID` AS `TipoCategoria_ID`,
-        SUM((CASE
+        SUM(round((CASE
             WHEN (`c`.`TipoCategoria_ID` = 1) THEN `o`.`monto`
             ELSE 0
-        END)) AS `total_1`,
-        SUM((CASE
+        END),2)) AS `total_1`,
+        SUM(round((CASE
             WHEN (`c`.`TipoCategoria_ID` = 2) THEN `o`.`monto`
             ELSE 0
-        END)) AS `total_2`,
-        (SUM((CASE
+        END),2)) AS `total_2`,
+        (SUM(round((CASE
             WHEN (`c`.`TipoCategoria_ID` = 1) THEN `o`.`monto`
             ELSE 0
-        END)) - SUM((CASE
+        END),2)) - SUM(round((CASE
             WHEN (`c`.`TipoCategoria_ID` = 2) THEN `o`.`monto`
             ELSE 0
-        END))) AS `SALDO`
+        END),2))) AS `SALDO`
 	from otros_ing_egreg o 
 		Join categoria_ing_egreg c On o.Categoria_Ing_Egreg_ID = c.Categoria_Ing_Egreg_ID 
         join tipocategoria d On c.TipoCategoria_ID =d.TipoCategoria_ID 
         WHERE o.eliminado=0 and c.eliminado=0 and fecha between  $P{f1}  and $P{f2}]]>
 		</queryString>
-		<field name="Otros_Ing_Egreg_ID" class="java.lang.Integer"/>
-		<field name="fecha" class="java.sql.Date"/>
-		<field name="Meses" class="java.lang.String"/>
-		<field name="Anio" class="java.lang.String"/>
-		<field name="descripcion" class="java.lang.String"/>
-		<field name="monto" class="java.lang.Float"/>
-		<field name="Categoria_Ing_Egreg_ID" class="java.lang.Integer"/>
-		<field name="nombreCategoria" class="java.lang.String"/>
 		<field name="total" class="java.lang.Double"/>
 		<field name="TipoCategoria_ID" class="java.lang.Integer"/>
-		<field name="des" class="java.lang.String"/>
-		<field name="COLUMN_12" class="java.lang.Double"/>
-		<field name="COLUMN_13" class="java.lang.Integer"/>
 		<field name="total_1" class="java.lang.Double"/>
 		<field name="total_2" class="java.lang.Double"/>
 		<field name="SALDO" class="java.lang.Double"/>
@@ -181,14 +167,14 @@ group by c.nombreCategoria]]>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="599" splitType="Stretch">
+		<band height="708" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="10" width="150" height="30" uuid="6b916a17-2f65-4e61-8725-663b9b26eeac"/>
 				<box rightPadding="4"/>
 				<textElement textAlignment="Center">
 					<font fontName="Serif" size="18"/>
 				</textElement>
-				<text><![CDATA[Poneloya desde:]]></text>
+				<text><![CDATA[Fechas desde:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="370" y="10" width="70" height="30" uuid="9e058988-875b-44c7-bd8f-6b129b2ea7db"/>
@@ -222,7 +208,7 @@ group by c.nombreCategoria]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Descripción]]></text>
+				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="350" y="84" width="80" height="30" uuid="ecaac884-94e4-4679-8996-6bcd7be095f1"/>
@@ -251,7 +237,7 @@ group by c.nombreCategoria]]>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement x="0" y="120" width="558" height="140" uuid="5cfb99d6-b0d9-4616-8891-ec48dea53ed3">
+				<reportElement x="0" y="120" width="558" height="270" uuid="5cfb99d6-b0d9-4616-8891-ec48dea53ed3">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -290,7 +276,7 @@ group by c.nombreCategoria]]>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Serif" size="14"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -321,7 +307,7 @@ group by c.nombreCategoria]]>
 				</jr:table>
 			</componentElement>
 			<componentElement>
-				<reportElement x="0" y="280" width="555" height="70" uuid="692186a6-f997-4cf7-9f0a-7dc0a1ecb262">
+				<reportElement x="0" y="390" width="555" height="70" uuid="692186a6-f997-4cf7-9f0a-7dc0a1ecb262">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
@@ -406,44 +392,44 @@ group by c.nombreCategoria]]>
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement x="-1" y="410" width="180" height="30" uuid="1acc88f2-cd0e-4736-bdc5-b3c5c24c2de0"/>
+				<reportElement x="-1" y="497" width="180" height="30" uuid="1acc88f2-cd0e-4736-bdc5-b3c5c24c2de0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Presidente CAPS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="190" y="410" width="180" height="30" uuid="90c1b0d8-4ff2-4c80-bacb-cfa99f34dcde"/>
+				<reportElement x="190" y="497" width="180" height="30" uuid="90c1b0d8-4ff2-4c80-bacb-cfa99f34dcde"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tesorería CAPS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="376" y="410" width="180" height="30" uuid="eedac4e7-9358-4371-9561-15204d1fa5b4"/>
+				<reportElement x="376" y="497" width="180" height="30" uuid="eedac4e7-9358-4371-9561-15204d1fa5b4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Secretaría CAPS]]></text>
 			</staticText>
 			<line>
-				<reportElement x="-1" y="417" width="180" height="1" uuid="8f9d16b9-4599-4881-8a63-cec7960f5a01"/>
+				<reportElement x="-1" y="504" width="180" height="1" uuid="8f9d16b9-4599-4881-8a63-cec7960f5a01"/>
 			</line>
 			<line>
-				<reportElement x="200" y="418" width="169" height="1" uuid="a28f6951-88d9-4e1d-848b-5245467dd140"/>
+				<reportElement x="200" y="505" width="169" height="1" uuid="a28f6951-88d9-4e1d-848b-5245467dd140"/>
 			</line>
 			<line>
-				<reportElement x="388" y="417" width="166" height="1" uuid="91bb4b4c-6919-4b4c-b8a2-a2f2ad54e69e"/>
+				<reportElement x="388" y="504" width="166" height="1" uuid="91bb4b4c-6919-4b4c-b8a2-a2f2ad54e69e"/>
 			</line>
 			<textField>
-				<reportElement x="391" y="520" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="53e57730-f669-47f4-997b-9a8d260fb6ad"/>
+				<reportElement x="389" y="640" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="53e57730-f669-47f4-997b-9a8d260fb6ad"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd MMMMM , yyyy">
-				<reportElement x="448" y="552" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="64b421ad-bf47-43aa-a935-20c3e3795771"/>
+				<reportElement x="446" y="672" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="64b421ad-bf47-43aa-a935-20c3e3795771"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="12" isBold="true"/>
 				</textElement>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-08-03T22:33:47 -->
+<!-- 2017-08-09T00:46:11 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InformeF" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6283b489-e0fe-4ffe-ac3e-af2a73734968">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="informes"/>
@@ -116,21 +116,21 @@
 			<![CDATA[SELECT 
      SUM(`o`.`monto`) AS `total`,
         `c`.`TipoCategoria_ID` AS `TipoCategoria_ID`,
-        SUM((CASE
+        SUM(round((CASE
             WHEN (`c`.`TipoCategoria_ID` = 1) THEN `o`.`monto`
             ELSE 0
-        END)) AS `total_1`,
-        SUM((CASE
+        END),2)) AS `total_1`,
+        SUM(round((CASE
             WHEN (`c`.`TipoCategoria_ID` = 2) THEN `o`.`monto`
             ELSE 0
-        END)) AS `total_2`,
-        (SUM((CASE
+        END),2)) AS `total_2`,
+        (SUM(round((CASE
             WHEN (`c`.`TipoCategoria_ID` = 1) THEN `o`.`monto`
             ELSE 0
-        END)) - SUM((CASE
+        END),2)) - SUM(round((CASE
             WHEN (`c`.`TipoCategoria_ID` = 2) THEN `o`.`monto`
             ELSE 0
-        END))) AS `SALDO`
+        END),2))) AS `SALDO`
 	from otros_ing_egreg o 
 		Join categoria_ing_egreg c On o.Categoria_Ing_Egreg_ID = c.Categoria_Ing_Egreg_ID 
         join tipocategoria d On c.TipoCategoria_ID =d.TipoCategoria_ID 
@@ -274,7 +274,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Serif" size="14"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -315,7 +315,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Descripción]]></text>
+				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="350" y="84" width="80" height="30" uuid="72631ca0-941b-4d2e-bae0-75a13ac5fde4"/>

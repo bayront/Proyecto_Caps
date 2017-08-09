@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-08-03T21:54:31 -->
+<!-- 2017-08-09T00:03:33 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConsumoClientesPorMeses" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8f8b29b7-836f-41fb-b160-8fd4d10d4162">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Otros"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -46,7 +46,7 @@
 				<textElement textAlignment="Center">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[INFORME CONSUMO CLIENTES]]></text>
+				<text><![CDATA[INFORME DE CONSUMOS DE LOS CLIENTES]]></text>
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="70" height="70" uuid="738cfade-3252-4b8c-abfd-4e0f1d17e587"/>
@@ -56,15 +56,8 @@
 	</title>
 	<pageHeader>
 		<band height="101" splitType="Stretch">
-			<staticText>
-				<reportElement x="3" y="71" width="67" height="30" uuid="3ad9ac0f-7132-4905-8324-c4c619f3d532"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="18" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Desde]]></text>
-			</staticText>
 			<textField pattern="d MMMM , yyyy">
-				<reportElement x="80" y="71" width="170" height="30" uuid="8dde3bf4-86ee-433a-8e91-7940547da92b"/>
+				<reportElement x="160" y="71" width="140" height="30" uuid="8dde3bf4-86ee-433a-8e91-7940547da92b"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="18"/>
 				</textElement>
@@ -84,6 +77,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{mesFinjasper}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="3" y="71" width="157" height="30" uuid="7972c3e3-d051-4015-9831-da2c2c78503c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fechas desde:]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -202,7 +202,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{totalPago}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{totalPago}==null?"0.0":$F{totalPago}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="160" y="32" width="150" height="29" uuid="1289f96b-a9c4-41f3-ab7d-b5ed79775d03"/>
@@ -230,37 +230,37 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{numMedidor}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="388" y="180" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="d66be60b-5346-4a4c-b091-4cc3af34a51c"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd MMMMM , yyyy">
-				<reportElement x="452" y="214" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="53696264-a6ee-4a94-a6b9-44889daa2612"/>
-				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="14" splitType="Stretch">
+		<band height="86" splitType="Stretch">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="-2" width="515" height="16" backcolor="#F2FCFC" uuid="7dee0426-aac8-4c1f-92c5-2d37fcf7050a"/>
+				<reportElement mode="Opaque" x="0" y="70" width="515" height="16" backcolor="#F2FCFC" uuid="7dee0426-aac8-4c1f-92c5-2d37fcf7050a"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement mode="Opaque" x="513" y="-2" width="45" height="16" backcolor="#F7FCFC" uuid="ac9d32ff-6762-48cd-be2f-07751b2a669a"/>
+				<reportElement mode="Opaque" x="513" y="70" width="45" height="16" backcolor="#F7FCFC" uuid="ac9d32ff-6762-48cd-be2f-07751b2a669a"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="393" y="4" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="2f7e08e3-5bf0-4fc4-9eb7-d340e11eefa2"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM , yyyy">
+				<reportElement x="450" y="37" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="0f0bb7c3-d489-474a-b3eb-2fb5ab6ea58a"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

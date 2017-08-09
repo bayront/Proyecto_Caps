@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-08-03T21:54:59 -->
+<!-- 2017-08-09T00:23:08 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="c" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a966c623-dd8e-4e67-8757-0f197ed6a0fb">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Otros"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="informes"/>
 	<subDataset name="Dataset1" uuid="f1ffb307-adb7-405f-a856-8bacc5119a5d">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Otros"/>
@@ -52,7 +52,9 @@ FROM
         Left JOIN `sector` ON (`contrato`.`Sector_ID` = `sector`.`Sector_ID`)
         Left JOIN `factura_maestra` ON (`consumo`.`Consumo_ID` = `factura_maestra`.`Consumo_ID`)
         Left JOIN `factura_detalle` ON (`factura_maestra`.`Factura_Maestra_ID` = `factura_detalle`.`Factura_Maestra_ID`)
-      where consumo.eliminado=0 and cliente.estado=0 and contrato.estado=0]]>
+      where consumo.eliminado=0 and cliente.estado=0 and contrato.estado=0
+      GROUP BY ((((((`cliente`.`nombre1` + ' ') + `cliente`.`nombre2`) + ' ') + `cliente`.`apellido1`) + ' ') + `cliente`.`apellido2`) , `contrato`.`numMedidor`, `consumo`.`lectura_Actual`,  `consumo`.`consumoTotal`, `sector`.`nombreSector` , `consumo`.`fecha_fin`;
+      ]]>
 	</queryString>
 	<field name="nombreCompleto" class="java.lang.String"/>
 	<field name="numMedidor" class="java.lang.String"/>
@@ -94,7 +96,7 @@ FROM
 				<textElement textAlignment="Center">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[INFORME CONSUMO CLIENTES]]></text>
+				<text><![CDATA[INFORME DE CONSUMOS DE LOS CLIENTES]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="0" width="555" height="30" forecolor="#030303" uuid="1b719382-efd8-45db-a2ae-d1d5c699a846">
@@ -250,45 +252,45 @@ FROM
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{totalPago}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{totalPago}==null?"0.0":$F{totalPago}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="432" y="121" width="123" height="1" uuid="6e713423-e8e0-4f75-b34d-4f5272f49962"/>
 			</line>
-			<textField>
-				<reportElement x="388" y="156" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="0199bb55-4904-40d4-88b5-7e70206dfa59"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd MMMMM , yyyy">
-				<reportElement x="452" y="190" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="4630d4ba-6420-49c4-9c84-a499d1d22eab"/>
-				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 	<columnFooter>
 		<band/>
 	</columnFooter>
 	<pageFooter>
-		<band height="17">
+		<band height="75">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="-2" width="515" height="16" backcolor="#F2FCFC" uuid="7038e84c-a105-423b-8126-636dafa06571"/>
+				<reportElement mode="Opaque" x="0" y="59" width="515" height="16" backcolor="#F2FCFC" uuid="7038e84c-a105-423b-8126-636dafa06571"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement mode="Opaque" x="513" y="-2" width="45" height="16" backcolor="#F7FCFC" uuid="14270ba6-b640-482c-b5cb-bcf27b972f27"/>
+				<reportElement mode="Opaque" x="513" y="59" width="45" height="16" backcolor="#F7FCFC" uuid="14270ba6-b640-482c-b5cb-bcf27b972f27"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="388" y="2" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="d6624a54-5fdd-49bb-9307-daea8d1cea02"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{userC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM , yyyy">
+				<reportElement x="452" y="36" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="b68d939a-ad7b-4010-8b54-8c0cc01df460"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

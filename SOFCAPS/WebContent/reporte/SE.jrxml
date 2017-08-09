@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-08-03T04:11:23 -->
+<!-- 2017-08-09T00:45:43 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="02d9c91c-5bde-420f-a640-cb6e405bb763">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="informes"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -100,45 +100,31 @@
 		<parameter name="ann" class="java.lang.String"/>
 		<parameter name="userC" class="java.lang.String"/>
 		<queryString language="SQL">
-			<![CDATA[SELECT o.Otros_Ing_Egreg_ID,o.fecha,  
-    DATE_FORMAT(fecha, '%M') as Meses, DATE_FORMAT(fecha, '%Y') as Anio, 
-    o.descripcion, o.monto,  c.Categoria_Ing_Egreg_ID, c.nombreCategoria ,  SUM(ROUND(monto,2)) as total , 
-	c.TipoCategoria_ID , d.descripcion as des,
+			<![CDATA[SELECT 
      SUM(`o`.`monto`) AS `total`,
         `c`.`TipoCategoria_ID` AS `TipoCategoria_ID`,
-        SUM((CASE
+        SUM(round((CASE
             WHEN (`c`.`TipoCategoria_ID` = 1) THEN `o`.`monto`
             ELSE 0
-        END)) AS `total_1`,
-        SUM((CASE
+        END),2)) AS `total_1`,
+        SUM(round((CASE
             WHEN (`c`.`TipoCategoria_ID` = 2) THEN `o`.`monto`
             ELSE 0
-        END)) AS `total_2`,
-        (SUM((CASE
+        END),2)) AS `total_2`,
+        (SUM(round((CASE
             WHEN (`c`.`TipoCategoria_ID` = 1) THEN `o`.`monto`
             ELSE 0
-        END)) - SUM((CASE
+        END),2)) - SUM(round((CASE
             WHEN (`c`.`TipoCategoria_ID` = 2) THEN `o`.`monto`
             ELSE 0
-        END))) AS `SALDO`
+        END),2))) AS `SALDO`
 	from otros_ing_egreg o 
 		Join categoria_ing_egreg c On o.Categoria_Ing_Egreg_ID = c.Categoria_Ing_Egreg_ID 
         join tipocategoria d On c.TipoCategoria_ID =d.TipoCategoria_ID 
         WHERE o.eliminado=0 and c.eliminado=0 and DATE_FORMAT(fecha, '%M')= $P{mss}  and DATE_FORMAT(fecha, '%Y')= $P{ann}]]>
 		</queryString>
-		<field name="Otros_Ing_Egreg_ID" class="java.lang.Integer"/>
-		<field name="fecha" class="java.sql.Date"/>
-		<field name="Meses" class="java.lang.String"/>
-		<field name="Anio" class="java.lang.String"/>
-		<field name="descripcion" class="java.lang.String"/>
-		<field name="monto" class="java.lang.Float"/>
-		<field name="Categoria_Ing_Egreg_ID" class="java.lang.Integer"/>
-		<field name="nombreCategoria" class="java.lang.String"/>
 		<field name="total" class="java.lang.Double"/>
 		<field name="TipoCategoria_ID" class="java.lang.Integer"/>
-		<field name="des" class="java.lang.String"/>
-		<field name="COLUMN_12" class="java.lang.Double"/>
-		<field name="COLUMN_13" class="java.lang.Integer"/>
 		<field name="total_1" class="java.lang.Double"/>
 		<field name="total_2" class="java.lang.Double"/>
 		<field name="SALDO" class="java.lang.Double"/>
@@ -237,7 +223,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Serif" size="14"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -291,7 +277,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Descripción]]></text>
+				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="350" y="84" width="80" height="30" uuid="e047c5fa-57f5-4e5a-b044-9aa0ee16d169"/>

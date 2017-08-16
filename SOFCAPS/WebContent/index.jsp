@@ -4,9 +4,8 @@
 <!-- contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" -->
 <%
-	response.setHeader("Pragma", "No-cache");
-	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-	response.setDateHeader("Expires", -1);
+	response.setHeader("Cache-Control", "no-store"); //HTTP 1.1
+	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -230,6 +229,17 @@
 								<li><a class="ajax-link" href="ajax/ReporteOtroIE.jsp" style="padding: 9px 10px 9px 30px;">
 								<p style="height:auto; white-space:normal; margin-bottom:0px;">
 								Informe de ingresos y egresos </p></a></li>
+								<li><a class="ajax-link" href="ajax/informeRecibosIngresos.jsp" style="padding: 9px 10px 9px 30px;">
+								<p style="height:auto; white-space:normal; margin-bottom:0px;">
+								Informe de recibos de caja</p></a></li>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" 
+								style="min-width: auto; padding-left:30px;"><i title="Acuerdos de pago" class="fa fa-pencil-square-o"></i> 
+								<span class="hidden-xs">Acuerdo pago</span></a>
+									<ul class="dropdown-menu" style="min-width:auto;">
+										<li><a style="padding:10px; padding-left:30px" class="ajax-link" 
+										href="ajax/AcuerdoPago.jsp">Comprimiso Pago</a></li>
+									</ul>
+								</li>
 								<li><a class="ajax-link" href="ajax/reporte_bomba.jsp" style="padding: 9px 10px 9px 30px;">
 								<p style="height:auto; white-space:normal; margin-bottom:0px;">
 								Informe de la Bomba </p></a></li>
@@ -239,15 +249,6 @@
 								<li><a class="ajax-link" href="ajax/AguaPerdidaFB.jsp" style="padding: 9px 10px 9px 30px;">
 								<p style="height:auto; white-space:normal; margin-bottom:0px;">
 								informe de agua perdida</p></a></li>
-								
-								<li class="dropdown"><a href="#" class="dropdown-toggle" 
-								style="min-width: auto; padding-left:30px;"><i title="Acuerdos de pago" class="fa fa-pencil-square-o"></i> 
-								<span class="hidden-xs">Acuerdo pago</span></a>
-									<ul class="dropdown-menu" style="min-width:auto;">
-										<li><a style="padding:10px; padding-left:30px" class="ajax-link" 
-										href="ajax/AcuerdoPago.jsp">Comprimiso Pago</a></li>
-									</ul>
-								</li>
 							</ul>
 						</li>
 						

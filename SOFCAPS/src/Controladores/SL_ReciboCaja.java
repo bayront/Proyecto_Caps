@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import Entidades.Factura_Maestra;
 import Entidades.ReciboCaja;
 import Entidades.Reconexion;
 import Entidades.Serie;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -107,9 +109,28 @@ public class SL_ReciboCaja extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}else if(Integer.parseInt(request.getParameter("idserie")) == 6) {
+			String fecha_inicio = request.getParameter("fecha_inicio");
+			String fecha_fin = request.getParameter("fecha_fin");
+			String user = request.getParameter("userC");
+			
+			try {
+				DateFormat fechaParse = new SimpleDateFormat("yyyy-MM-dd");
+				Date fecha_inicioD;
+				fecha_inicioD = fecha.parse(fecha_inicio);
+				fecha_inicio = fechaParse.format(fecha_inicioD);
+				Date fecha_finD = fecha.parse(fecha_fin);
+				fecha_fin = fechaParse.format(fecha_finD);
+				imprimirInforme(fecha_inicio, fecha_fin, user, response);
+			} catch (ParseException e) {
+				e.printStackTrace();
+				response.setContentType("text/plain");
+				out = response.getWriter();
+				out.print("ERROR AL GENERAR INFORME");
+			}
 		}
 	}
-	
+
 	private void cargarRecibosDetalles() throws SQLException {
 		List<ReciboCaja> listaRecibo = new ArrayList<>();
 		ResultSet rs = dt_reciboCaja.cargarRecibos();
@@ -204,6 +225,39 @@ public class SL_ReciboCaja extends HttpServlet {
 		 e.printStackTrace();
 		 System.out.println("REPORTE: ERROR AL GENERAR REPORTE " + e.getMessage());
 		}
+	}
+	
+	private void imprimirInforme(String fecha_inicio, String fecha_fin, String user, 
+			HttpServletResponse resp) throws IOException {
+		try {
+			//Aquí se ponen los parámetros a como se llaman en el reporte
+			HashMap<String, Object>hm = new HashMap<>();
+			
+			hm.put("Parameter1", fecha_inicio);
+			hm.put("Parameter2", fecha_fin);
+			hm.put("userC", user);
+			
+			resp.reset();
+			OutputStream otps = resp.getOutputStream();
+			ServletContext context = getServletContext();
+			String path = context.getRealPath("/");
+			String template = "reporte\\informeReciboCaja.jasper";
+			Exporter exporter = new JRPdfExporter();
+			
+			Connection con = Conexion.getConnection();
+			JasperPrint jasperPrint;
+			jasperPrint = JasperFillManager.fillReport(path+template, hm, con);
+			resp.setContentType("application/pdf");
+			resp.setHeader("Content-Disposition", "inline; filename=\"Informe_Recibos.pdf\"");
+			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(otps));
+			exporter.exportReport();
+		} catch (JRException e) {
+			e.printStackTrace();
+			resp.setContentType("text/plain");
+			out = resp.getWriter();
+			out.print("ERROR AL GENERAR INFORME");
+		}	
 	}
 
 	private void traerReconexiones(int idCliente, HttpServletResponse response) throws ParseException {

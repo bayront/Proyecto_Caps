@@ -39,7 +39,7 @@ public class SL_CCMS extends HttpServlet {
 	DateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
 	DateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
        
-    /**
+    /**	
      * @see HttpServlet#HttpServlet()
      */
     public SL_CCMS() {

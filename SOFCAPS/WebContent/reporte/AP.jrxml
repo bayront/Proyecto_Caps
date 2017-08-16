@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-28T18:24:45 -->
+<!-- 2017-08-13T03:34:17 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AP" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5fdc152d-0acc-446c-bb8f-fc0df05bd21c">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SOFCAPS"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="recibo"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="496"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="490"/>
 	<parameter name="n" class="java.lang.String"/>
@@ -14,6 +14,7 @@
 	<field name="fecha_fin" class="java.sql.Date"/>
 	<field name="Meses" class="java.lang.String"/>
 	<field name="sector" class="java.lang.String"/>
+	<field name="Cliente_ID" class="java.lang.Integer"/>
 	<field name="anulado" class="java.lang.Boolean"/>
 	<field name="estadoFac" class="java.lang.Boolean"/>
 	<field name="Factura_Maestra_ID" class="java.lang.Integer"/>
@@ -21,143 +22,158 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="60" splitType="Stretch">
+		<band height="70" splitType="Stretch">
 			<staticText>
-				<reportElement x="4" y="15" width="551" height="30" uuid="f382f57e-5420-4cac-9bc9-0a3d0203bf22"/>
+				<reportElement x="100" y="30" width="370" height="20" uuid="e2f403ea-75c6-4e50-9520-4c9885bb769b"/>
 				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="26" isBold="true"/>
+					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Compromisos de Pago]]></text>
+				<text><![CDATA[COMPROMISOS DE PAGO]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="70" height="70" uuid="fe4a24a0-2843-45ba-bc23-95ff9ed12b54"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="30" forecolor="#030303" uuid="7e3652d3-30df-4351-9c6b-f3b73341a6c6">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comité agua potable y saneamiento CAPS-Poneloya]]></text>
 			</staticText>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="37" splitType="Stretch">
+		<band height="386" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="30" y="32" width="334" height="30" uuid="4fa521e2-a4e6-4156-9ba8-622384ae5864"/>
+				<textElement>
+					<font fontName="Serif" size="18"/>
+				</textElement>
+				<text><![CDATA[Señores Junta directiva CAPS PONELOYA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="62" width="230" height="30" uuid="eaa838bc-8e9c-4e3a-8f19-cae00a737ec6"/>
+				<textElement>
+					<font fontName="Serif" size="18"/>
+				</textElement>
+				<text><![CDATA[Por motivo de la presento yo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="270" y="64" width="274" height="31" uuid="59506542-bbb7-441e-b244-0a78b9df0c8d"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="123" width="505" height="189" uuid="b7198564-5268-482a-8b9b-f50cd2351cea"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Serif" size="18"/>
+				</textElement>
+				<text><![CDATA[me dirijo ante ustedes para solicitar un arreglo de pago ya que no he podido cancelar las  facturas pendientes de pago correspondientes a los meses de                            
+Por motivo de 
+Es por tal razón que me presento para solicitar que por favor esperen para el día estando consciente que al incumplir este acuerdo el CAPS podrá suspender de manera inmediata mi servicio de agua potable.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="346" width="136" height="40" uuid="00304d73-ae2d-438c-940f-a888f0927e2d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario CAPS Poneloya]]></text>
+			</staticText>
+			<line>
+				<reportElement x="30" y="342" width="136" height="1" uuid="7d786d68-bd0e-4834-aa6e-86d776d54132"/>
+			</line>
+			<staticText>
+				<reportElement x="192" y="346" width="153" height="40" uuid="2decfbe8-58f3-4a72-af5f-be1254cf4c6e"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Presidente CAPS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="196" y="342" width="153" height="1" uuid="19d6bc1e-ece5-4470-a8c8-e7e135043d70"/>
+			</line>
+			<staticText>
+				<reportElement x="364" y="346" width="152" height="40" uuid="9e5b4fb6-220b-4d4d-96e2-3b2cac36734e"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tesorera CAPS ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="368" y="342" width="153" height="1" uuid="7a385238-da39-48d6-b7e8-8d27faed2d45"/>
+			</line>
+			<staticText>
+				<reportElement x="30" y="97" width="158" height="30" uuid="8a021e66-f991-41c2-8621-84dab1a3e16c"/>
+				<textElement>
+					<font fontName="Serif" size="18"/>
+				</textElement>
+				<text><![CDATA[Usuario del sector]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="97" width="260" height="25" uuid="5d8f6613-383d-46ae-9e28-4ce5c6f82cab"/>
+				<textElement>
+					<font fontName="Serif" size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sector}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="378" y="0" width="50" height="30" uuid="6dd3a9f9-10d2-4d1a-aa52-c27d259f8167"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
 			<textField pattern="dd MMMMM, yyyy">
-				<reportElement x="400" y="7" width="130" height="30" uuid="e518a3a9-5ac9-4246-a96f-95d3c5c7a360"/>
+				<reportElement x="428" y="0" width="130" height="30" uuid="90b1f034-201f-4067-b568-13bb2deccfb5"/>
 				<textElement>
 					<font fontName="Times New Roman" size="16"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="350" y="7" width="50" height="30" uuid="d2352787-acb6-424e-855f-46934d2c3855"/>
-				<textElement>
-					<font fontName="Times New Roman" size="16"/>
+				<reportElement x="310" y="178" width="225" height="16" uuid="ae72d47b-a153-4cc2-a83f-c0beb1d6f880"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[_______________________________________________________________________]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="280" y="171" width="241" height="25" uuid="67d31bd1-b040-48b0-b134-858febc8dea5"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Fecha:]]></text>
+				<textFieldExpression><![CDATA[$F{Meses}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="145" y="202" width="391" height="16" uuid="392c807f-6fd8-4c45-b556-6ca531c4a6c0"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[_______________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="107" width="323" height="16" uuid="7caf51f8-0aac-4942-98db-3ee12d37afbe"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[_______________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="74" width="266" height="16" uuid="8de77784-1906-4567-badd-47034b38e6b7"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[_______________________________________________________________________]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
 		<band splitType="Stretch"/>
 	</columnHeader>
-	<detail>
-		<band height="380" splitType="Stretch">
-			<staticText>
-				<reportElement x="50" y="20" width="330" height="30" uuid="4fa521e2-a4e6-4156-9ba8-622384ae5864"/>
-				<textElement>
-					<font fontName="Times New Roman" size="18"/>
-				</textElement>
-				<text><![CDATA[Señores Junta directiva CAPS PONELOYA]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="50" y="50" width="230" height="30" uuid="eaa838bc-8e9c-4e3a-8f19-cae00a737ec6"/>
-				<textElement>
-					<font fontName="Times New Roman" size="18"/>
-				</textElement>
-				<text><![CDATA[Por motivo de la presento yo]]></text>
-			</staticText>
-			<line>
-				<reportElement x="290" y="70" width="250" height="2" uuid="78f40eb7-38fa-4a4f-a800-e3066e38b503"/>
-			</line>
-			<staticText>
-				<reportElement x="50" y="80" width="160" height="30" uuid="a3635381-1ef9-4453-a581-dbb7d1837c76"/>
-				<textElement>
-					<font fontName="Times New Roman" size="18"/>
-				</textElement>
-				<text><![CDATA[Usuario del sector ]]></text>
-			</staticText>
-			<line>
-				<reportElement x="210" y="100" width="330" height="1" uuid="5ebe9e56-7dd7-446b-bc52-0faf62d5f1c4"/>
-			</line>
-			<staticText>
-				<reportElement x="50" y="110" width="494" height="170" uuid="b7198564-5268-482a-8b9b-f50cd2351cea"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Times New Roman" size="18"/>
-				</textElement>
-				<text><![CDATA[me dirijo ante ustedes para solicitar un arreglo de pago ya que no he podido cancelar las  facturas pendientes de pago correspondientes a los meses de 
-Por motivo de 
-Es por tal razón que me presento para solicitar que por favor esperen para el día estando consciente que al incumplir este acuerdo el CAPS podrá suspender de manera inmediata mi servicio de agua potable.
-]]></text>
-			</staticText>
-			<line>
-				<reportElement x="54" y="338" width="136" height="1" uuid="7d786d68-bd0e-4834-aa6e-86d776d54132"/>
-			</line>
-			<line>
-				<reportElement x="220" y="338" width="153" height="1" uuid="19d6bc1e-ece5-4470-a8c8-e7e135043d70"/>
-			</line>
-			<line>
-				<reportElement x="392" y="338" width="153" height="1" uuid="7a385238-da39-48d6-b7e8-8d27faed2d45"/>
-			</line>
-			<staticText>
-				<reportElement x="54" y="339" width="136" height="40" uuid="00304d73-ae2d-438c-940f-a888f0927e2d"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Usuario CAPS Poneloya]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="392" y="339" width="152" height="40" uuid="9e5b4fb6-220b-4d4d-96e2-3b2cac36734e"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Tesorera CAPS ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="220" y="340" width="153" height="40" uuid="2decfbe8-58f3-4a72-af5f-be1254cf4c6e"/>
-				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Presidente CAPS]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="330" y="152" width="215" height="23" uuid="1ffc6a16-bf0c-4d94-b4a4-e77944d816dd"/>
-				<textElement textAlignment="Left">
-					<font fontName="Times New Roman" size="18" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Meses}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="210" y="80" width="330" height="30" uuid="1b5c5893-498b-4409-9b1a-00ad2ec6ce88"/>
-				<textElement>
-					<font size="16" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{sector}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="330" y="159" width="214" height="16" uuid="13e21f2a-cb09-4c6b-9b9f-4e2bb8badb2f"/>
-				<textElement textAlignment="Right"/>
-				<text><![CDATA[___________________________________________]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="160" y="180" width="385" height="16" uuid="d25e8f56-de3b-480d-95d7-a6b60f75ce9b"/>
-				<textElement textAlignment="Right"/>
-				<text><![CDATA[_______________________________________________________________________]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="290" y="50" width="250" height="30" uuid="59506542-bbb7-441e-b244-0a78b9df0c8d"/>
-				<textElement>
-					<font size="14" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
-			</textField>
-		</band>
-	</detail>
 	<columnFooter>
-		<band height="302" splitType="Stretch">
+		<band height="346" splitType="Stretch">
 			<staticText>
-				<reportElement x="4" y="152" width="540" height="129" uuid="57fdfd46-e38a-4521-b3de-8587e97a346b"/>
+				<reportElement x="20" y="152" width="524" height="129" uuid="57fdfd46-e38a-4521-b3de-8587e97a346b"/>
 				<textElement textAlignment="Justified">
 					<font fontName="Times New Roman" size="16"/>
 				</textElement>
@@ -203,37 +219,37 @@ Usted ha hecho un arreglo de pago por el monto de las facturas de su consumo pen
 			<line>
 				<reportElement x="138" y="150" width="202" height="1" uuid="5704cb4a-bf69-4bae-9d26-f39d2723d370"/>
 			</line>
-			<line>
-				<reportElement x="405" y="151" width="139" height="2" uuid="88f0b18d-7e4b-43a2-94a8-4e3dfff2bba5"/>
-			</line>
 			<textField>
-				<reportElement x="139" y="130" width="213" height="30" uuid="723a61cd-1eec-4b85-9afe-921f56ac0441"/>
+				<reportElement x="139" y="130" width="213" height="24" uuid="723a61cd-1eec-4b85-9afe-921f56ac0441"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font size="15" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="405" y="129" width="140" height="30" uuid="48cb27e1-81cd-47d6-acea-3df07f8f4782"/>
+				<reportElement x="405" y="130" width="140" height="25" uuid="48cb27e1-81cd-47d6-acea-3df07f8f4782"/>
 				<textElement>
-					<font size="16" isBold="true"/>
+					<font size="15" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sector}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="360" y="272" width="100" height="30" uuid="d2913da4-0e56-42b2-8c20-2289127afbba"/>
+				<reportElement mode="Opaque" x="0" y="330" width="515" height="16" backcolor="#F2FCFC" uuid="b8a64e7a-dea0-4f69-9ba7-fbec83b7155c"/>
 				<textElement textAlignment="Right">
-					<font size="14" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="460" y="272" width="100" height="30" uuid="146cb2d3-d8a9-4b95-b105-441374def8a7"/>
-				<textElement textAlignment="Left">
-					<font size="14" isBold="true"/>
+				<reportElement mode="Opaque" x="513" y="330" width="45" height="16" backcolor="#F7FCFC" uuid="223621a4-7f0e-4325-b8a5-9557f1a90636"/>
+				<textElement>
+					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="400" y="150" width="154" height="1" uuid="6ad8bb30-35b3-4de9-83fd-dd498bb8420c"/>
+			</line>
 		</band>
 	</columnFooter>
 	<pageFooter>

@@ -3,9 +3,8 @@
 <%@page pageEncoding="UTF-8" import="Entidades.Usuario, Entidades.Rol, Datos.DT_Vw_rol_opciones, java.sql.ResultSet ;"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <%
-response.setHeader("Pragma", "No-cache");
-response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-response.setDateHeader("Expires", -1);
+	response.setHeader("Cache-Control", "no-store"); //HTTP 1.1
+	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
 	String nombre_usuario = "";

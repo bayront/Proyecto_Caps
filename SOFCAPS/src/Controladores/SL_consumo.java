@@ -42,7 +42,7 @@ import Entidades.Sector;
 public class SL_consumo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DTConsumo datosConsumo = DTConsumo.getInstance();
-	private PrintWriter out;
+	private PrintWriter out;	
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy", new Locale("es_ES"));
 	SimpleDateFormat parseador2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);

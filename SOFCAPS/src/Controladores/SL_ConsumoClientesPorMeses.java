@@ -85,17 +85,15 @@ public class SL_ConsumoClientesPorMeses extends HttpServlet {
 			HashMap<String, Object>hm = new HashMap<>();
 			
 			// $P{mesIniciojasper} and  $P{mesFinjasper}
-			hm.put("mesIniciojasper", f1);
-			hm.put("mesFinjasper", f2);
+			hm.put("Parameter1", f1);
+			hm.put("Parameter2", f2);
 			hm.put("userC", userC);
-			
-			
 			
 			System.out.println(hm);
 			OutputStream otps = response.getOutputStream();
 			ServletContext context = getServletContext();
 			String path = context.getRealPath("/");
-			String template = "reporte\\ConsumoClientesPorMeses.jasper";
+			String template = "reporte\\consumoCFecha.jasper";
 			Exporter exporter = new JRPdfExporter();
 			System.out.println(path+template);
 			System.out.println(con);

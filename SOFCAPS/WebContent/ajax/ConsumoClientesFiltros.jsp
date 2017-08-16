@@ -5,9 +5,8 @@
  <%@page pageEncoding="UTF-8" import="Datos.DTConsumo,Entidades.Usuario, Entidades.Rol, Datos.DT_Vw_rol_opciones,java.sql.ResultSet ;"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <%
-response.setHeader("Pragma", "No-cache");
-response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-response.setDateHeader("Expires", -1);
+	response.setHeader("Cache-Control", "no-store"); //HTTP 1.1
+	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
 	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
@@ -116,7 +115,7 @@ response.setDateHeader("Expires", -1);
 		<div id="dashboard-IMC" class="row"
 		style="visibility: visible; position: relative;">
 			<div class="col-xs-12" style="margin-top: 20px;">
-				<h4 class="page-header">Informe período de fechas</h4>
+				<h4 class="page-header">Informe por período de fechas</h4>
 			</div>
 			<div class="row">
 				<div class="col-xs-12 col-sm-12  col-md-offset-1 col-md-10">
@@ -138,7 +137,7 @@ response.setDateHeader("Expires", -1);
 						<div class="box-content">
 								<div class="form-group">
 								
-									<label class="col-sm-2 control-label">Periodo de fechas</label>
+									<label class="col-sm-2 control-label">Período de fechas</label>
 									<div class="col-sm-4">
 										<input type="text" class="form-control" id="FECHITAM"
 										placeholder="fecha de inicio">
@@ -201,7 +200,7 @@ response.setDateHeader("Expires", -1);
 						<div class="box-content">
 								<div class="form-group">
 							
-									<label class="col-sm-2 control-label">Periodo de Fechas</label>
+									<label class="col-sm-2 control-label">Período de Fechas</label>
 									<div class="col-sm-4">
 										<input type="text" class="form-control" id="FECHITA"
 										placeholder="fecha de inicio">
@@ -295,9 +294,8 @@ function imprimir()
 	
 
 }
-function imprimirFS()
 
-{	
+function imprimirFS(){	
 	
 	var valor = "";
 	var v = "";

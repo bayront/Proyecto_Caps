@@ -5,9 +5,8 @@
 <%@page pageEncoding="UTF-8" import="Entidades.Usuario, Entidades.Rol, Datos.DT_Vw_rol_opciones;"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <%
-response.setHeader("Pragma", "No-cache");
-response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-response.setDateHeader("Expires", -1);
+	response.setHeader("Cache-Control", "no-store"); //HTTP 1.1
+	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
 	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
@@ -91,7 +90,7 @@ response.setDateHeader("Expires", -1);
 <!-- 						FORMA PARA CREAR PERIODOS DE TIEMPO CON JQUERY UI <label -->
 				<form class="form-horizontal" role="form" id="formReporteBomba">
 					<div class="form-group">
-						<label	class="col-sm-3 control-label">Periodo de fechas</label>
+						<label	class="col-sm-3 control-label">período de fechas</label>
 						<div class="col-sm-4">
 						<input type="hidden" id="userC" name="userC" value="<%=nombre_usuario %>">
 							<input type="text" class="form-control" id="FECHITA1"

@@ -4,9 +4,8 @@
 <%@page pageEncoding="UTF-8" import="Entidades.Usuario, Entidades.Rol, Datos.DT_Vw_rol_opciones;"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <%
-response.setHeader("Pragma", "No-cache");
-response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-response.setDateHeader("Expires", -1);
+	response.setHeader("Cache-Control", "no-store"); //HTTP 1.1
+	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
 	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
@@ -89,13 +88,13 @@ response.setDateHeader("Expires", -1);
 					<div class="clearfix"></div>
 
 					<div class="form-group has-feedback">
-						<label class="col-sm-offset-3 col-sm-2 text-gpromedix control-label">Nombre
-							cliente:</label>
+						<label class="col-sm-offset-2 col-sm-3 text-gpromedix control-label"
+							style="width: inherit;font-size: large;">Nombre del cliente:</label>
 						<%
 							DTCliente dtn = DTCliente.getInstance();
 							ResultSet rs = dtn.cargarNombre();
 						%>
-						<div class="col-sm-4">
+						<div class="col-sm-5">
 
 							<select id="tippe" name="tippe" class="populate placeholder"
 								required>

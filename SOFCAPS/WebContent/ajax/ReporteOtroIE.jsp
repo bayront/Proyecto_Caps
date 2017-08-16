@@ -7,9 +7,8 @@
 <%@page pageEncoding="UTF-8" import="Entidades.Usuario, Entidades.Rol, Datos.DT_Vw_rol_opciones,java.sql.ResultSet ;"%> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <%
-response.setHeader("Pragma", "No-cache");
-response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-response.setDateHeader("Expires", -1);
+	response.setHeader("Cache-Control", "no-store"); //HTTP 1.1
+	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
 	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
@@ -111,7 +110,7 @@ response.setDateHeader("Expires", -1);
 			<li class="active"><a href="#" class="tab-link" id="IM">Imprimir por mes</a></li>
 			<li><a href="#" class="tab-link" id="II">Imprimir ingresos</a></li>
 			<li><a href="#" class="tab-link" id="IE">Imprimir Egresos</a></li>
-			<li><a href="#" class="tab-link" id="IF">Imprimir por periodos</a></li>
+			<li><a href="#" class="tab-link" id="IF">Imprimir por períodos</a></li>
 		</ul>
 	</div>
 	<div id="dashboard_tabs" class="col-xs-12 col-sm-10">
@@ -451,8 +450,8 @@ response.setDateHeader("Expires", -1);
 						</div>
 						<div class="box-content">
 								<div class="form-group">
-					<!-- FORMA PARA CREAR PERIODOS DE TIEMPO CON JQUERY UI -->
-						<label class="col-sm-3 control-label text-center">Periodo de fechas</label>
+					<!-- FORMA PARA CREAR períodos DE TIEMPO CON JQUERY UI -->
+						<label class="col-sm-3 control-label text-center">Período de fechas</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" id="FECHITA1"
 								placeholder="fecha de inicio">

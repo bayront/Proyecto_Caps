@@ -3,9 +3,8 @@
 	import="Entidades.*, Datos.*, java.sql.ResultSet;"%>
 <!DOCTYPE html>
 <%
-response.setHeader("Pragma", "No-cache");
-response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-response.setDateHeader("Expires", -1);
+	response.setHeader("Cache-Control", "no-store"); //HTTP 1.1
+	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 
 <html>

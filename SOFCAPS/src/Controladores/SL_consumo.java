@@ -7,33 +7,23 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
-import java.util.Locale.Category;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.persistence.internal.jpa.parsing.FetchJoinNode;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import Datos.DTConsumo;
 import Datos.DataTableObject;
-import Entidades.Categoria;
 import Entidades.Cliente;
 import Entidades.Consumo;
 import Entidades.Contrato;
-import Entidades.RegimenPropiedad;
-import Entidades.Sector;
 
 /**
  * Servlet implementation class SL_consumo

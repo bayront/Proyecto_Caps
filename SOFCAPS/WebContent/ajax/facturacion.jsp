@@ -675,10 +675,10 @@ function imprimirFactura (tbody, table){
 			         	render: function ( data, type, row ) {
 			         		var pagado;
 			         		if(data.estadoFac == 1)
-			        			pagado = "<div class='checkbox'> <label> <input type='checkbox' checked>"+
+			        			pagado = "<div class='checkbox'> <label> <input type='checkbox' checked disabled>"+
 			        			"<i class='fa fa-square-o'></i> </label> </div>";
 			        		else
-			        			pagado = "<div class='checkbox'> <label> <input type='checkbox'>"+
+			        			pagado = "<div class='checkbox'> <label> <input type='checkbox' disabled>"+
 			        			"<i class='fa fa-square-o'></i> </label> </div>";
 			               	return pagado;
 			       	}},

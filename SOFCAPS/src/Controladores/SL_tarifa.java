@@ -103,7 +103,7 @@ public class SL_tarifa extends HttpServlet {
 			case "guardar":
 				lim_Inf = Integer.parseInt(request.getParameter("lim_Inf")); 
 				if(request.getParameter("lim_Sup").equals("") || request.getParameter("lim_Sup").isEmpty()) {
-					lim_Sup = 0;
+					lim_Sup = -1;
 				}else {
 					lim_Sup = Integer.parseInt(request.getParameter("lim_Sup"));
 				}
@@ -211,12 +211,9 @@ public class SL_tarifa extends HttpServlet {
 			cat.setNomCategoria(rs.getString("nomCategoria"));
 			t.setTarifa_ID(rs.getInt("Tarifa_ID"));
 			t.setLim_Inf(rs.getInt("lim_Inf"));
-			int lim_Sup = rs.getInt("lim_Sup");
-			if(lim_Sup == 0) {
-				System.out.println("no hay lim_Sup: " + lim_Sup);
-			}else {
+			if(rs.getObject("lim_Sup") != null)
 				t.setLim_Sup(rs.getInt("lim_Sup"));
-			}
+			
 			t.setMonto(rs.getFloat("monto"));
 			t.setCategoria(cat);
 			t.setUnidad_de_Medida(um);

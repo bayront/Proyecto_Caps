@@ -123,9 +123,13 @@ public class DT_consumo_bomba {
 		return rs;
 	}
 	
-	public ResultSet cargarDatosTabla(){
+	public ResultSet cargarDatosTabla(int anioB, int mesI, int mesF){
 		Statement s;
-		String sql = ("SELECT b.Bomba_ID, b.consumoActual, b.fechaLecturaActual, b.lecturaActual, b.observaciones, um.tipoMedida, um.Unidad_de_Medida_ID FROM bomba b inner join unidad_de_medida um on b.Unidad_de_Medida_ID = um.Unidad_de_Medida_ID WHERE b.estado = 0;");
+		String sql = "SELECT b.Bomba_ID, b.consumoActual, b.fechaLecturaActual, b.lecturaActual, "
+				+ "b.observaciones, um.tipoMedida, um.Unidad_de_Medida_ID "
+				+ "FROM bomba b inner join unidad_de_medida um on b.Unidad_de_Medida_ID = um.Unidad_de_Medida_ID "
+				+ "WHERE (b.estado = 1) AND (DATE_FORMAT(b.fechaLecturaActual, '%m') BETWEEN "+mesI+" AND "+mesF+") "
+				+ "AND (DATE_FORMAT(b.fechaLecturaActual, '%Y') = "+anioB+") order by b.fechaLecturaActual;";
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
@@ -136,9 +140,13 @@ public class DT_consumo_bomba {
 		return rs;
 	}
 	
-	public ResultSet cargarDatosInactivos(){
+	public ResultSet cargarDatosInactivos(int anioB, int mesI, int mesF){
 		Statement s;
-		String sql = ("SELECT b.Bomba_ID, b.consumoActual, b.fechaLecturaActual, b.lecturaActual, b.observaciones, um.tipoMedida, um.Unidad_de_Medida_ID FROM bomba b inner join unidad_de_medida um on b.Unidad_de_Medida_ID = um.Unidad_de_Medida_ID WHERE b.estado = 1;");
+		String sql = "SELECT b.Bomba_ID, b.consumoActual, b.fechaLecturaActual, b.lecturaActual, "
+				+ "b.observaciones, um.tipoMedida, um.Unidad_de_Medida_ID "
+				+ "FROM bomba b inner join unidad_de_medida um on b.Unidad_de_Medida_ID = um.Unidad_de_Medida_ID "
+				+ "WHERE (b.estado = 0) AND (DATE_FORMAT(b.fechaLecturaActual, '%m') BETWEEN "+mesI+" AND "+mesF+") "
+				+ "AND (DATE_FORMAT(b.fechaLecturaActual, '%Y') = "+anioB+") order by b.fechaLecturaActual;";
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);

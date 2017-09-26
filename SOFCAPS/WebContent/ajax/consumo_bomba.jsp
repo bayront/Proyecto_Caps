@@ -94,6 +94,17 @@
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content no-padding table-responsive">
+			<div class="form-group col-md-offset-3 col-md-6 text-center">
+				<label class="control-label text-info" style="font-size: large;">Registros mostrados por periodo</label>
+				<input id="anioBuscar" name="anioBuscar" type="text" class="form-control" placeholder="Año de registros"
+					data-toggle="tooltip" data-placement="top" title="Año a buscar" style="text-align:center;">
+				<select class="populate placeholder" name="periodoBuscar" id=periodoBuscar>
+					<option value="1">Primera mitad</option>
+					<option value="2">Segunda mitad</option>
+				</select>
+				<button id="btnBuscar" type="button" class="btn btn-info" onclick= "cargar_consumoB();" 
+				style="margin-top: 5px;">Buscar registros</button>
+			</div>
 			<div style="text-align: center;">
 					<label Style='margin-top: 10px; margin-bottom: 10px;'> <input
 						type="checkbox" id="mostrar_consumoB" onclick="">MOSTRAR CONSUMO DE BOMBA INACTIVOS
@@ -279,20 +290,33 @@
 
 <script type="text/javascript">
 var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
-var websocket = new WebSocket(wsUri);
-//evento que notifica que la conexion esta abierta
-websocket.onopen = function(evt) { //manejamos los eventos...
-    console.log("Conectado..."); //... y aparecerá en la pantalla
-};
-//evento onmessage para resibir mensaje del serverendpoint
-websocket.onmessage = function(evt) { // cuando se recibe un mensaje
-	console.log("Mensaje recibido de webSocket: " + evt.data);
-	verResultado(evt.data);
-};
-//evento si hay algun error en la comunicacion con el web_socket
-websocket.onerror = function(evt) {
-    console.log("oho!.. error:" + evt.data);
-};
+var websocket;
+if (!(websocket instanceof WebSocket) || websocket.readyState !== WebSocket.OPEN) {
+	websocket = new WebSocket(wsUri);
+	console.log("nueva webConsumoBomba");
+	//evento que notifica que la conexion esta abierta
+	websocket.onopen = function(evt) { //manejamos los eventos...
+	    console.log("Conectado..."); //... y aparecerá en la pantalla
+	};
+
+	//evento onmessage para resibir mensaje del serverendpoint
+	websocket.onmessage = function(evt) { // cuando se recibe un mensaje
+		console.log("Mensaje recibido de webConsumoBomba: " + evt.data);
+		verResultado(evt.data);
+	};
+
+	//evento si hay algun error en la comunicacion con el web_socket
+	websocket.onerror = function(evt) {
+	    console.log("oho!.. error:" + evt.data);
+	};
+
+	websocket.onclose = function(){
+		//message('<p class="event">Socket Status: '+socket.readyState+' (Closed)');
+		console.log("Desconectado, status de conexión: " + websocket.readyState);
+	}
+}else
+	console.log("no conectar webConsumoBomba");
+	
 var actual = false;//variable para saber si el registro es el actual
 var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
 var colap1 =  new Colap1();
@@ -301,7 +325,7 @@ var colap2 =  new Colap2();
 /////////////////////////////////Correr plugin SELECT2 sobre los selects mencionados/////////////////////////////
 function DemoSelect2() {
 	$('#unidadMedida').select2();
-	
+	$('#periodoBuscar').select2();
 }
 //////////////////////////funsión que muestra el resultado mediant un dialogo//////////////////////////////////////
 var verResultado = function(r) {//parametro(resultado-String)
@@ -445,21 +469,20 @@ var cancelar = function() {////////////////cancela la acción limpiando el texto
 var boton= 1;//varaible para validar si el check de activar clientes esta checkeado
 /////////////////////////////////funsion que devuelve los botones dependiendo del check///////////////////////////
 function botones() {
-if(boton ==1){
-return "<button type='button' class='visualizarConsumoB btn btn-info' data-toggle='tooltip' "+
-"data-placement='top' title='Visualizar Registro'>"+
-"<i class='fa fa-info-circle'></i> </button>  "+
-"<button type='button' id='editarConsumoB' class='editarConsumoB btn btn-primary' data-toggle='tooltip' "+
-"data-placement='top' title='Editar consumo de bomba'>"+
-"<i class='fa fa-pencil-square-o'></i> </button>  "+
-"<button type='button' id='eliminar_consumoB' class='eliminar_consumoB btn btn-danger' data-toggle='tooltip' "+
-"data-placement='top' title='Eliminar consumo de bomba'>"+
-"<i class='fa fa-trash-o'></i> </button>"
-}else if(boton ==2){
-return "<button type='button' style='margin-left:15px;' class='activar btn btn-primary' title='activar Consumo de la Bomba'>"
-+ "<i class='fa fa-upload'></i>"
-+ "</button>";
-}
+	if(boton ==1)
+		return "<button type='button' class='visualizarConsumoB btn btn-info' data-toggle='tooltip' "+
+		"data-placement='top' title='Visualizar Registro'>"+
+		"<i class='fa fa-info-circle'></i> </button>  "+
+		"<button type='button' id='editarConsumoB' class='editarConsumoB btn btn-primary' data-toggle='tooltip' "+
+		"data-placement='top' title='Editar consumo de bomba'>"+
+		"<i class='fa fa-pencil-square-o'></i> </button>  "+
+		"<button type='button' id='eliminar_consumoB' class='eliminar_consumoB btn btn-danger' data-toggle='tooltip' "+
+		"data-placement='top' title='Eliminar consumo de bomba'>"+
+		"<i class='fa fa-trash-o'></i> </button>";
+	else if(boton ==2)
+		return "<button type='button' style='margin-left:15px;' class='activar btn btn-primary' title='activar Consumo de la Bomba'>"
+		+ "<i class='fa fa-upload'></i>"
+		+ "</button>";
 }
 ///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
 function listarT() {
@@ -467,17 +490,7 @@ function listarT() {
 	console.log("listar bomba");
 	var tablaConsumoB = $('#tbl_consumoB').DataTable( {
 		responsive: true,
-		'destroy': true,
-		'bProcessing': false,
-		'bServerSide': false,
-		"ajax": {
-			"method":"GET",
-			"url":"./SL_Consumo_bomba",
-			"data" : {
-				"carga" : boton//para decirle al servlet que cargue consumos + cliente + contrato
-			},
-			"dataSrc":"aaData"
-		},
+		"destroy": true,
 		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
     	"bJQueryUI": true,
 		"language":idioma_esp,
@@ -537,27 +550,29 @@ function listarT() {
 	obtener_id_activar("#tbl_consumoB tbody", $('#tbl_consumoB').DataTable());//igual para el boton activar
 	
 	$("#mostrar_consumoB").change(function(){//evento que carga diferentes datos si el checkbox esta activo o no
-        if($(this).is(':checked')){
+		if($(this).is(':checked')){
         	boton= 2;
 			document.getElementById('formularioConsumoBomba').style.display = 'none';
 			cargar_consumoB();
         }else{
         	boton= 1;
-        	//document.getElementById('cerrar').style.display = 'block';
-        	$('#tbl_consumoB').DataTable().ajax.reload();
+        	cargar_consumoB();
         }
 	});
+	cargar_consumoB();
 }
 //////////////////////////////////////metodo para llenar al dataTable con los Contratos anulado////////////////////////
 var cargar_consumoB = function() {
-	console.log("Cargando DataTable para activación");
+	console.log("Cargando DataTable para activación: "+boton+", "+$("input#anioBuscar").val()+", "+$("select#periodoBuscar").val());
 	$('#tbl_consumoB').DataTable().state.clear();
 	$('#tbl_consumoB').DataTable().clear().draw();
 	$.ajax({
         type: "GET",
         url: "./SL_Consumo_bomba",
         data: {
-	        "carga": boton//para decirle al servlet que cargue datos
+	        "carga": boton,
+	        "anioB": $("input#anioBuscar").val(),
+	        "periodoB": $("select#periodoBuscar").val()
 	    },
         success: function(response){
         	$('#tbl_consumoB').DataTable().rows.add(response.aaData).draw();
@@ -691,6 +706,9 @@ function AllTables() {
 }
 /////////////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////////
 $(document).ready(function() {
+	var d = new Date();
+	$("input#anioBuscar").val(d.getFullYear());
+	
 	LoadDataTablesScripts2(AllTables);
 	
 	LoadSelect2Script(DemoSelect2);	

@@ -74,7 +74,7 @@ public class DTTarifa {
 				dttari.cargarTarifa();
 				rs.moveToInsertRow();
 				rs.updateInt("lim_Inf", t.getLim_Inf());
-				if(t.getLim_Sup() != 0) {
+				if(t.getLim_Sup() >= 0) {
 					rs.updateInt("lim_Sup", t.getLim_Sup());
 				}
 				rs.updateFloat("monto", t.getMonto());

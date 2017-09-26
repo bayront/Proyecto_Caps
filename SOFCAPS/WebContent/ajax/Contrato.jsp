@@ -363,7 +363,7 @@
 		</div>
 	</form>
 </div>
-                    <script type="text/javascript">
+<script type="text/javascript">
 var numMed = "";////////////////////variable para saber si estoy editando un registro
 var expand1 = new Expand1();/////////////se crean los objetos que representan los botones de cada dialogo
 var colap1 = new Colap1();

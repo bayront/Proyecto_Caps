@@ -400,13 +400,21 @@ var colap2 =  new Colap2();
 		var url = $("#irConsumos").attr('href');//guardar url seleccionada
 		url="ajax/ver-consumos.jsp";
 		window.location.hash = url;//ir al #hash seleccionado
-		LoadAjaxContent(url);//cargarlo
+		if(url != lastUrl){
+			lastUrl = url;
+			LoadAjaxContent(url);//cargarlo
+		}
+		
 	}
 	function irReciboCaja() {
 		var url = $("#irConsumos").attr('href');//guardar url seleccionada
 		url="ajax/ReciboCaja.jsp";
 		window.location.hash = url;//ir al #hash seleccionado
-		LoadAjaxContent(url);//cargarlo
+		if(url != lastUrl){
+			lastUrl = url;
+			LoadAjaxContent(url);//cargarlo
+		}
+		
 	}
 	 
 /////////////////////////////////funsión que abre un dialogo y mostrara un contenido//////////////////////////////////

@@ -161,7 +161,8 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-4 text-right control-label">Unidad de medida</label>
+						<label class="col-sm-4 text-right control-label"
+							title="Se recomienda usar la misma unidad de medida para la misma categoría">Unidad de medida</label>
 						<div class="col-sm-4">
 							<select class="populate placeholder tarifa" name="unidadMedida_ID" id="unidadMedida_ID">
 								<option value="">Unidad de medida</option>
@@ -397,7 +398,8 @@
 	function abrirDialogo() {////////////////////abre dialogo con muestra si desae eliminar el registro del contrato
 		OpenModalBox(
 				"<div><h3>Borrar Tarifa</h3></div>",
-				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar esta tarifa?</p>",
+				"<p Style='text-align:center; color:salmon; font-size:x-large;'>¿Esta seguro de borrar esta tarifa"+
+				", ya no se podrá aplicar dicha tarifa a las facturas asociadas a ella?</p>",
 				"<div Style='margin-bottom: -10px;' class='col-sm-12 col-md-offset-3 col-md-3'>"+
 				"<button type='button' id='eliminar_tarifa' class='btn btn-danger btn-label-left'"+
 				" style=' color: #ece1e1;' >"+

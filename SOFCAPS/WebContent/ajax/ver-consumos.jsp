@@ -65,7 +65,7 @@
 	}
 %>
 <!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
-<div id="dialog" class= "col-xm-offset-1 col-xm-10">
+<div id="dialogConsumo" class= "col-xm-offset-1 col-xm-10">
 	<div class="contenido" style="margin-left: 20px;"></div>
 </div> 
 <!--///////////////////////Directorios donde estan los jsp /////////////////////////////// -->
@@ -298,28 +298,32 @@
 <script type="text/javascript">
 //objetos websockets
 var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
-var websocket = new WebSocket(wsUri);
+var websocket;
+if (!(websocket instanceof WebSocket) || websocket.readyState !== WebSocket.OPEN) {
+	websocket = new WebSocket(wsUri);
+	console.log("nueva webConsumo");
+	//evento que notifica que la conexion esta abierta
+	websocket.onopen = function(evt) { //manejamos los eventos...
+	    console.log("Conectado..."); //... y aparecerá en la pantalla
+	};
 
-//evento que notifica que la conexion esta abierta
-websocket.onopen = function(evt) { //manejamos los eventos...
-    console.log("Conectado..."); //... y aparecerá en la pantalla
-};
+	//evento onmessage para resibir mensaje del serverendpoint
+	websocket.onmessage = function(evt) { // cuando se recibe un mensaje
+		console.log("Mensaje recibido de webConsumo: " + evt.data);
+		verResultado(evt.data);
+	};
 
-//evento onmessage para resibir mensaje del serverendpoint
-websocket.onmessage = function(evt) { // cuando se recibe un mensaje
-	console.log("Mensaje recibido de webSocket: " + evt.data);
-	verResultado(evt.data);
-};
+	//evento si hay algun error en la comunicacion con el web_socket
+	websocket.onerror = function(evt) {
+	    console.log("oho!.. error:" + evt.data);
+	};
 
-//evento si hay algun error en la comunicacion con el web_socket
-websocket.onerror = function(evt) {
-    console.log("oho!.. error:" + evt.data);
-};
-
-websocket.onclose = function(){
-	//message('<p class="event">Socket Status: '+socket.readyState+' (Closed)');
-	console.log("Desconectado, status de conexión: " + websocket.readyState);
-}	
+	websocket.onclose = function(){
+		//message('<p class="event">Socket Status: '+socket.readyState+' (Closed)');
+		console.log("Desconectado, status de conexión: " + websocket.readyState);
+	}
+}else
+	console.log("no conectar webConsumo");
 
 	var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
 	var colap1 =  new Colap1();
@@ -353,24 +357,24 @@ websocket.onclose = function(){
 			websocket.send("ACTUALIZADO");
 		}
 		if(r == "ERROR"){
-			mostrarMensaje("#dialog", "ERROR", 
+			mostrarMensaje("#dialogConsumo", "ERROR", 
 					"¡Ha ocurrido un error, no se pudó realizar la acción!", "#E97D7D", "btn-danger");
 		}
 		if(r =="VACIO"){
-			mostrarMensaje("#dialog", "VACIO", 
+			mostrarMensaje("#dialogConsumo", "VACIO", 
 					"¡No se especificó la acción a realizar!", "#FFF8A7", "btn-warning");
 		}
 		if(r =="ACTUALIZADO"){
-			mostrarMensaje("#dialog", "ACTUALIZADO", 
+			mostrarMensaje("#dialogConsumo", "ACTUALIZADO", 
 					"¡Otro usuario a realizado un cambio, se actualizaron los datos!", "#86b6dd", "btn-primary");
 			$('#tabla_consumo').DataTable().ajax.reload();
 		}
 		if(r == "LECTURAMENOR"){
-			mostrarMensaje("#dialog", "ERROR", 
+			mostrarMensaje("#dialogConsumo", "ERROR", 
 					"¡La lectura que ha digitado debe ser mayor que la lectura anterior!", "#E97D7D", "btn-danger");
 		}
 		if(r == "FECHAMENOR"){
-			mostrarMensaje("#dialog", "ERROR", 
+			mostrarMensaje("#dialogConsumo", "ERROR", 
 					"¡La fecha debe ser mayor que el registro anterior de este cliente!", "#E97D7D", "btn-danger");
 		}
 	}
@@ -550,6 +554,9 @@ websocket.onclose = function(){
 			if(expand2.valor == true)
 				validarExpand(expand2, "#expandir2");
 		});
+		/* $.each($("button.visualizarConsumo").data("events"), function(i, e) {
+		    alert("i:"+i);
+		}); */
 	}
 ///////////////////////////funsión que activa el evento click del boton editar del dataTable///////////////////////
 	var seleccionarEditarConsumo = function(tbody, table) {//parametro(id_tabla, objeto dataTable)
@@ -672,6 +679,7 @@ websocket.onclose = function(){
 		    		tablaConsumo.page.len(0).draw();
 		    		$('#tabla_consumo_length').each( function() {
 		    			$(this).find('label select').attr('disabled', 'disabled');
+		    			//$("button.visualizarConsumo").unbind('click');
 		    		});
 		    	}else{
 		    		tablaConsumo.page.len(10).draw();
@@ -681,8 +689,8 @@ websocket.onclose = function(){
 		    	}
 		    });	
 		});
-		seleccionarEditarConsumo('#tabla_consumo tbody', tablaConsumo);
 		seleccionarvisualizarConsumo('#tabla_consumo tbody', tablaConsumo);
+		seleccionarEditarConsumo('#tabla_consumo tbody', tablaConsumo);
 		seleccionarEliminarConsumo('#tabla_consumo tbody', tablaConsumo);
 		visualizarHistorial('#tabla_consumo tbody', tablaConsumo);
 	}
@@ -753,7 +761,7 @@ websocket.onclose = function(){
 				url:"./SL_consumo",
 				headers: {"consumo_ID": consumo_ID}
 			}).done(function(info) {
-				mostrarMensaje("#dialog", "CORRECTO", 
+				mostrarMensaje("#dialogConsumo", "CORRECTO", 
 						"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
 				limpiar_texto();
 				$('#tabla_consumo').DataTable().ajax.reload();
@@ -764,7 +772,6 @@ websocket.onclose = function(){
 	}
 /////////////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////////
 	$(document).ready(function() {
-
 		//cargar scripts dataTables
 		LoadDataTablesScripts2(AllTables);
 		
@@ -814,8 +821,8 @@ websocket.onclose = function(){
 			+"onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span>Cancelar</button></div>");
 			
 			filtrarTabla();		
+			  
 		});
-		
 		// Add Drag-n-Drop feature				
 		WinMove();	
 		
@@ -847,7 +854,6 @@ websocket.onclose = function(){
             }
 		});
 	});
-	
 ///////////////////////////Funsión que valida el formulario de consumos de clientes////////////////////////////////
 	function FormValidConsumo() {
 		$('form#defaultForm').bootstrapValidator({

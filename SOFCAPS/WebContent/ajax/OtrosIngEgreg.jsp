@@ -211,20 +211,26 @@
 <script type="text/javascript">
 ////////////////////////////////variables para el WEBSOCKET//////////////////////////////////////////////////
 var wsUri = "ws://"+window.location.host+"/SOFCAPS/serverendpointdemo";
-var websocket = new WebSocket(wsUri);
-//evento que notifica que la conexion esta abierta
-websocket.onopen = function(evt) { //manejamos los eventos...
-    console.log("Conectado..."); //... y aparecerá en la pantalla
-};
-//evento onmessage para resibir mensaje del serverendpoint
-websocket.onmessage = function(evt) { // cuando se recibe un mensaje
-	console.log("Mensaje recibido de webSocket: " + evt.data);
-	verResultado(evt.data);
-};
-//evento si hay algun error en la comunicacion con el web_socket
-websocket.onerror = function(evt) {
-    console.log("oho!.. error:" + evt.data);
-};
+var websocket;
+if (!(websocket instanceof WebSocket) || websocket.readyState !== WebSocket.OPEN) {
+	websocket = new WebSocket(wsUri);
+	console.log("nueva webOtrosIng");
+	//evento que notifica que la conexion esta abierta
+	websocket.onopen = function(evt) { //manejamos los eventos...
+	    console.log("Conectado..."); //... y aparecerá en la pantalla
+	};
+	//evento onmessage para resibir mensaje del serverendpoint
+	websocket.onmessage = function(evt) { // cuando se recibe un mensaje
+		console.log("Mensaje recibido de webOtrosIng: " + evt.data);
+		verResultado(evt.data);
+	};
+	//evento si hay algun error en la comunicacion con el web_socket
+	websocket.onerror = function(evt) {
+	    console.log("oho!.. error:" + evt.data);
+	};
+}else
+	console.log("no conectar webOtrosIng");
+	
 	var expand1 = new Expand1();//se crean los objetos que representan los botones de cada dialogo
 	var colap1 =  new Colap1();
 	var expand2 = new Expand2();

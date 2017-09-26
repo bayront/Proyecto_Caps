@@ -2526,6 +2526,7 @@ function MakeSelect2() {//dar formato a select e input de busqueda de dataTable
 //
 // ////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////
+var lastUrl;
 $(document).ready(function () {
 	$('.show-sidebar').on('click', function () {
 		$('div#main').toggleClass('sidebar-show');
@@ -2534,6 +2535,7 @@ $(document).ready(function () {
 	var ajax_url = location.hash.replace(/^#/, '');
 	if (ajax_url.length < 1) {
 		ajax_url = 'ajax/dashboard.html';
+		lastUrl = ajax_url;
 	}
 	LoadAjaxContent(ajax_url);//hmtl pricnipal cargado
 	$.datepicker.regional['es'] = {
@@ -2592,7 +2594,11 @@ $(document).ready(function () {
 			}
 			var url = $(this).attr('href');//guardar url seleccionada
 			window.location.hash = url;//ir al #hash seleccionado
-			LoadAjaxContent(url);//cargarlo
+			if(url != lastUrl){
+				lastUrl = url;
+				LoadAjaxContent(url);//cargarlo
+			}
+			
 		}
 		if ($(this).attr('href') == '#') {//si se vuelve a tocar la misma etiqueta a
 			e.preventDefault();//evitar cargar la url

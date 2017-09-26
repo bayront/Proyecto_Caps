@@ -208,6 +208,7 @@ var colap2 =  new Colap2();
 			mostrarMensaje("#dialog", "CORRECTO", 
 					"¡Se realizó la acción correctamente, todo bien!", "#d7f9ec", "btn-info");
 			$('#tabla_categoria').DataTable().ajax.reload();
+			limpiar_texto();
 		}
 		if(r == "ERROR"){
 			mostrarMensaje("#dialog", "ERROR", 

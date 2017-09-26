@@ -62,6 +62,7 @@ public class SeverEndPointDemo {
 		// TODO Auto-generated method stub
 		for (Session session : conexiones) {
 			if(session == s) {
+				System.out.println("NO enviar mesaje");
 			}else {
 //				final JSONObject json = new JSONObject();
 //				json.put("respuesta", message);

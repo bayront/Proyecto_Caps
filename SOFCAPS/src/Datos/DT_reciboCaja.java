@@ -97,14 +97,16 @@ public class DT_reciboCaja {
 		return guardado;
 	}
 
-	public ResultSet cargarRecibos() {
+	public ResultSet cargarRecibos(int anioB, int mesI, int mesF) {
 		Statement s;
 //		String sql1 = "select r.descripcion AS descripcionRecibo, r.estado, r.numReciboCaja, "+
 //        "r.numDocumento, r.montoTotal, concat(c.nombre1,' ',c.nombre2,' ',c.apellido1,' ',c.apellido2) AS nombreCompleto, "+
 //		"c.Cliente_ID,  s.descripcion AS descripcionSerie, s.Serie_ID"+
 //        "from ((recibocaja r join cliente c ON ((r.Cliente_ID = c.Cliente_ID)))"+
 //        "join serie s ON ((r.Serie_ID = s.Serie_ID))) where r.estado = 0";
-		String sql = "SELECT * FROM sofcaps.recibocajahistorial;";
+		String sql = "SELECT * FROM sofcaps.recibocajahistorial r where "+
+				"(DATE_FORMAT(r.fecha, '%m') BETWEEN "+mesI+" AND "+mesF+")"+
+				"AND (DATE_FORMAT(r.fecha, '%Y') = "+anioB+") order by r.fecha;";
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);

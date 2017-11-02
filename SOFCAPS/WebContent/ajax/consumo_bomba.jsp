@@ -200,6 +200,33 @@
 					</div>
 					
 					<div class="form-group">
+						<label class="col-sm-5 control-label">Hora de Inicio: </label>
+						<div class="col-sm-4">
+							<input id="horaInicio" name="horaInicio" type="text" class="form-control" placeholder="00:00 A/PM"
+								data-toggle="tooltip" data-placement="top"
+								title="Requerido">
+						</div> 
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-5 control-label">Hora de Fin: </label>
+						<div class="col-sm-4">
+							<input id="horaFin" name="horaFin" type="text" class="form-control" placeholder="00:00 A/PM"
+								data-toggle="tooltip" data-placement="top"
+								title="Requerido">
+						</div> 
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-5 control-label">Cantidad de Watts consumidos: </label>
+						<div class="col-sm-4">
+							<input id="watts" name="watts" type="text" class="form-control" placeholder="0.0"
+								data-toggle="tooltip" data-placement="top" data-bv-numeric="true" 
+								title="Requerido" data-bv-numeric-message="¡Este valor no es un número!">
+						</div> 
+					</div>
+					
+					<div class="form-group">
 
 						<!-- PARA COLOR NEGRO DEJAR CON CLASE *control-label* -->
 						<label class="col-sm-5 control-label">Consumo actual de la bomba: </label>
@@ -442,7 +469,9 @@ var limpiar_texto = function() {///////////limpiar texto del formulario
 	$("#lecturaActual").val("").prop('readonly', false);
 	$("#fecha").val("").removeAttr('disabled');
 	$("#observaciones").val("").prop('readonly', false);
-	//$("#consumoActual").val("").prop('readonly', false);
+	$("#horaInicio").val("").prop('readonly', false);
+	$("#horaFin").val("").prop('readonly', false);
+	$("#watts").val("").prop('readonly', false);
 	$("#bombaID").val("");
 	$("#unidadMedida").val("");
 	$("#unidadMedida").change().removeAttr('disabled');
@@ -635,6 +664,9 @@ var obtener_datos_visualizar = function(tbody, table) {//parametro(id_tabla, obj
 				$("#fecha").val(fecha).attr('disabled', 'disabled');
 				$("#consumoActual").val(table.row(index).data().consumoActual).prop('readonly', true);
 				$("#observaciones").val(table.row(index).data().observaciones).prop('readonly', true);
+				$("#horaInicio").val(table.row(index).data().horaInicio).prop('readonly', true);
+				$("#horaFin").val(table.row(index).data().horaFin).prop('readonly', true);
+				$("#watts").val(table.row(index).data().watts).prop('readonly', true);
 				$("#unidadMedida").val(table.row(index).data().unidad_de_Medida.unidad_de_Medida_ID);
 				$("#unidadMedida").change().attr('disabled', 'disabled');
 				$("#opcion").val("visualizar");
@@ -665,12 +697,18 @@ var obtener_datos_editar = function(tbody, table) {//parametro(id_tabla, objeto 
 				var f = new Date(table.row(index).data().fechaLecturaActual);
             	var fecha = f.getDate()+"/"+(f.getMonth()+1)+"/"+f.getFullYear();
 				observaciones = table.row(index).data().observaciones;
+				horaInicio = table.row(index).data().horaInicio;
+				horaFin = table.row(index).data().horaFin;
+				watts = table.row(index).data().watts;
 				unidadMedidaID = table.row(index).data().unidad_de_Medida.unidad_de_Medida_ID;
 				$("#lecturaActual").val(lecturaActual);
 				$("#bombaID").val(bombID);
 				$("#fecha").val(fecha);
 				$("#consumoActual").val(consumoActual);
 				$("#observaciones").val(observaciones);
+				$("#horaInicio").val(horaInicio);
+				$("#horaFin").val(horaFin);
+				$("#watts").val(watts);
 				$("#unidadMedida").val(unidadMedidaID);
 				$("#unidadMedida").change();
 				$("#opcion").val("actualizar");
@@ -799,6 +837,40 @@ function formValidBomba() {
            					}
            				}
        				}
+		        }
+			},
+			watts:{
+				validators: {
+					notEmpty:{
+		                message: "¡Este campo es requerido y no debe estar vacio!"
+		            },
+		            greaterThan: {
+						value: 0,
+						inclusive: true,
+						message: '¡El campo debe ser mayor que 0!'	
+					}
+		        }
+			},
+			horaFin:{
+				validators: {
+					notEmpty:{
+		                message: "¡Este campo es requerido y no debe estar vacio!"
+		            },
+		            stringLength: {
+						max: 30,
+						message: '¡Este campo solo permite 30 caracteres!'
+					},
+		        }
+			},
+			horaInicio:{
+				validators: {
+					notEmpty:{
+		                message: "¡Este campo es requerido y no debe estar vacio!"
+		            },
+		            stringLength: {
+						max: 30,
+						message: '¡Este campo solo permite 30 caracteres!'
+					},
 		        }
 			},
 			fecha:{

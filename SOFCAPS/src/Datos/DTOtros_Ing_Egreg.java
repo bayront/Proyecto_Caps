@@ -233,9 +233,13 @@ public class DTOtros_Ing_Egreg {
 			return rs;
 		}
 	 
-	 public ResultSet cargarCOI(){
+	 public ResultSet cargarCOI(int anioB, int mesI, int mesF){
 			Statement s;
-			String sql = ("Select  o.Otros_Ing_Egreg_ID, o.descripcion, o.monto, o.fecha, c.Categoria_Ing_Egreg_ID, c.nombreCategoria  From otros_ing_egreg o Inner Join categoria_ing_egreg c On o.Categoria_Ing_Egreg_ID = c.Categoria_Ing_Egreg_ID where o.eliminado = 0 and c.eliminado = 0;");
+			String sql = ("Select  o.Otros_Ing_Egreg_ID, o.descripcion, o.monto, o.fecha, c.Categoria_Ing_Egreg_ID, c.nombreCategoria  "
+					+ "From otros_ing_egreg o Inner Join categoria_ing_egreg c On o.Categoria_Ing_Egreg_ID = c.Categoria_Ing_Egreg_ID "
+					+ "where o.eliminado = 0 and c.eliminado = 0 and "+
+					"(DATE_FORMAT(o.fecha, '%m') BETWEEN "+mesI+" AND "+mesF+")"+
+					"AND (DATE_FORMAT(o.fecha, '%Y') = "+anioB+") order by o.fecha;");
 			try 
 			{
 				s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);

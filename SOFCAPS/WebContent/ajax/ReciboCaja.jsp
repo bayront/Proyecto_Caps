@@ -224,6 +224,18 @@
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content no-padding table-responsive">
+				<div class="form-group col-md-offset-3 col-md-6 text-center">
+					<label class="control-label text-info" style="font-size: large;">Registros mostrados por periodo</label>
+					<input id="anioBuscar" name="anioBuscar" type="text" class="form-control" placeholder="Año de registros"
+						data-toggle="tooltip" data-placement="top" title="Año a buscar" style="text-align:center;">
+					<select class="populate placeholder" name="periodoBuscar" id=periodoBuscar>
+						<option value="1">Primera mitad</option>
+						<option value="2">Segunda mitad</option>
+					</select>
+					<button id="btnBuscar" type="button" class="btn btn-info" onclick= "cargar_Recibos();" 
+					style="margin-top: 5px;">Buscar registros</button>
+				</div>
+				<div style="width:100%; padding-top:15px; display:inline-block;"></div>
 				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
 					id="dt_ReciboCaja" style="width:100%;">
 					<thead>
@@ -421,18 +433,28 @@ var limpiar_texto = function() {////////////////////////limpiar texto del formul
 	desactivarSelect("#reconexion");
 }
 
+var cargar_Recibos = function() {
+	$('#dt_ReciboCaja').DataTable().state.clear();
+	$('#dt_ReciboCaja').DataTable().clear().draw();
+	$.ajax({
+        type: "GET",
+        url: "./SL_ReciboCaja",
+        data: {
+        	"idserie": 4, 
+        	"cliente_ID":0,
+	        "anioB": $("input#anioBuscar").val(),
+	        "periodoB": $("select#periodoBuscar").val()
+	    },
+        success: function(response){
+        	$('#dt_ReciboCaja').DataTable().rows.add(response.aaData).draw();
+        }
+	});
+}
+
 ///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
 function iniciarTabla(){
 	var tablaRecibo = $('#dt_ReciboCaja').DataTable( {
 		responsive: true,
-		ajax: {
-			"method":"GET",
-			"url":"./SL_ReciboCaja",
-			"data": {
-		        "idserie": 4, "cliente_ID":0
-		    },
-			"dataSrc":"aaData"
-		},
 		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
 		"pageLength": 0,
     	"bJQueryUI": true,
@@ -522,6 +544,7 @@ function iniciarTabla(){
 	});
 	obtener_id_imprimir('#dt_ReciboCaja tbody',tablaRecibo);
 	obtener_id_eliminar('#dt_ReciboCaja tbody',tablaRecibo);
+	cargar_Recibos();
 }
 /////////////////////////activar evento del boton imprimir que esta en la fila seleccionada del dataTable/////////////////
 var obtener_id_imprimir = function(tbody, table) {//parametros(id_tabla, objeto dataTable)
@@ -961,59 +984,62 @@ function activarChange(select) {
 }
 ///////////////////////////////////////////FUNSIÓN PRINCIPAL////////////////////////////////////////////////////////
 $(document).ready(function() {
-		// Add slider for change test input length
-		FormLayoutExampleInputLength($(".slider-style"));
-		
-		// Add tooltip to form-controls
-		$('.form-control').tooltip();
-		
-		//cargar scripts dataTables
-		LoadDataTablesScripts2(AllTables);
-		
-		LoadSelect2Script(DemoSelect2);
-		
-		// Add drag-n-drop feature to boxes
-		WinMove();
-		
-		activarChange("#concepto");
-		activarBotonAgregar();
+	var d = new Date();
+	$("input#anioBuscar").val(d.getFullYear());
+	
+	// Add slider for change test input length
+	FormLayoutExampleInputLength($(".slider-style"));
+	
+	// Add tooltip to form-controls
+	$('.form-control').tooltip();
+	
+	//cargar scripts dataTables
+	LoadDataTablesScripts2(AllTables);
+	
+	LoadSelect2Script(DemoSelect2);
+	
+	// Add drag-n-drop feature to boxes
+	WinMove();
+	
+	activarChange("#concepto");
+	activarBotonAgregar();
 
-		desactivarSelect("#contrato");
-		desactivarSelect("#reconexion");
-		desactivarSelect("#factura");
-		desactivarSelect("#concepto");
+	desactivarSelect("#contrato");
+	desactivarSelect("#reconexion");
+	desactivarSelect("#factura");
+	desactivarSelect("#concepto");
 
-		//MODAL para mostrar una tabla con el cliente y en contrato
-		$('#abrir_modal').on('click',function(e) {
-			OpenModalBox(
-				"<div><h3>Buscar Cliente</h3></div>",
-				"<div class='table-responsive'>"
-				+ "<table class='table table-bordered table-striped table-hover table-heading table-datatable'"+
-				"id='datatable-filter'>"
-				+ "<thead>"
-				+ "<tr>"
-				+ "<th><label><input type='text' name='Nombre1'/></label></th>"
-				+ "<th><label><input type='text' name='Nombre2'/></label></th>"
-				+ "<th><label><input type='text' name='Apellido1'/></label></th>"
-				+ "<th><label><input type='text' name='Apellido2'/></label></th>"
-				+ "<th><label><input type='text' name='Cédula'/></label></th>"
-				+ "<th></th>"
-				+ "</tr>"
-				+ "</thead>"
-				+ "<tfoot>"
-				+ "<tr> <th Style='color: #5d96c3;'>Nombre1</th>"
-				+ "<th Style='color: #5d96c3;'>Nombre2</th>"
-				+ "<th Style='color: #5d96c3;'>Apellido1</th>"
-				+ "<th Style='color: #5d96c3;'>Apellido2</th>"
-				+ "<th Style='color: #5d96c3;'>Número de cédula</th>"
-				+ "<th></th> </tr>"
-				+ "</tfoot>"
-				+ "</table>"
-				+ "</div>",
-				"<div Style='text-align: center; margin-bottom: -5px;'><button type='button' class='btn-default btn-label-left btn-lg' "
-				+ "onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span>Cancelar</button></div>");
+	//MODAL para mostrar una tabla con el cliente y en contrato
+	$('#abrir_modal').on('click',function(e) {
+		OpenModalBox(
+			"<div><h3>Buscar Cliente</h3></div>",
+			"<div class='table-responsive'>"
+			+ "<table class='table table-bordered table-striped table-hover table-heading table-datatable'"+
+			"id='datatable-filter'>"
+			+ "<thead>"
+			+ "<tr>"
+			+ "<th><label><input type='text' name='Nombre1'/></label></th>"
+			+ "<th><label><input type='text' name='Nombre2'/></label></th>"
+			+ "<th><label><input type='text' name='Apellido1'/></label></th>"
+			+ "<th><label><input type='text' name='Apellido2'/></label></th>"
+			+ "<th><label><input type='text' name='Cédula'/></label></th>"
+			+ "<th></th>"
+			+ "</tr>"
+			+ "</thead>"
+			+ "<tfoot>"
+			+ "<tr> <th Style='color: #5d96c3;'>Nombre1</th>"
+			+ "<th Style='color: #5d96c3;'>Nombre2</th>"
+			+ "<th Style='color: #5d96c3;'>Apellido1</th>"
+			+ "<th Style='color: #5d96c3;'>Apellido2</th>"
+			+ "<th Style='color: #5d96c3;'>Número de cédula</th>"
+			+ "<th></th> </tr>"
+			+ "</tfoot>"
+			+ "</table>"
+			+ "</div>",
+			"<div Style='text-align: center; margin-bottom: -5px;'><button type='button' class='btn-default btn-label-left btn-lg' "
+			+ "onclick='CloseModalBox()'><span><i class='fa fa-reply txt-danger'></i></span>Cancelar</button></div>");
 
-			filtrarTabla();
-		});
+		filtrarTabla();
 	});
+});
 </script>

@@ -83,9 +83,12 @@ public class DTFacturaMaestra {
 		return rs;
 	}
 	
-	public ResultSet historialFacturas() {
+	public ResultSet historialFacturas(int anioB, int mesI, int mesF) {
 		Statement s;
-		String sql = ("SELECT * FROM facturas_historial order by facturas_historial.fecha_fin;");
+		System.out.println("mesI: "+mesI+", mesF: "+mesF+", anio: "+anioB);
+		String sql = "SELECT * FROM facturas_historial f WHERE"+
+				"(DATE_FORMAT(f.fecha_fin, '%m') BETWEEN "+mesI+" AND "+mesF+")"+
+				"AND (DATE_FORMAT(f.fecha_fin, '%Y') = "+anioB+") order by f.fecha_fin;";
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);

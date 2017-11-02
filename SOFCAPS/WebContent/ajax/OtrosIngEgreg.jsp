@@ -94,6 +94,18 @@
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content no-padding table-responsive">
+				<div class="form-group col-md-offset-3 col-md-6 text-center">
+					<label class="control-label text-info" style="font-size: large;">Registros mostrados por periodo</label>
+					<input id="anioBuscar" name="anioBuscar" type="text" class="form-control" placeholder="Año de registros"
+						data-toggle="tooltip" data-placement="top" title="Año a buscar" style="text-align:center;">
+					<select class="populate placeholder" name="periodoBuscar" id=periodoBuscar>
+						<option value="1">Primera mitad</option>
+						<option value="2">Segunda mitad</option>
+					</select>
+					<button id="btnBuscar" type="button" class="btn btn-info" onclick= "cargar_IE();" 
+					style="margin-top: 5px;">Buscar registros</button>
+				</div>
+				<div style="width:100%; padding-top:15px; display:inline-block;"></div>
 				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
 					id="tabla_OI" style="width:100%;">
 					<thead>
@@ -297,22 +309,29 @@ if (!(websocket instanceof WebSocket) || websocket.readyState !== WebSocket.OPEN
 			$('#tabla_OI').DataTable().ajax.reload();
 		}
 	}
+	
+	var cargar_IE = function() {
+		$('#tabla_OI').DataTable().state.clear();
+		$('#tabla_OI').DataTable().clear().draw();
+		$.ajax({
+	        type: "GET",
+	        url: "./SL_Otros_Ing_Egreg",
+	        data: {
+	        	"carga": 1,//para decirle al servlet que cargue datos
+		        "anioB": $("input#anioBuscar").val(),
+		        "periodoB": $("select#periodoBuscar").val()
+		    },
+	        success: function(response){
+	        	$('#tabla_OI').DataTable().rows.add(response.aaData).draw();
+	        }
+		});
+	}	
 /////////////////////////////////////////funsión que carga el dataTable la primera vez//////////////////////////
 	function iniciarTabla(){
 		console.log("cargar DataTable");
 		var tablaO = $('#tabla_OI').DataTable( {
 			"destroy": true,
 			responsive: true,
-			'bProcessing': false,
-			'bServerSide': false,
-			"ajax": {
-				"method":"GET",
-				"url":"./SL_Otros_Ing_Egreg",
-				"data": {
-			        "carga": 1//para decirle al servlet que cargue datos
-			    },
- 				"dataSrc":"aaData"
-			},
 			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
         	"bJQueryUI": true,	
 			"language":idioma_esp,
@@ -375,6 +394,7 @@ if (!(websocket instanceof WebSocket) || websocket.readyState !== WebSocket.OPEN
 		obtener_datos_editar('#tabla_OI tbody', tablaO);
 		obtener_id_eliminar('#tabla_OI tbody', tablaO);
 		obtener_id_visualizar('#tabla_OI tbody', tablaO);
+		cargar_IE();
 	}
 	var agregar_nuevo_OI = function() {/////funsión para limpiar el texto y expandir el dialogo del formulario
 		document.getElementById('formularioOtrosIngresos').style.display = 'block';
@@ -500,6 +520,9 @@ if (!(websocket instanceof WebSocket) || websocket.readyState !== WebSocket.OPEN
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////FUNSIÓN PRINCIPAL//////////////////////////////////////////
 	$(document).ready(function() {
+		var d = new Date();
+		$("input#anioBuscar").val(d.getFullYear());
+		
 		//cargar scripts dataTables
 		LoadDataTablesScripts2(AllTables);
 		

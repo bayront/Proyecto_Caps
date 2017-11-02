@@ -94,7 +94,9 @@ public class SL_Factura_Maestra extends HttpServlet{
 			}
 		}else if(Integer.parseInt(request.getParameter("carga")) == 4) {
 			try {
-				historialFacturas(response);
+				int anioB= Integer.parseInt(request.getParameter("anioB"));
+				int periodoB= Integer.parseInt(request.getParameter("periodoB"));
+				historialFacturas(anioB, periodoB,response);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} catch (ParseException e) {
@@ -365,9 +367,17 @@ public class SL_Factura_Maestra extends HttpServlet{
 		out.print(json);	
 	}
 	
-	private void historialFacturas (HttpServletResponse response) throws SQLException, IOException, ParseException {
+	private void historialFacturas (int anioB, int periodoB, HttpServletResponse response) throws SQLException, IOException, ParseException {
+		int mesI=0, mesF=0;
+		if(periodoB == 1) {
+			mesI= 1;
+			mesF= 6;
+		}else if(periodoB == 2) {
+			mesI= 7;
+			mesF= 12;
+		}
 		List<Factura_Maestra> listaF = new ArrayList<>();
-		ResultSet rs = dtFactura.historialFacturas();
+		ResultSet rs = dtFactura.historialFacturas(anioB, mesI, mesF);
 		while(rs.next()){
 			Factura_Maestra fA = new Factura_Maestra();
 			Consumo co = new Consumo();
@@ -400,7 +410,6 @@ public class SL_Factura_Maestra extends HttpServlet{
 		String json = gson.toJson(dataTableObject);
 		System.out.println(json.toString());
 		out.print(json);
-		
 	}
 	
 	private void facturasSinCancelar (HttpServletResponse response) throws SQLException, IOException, ParseException {

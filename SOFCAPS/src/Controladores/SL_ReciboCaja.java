@@ -95,7 +95,9 @@ public class SL_ReciboCaja extends HttpServlet {
 			}
 		}else if(Integer.parseInt(request.getParameter("idserie")) == 4) {
 			try {
-				cargarRecibosDetalles();
+				int anioB= Integer.parseInt(request.getParameter("anioB"));
+				int periodoB= Integer.parseInt(request.getParameter("periodoB"));
+				cargarRecibosDetalles(anioB, periodoB);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -131,9 +133,17 @@ public class SL_ReciboCaja extends HttpServlet {
 		}
 	}
 
-	private void cargarRecibosDetalles() throws SQLException {
+	private void cargarRecibosDetalles(int anioB, int periodoB) throws SQLException {
+		int mesI=0, mesF=0;
+		if(periodoB == 1) {
+			mesI= 1;
+			mesF= 6;
+		}else if(periodoB == 2) {
+			mesI= 7;
+			mesF= 12;
+		}
 		List<ReciboCaja> listaRecibo = new ArrayList<>();
-		ResultSet rs = dt_reciboCaja.cargarRecibos();
+		ResultSet rs = dt_reciboCaja.cargarRecibos(anioB, mesI, mesF);
 		while(rs.next()){
 			ReciboCaja reciboCaja = new ReciboCaja();
 			Cliente cliente = new Cliente();

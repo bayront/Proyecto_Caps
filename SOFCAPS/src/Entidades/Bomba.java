@@ -9,13 +9,10 @@ public class Bomba
    private Date fechaLecturaActual;
    private Float lecturaActual;
    private String observaciones;
-   private Integer usuCrea;
-   private Integer usuMod;
-   private Integer usuElim;
-   private Date fechaCrea;
-   private Date fechaMod;
-   private Date fechaElim;
    private Boolean estado;
+   private String horaInicio;
+   private String horaFin;
+   private Float watts;
    private Integer bomba_ID;
    public Unidad_de_Medida unidad_de_Medida;
 
@@ -47,42 +44,6 @@ public class Bomba
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
-    public Integer getUsuCrea() {
-        return usuCrea;
-    }
-    public void setUsuCrea(Integer usuCrea) {
-        this.usuCrea = usuCrea;
-    }
-    public Integer getUsuMod() {
-        return usuMod;
-    }
-    public void setUsuMod(Integer usuMod) {
-        this.usuMod = usuMod;
-    }
-    public Integer getUsuElim() {
-        return usuElim;
-    }
-    public void setUsuElim(Integer usuElim) {
-        this.usuElim = usuElim;
-    }
-    public Date getFechaCrea() {
-        return fechaCrea;
-    }
-    public void setFechaCrea(Date fechaCrea) {
-        this.fechaCrea = fechaCrea;
-    }
-    public Date getFechaMod() {
-        return fechaMod;
-    }
-    public void setFechaMod(Date fechaMod) {
-        this.fechaMod = fechaMod;
-    }
-    public Date getFechaElim() {
-        return fechaElim;
-    }
-    public void setFechaElim(Date fechaElim) {
-        this.fechaElim = fechaElim;
-    }
     public Unidad_de_Medida getUnidad_de_Medida() {
         return unidad_de_Medida;
     }
@@ -100,5 +61,24 @@ public class Bomba
 	}
 	public void setEstado(Boolean estado) {
 		this.estado = estado;
-	}  
+	}
+	public String getHoraInicio() {
+		return horaInicio;
+	}
+	public void setHoraInicio(String horaInicio) {
+		this.horaInicio = horaInicio;
+	}
+	public String getHoraFin() {
+		return horaFin;
+	}
+	public void setHoraFin(String horaFin) {
+		this.horaFin = horaFin;
+	}
+	public Float getWatts() {
+		return watts;
+	}
+	public void setWatts(Float watts) {
+		this.watts = watts;
+	}
+	
 }

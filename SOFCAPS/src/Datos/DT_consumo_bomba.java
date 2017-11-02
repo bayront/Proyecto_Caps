@@ -126,9 +126,9 @@ public class DT_consumo_bomba {
 	public ResultSet cargarDatosTabla(int anioB, int mesI, int mesF){
 		Statement s;
 		String sql = "SELECT b.Bomba_ID, b.consumoActual, b.fechaLecturaActual, b.lecturaActual, "
-				+ "b.observaciones, um.tipoMedida, um.Unidad_de_Medida_ID "
+				+ "b.observaciones, um.tipoMedida, um.Unidad_de_Medida_ID, b.horaInicio, b.horaFin, b.watts, b.estado "
 				+ "FROM bomba b inner join unidad_de_medida um on b.Unidad_de_Medida_ID = um.Unidad_de_Medida_ID "
-				+ "WHERE (b.estado = 1) AND (DATE_FORMAT(b.fechaLecturaActual, '%m') BETWEEN "+mesI+" AND "+mesF+") "
+				+ "WHERE (b.estado = 0) AND (DATE_FORMAT(b.fechaLecturaActual, '%m') BETWEEN "+mesI+" AND "+mesF+") "
 				+ "AND (DATE_FORMAT(b.fechaLecturaActual, '%Y') = "+anioB+") order by b.fechaLecturaActual;";
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -143,9 +143,9 @@ public class DT_consumo_bomba {
 	public ResultSet cargarDatosInactivos(int anioB, int mesI, int mesF){
 		Statement s;
 		String sql = "SELECT b.Bomba_ID, b.consumoActual, b.fechaLecturaActual, b.lecturaActual, "
-				+ "b.observaciones, um.tipoMedida, um.Unidad_de_Medida_ID "
+				+ "b.observaciones, um.tipoMedida, um.Unidad_de_Medida_ID, b.horaInicio, b.horaFin, b.watts, b.estado "
 				+ "FROM bomba b inner join unidad_de_medida um on b.Unidad_de_Medida_ID = um.Unidad_de_Medida_ID "
-				+ "WHERE (b.estado = 0) AND (DATE_FORMAT(b.fechaLecturaActual, '%m') BETWEEN "+mesI+" AND "+mesF+") "
+				+ "WHERE (b.estado = 1) AND (DATE_FORMAT(b.fechaLecturaActual, '%m') BETWEEN "+mesI+" AND "+mesF+") "
 				+ "AND (DATE_FORMAT(b.fechaLecturaActual, '%Y') = "+anioB+") order by b.fechaLecturaActual;";
 		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -173,6 +173,9 @@ public class DT_consumo_bomba {
 				rs.updateString("observaciones", b.getObservaciones());
 			}
 			rs.updateBoolean("estado", false);
+			rs.updateString("horaInicio", b.getHoraInicio());
+			rs.updateString("horaFin", b.getHoraFin());
+			rs.updateFloat("watts", b.getWatts());
 			rs.insertRow();
 			rs.moveToCurrentRow();
 			guardado = true;
@@ -201,6 +204,9 @@ public class DT_consumo_bomba {
 						rs.updateString("observaciones", b.getObservaciones());
 					}
 					rs.updateBoolean("estado", false);
+					rs.updateString("horaInicio", b.getHoraInicio());
+					rs.updateString("horaFin", b.getHoraFin());
+					rs.updateFloat("watts", b.getWatts());
 					rs.updateRow();
 					actualizado = true;
 				}

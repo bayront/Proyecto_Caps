@@ -320,8 +320,19 @@
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content no-padding table-responsive">
-				<div style="width:100%; padding-top:15px;"></div>
-				<table class="table  table-bordered table-striped table-hover table-heading table-datatable"
+				<div class="form-group col-md-offset-3 col-md-6 text-center">
+					<label class="control-label text-info" style="font-size: large;">Registros mostrados por periodo</label>
+					<input id="anioBuscar" name="anioBuscar" type="text" class="form-control" placeholder="Año de registros"
+						data-toggle="tooltip" data-placement="top" title="Año a buscar" style="text-align:center;">
+					<select class="populate placeholder" name="periodoBuscar" id=periodoBuscar>
+						<option value="1">Primera mitad</option>
+						<option value="2">Segunda mitad</option>
+					</select>
+					<button id="btnBuscar" type="button" class="btn btn-info" onclick= "cargar_facturasHist();" 
+					style="margin-top: 5px;">Buscar registros</button>
+				</div>
+				<div style="width:100%; padding-top:15px; display:inline-block;"></div>
+				<table class="table table-bordered table-striped table-hover table-heading table-datatable"
 					id="tabla_historial_facturas" style="width:100%;">
 					<thead>
 						<tr>
@@ -640,6 +651,23 @@ function imprimirFactura (tbody, table){
 			anularFacturas('#tabla_facturas_sin_cancelar tbody', table);
 	}
 	
+	var cargar_facturasHist = function() {
+		$('#tabla_historial_facturas').DataTable().state.clear();
+		$('#tabla_historial_facturas').DataTable().clear().draw();
+		$.ajax({
+	        type: "GET",
+	        url: "./SL_Factura_Maestra",
+	        data: {
+		        "carga": 4,
+		        "anioB": $("input#anioBuscar").val(),
+		        "periodoB": $("select#periodoBuscar").val()
+		    },
+	        success: function(response){
+	        	$('#tabla_historial_facturas').DataTable().rows.add(response.aaData).draw();
+	        }
+		});
+	}
+	
 ///////////////////funcion que crea un dataTable para traer historial de todas las facturas////////////
 	function historialFacturas(){
 		$('#tabla_historial_facturas thead th label input').each( function () {
@@ -652,14 +680,6 @@ function imprimirFactura (tbody, table){
 		    	"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
 		    	"bJQueryUI": true,
 				"language":idioma_esp,
-				ajax: {
-					"method":"GET",
-					"url":"./SL_Factura_Maestra",
-					"data": {
-				        "carga": 4
-				    },
-					"dataSrc":"aaData"
-				},
 				"columns": [
 					{ "data": "cliente.nombreCompleto" },
 		             { "data": "contrato.numMedidor" },
@@ -707,6 +727,7 @@ function imprimirFactura (tbody, table){
 		    } );
 		    
 		    imprimirFactura('#tabla_historial_facturas tbody', table)
+		    cargar_facturasHist();
 	}
 
 ///////////////////////////////Ejecutar el metodo DataTable para llenar la Tabla///////////////////////////////////
@@ -833,12 +854,13 @@ function imprimirFactura (tbody, table){
 	}
 /////////////////////////////////////////////////FUNSIÓN PRINCIPAL/////////////////////////////////////////////////
 	$(document).ready(function() {
-
+		var d = new Date();
+		$("input#anioBuscar").val(d.getFullYear());
+		
 		//cargar scripts dataTables
 		LoadDataTablesScripts2(AllTables);
 
 		LoadBootstrapValidatorScript(FormValidFactura);
-		
 		// Inicializar DatePicker
 		$('#fecha_corte').datepicker({
 			setDate : new Date(),

@@ -52,7 +52,9 @@ public class SL_Otros_Ing_Egreg extends HttpServlet {
 		try {
 			if(Integer.parseInt(request.getParameter("carga")) == 1) {
 				try {
-					traerOI(response);
+					int anioB= Integer.parseInt(request.getParameter("anioB"));
+					int periodoB= Integer.parseInt(request.getParameter("periodoB"));
+					traerOI(anioB, periodoB, response);
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -185,11 +187,18 @@ public class SL_Otros_Ing_Egreg extends HttpServlet {
 		}
 	}
 	
-	protected void traerOI (HttpServletResponse response)throws SQLException, IOException, ParseException {
-		PrintWriter out;
-		out = response.getWriter();
+	protected void traerOI (int anioB, int periodoB, HttpServletResponse response)throws SQLException, IOException, ParseException {
+		int mesI=0, mesF=0;
+		if(periodoB == 1) {
+			mesI= 1;
+			mesF= 6;
+		}else if(periodoB == 2) {
+			mesI= 7;
+			mesF= 12;
+		}
+		PrintWriter out = response.getWriter();
 		List<Otros_Ing_Egreg>oi = new ArrayList<>();
-		ResultSet rs = dtOI.cargarCOI();
+		ResultSet rs = dtOI.cargarCOI(anioB, mesI, mesF);
 		while(rs.next()){
 			Otros_Ing_Egreg t = new Otros_Ing_Egreg();
 			Categoria_Ing_Egreg cat = new Categoria_Ing_Egreg();

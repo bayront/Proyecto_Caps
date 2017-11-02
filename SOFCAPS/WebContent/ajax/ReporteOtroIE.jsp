@@ -188,6 +188,9 @@
 						</div>
 					</div>
 					<div class="clearfix"></div>
+					<div id="alerta" Style='display:none;'>
+					 <p Style='color:red; text-align:center;  font-size:medium; font-weight:600;'>¡No se ha seleccionado el mes o el año!</p>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -297,6 +300,9 @@
 						</div>	
 					</div>
 					<div class="clearfix"></div>
+					<div id="alertaII" Style='display:none;'>
+					 <p Style='color:red; text-align:center;  font-size:medium; font-weight:600;'>¡Debe seleccionar la categoria, el mes y el año!</p>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -412,6 +418,9 @@
 								<i class='fa fa-print'></i> Imprimir</button>
 						</div>
 					<div class="clearfix"></div>
+					<div id="alertaIE" Style='display:none;'>
+					 <p Style='color:red; text-align:center;  font-size:medium; font-weight:600;'>¡Debe seleccionar la categoria, el mes y el año!</p>
+					</div>
 					</div>
 		<div class="clearfix"></div>
 					
@@ -476,6 +485,9 @@
 						
 					</div>
 						<div class= "clearfix"></div>
+						<div id="alertaIF" Style='display:none;'>
+					 <p Style='color:red; text-align:center;  font-size:medium; font-weight:600;'>¡No se ha seleccionado ningún rango de fechas o la fecha inicio es mayor a la fecha fin!</p>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -529,6 +541,7 @@
 function imprimir()
 
 {	
+	if($('#parameter1').val()!=0 && $('#a').val()!=0 ){
 	var valor = "";
 	var v = "";	
 	valor = $('#parameter1').val();
@@ -548,6 +561,9 @@ function imprimir()
 	console.log("La fecha del jsp"+" "+parameter1);
 	console.log("El paramtero del jsp"+" "+valor);
 	console.log("El paramtero del jsp anio"+" "+v);
+	}
+	else
+		$('#alerta').show();
 
 }
 
@@ -555,7 +571,11 @@ function imprimir()
 function imprimir4()
 
 {	
-	
+	var f = $("#FECHITA1").val().split("/");
+	var fecha1 = new Date(f[2], f[1]-1, f[0]);
+	f = $("#FECHITA2").val().split("/");
+	var fecha2 = new Date(f[2], f[1]-1, f[0]);
+	if($('#FECHITA1').val()!="" && $('#FECHITA2').val()!="" && fecha1<=fecha2){
 	var valor = "";
 	var v = "";
 	userC = $('#userC').val();
@@ -567,6 +587,9 @@ function imprimir4()
 	window.open("SLF?FECHITA1="+cat+"&FECHITA2="+valor+"&userC="+userC, '_blank');
 	console.log("El paramtero del jsp otro"+" "+valor);
 	console.log("El paramtero del jsp cat"+" "+cat);
+	}
+	else
+		$('#alertaIF').show();
 	
 
 }
@@ -574,7 +597,7 @@ function imprimir4()
 function imprimir2()
 
 {	
-	
+	if($('#rox').val()!=0 && $('#anios').val()!=0 && $('#tipp').val()!=0){
 	var valor = "";
 	var v = "";
 	var cat = "";
@@ -603,6 +626,9 @@ function imprimir2()
 	console.log("El paramtero del jsp otro"+" "+valor);
 	console.log("El paramtero del jsp cat"+" "+cat);
 	console.log("El paramtero del jsp ansodias anio"+" "+v);
+	}
+	else
+		$('#alertaII').show();
 
 }
 
@@ -610,7 +636,7 @@ function imprimir3()
 
 {	
 	
-
+	if($('#roxa').val()!=0 && $('#aniosd').val()!=0 && $('#tippe').val()!=0){
 	var valor = "";
 	var v = "";
 	var cat = "";
@@ -639,6 +665,9 @@ function imprimir3()
 	console.log("El paramtero del jsp otro"+" "+valor);
 	console.log("El paramtero del jsp cat"+" "+cat);
 	console.log("El paramtero del jsp ansodias anio"+" "+v);
+	}
+	else
+		$('#alertaIE').show();
 
 }
 

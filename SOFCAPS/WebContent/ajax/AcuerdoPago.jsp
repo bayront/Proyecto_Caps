@@ -124,6 +124,9 @@
 						</div>
 						<div class="clearfix"></div>
 						<div class="clearfix"></div>
+						<div id="alerta" Style='display:none;'>
+					 			<p Style='color:red; text-align:center;  font-size:medium; font-weight:600;'>¡Debe seleccionar un cliente!</p>
+							 </div>
 
 					</div>
 				</div>
@@ -143,7 +146,7 @@ function imprimirr()
 
 {	
 	
-
+	if($('#tippe').val()!=0){
 	var cat = "";
 	
 	
@@ -163,6 +166,9 @@ function imprimirr()
 	window.open("SLAP?tippe="+cat, '_blank');
 	
 	console.log("El paramtero del jsp SLAP cat"+" "+cat);
+	}
+	else
+		$('#alerta').show();
 	
 
 }

@@ -111,6 +111,9 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="clearfix"></div>
+					<div id="alerta" Style='display:none;'>
+					 			<p Style='color:red; text-align:center;  font-size:medium; font-weight:600;'>¡No se ha seleccionado ningún rango de fechas o la fecha inicio es mayor a la fecha fin!</p>
+							 </div>
 				</form>
 			</div>
 		</div>
@@ -123,6 +126,11 @@
 function imprimir()
 
 {	
+	var f = $("#FECHITA1").val().split("/");
+	var fecha1 = new Date(f[2], f[1]-1, f[0]);
+	f = $("#FECHITA2").val().split("/");
+	var fecha2 = new Date(f[2], f[1]-1, f[0]);
+	if($('#FECHITA1').val()!="" && $('#FECHITA2').val()!="" && fecha1<=fecha2){
 	var valor = "";
 	var v = "";
 	userC = $('#userC').val();
@@ -137,6 +145,9 @@ function imprimir()
 	
 	console.log("El mes jsp"+" "+valor);
 	console.log("El mes jsp"+" "+v);
+	}
+	else
+		$('#alerta').show();
 	
 }
 

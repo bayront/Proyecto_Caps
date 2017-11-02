@@ -166,6 +166,9 @@
 									<div class= "clearfix"></div>
 									<div class="clearfix"></div>
 									<div class="clearfix"></div>
+									<div id="alerta" Style='display:none;'>
+					 			<p Style='color:red; text-align:center;  font-size:medium; font-weight:600;'>¡No se ha seleccionado ningún rango de fechas o la fecha inicio es mayor a la fecha fin!</p>
+							 </div>
 					
 							</div>
 						</div>
@@ -193,7 +196,11 @@
 function imprimir()
 
 {	
-	
+	var f = $("#FECHITAM").val().split("/");
+	var fecha1 = new Date(f[2], f[1]-1, f[0]);
+	f = $("#FECHITAMM").val().split("/");
+	var fecha2 = new Date(f[2], f[1]-1, f[0]);
+	if($('#FECHITAM').val()!="" && $('#FECHITAMM').val()!="" && fecha1<=fecha2){
 	var valor = "";
 	var v = "";
 	userC = $('#userC').val();
@@ -205,7 +212,9 @@ function imprimir()
 	window.open("SL_AguaPerdidaFB?FECHITAM="+cat+"&FECHITAMM="+valor+"&userC="+userC, '_blank');
 	console.log("El paramtero del jsp otro FECHITAM"+" "+valor);
 	console.log("El paramtero del jspFECHITA MM "+" "+cat);
-	
+	}
+	else
+		$('#alerta').show();
 
 }
 

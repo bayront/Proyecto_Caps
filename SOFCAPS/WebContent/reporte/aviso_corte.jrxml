@@ -323,14 +323,14 @@
 				<imageExpression><![CDATA["logo.png"]]></imageExpression>
 			</image>
 			<textField pattern="dd MMMMM , yyyy">
-				<reportElement x="442" y="693" width="104" height="30" forecolor="#595757" backcolor="#050505" uuid="ac2ab5d1-3c91-44b9-acba-232bf0837991"/>
+				<reportElement x="360" y="693" width="186" height="30" forecolor="#595757" backcolor="#050505" uuid="ac2ab5d1-3c91-44b9-acba-232bf0837991"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="382" y="663" width="165" height="30" forecolor="#595757" backcolor="#050505" uuid="8af6c181-30c6-475b-bc97-f2c21c700e90"/>
+				<reportElement x="280" y="663" width="267" height="30" forecolor="#595757" backcolor="#050505" uuid="8af6c181-30c6-475b-bc97-f2c21c700e90"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font size="12" isBold="true"/>
 				</textElement>

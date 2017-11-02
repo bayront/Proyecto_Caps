@@ -59,11 +59,7 @@
 	String url="";	
 	ResultSet rs;
 %>
-
-<!--///////////////////////div donde se muestra un Dialogo /////////////////////////////// -->
-<div id="dialogo" class= "col-xm-offset-1 col-xm-10">
-	<div class="contenido" style="margin-left: 20px;"></div>
-</div>  
+ 
 <!--///////////////////////Directorios donde estan los jsp /////////////////////////////// -->
 <div class="row">
 	<div id="breadcrumb" class="col-xs-12">
@@ -140,6 +136,9 @@
 									</button>
 								</div>
 							</div>
+							 <div id="alerta" Style='display:none;'>
+					 			<p Style='color:red; text-align:center;  font-size:medium; font-weight:600;'>¡No se ha seleccionado ningún rango de fechas o la fecha inicio es mayor a la fecha fin!</p>
+							 </div>
 								<div class= "clearfix"></div>
 								<div class= "clearfix"></div>
 						</div>
@@ -170,12 +169,8 @@ function imprimir(){
 		
 		window.open("SL_ReciboCaja?fecha_inicio="+fecha_inicio+"&fecha_fin="+fecha_fin+
 				"&userC="+userC+"&idserie="+6+"&cliente_ID="+1, '_blank');
-// 		console.log("El paramtero del jsp para fecha_inicio es: "+fecha_inicio);
-// 		console.log("El paramtero del jsp para fecha_fin es: "+fecha_fin);
-// 		console.log("El paramtero del jsp para usuario es: "+userC);
 	}else
-		mostrarMensaje("#dialogo", "VACIO",
-				"¡Debe seleccionar las fechas correctamente!", "#FFF8A7", "btn-warning");
+		$('#alerta').show();
 }
 
 ///////////////////////////////////FUNSIÓN PRINCIPAL////////////////////////////////////////////////////////

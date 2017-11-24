@@ -162,13 +162,17 @@ public class DTFacturaMaestra {
         try {
         	// Llamada al procedimiento almacenado
 			CallableStatement cst = con.prepareCall("{call factura_maestro_add(?,?,?)}");
-			cst.setString(1, fecha.format(fechaCorte));
-			cst.setString(2, fecha.format(fechaVence));
+			String fc = fecha.format(fechaCorte);
+			String f = fecha.format(fechaVence);
+			cst.setString(1, fc);
+			cst.setString(2, f);
+			System.out.println("fc: "+fc+" f: "+f);
 			cst.registerOutParameter(3, java.sql.Types.INTEGER);
 			// Ejecuta el procedimiento almacenado
             cst.execute();
             
             cantidadFacturas = cst.getInt(3);
+            System.out.println("ca: "+cantidadFacturas);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

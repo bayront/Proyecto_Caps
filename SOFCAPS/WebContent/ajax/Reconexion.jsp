@@ -248,7 +248,17 @@ var listar = function() {
         			var fecha1 = f1.getDate()+"/"+(f1.getMonth()+1)+"/"+f1.getFullYear();
                 	return fecha1;
                 }},
-	        { "data":"cancelado"},
+                { "data": null,
+		         	render: function ( data, type, row ) {
+		         		var pagado;
+		         		if(data.cancelado == 1)
+		        			pagado = "<div class='checkbox'> <label> <input type='checkbox' checked disabled>"+
+		        			"<i class='fa fa-square-o'></i> </label> </div>";
+		        		else
+		        			pagado = "<div class='checkbox'> <label> <input type='checkbox' disabled>"+
+		        			"<i class='fa fa-square-o'></i> </label> </div>";
+		               	return pagado;
+		       	}},
             { "data": "factura_Maestra.numFact"},
             {"defaultContent":
 				"<button type='button' class='eliminar btn btn-basic' data-toggle='tooltip' "+

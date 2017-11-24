@@ -118,7 +118,9 @@ public class DTReconexion {
 	public ResultSet cargarDatosTabla()
 	{
 		Statement s;
-		String sql = ("SELECT rx.fecha_reconexion, rx.f_cancel, rx.cancelado, rx.Reconexion_ID, rx.Factura_Maestra_ID, rx.Cliente_ID, cl.nombre1,  cl.nombre2, cl.apellido1, cl.apellido2, fm.numFact FROM reconexion rx inner join cliente cl ON rx.Cliente_ID = cl.Cliente_ID inner join factura_maestra fm ON rx.Factura_Maestra_ID = fm.Factura_Maestra_ID WHERE rx.cancelado = 0;");
+		String sql = ("SELECT rx.fecha_reconexion, rx.f_cancel, rx.cancelado, rx.Reconexion_ID, rx.Factura_Maestra_ID, rx.Cliente_ID, cl.nombre1,  cl.nombre2, cl.apellido1, cl.apellido2, fm.numFact "
+				+ "FROM reconexion rx inner join cliente cl ON rx.Cliente_ID = cl.Cliente_ID "
+				+ "inner join factura_maestra fm ON rx.Factura_Maestra_ID = fm.Factura_Maestra_ID;");
 		try
 		{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);

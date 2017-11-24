@@ -343,7 +343,7 @@ var verResultado = function(r) {//parametro(resultado-String)
 			$(this).html("");
 		});
 		limpiar_texto();
-		$('#dt_ReciboCaja').DataTable().ajax.reload();
+		cargar_Recibos();
 		websocket.send("ACTUALIZADO");
  	}else if(r == "ERROR"){
  		mostrarMensaje("#dialog", "ERROR", 

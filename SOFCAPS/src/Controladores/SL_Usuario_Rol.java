@@ -28,10 +28,10 @@ import Datos.DTUsuario;
 /**
  * Servlet implementation class SL_seguridad
  */
-@WebServlet("/Autenticación")
+@WebServlet("/Autenticacion")
 public class SL_Usuario_Rol extends HttpServlet {		
 	private PrintWriter out;
-	private DT_Usuario_Rol dtUSU = DT_Usuario_Rol.getInstance();
+	private DT_Usuario_Rol dtUSU = new DT_Usuario_Rol();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
 		private static final long serialVersionUID = 1L;
@@ -93,8 +93,8 @@ public class SL_Usuario_Rol extends HttpServlet {
 				Usuario us = new Usuario();
 				Usuario userVerificado = new Usuario();
 				Rol r = new Rol();
-				DTUsuario dtu = DTUsuario.getInstance();
-				DT_Usuario_Rol dtru = DT_Usuario_Rol.getInstance();
+				DTUsuario dtu = new DTUsuario();
+				DT_Usuario_Rol dtru = new DT_Usuario_Rol();
 
 				String  user, pwd = "";
 				int rol = 0;

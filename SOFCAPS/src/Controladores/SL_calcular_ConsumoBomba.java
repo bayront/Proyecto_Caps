@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/SL_calcular_ConsumoBomba")
 public class SL_calcular_ConsumoBomba extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DT_consumo_bomba dTconsB = DT_consumo_bomba.getInstance();
+	private DT_consumo_bomba dTconsB = new DT_consumo_bomba();
 	private PrintWriter out;
        
     /**

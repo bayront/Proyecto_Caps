@@ -49,7 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SL_Consumo_bomba extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PrintWriter out;
-	private DT_consumo_bomba dTconsB = DT_consumo_bomba.getInstance();
+	private DT_consumo_bomba dTconsB = new DT_consumo_bomba();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
 	SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");

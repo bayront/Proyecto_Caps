@@ -21,7 +21,7 @@
 // 	}
 
 	
-	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	DT_Vw_rol_opciones dtvro = new DT_Vw_rol_opciones();
 
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");

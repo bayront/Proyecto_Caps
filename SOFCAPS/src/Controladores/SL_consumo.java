@@ -31,7 +31,7 @@ import Entidades.Contrato;
 @WebServlet("/SL_consumo")
 public class SL_consumo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DTConsumo datosConsumo = DTConsumo.getInstance();
+	private DTConsumo datosConsumo = new DTConsumo();
 	private PrintWriter out;	
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy", new Locale("es_ES"));

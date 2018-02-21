@@ -9,7 +9,7 @@
 	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
-	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	DT_Vw_rol_opciones dtvro = new DT_Vw_rol_opciones();
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
 	
@@ -221,7 +221,7 @@
 								<div class="form-group">
 										<label class="col-sm-2 text-gpromedix control-label">Sector:</label>
 											<%
-											DTConsumo dtn = DTConsumo.getInstance();
+											DTConsumo dtn = new DTConsumo();
 											 rs = dtn.sector();
 											
 											%>

@@ -39,7 +39,7 @@ import Entidades.Sector;
 public class SL_Contrato extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PrintWriter out;
-	private DTContrato dtContrato = DTContrato.getInstance();
+	private DTContrato dtContrato = new DTContrato();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 	

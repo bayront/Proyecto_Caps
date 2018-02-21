@@ -31,14 +31,13 @@ import Entidades.Rol;
 @WebServlet("/SL_Rol")
 public class SL_Rol extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DT_Rol datosRol = DT_Rol.getInstance();
+	private DT_Rol datosRol = new DT_Rol();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     /**
      * @see HttpServlet#HttpServlet()
      */
     public SL_Rol() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**

@@ -11,7 +11,7 @@
 	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
-	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	DT_Vw_rol_opciones dtvro = new DT_Vw_rol_opciones();
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
 	
@@ -142,7 +142,7 @@
 						<div class="form-group has-feedback">
 						<label class="col-sm-offset-3 col-sm-1 control-label text-gpromedix">Mes:</label>
 						<%
-						DTOtros_Ing_Egreg dtn = DTOtros_Ing_Egreg.getInstance();
+						DTOtros_Ing_Egreg dtn = new DTOtros_Ing_Egreg();
 						rs = dtn.mes();
 						%>
 						<div class="col-sm-5">

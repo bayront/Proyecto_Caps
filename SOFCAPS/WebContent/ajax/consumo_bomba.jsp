@@ -9,7 +9,7 @@
 	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
-	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	DT_Vw_rol_opciones dtvro = new DT_Vw_rol_opciones();
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
 	
@@ -157,7 +157,7 @@
 					</div>
 					<div class="form-group">
 						<%
-						DT_consumo_bomba cb =DT_consumo_bomba.getInstance();
+						DT_consumo_bomba cb =new DT_consumo_bomba();
 						ArrayList<Unidad_de_Medida> lista = new ArrayList<Unidad_de_Medida>();
 						lista = cb.listaUnidadDeMedida();	
 						%>
@@ -202,7 +202,7 @@
 					<div class="form-group">
 						<label class="col-sm-5 control-label">Hora de Inicio: </label>
 						<div class="col-sm-4">
-							<input id="horaInicio" name="horaInicio" type="text" class="form-control" placeholder="00:00 A/PM"
+							<input id="horaInicio" name="horaInicio" type="text" class="form-control" placeholder="00:00 AM/PM"
 								data-toggle="tooltip" data-placement="top"
 								title="Requerido">
 						</div> 
@@ -211,7 +211,7 @@
 					<div class="form-group">
 						<label class="col-sm-5 control-label">Hora de Fin: </label>
 						<div class="col-sm-4">
-							<input id="horaFin" name="horaFin" type="text" class="form-control" placeholder="00:00 A/PM"
+							<input id="horaFin" name="horaFin" type="text" class="form-control" placeholder="00:00 AM/PM"
 								data-toggle="tooltip" data-placement="top"
 								title="Requerido">
 						</div> 

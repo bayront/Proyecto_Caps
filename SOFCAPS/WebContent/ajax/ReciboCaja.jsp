@@ -11,7 +11,7 @@
 	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
-	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	DT_Vw_rol_opciones dtvro = new DT_Vw_rol_opciones();
 
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
@@ -125,7 +125,7 @@
 					
 					<div class="form-group">
 					<%
-						DT_reciboCaja rc =DT_reciboCaja.getInstance();
+						DT_reciboCaja rc =new DT_reciboCaja();
 						ArrayList<Serie> listaSeries = new ArrayList<Serie>();
 						listaSeries = rc.listaSeries();
 					%>

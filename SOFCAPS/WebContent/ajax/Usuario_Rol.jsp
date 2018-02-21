@@ -9,7 +9,7 @@
 	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
-	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	DT_Vw_rol_opciones dtvro = new DT_Vw_rol_opciones();
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
 	
@@ -129,7 +129,7 @@
 				<form class="form-horizontal form_Usuario_Rol" role="form">
 					<input type="hidden" id="opcion" name="opcion" value="guardar">
 					<%
-	  					DTUsuario dt = DTUsuario.getInstance();
+	  					DTUsuario dt = new DTUsuario();
 						ArrayList<Usuario> listaU = new ArrayList<Usuario>();
 						ResultSet rs = dt.cargarUsuarios();
 						while(rs.next()){
@@ -155,7 +155,7 @@
 							</div>
 						</div>
 					<%
-					DT_Rol dtr = DT_Rol.getInstance();
+					DT_Rol dtr = new DT_Rol();
 					ArrayList<Rol> listaR = new ArrayList<Rol>();
 					ResultSet rs2 = dtr.cargarRol();
 					while(rs2.next()){
@@ -285,7 +285,7 @@ var guardar = function() {
 			console.log(frm);
 			$.ajax({//enviar datos por ajax
 				method:"GET",
-				url:"Autenticación",
+				url:"Autenticacion",
 				data: frm//datos a enviar
 			}).done(function(info) {//informacion que el servlet le reenvia al jsp
 				verResultado(info);
@@ -310,7 +310,7 @@ var eliminar = function() {
 		var Rol_ID = $("#frmEliminarRolusu #Rol_ID").val();
 		$.ajax({
 			method:"DELETE",
-			url:"Autenticación",
+			url:"Autenticacion",
 			headers: {"Usuario_ID": Usuario_ID, "Rol_ID": Rol_ID}
 		}).done(function(info) {
 			 	limpiar_texto();
@@ -369,7 +369,7 @@ var listar = function() {
 		'bServerSide': false,
 		ajax: {
 			"method":"GET",
-			"url":"Autenticación",
+			"url":"Autenticacion",
 			"dataSrc":"aaData",
 			"data":{"opcion":"cargar"}
 		},

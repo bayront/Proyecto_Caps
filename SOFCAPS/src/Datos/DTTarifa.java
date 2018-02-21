@@ -12,17 +12,17 @@ import Entidades.Rol;
 import Entidades.Tarifa;
 
 public class DTTarifa {
-	private static DTTarifa dttari = new DTTarifa();
+//	private static DTTarifa dttari = new DTTarifa();
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
-	private static ResultSet rs;//RESULTSET estatico
+	private  ResultSet rs;//RESULTSET estatico
 	
-	private DTTarifa(){
-	}
-	
-	public static DTTarifa getInstance() {
-			return dttari;
-	}
+//	private DTTarifa(){
+//	}
+//	
+//	public static DTTarifa getInstance() {
+//			return dttari;
+//	}
 	
 	 public ResultSet cargarTarifa()
 		{
@@ -71,7 +71,7 @@ public class DTTarifa {
 			boolean guardado = false;
 			try 
 			{
-				dttari.cargarTarifa();
+				cargarTarifa();
 				rs.moveToInsertRow();
 				rs.updateInt("lim_Inf", t.getLim_Inf());
 				if(t.getLim_Sup() >= 0) {
@@ -100,7 +100,7 @@ public class DTTarifa {
 			boolean guardado = false;
 			try 
 			{
-				dttari.cargarTarifa();
+				cargarTarifa();
 				rs.beforeFirst();
 				while (rs.next()){
 					if(rs.getInt("Tarifa_ID") == t.getTarifa_ID()){
@@ -123,7 +123,7 @@ public class DTTarifa {
 			boolean guardado = false;
 			try 
 			{
-				dttari.cargarTarifa();
+				cargarTarifa();
 				rs.beforeFirst();
 				while (rs.next()){
 					if(rs.getInt("Tarifa_ID") == t.getTarifa_ID()){

@@ -17,19 +17,19 @@ import Entidades.Unidad_de_Medida;
 
 public class DT_consumo_bomba {
 	
-	private static DT_consumo_bomba dtconsB = new DT_consumo_bomba(); //Instanciando la Clase 
-	private static ResultSet rs; //ResultSet Global
+	//private static DT_consumo_bomba dtconsB = new DT_consumo_bomba(); //Instanciando la Clase 
+	private  ResultSet rs; //ResultSet Global
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
 	PreparedStatement ps =null;
 	DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
 	
-	private DT_consumo_bomba () { 
-	 }
-	
-	public static DT_consumo_bomba getInstance() {
-	   return dtconsB;
-	 }
+//	private DT_consumo_bomba () { 
+//	 }
+//	
+//	public static DT_consumo_bomba getInstance() {
+//	   return dtconsB;
+//	 }
 
 	public float traer_Lectura(){
 		String sql =("SELECT * from bomba where estado = 0;");
@@ -160,7 +160,7 @@ public class DT_consumo_bomba {
 	public boolean guardarRegBomba(Bomba b){
 		boolean guardado = false;
 		try {
-			dtconsB.cargarDatos();
+			cargarDatos();
 		
 			rs.moveToInsertRow();
 			rs.updateFloat("consumoActual", b.getConsumoActual());
@@ -189,7 +189,7 @@ public class DT_consumo_bomba {
 	public boolean actualizarBomba(Bomba b){
 		boolean actualizado = false;
 		try {
-			dtconsB.cargarDatos();
+			cargarDatos();
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getInt("Bomba_ID") == b.getBomba_ID()){
@@ -221,7 +221,7 @@ public class DT_consumo_bomba {
 	public boolean eliminarRegBomba(Bomba b){
 		boolean eliminado = false;
 		try {
-			dtconsB.cargarDatos();
+			cargarDatos();
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getInt("Bomba_ID") == b.getBomba_ID()){
@@ -240,7 +240,7 @@ public class DT_consumo_bomba {
 	public boolean activar(Bomba b){
 		boolean eliminado = false;
 		try {
-			dtconsB.DatosInactivos();
+			DatosInactivos();
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getInt("Bomba_ID") == b.getBomba_ID()){

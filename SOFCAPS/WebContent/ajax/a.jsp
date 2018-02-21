@@ -61,7 +61,7 @@
 						<div class="form-group has-feedback">
 						<label class="col-sm-4 text-gpromedix control-label">Nombre de cliente:</label>
 						<%
-						DTCliente dtn = DTCliente.getInstance();
+						DTCliente dtn = new DTCliente();
 						ResultSet rs = dtn.cliente();
 						%>
 						<div class="col-sm-5">
@@ -355,7 +355,4 @@ $(document).ready(function() {
 	});
 		
 });
-
-
-	
 </script>

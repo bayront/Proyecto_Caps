@@ -9,17 +9,17 @@ import Entidades.Opcion;
 import Entidades.Rol;
 
 public class DT_Rol_Opcion {
-	private static DT_Rol_Opcion dtRolOp = new DT_Rol_Opcion();//instancia de la clase
+//	private static DT_Rol_Opcion dtRolOp = new DT_Rol_Opcion();//instancia de la clase
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
-	private static ResultSet rs;//RESULTSET estatico
+	private  ResultSet rs;//RESULTSET estatico
 	
-	public DT_Rol_Opcion() {
-	}
-	
-	public static DT_Rol_Opcion getInstance() {
-		return dtRolOp;
-	}
+//	public DT_Rol_Opcion() {
+//	}
+//	
+//	public static DT_Rol_Opcion getInstance() {
+//		return dtRolOp;
+//	}
 	
 	public ResultSet cargarRol_Opcion_Opciones(){
 		Statement s;
@@ -65,7 +65,7 @@ public class DT_Rol_Opcion {
 		boolean guardado = false;
 		try 
 		{
-			dtRolOp.cargarRol_Opcion();
+			cargarRol_Opcion();
 			rs.moveToInsertRow();
 			rs.updateInt("Rol_ID", r.getRol_ID());
 			rs.updateInt("Opcion_ID", o.getOpcion_ID());
@@ -85,7 +85,7 @@ public class DT_Rol_Opcion {
 		boolean guardado = false;
 		try 
 		{
-			dtRolOp.cargarRol_Opcion();
+			cargarRol_Opcion();
 			rs.beforeFirst();
 			while (rs.next()){
 				System.out.println("fila "+rs.getInt("Rol_ID"));

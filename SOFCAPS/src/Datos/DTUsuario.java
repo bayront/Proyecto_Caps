@@ -13,17 +13,17 @@ import Entidades.Usuario;
 
 public class DTUsuario {
 
-	private static DTUsuario dtUsu = new DTUsuario();//instancia de la clase
+	//private static DTUsuario dtUsu = new DTUsuario();//instancia de la clase
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
-	private static ResultSet rs;//RESULTSET estatico
+	private  ResultSet rs;//RESULTSET estatico
 	
-	private DTUsuario() {
-	}
+	//private DTUsuario() {
+	//}
 	 
-	public static DTUsuario getInstance() {
-		return dtUsu;
-	}
+	//public static DTUsuario getInstance() {
+	//	return dtUsu;
+	//}
 	
 	public ResultSet cargarUsuarios()
 	{
@@ -67,7 +67,7 @@ public class DTUsuario {
 		boolean guardado = false;
 		try 
 		{
-			dtUsu.cargarUsuarios();
+			cargarUsuarios();
 			rs.moveToInsertRow();
 			rs.updateString("login", u.getLogin());
 			rs.updateString("pass", u.getPass());
@@ -89,7 +89,7 @@ public class DTUsuario {
 		boolean guardado = false;
 		try 
 		{
-			dtUsu.cargarUsuarios();
+			cargarUsuarios();
 			rs.beforeFirst();
 			while (rs.next()){
 				System.out.println("fila "+rs.getInt("usuario_id"));
@@ -110,7 +110,7 @@ public class DTUsuario {
 
 	public boolean actualizarUsuario(Usuario u){
 		try {
-			dtUsu.cargarUsuarios();
+			cargarUsuarios();
 			rs.beforeFirst();
 			while (rs.next()){
 				System.out.println("fila "+rs.getInt("Usuario_ID"));
@@ -133,7 +133,7 @@ public class DTUsuario {
 		boolean guardado = false;
 		try 
 		{
-			dtUsu.cargarUsuariosInactivos();
+			cargarUsuariosInactivos();
 			rs.beforeFirst();
 			while (rs.next()){
 				System.out.println("fila "+rs.getInt("usuario_id"));

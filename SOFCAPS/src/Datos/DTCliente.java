@@ -12,17 +12,17 @@ import Entidades.Usuario;
 
 public class DTCliente {
 	
-	private static DTCliente dtUsu = new DTCliente();//instancia de la clase
+//	private static DTCliente dtUsu = new DTCliente();//instancia de la clase
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
-	private static ResultSet rs;//RESULTSET estatico
+	private  ResultSet rs;//RESULTSET estatico
 	
-	private DTCliente() {
-	}
-	
-	public static DTCliente getInstance() {
-		return dtUsu;
-	}
+//	private DTCliente() {
+//	}
+//	
+//	public static DTCliente getInstance() {
+//		return dtUsu;
+//	}
 	
 	public ResultSet cliente(){
 		Statement s;
@@ -107,7 +107,7 @@ public class DTCliente {
 		boolean guardado = false;
 		try 
 		{
-			dtUsu.cargarClientes();
+			cargarClientes();
 			rs.moveToInsertRow();
 			rs.updateString("nombre1", c.getNombre1());
 			rs.updateString("nombre2", c.getNombre2());
@@ -132,7 +132,7 @@ public class DTCliente {
 		boolean guardado = false;
 		try 
 		{
-			dtUsu.cargarClientes();
+			cargarClientes();
 			rs.beforeFirst();
 			while (rs.next()){
 				System.out.println("fila "+rs.getInt("cliente_id"));
@@ -153,7 +153,7 @@ public class DTCliente {
 	
 	public boolean actualizarCliente(Cliente c){
 		try {
-			dtUsu.cargarClientes();
+			cargarClientes();
 			rs.beforeFirst();
 			while (rs.next()){
 				System.out.println("fila "+rs.getInt("cliente_id"));
@@ -181,7 +181,7 @@ public class DTCliente {
 		boolean guardado = false;
 		try 
 		{
-			dtUsu.cargarClientesInactivos();
+			cargarClientesInactivos();
 			rs.beforeFirst();
 			while (rs.next()){
 				System.out.println("fila "+rs.getInt("cliente_id"));

@@ -9,7 +9,7 @@
 	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
-	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	DT_Vw_rol_opciones dtvro = new DT_Vw_rol_opciones();
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
 	
@@ -193,9 +193,7 @@
 <script type="text/javascript">
 
 
-function imprimir()
-
-{	
+function imprimir(){	
 	var f = $("#FECHITAM").val().split("/");
 	var fecha1 = new Date(f[2], f[1]-1, f[0]);
 	f = $("#FECHITAMM").val().split("/");
@@ -218,13 +216,11 @@ function imprimir()
 
 }
 
-
-
 function DemoSelect2() {
-	
 	$('#sec').select2();
 	
 }
+
 ///////////////////////////////////FUNSIÓN PRINCIPAL////////////////////////////////////////////////////////
 $(document).ready(function() {
 	LoadTimePickerScript(AllTimePickers);
@@ -259,7 +255,7 @@ $(document).ready(function() {
   		changeYear: true,
 		onSelect: function(dateText, inst) {
 			$("#insert").val(dateText);
-	}
+		}
 	});
 	
 	$('#FECHITA').datepicker({
@@ -269,7 +265,7 @@ $(document).ready(function() {
   		changeYear: true,
 		onSelect: function(dateText, inst) {
 			$("#insert").val(dateText);
-	}
+		}
 	});
 	
 	$('#FECHITAA').datepicker({
@@ -279,7 +275,7 @@ $(document).ready(function() {
   		changeYear: true,
 		onSelect: function(dateText, inst) {
 			$("#insert").val(dateText);
-	}
+		}
 	});
 	// Load Timepicker plugin
 	
@@ -287,7 +283,6 @@ $(document).ready(function() {
 	$('.form-control').tooltip();
 	LoadSelect2Script(DemoSelect2);
 	// Load example of form validation
-	LoadBootstrapValidatorScript(DemoFormValidator);
-				
+	LoadBootstrapValidatorScript(DemoFormValidator);		
 });
 </script>

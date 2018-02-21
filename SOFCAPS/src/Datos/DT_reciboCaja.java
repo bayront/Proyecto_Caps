@@ -16,18 +16,18 @@ import Entidades.Cliente;
 
 
 public class DT_reciboCaja {
-	private static DT_reciboCaja dtReciboCaja = new DT_reciboCaja();
-	private static ResultSet rs;
+//	private static DT_reciboCaja dtReciboCaja = new DT_reciboCaja();
+	private  ResultSet rs;
 	PoolConexion pc = PoolConexion.getInstance(); 
 	Connection con = PoolConexion.getConnection();
 	DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
 	
-	private DT_reciboCaja () { 
-	 }
-	
-	public static DT_reciboCaja getInstance() {
-		   return dtReciboCaja;
-		 }
+//	private DT_reciboCaja () { 
+//	 }
+//	
+//	public static DT_reciboCaja getInstance() {
+//		   return dtReciboCaja;
+//		 }
 	
 	public ArrayList<Serie> listaSeries(){
 		ArrayList<Serie> listaSeries = new ArrayList<Serie>();
@@ -70,13 +70,13 @@ public class DT_reciboCaja {
 	public boolean guardarRecibo(ReciboCaja r, float totalPagar) {
 		boolean guardado = false;
 		try {
-			dtReciboCaja.cargarnumRecibo();
+			cargarnumRecibo();
 			rs.next();
 			System.out.println("numRecibo: "+rs.getInt("numRecibo"));
 			int numReciboCaja = rs.getInt("numRecibo") + 1;
 			String numRecibo = String.valueOf(numReciboCaja);
 			
-			dtReciboCaja.cargarRecibosTabla();
+			cargarRecibosTabla();
 			rs.moveToInsertRow();
 			rs.updateString("fecha", fecha.format(r.getFecha()));
 			rs.updateString("descripcion", r.getDescripcion());
@@ -158,7 +158,7 @@ public class DT_reciboCaja {
 	public boolean eliminarRecibo(ReciboCaja r) {
 		boolean eliminado = false;
 		try {
-			dtReciboCaja.cargarRecibosTabla();
+			cargarRecibosTabla();
 			rs.beforeFirst();
 			while (rs.next()){
 				if(rs.getInt("ReciboCaja_ID") == r.getReciboCaja_ID()){

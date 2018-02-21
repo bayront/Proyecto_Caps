@@ -52,10 +52,10 @@ import Datos.DTReconexion;
 public class SL_ReciboCaja extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PrintWriter out;
-	private DT_reciboCaja dt_reciboCaja = DT_reciboCaja.getInstance();
-	private DTContrato dTcontrato= DTContrato.getInstance();
-	private DTFacturaMaestra dtFacturaMaestra = DTFacturaMaestra.getInstance();
-	private DTReconexion dtReconexion = DTReconexion.getInstance();
+	private DT_reciboCaja dt_reciboCaja = new DT_reciboCaja();
+	private DTContrato dTcontrato= new DTContrato();
+	private DTFacturaMaestra dtFacturaMaestra = new DTFacturaMaestra();
+	private DTReconexion dtReconexion = new DTReconexion();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
 	SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy", new Locale("es_ES"));

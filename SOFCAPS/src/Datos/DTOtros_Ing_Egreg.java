@@ -15,20 +15,20 @@ import Entidades.Tarifa;
 
 
 public class DTOtros_Ing_Egreg {
-	private static DTOtros_Ing_Egreg dtoi = new DTOtros_Ing_Egreg();
+//	private static DTOtros_Ing_Egreg dtoi = new DTOtros_Ing_Egreg();
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
-	private static ResultSet rs;//RESULTSET estatico
+	private  ResultSet rs;//RESULTSET estatico
 	
 	DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
 	
-	private DTOtros_Ing_Egreg(){
-	}
-	
-	public static DTOtros_Ing_Egreg getInstance() {
-			return dtoi;
-	}
-	
+//	private DTOtros_Ing_Egreg(){
+//	}
+//	
+//	public static DTOtros_Ing_Egreg getInstance() {
+//			return dtoi;
+//	}
+//	
 	
 	public ResultSet cargarPro(String messs, String aniooo)
 	{
@@ -262,7 +262,7 @@ public class DTOtros_Ing_Egreg {
 			boolean guardado = false;
 			try 
 			{
-				dtoi.cargarOI();
+				cargarOI();
 				rs.moveToInsertRow();
 //				rs.updateInt("lim_Inf", t.getLim_Inf());
 //				if(t.getLim_Sup() != 0) {
@@ -293,7 +293,7 @@ public class DTOtros_Ing_Egreg {
 			boolean eliminado = false;
 			try 
 			{
-				dtoi.cargarOI();
+				cargarOI();
 				rs.beforeFirst();
 				while (rs.next()){
 					System.out.println("fila "+ rs.getInt("Otros_Ing_Egreg_ID"));
@@ -318,7 +318,7 @@ public class DTOtros_Ing_Egreg {
 			boolean guardado = false;
 			try 
 			{
-				dtoi.cargarOI();
+				cargarOI();
 				rs.beforeFirst();
 				while (rs.next()){
 					System.out.println("fila "+rs.getInt("Otros_Ing_Egreg_ID"));

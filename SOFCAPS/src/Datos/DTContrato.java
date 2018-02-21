@@ -19,18 +19,18 @@ import Entidades.Sector;
 
 public class DTContrato {
 
-	private static DTContrato dtContrato = new DTContrato(); //Instanciando la Clase 
-	private static ResultSet rs; //ResultSet Global
+//	private static DTContrato dtContrato = new DTContrato(); //Instanciando la Clase 
+	private  ResultSet rs; //ResultSet Global
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
 	DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
 	
 	private int opcion;
 	
-	public static DTContrato getInstance() 
-	 {
-	   return dtContrato;
-	 }
+//	public static DTContrato getInstance() 
+//	 {
+//	   return dtContrato;
+//	 }
 	
 	public ResultSet cargarDatos()
 	{
@@ -120,7 +120,7 @@ public class DTContrato {
 		try 
 		{
 			int numContrato = 1;
-			dtContrato.cargarDatos();
+			cargarDatos();
 			while(rs.next()) {
 				if(contrato.getCliente().getCliente_ID() == rs.getInt("Cliente_ID")) {
 					if(rs.getInt("numContrato") > numContrato) {
@@ -167,7 +167,7 @@ public class DTContrato {
 		try 
 		{
 			int numContrato =1;
-			dtContrato.cargarDatos();
+			cargarDatos();
 			while(rs.next()) {
 				if(rs.getInt("Contrato_ID") == contrato.getContrato_ID()) {
 					if(contrato.getCliente().getCliente_ID() == rs.getInt("Cliente_ID")) {
@@ -217,7 +217,7 @@ public class DTContrato {
 		try 
 		{
 			System.err.println("ERROR AL ELIMINAR CONTRATO NUMERO: " + contrato.getContrato_ID());
-			dtContrato.cargarDatos();
+			cargarDatos();
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getInt("Contrato_ID") == contrato.getContrato_ID()){
@@ -242,7 +242,7 @@ public class DTContrato {
 		try 
 		{
 			System.err.println("ERROR AL ELIMINAR CONTRATO NUMERO: " + contrato.getContrato_ID());
-			dtContrato.cargarDatosInactivos();
+			cargarDatosInactivos();
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getInt("Contrato_ID") == contrato.getContrato_ID()){

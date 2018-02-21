@@ -16,63 +16,50 @@ import Datos.PoolConexion;
 
 public class DT_categoria_Ing_Engre {
 	
-	private static DT_categoria_Ing_Engre dtcatIE = new DT_categoria_Ing_Engre(); //Instanciando la Clase 
-	private static ResultSet rs; //ResultSet Global
+	//private static DT_categoria_Ing_Engre dtcatIE = new DT_categoria_Ing_Engre(); //Instanciando la Clase 
+	private ResultSet rs; //ResultSet Global
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
 	
-	 private DT_categoria_Ing_Engre ()
-	 { 
-		 
-	 }
+//	 private DT_categoria_Ing_Engre (){
+//	 }
 
 	 /* Static 'instance' method */
-	 public static DT_categoria_Ing_Engre getInstance() 
-	 {
-	   return dtcatIE;
-	 }
+//	 public static DT_categoria_Ing_Engre getInstance() 
+//	 {
+//	   return new DT_categoria_Ing_Engre();
+//	 }
 	 
-	public ResultSet cargarDatos()
-	{
+	public ResultSet cargarDatos(){
 		Statement s;
 		String sql = ("SELECT * FROM categoria_ing_egreg WHERE eliminado = 0;");
-		try
-		{
+		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
-		}
-		catch(Exception e)
-		{
+		} catch(Exception e){
 			e.printStackTrace();
 			System.out.println("Error en DT_categoria_Ing_Engreg: "+e.getMessage());
 		}
 		return rs;
 	}
 	
-	public ResultSet cargarDatosTabla()
-	{
+	public ResultSet cargarDatosTabla(){
 		Statement s;
 		String sql = ("SELECT cie.Categoria_Ing_Egreg_ID, cie.nombreCategoria, tc.descripcion, cie.TipoCategoria_ID FROM categoria_ing_egreg cie inner join tipocategoria tc on cie.TipoCategoria_ID = tc.TipoCategoria_ID WHERE cie.eliminado = 0;");
-		try
-		{
+		try{
 			s = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = s.executeQuery(sql);
-		}
-		catch(Exception e)
-		{
+		} catch(Exception e){
 			e.printStackTrace();
 			System.out.println("Error en DT_categoria_Ing_Engreg: "+e.getMessage());
 		}
 		return rs;
-		
 	}
 	
-	public boolean guardarcarIE(Categoria_Ing_Egreg catIE)
-	{
+	public boolean guardarcarIE(Categoria_Ing_Egreg catIE){
 		boolean guardado = false;
-		try 
-		{
-			dtcatIE.cargarDatos();
+		try{
+			cargarDatos();
 			rs.moveToInsertRow();
 			rs.updateString("nombreCategoria", catIE.getNombreCategoria());
 			rs.updateInt("TipoCategoria_ID", catIE.getTipoCategoria().getTipoCategoria_ID());
@@ -80,21 +67,17 @@ public class DT_categoria_Ing_Engre {
 			rs.insertRow();
 			rs.moveToCurrentRow();
 			guardado = true;
-		}
-		catch (Exception e) 
-		{
+		} catch (Exception e){
 			System.err.println("ERROR GUARDAR " + e.getMessage());
 			e.printStackTrace();
 		}
 		return guardado;
 	}
 	
-	public boolean actualizarCatIE(Categoria_Ing_Egreg catIE)
-	{
+	public boolean actualizarCatIE(Categoria_Ing_Egreg catIE){
 		boolean actualizado = false;
-		try 
-		{
-			dtcatIE.cargarDatos();
+		try {
+			cargarDatos();
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getInt("Categoria_Ing_Egreg_ID") == catIE.getCategoria_Ing_Egreg_ID()){
@@ -106,23 +89,17 @@ public class DT_categoria_Ing_Engre {
 					actualizado = true;
 				}
 			}
-			
-			
-		}
-		catch (Exception e) 
-		{
+		} catch (Exception e){
 			System.err.println("ERROR AL ACTUALIZAR " + e.getMessage());
 			e.printStackTrace();
 		}
 		return actualizado;
 	}
 	
-	public boolean eliminarCatIE(Categoria_Ing_Egreg catIE)
-	{
+	public boolean eliminarCatIE(Categoria_Ing_Egreg catIE){
 		boolean eliminado = false;
-		try 
-		{
-			dtcatIE.cargarDatos();
+		try{
+			cargarDatos();
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getInt("Categoria_Ing_Egreg_ID") == catIE.getCategoria_Ing_Egreg_ID()){
@@ -131,32 +108,24 @@ public class DT_categoria_Ing_Engre {
 					eliminado = true;
 				}
 			}
-		
-		}
-		catch (Exception e) 
-		{
+		} catch (Exception e){
 			System.err.println("ERROR AL ELIMINAR " + e.getMessage());
 			e.printStackTrace();
 		}
 		return eliminado;
 	}
 	
-	
-	public ArrayList<TipoCategoria> listaCategoriaIE()
-	{
+	public ArrayList<TipoCategoria> listaCategoriaIE(){
 		ArrayList<TipoCategoria> listaCatIE = new ArrayList<TipoCategoria>();
 		String sql = ("SELECT * FROM sofcaps.tipocategoria;");
 		
-		try 
-		{
+		try{
 			Connection cn;
 			cn = Conexion.getConnection();
 			PreparedStatement ps = cn.prepareStatement(sql);
-			ResultSet rs = null;
-			rs = ps.executeQuery();
+			ResultSet rs= ps.executeQuery();
 			
-			while(rs.next())
-			{
+			while(rs.next()){
 				TipoCategoria catIE = new TipoCategoria();
 				catIE.setDescripcion(rs.getString("descripcion"));
 				catIE.setTipoCategoria_ID(rs.getInt("TipoCategoria_ID"));
@@ -164,15 +133,10 @@ public class DT_categoria_Ing_Engre {
 			}
 			ps.close();
 			cn.close();
-		} 
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			System.err.println("DATOS: ERROR " +e.getMessage());
 		}
-		
 		return listaCatIE;
 	}
 	
-
-
 }

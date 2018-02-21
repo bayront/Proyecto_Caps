@@ -12,18 +12,18 @@ import Datos.PoolConexion;
 
 public class DT_Usuario_Rol {
 	
-	private static DT_Usuario_Rol dtru = new DT_Usuario_Rol(); //Instanciando la Clase 
-	private static ResultSet rs; //ResultSet Global
+//	private static DT_Usuario_Rol dtru = new DT_Usuario_Rol(); //Instanciando la Clase 
+	private  ResultSet rs; //ResultSet Global
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
 	
-	private DT_Usuario_Rol() { 
-	}
-	
-	/* Static 'instance' method */
-	public static DT_Usuario_Rol getInstance() {
-	   return dtru;
-	}
+//	private DT_Usuario_Rol() { 
+//	}
+//	
+//	/* Static 'instance' method */
+//	public static DT_Usuario_Rol getInstance() {
+//	   return dtru;
+//	}
 	
 	 public ResultSet cargarUsuarioRol(){
 			Statement s;
@@ -75,7 +75,7 @@ public class DT_Usuario_Rol {
 	{
 		boolean guardado = false;
 		try {
-			dtru.cargarUsuarioRol();
+			cargarUsuarioRol();
 			rs.moveToInsertRow();
 			rs.updateInt("Usuario_ID", rolusu.getUsuario_id());
 			rs.updateInt("Rol_ID", rolusu.getRol_id());
@@ -92,7 +92,7 @@ public class DT_Usuario_Rol {
 	public boolean eliminarRU(Usuario_Rol rolusu){
 		boolean eliminado = false;
 		try {
-			dtru.cargarUsuarioRol();
+			cargarUsuarioRol();
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getInt("Usuario_ID") == rolusu.getUsuario_id() && rs.getInt("Rol_ID") == rolusu.getRol_id()){

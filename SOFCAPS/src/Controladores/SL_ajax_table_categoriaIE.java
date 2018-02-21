@@ -31,7 +31,7 @@ import Entidades.TipoCategoria;
 public class SL_ajax_table_categoriaIE extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PrintWriter out;
-	private DT_categoria_Ing_Engre dTcatIE = DT_categoria_Ing_Engre.getInstance();
+	private DT_categoria_Ing_Engre dTcatIE = new DT_categoria_Ing_Engre();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
        

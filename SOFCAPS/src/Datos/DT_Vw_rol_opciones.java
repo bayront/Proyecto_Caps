@@ -7,21 +7,21 @@ import java.sql.Statement;
 import Entidades.Rol;
 
 public class DT_Vw_rol_opciones {
-	private static DT_Vw_rol_opciones dtvro = new DT_Vw_rol_opciones(); //Instanciando la Clase 
-	private static ResultSet rs; //ResultSet Global
+//	private static DT_Vw_rol_opciones dtvro = new DT_Vw_rol_opciones(); //Instanciando la Clase 
+	private  ResultSet rs; //ResultSet Global
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
 	
-	private DT_Vw_rol_opciones() 
-	{ 
-		 
-	}
-	
-	/* Static 'instance' method */
-	public static DT_Vw_rol_opciones getInstance() 
-	{
-	   return dtvro;
-	}
+//	private DT_Vw_rol_opciones() 
+//	{ 
+//		 
+//	}
+//	
+//	/* Static 'instance' method */
+//	public static DT_Vw_rol_opciones getInstance() 
+//	{
+//	   return dtvro;
+//	}
 	
 	public ResultSet cargarDatos()
 	{

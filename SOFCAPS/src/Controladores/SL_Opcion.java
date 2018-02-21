@@ -27,7 +27,7 @@ import Entidades.Rol;
 @WebServlet("/SL_Opcion")
 public class SL_Opcion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DT_Opcion datosOpcion = DT_Opcion.getInstance();
+	private DT_Opcion datosOpcion = new DT_Opcion();
 	private PrintWriter out;
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     /**

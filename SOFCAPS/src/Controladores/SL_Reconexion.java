@@ -49,7 +49,7 @@ import Entidades.Factura_Maestra;
 public class SL_Reconexion  extends HttpServlet  {
 	private static final long serialVersionUID = 1L;
 	private PrintWriter out;
-	private DTReconexion dtReconexion = DTReconexion.getInstance();
+	private DTReconexion dtReconexion = new DTReconexion();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 	

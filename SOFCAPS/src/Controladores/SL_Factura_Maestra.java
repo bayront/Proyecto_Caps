@@ -44,7 +44,7 @@ public class SL_Factura_Maestra extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
 	private PrintWriter out;
-	private DTFacturaMaestra dtFactura = DTFacturaMaestra.getInstance();
+	private DTFacturaMaestra dtFactura = new DTFacturaMaestra();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
 	SimpleDateFormat parseador2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
@@ -259,7 +259,7 @@ public class SL_Factura_Maestra extends HttpServlet{
 	}
 	
 	private void generarFacturas(Date fechaCorte, Date fechaVence, HttpServletResponse resp) throws IOException, SQLException {
-		DTConsumo dtConsumo = DTConsumo.getInstance();
+		DTConsumo dtConsumo = new DTConsumo();
 		ResultSet r = dtConsumo.cargarTodosConsumos();
 		boolean hayFechaCorte = false;
 		while(r.next()){

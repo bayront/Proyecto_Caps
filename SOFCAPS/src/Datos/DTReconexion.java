@@ -19,20 +19,20 @@ import Entidades.Factura_Maestra;
 
 public class DTReconexion {
 	
-	private static DTReconexion dtReconexion = new DTReconexion(); //Instanciando la Clase 
-	private static ResultSet rs; //ResultSet Global
+//	private static DTReconexion dtReconexion = new DTReconexion(); //Instanciando la Clase 
+	private  ResultSet rs; //ResultSet Global
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
 	SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
 	SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 	Date fechaActual = new Date(); 
 	
-	private DTReconexion() {
-	}
-
-	public static DTReconexion getInstance() {
-		return dtReconexion;
-	}
+//	private DTReconexion() {
+//	}
+//
+//	public static DTReconexion getInstance() {
+//		return dtReconexion;
+//	}
 	
 	public ResultSet cargarReconexion()
 	{
@@ -140,7 +140,7 @@ public class DTReconexion {
 		boolean eliminado = false;
 		try 
 		{
-			dtReconexion.cargarReconexion();
+			cargarReconexion();
 			rs.beforeFirst();
 			while (rs.next()){
 				System.out.println("fila "+rs.getInt("Reconexion_ID"));
@@ -163,7 +163,7 @@ public class DTReconexion {
 	public boolean cancelarReconexion(int id, boolean cancel) {
 		boolean cancelado = false;
 		try {
-			dtReconexion.cargarTodaReconexion();
+			cargarTodaReconexion();
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getInt("Reconexion_ID") == id){

@@ -30,7 +30,7 @@ import Entidades.Usuario;
 @WebServlet("/SL_Cliente")
 public class SL_Cliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DTCliente datosCliente = DTCliente.getInstance();
+	private DTCliente datosCliente = new DTCliente();
 	private PrintWriter out;
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	   

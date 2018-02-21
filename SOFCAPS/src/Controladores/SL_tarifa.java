@@ -29,9 +29,9 @@ import com.google.gson.GsonBuilder;
 @WebServlet("/SL_tarifa")
 public class SL_tarifa extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DTTarifa datosTarifa = DTTarifa.getInstance();
-	private DT_UnidadMedida dtUM = DT_UnidadMedida.getInstance();
-	private DTCategoria dtCat = DTCategoria.getInstance();
+	private DTTarifa datosTarifa = new DTTarifa();
+	private DT_UnidadMedida dtUM = new DT_UnidadMedida();
+	private DTCategoria dtCat = new DTCategoria();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
 	//PrinterWriter out;

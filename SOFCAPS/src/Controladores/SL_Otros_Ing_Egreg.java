@@ -31,8 +31,8 @@ import com.google.gson.GsonBuilder;
 @WebServlet("/SL_Otros_Ing_Egreg")
 public class SL_Otros_Ing_Egreg extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DTOtros_Ing_Egreg dtOI = DTOtros_Ing_Egreg.getInstance();
-	private DT_categoria_Ing_Engre datoscat = DT_categoria_Ing_Engre.getInstance();
+	private DTOtros_Ing_Egreg dtOI = new DTOtros_Ing_Egreg();
+	private DT_categoria_Ing_Engre datoscat = new DT_categoria_Ing_Engre();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
 	SimpleDateFormat parseador2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);

@@ -10,18 +10,18 @@ import java.text.SimpleDateFormat;
 import Entidades.Consumo;
 
 public class DTConsumo {
-	private static DTConsumo dtConsumo = new DTConsumo();//instancia de la clase
+//	private static DTConsumo dtConsumo = new DTConsumo();//instancia de la clase
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
-	private static ResultSet rs;//RESULTSET estatico
+	private  ResultSet rs;//RESULTSET estatico
 	DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
 	
-	public DTConsumo() {
-	}
-	
-	public static DTConsumo getInstance() {
-		return dtConsumo;
-	}
+//	public DTConsumo() {
+//	}
+//	
+//	public static DTConsumo getInstance() {
+//		return dtConsumo;
+//	}
 	
 	public ResultSet cargarConsumos()
 	{
@@ -104,7 +104,7 @@ public class DTConsumo {
 		boolean guardado = false;
 		try {
 			boolean encontrado = false;
-			dtConsumo.cargarTodosConsumos();
+			cargarTodosConsumos();
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getBoolean("actual") == true && rs.getInt("Contrato_ID") == consumo.getContrato().getContrato_ID()){
@@ -149,7 +149,7 @@ public class DTConsumo {
 
 	private void agregarPrimerConsumo(Consumo consumo) {
 		try {
-			dtConsumo.cargarTodosConsumos();
+			cargarTodosConsumos();
 			rs.moveToInsertRow();
 			rs.updateInt("Cliente_ID", consumo.getCliente().getCliente_ID());
 			rs.updateInt("Contrato_ID", consumo.getContrato().getContrato_ID());
@@ -170,7 +170,7 @@ public class DTConsumo {
 	public boolean actualizarConsumo(Consumo consumo) {
 		boolean guardado = false;
 		try {
-			dtConsumo.cargarTodosConsumos();
+			cargarTodosConsumos();
 			rs.beforeFirst();
 			while (rs.next()) {
 				if(rs.getInt("Consumo_ID") == consumo.getConsumo_ID()) {
@@ -203,7 +203,7 @@ public class DTConsumo {
 			float lectura_anterior = 0;
 			float lecturaRound = 0.0f;
 			int contrato_ID = 0;
-			dtConsumo.cargarTodosConsumos();
+			cargarTodosConsumos();
 			rs.beforeFirst();
 			while (rs.next()) {
 				if(rs.getInt("Consumo_ID") == consumo.getConsumo_ID()) {

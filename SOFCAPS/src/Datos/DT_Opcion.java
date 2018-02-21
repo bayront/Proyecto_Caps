@@ -17,17 +17,17 @@ import Entidades.Rol;
 
 public class DT_Opcion {
 	
-	private static DT_Opcion dtOp = new DT_Opcion(); //Instanciando la Clase 
-	private static ResultSet rs; //ResultSet Global
+	//private static DT_Opcion dtOp = new DT_Opcion(); //Instanciando la Clase 
+	private  ResultSet rs; //ResultSet Global
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
-	
-	 public DT_Opcion() {
-	 }
-
-	 public static DT_Opcion getInstance() {
-	   return dtOp;
-	 }
+//	
+//	 public DT_Opcion() {
+//	 }
+//
+//	 public static DT_Opcion getInstance() {
+//	   return dtOp;
+//	 }
 	
 	public ResultSet cargarDatos() {
 		Statement s;

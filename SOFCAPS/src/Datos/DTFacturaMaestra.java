@@ -21,16 +21,16 @@ import Entidades.Sector;
 
 public class DTFacturaMaestra {
 
-	private static DTFacturaMaestra dtFactura = new DTFacturaMaestra(); //Instanciando la Clase 
-	private static ResultSet rs; //ResultSet Global
+//	private static DTFacturaMaestra dtFactura = new DTFacturaMaestra(); //Instanciando la Clase 
+	private  ResultSet rs; //ResultSet Global
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection con = PoolConexion.getConnection();
 	DateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
 	
-	public static DTFacturaMaestra getInstance() 
-	 {
-	   return dtFactura;
-	 }
+//	public static DTFacturaMaestra getInstance() 
+//	 {
+//	   return dtFactura;
+//	 }
 	
 	public ResultSet datosFacturaMaestra()
 	{
@@ -125,7 +125,7 @@ public class DTFacturaMaestra {
 		boolean eliminado = false;
 		try 
 		{
-			dtFactura.datosFacturaMaestra();
+			datosFacturaMaestra();
 			System.out.println("Eliminado 1");
 			rs.beforeFirst();
 			
@@ -245,7 +245,7 @@ public class DTFacturaMaestra {
 	public boolean cancelarFactura(int id, boolean cancel) {
 		boolean cancelado = false;
 		try {
-			dtFactura.datosFacturaMaestra();
+			datosFacturaMaestra();
 			rs.beforeFirst();
 			while(rs.next()){
 				if(rs.getInt("Factura_Maestra_ID") == id){

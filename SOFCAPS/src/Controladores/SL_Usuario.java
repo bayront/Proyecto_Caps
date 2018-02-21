@@ -28,7 +28,7 @@ import Entidades.Usuario;
 @WebServlet("/SL_Usuario")
 public class SL_Usuario extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DTUsuario datosUsuario = DTUsuario.getInstance();
+	private DTUsuario datosUsuario = new DTUsuario();
 	private PrintWriter out;
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
        

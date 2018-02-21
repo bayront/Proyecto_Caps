@@ -8,14 +8,14 @@ import Entidades.Categoria;
 
 
 public class DTCategoria {
-	private static DTCategoria dtal = new DTCategoria(); //Instanciando la Clase 
-	private static ResultSet rs; //ResultSet Global
+//	private static DTCategoria dtal = new DTCategoria(); //Instanciando la Clase 
+	private  ResultSet rs; //ResultSet Global
 	PoolConexion pc = PoolConexion.getInstance(); //
 	Connection cn = PoolConexion.getConnection();
 	/* Static 'instance' method */
-	 public static DTCategoria getInstance() {
-	   return dtal;
-	 }
+//	 public static DTCategoria getInstance() {
+//	   return dtal;
+//	 }
 	 
 	public ResultSet Categorias() {
 		Statement s;
@@ -33,7 +33,7 @@ public class DTCategoria {
 	public boolean guardarCategoria(Categoria a){	
 		boolean g = false;
 		try{
-			dtal.Categorias();
+			Categorias();
 			rs.moveToInsertRow();
 			rs.updateString("nomCategoria", a.getNomCategoria());
 			if(a.getDescripcion().isEmpty() || a.getDescripcion() == null) {
@@ -54,7 +54,7 @@ public class DTCategoria {
 	
 	public boolean eliminarCategoria(Categoria u){
 		try {
-			dtal.Categorias();
+			Categorias();
 			rs.beforeFirst();
 			rs.beforeFirst();
 			while (rs.next()){
@@ -75,7 +75,7 @@ public class DTCategoria {
 	
 	public boolean actualizarCategoria(Categoria u){
 		try {
-			dtal.Categorias();
+			Categorias();
 			rs.beforeFirst();
 			while (rs.next()){
 				if(rs.getInt("categoria_ID") ==u.getCategoria_ID()){

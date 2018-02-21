@@ -347,7 +347,7 @@
 				</div>
 				<!-- body -->
 				<div class="modal-body">
-					<form action="./Autenticación" method="post">
+					<form action="./Autenticacion" method="post">
 					
 						<div class="form-group">
 							<input Style='border-color:#3276D7;' id="username" name="username" type="text" class="form-control" placeholder="Usuario" required>
@@ -356,7 +356,7 @@
 							<input Style='border-color:#3276D7;' id="password" name="password" type="password" class="form-control" placeholder="Contraseña" required>
 						</div>
 						<%
-								DT_Rol dtr = DT_Rol.getInstance();
+								DT_Rol dtr = new DT_Rol();
 								ResultSet rs = dtr.cargarRol();
 							%>
 							
@@ -513,8 +513,6 @@
         	}
         });
 		</script>
-    
-    
-    
-</body>
+		
+	</body>
 </html>

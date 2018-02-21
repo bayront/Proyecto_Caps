@@ -8,7 +8,7 @@
 	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
-	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	DT_Vw_rol_opciones dtvro = new DT_Vw_rol_opciones();
 
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
@@ -166,7 +166,7 @@
 					<div class="form-group has-warning has-feedback">
 						<label class="col-sm-5 control-label">Numero de personas</label>
 						<div class="col-sm-4">
-							<input id= "cantidadPersonas" name="cantidadPersonas" class="form-control" data-placement="top"
+							<input id= "cantidadPersonas" name="cantidadPersonas" min="1" class="form-control" data-placement="top"
 								placeholder="Cantidad Personas" data-toggle="tooltip" title="Cantidad de personas">
 						</div>	
 					</div>
@@ -180,7 +180,7 @@
 					</div>
 					
 					<%
-						DTContrato dt = DTContrato.getInstance();
+						DTContrato dt = new DTContrato();
 						ArrayList<RegimenPropiedad> listaR = new ArrayList<RegimenPropiedad>();
 						listaR = dt.listaRegimenPropiedad();
 						

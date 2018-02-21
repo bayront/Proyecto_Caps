@@ -28,7 +28,7 @@ import com.google.gson.GsonBuilder;
 @WebServlet("/SL_Categoria")
 public class SL_Categoria extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DTCategoria datosCategoria = DTCategoria.getInstance();
+	private DTCategoria datosCategoria = new DTCategoria();
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	PrintWriter out;
     /**

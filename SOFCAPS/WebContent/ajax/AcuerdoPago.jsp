@@ -8,7 +8,7 @@
 	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
 %>
 <%
-	DT_Vw_rol_opciones dtvro = DT_Vw_rol_opciones.getInstance();
+	DT_Vw_rol_opciones dtvro =new DT_Vw_rol_opciones();
 	Usuario us = new Usuario();
 	us = (Usuario)session.getAttribute("userVerificado");
 	
@@ -91,7 +91,7 @@
 						<label class="col-sm-offset-2 col-sm-3 text-gpromedix control-label"
 							style="width: inherit;font-size: large;">Nombre del cliente:</label>
 						<%
-							DTCliente dtn = DTCliente.getInstance();
+							DTCliente dtn = new DTCliente();;
 							ResultSet rs = dtn.cargarNombre();
 						%>
 						<div class="col-sm-5">
@@ -139,38 +139,22 @@
 <script type="text/javascript">
 
 //Inicializar DatePicker
-
-
-
-function imprimirr()
-
-{	
+function imprimirr(){	
 	
 	if($('#tippe').val()!=0){
 	var cat = "";
 	
-	
-	
 	cat = $('#tippe').val();
-	
-	
-	
-	
 	
 	if(cat==0){
 		cat = "";
 	}
-
-	
-	
 	window.open("SLAP?tippe="+cat, '_blank');
 	
 	console.log("El paramtero del jsp SLAP cat"+" "+cat);
 	}
 	else
 		$('#alerta').show();
-	
-
 }
 
 function DemoSelect2() {
@@ -181,14 +165,8 @@ function DemoSelect2() {
 
 
 $(document).ready(function() {
-	
-	
 	$('#porE').show();
-	
 	LoadSelect2Script(DemoSelect2);
-		
 });
 
-
-	
 </script>
